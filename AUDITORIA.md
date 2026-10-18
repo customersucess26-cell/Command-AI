@@ -1,6 +1,7 @@
 # eBistrô: auditoria e correções (18/10/2026)
 
 > Atualização: a hamburgueria e o Âmbar mudaram de `modelos/` para `sites/hamburgueria-bruto/` e `sites/ambar/`, cada um com painel próprio (ver SEGURANCA.md). O painel do eBistrô foi refeito a partir do painel original, que está guardado em `historico/painel-original.html`.
+> O modelo padaria foi trocado pela versão 17 do projeto (enviada depois): ela já valida pedidos com o fuso de São Paulo, impede pedido duplicado, confere mudança de preço, controla status, pagamentos parciais e estornos, e protege o CSV. Nela foram feitas só duas correções: a tela final no modo demonstração e o login de demonstração sem e-mail pessoal. A versão 16 corrigida e as originais estão em `historico/`.
 
 ## O que foi auditado
 

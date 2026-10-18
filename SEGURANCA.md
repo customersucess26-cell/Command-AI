@@ -64,7 +64,9 @@ A partir daí:
 - o banco recalcula preço, taxa e total de cada pedido;
 - todo pedido feito pelo site começa como "a receber", mesmo que alguém tente gravar "pago".
 
-O modelo `modelos/padaria-cafe.html` continua com o painel próprio dele, embutido no arquivo (acesso por `#admin`).
+O modelo `modelos/padaria-cafe.html` usa a versão 17 do projeto Padaria & Café, com painel próprio embutido no arquivo (acesso por `#admin`; login de demonstração `admin@demo.ebistro`, senha `admin@2026`). As versões anteriores estão em `historico/`.
+
+Atenção: esse arquivo é um build de demonstração. Nele os dados ficam só no navegador. A versão com banco usa o esquema próprio do projeto (`stores`, `store_id` e a função `create_order`), que está no código-fonte Next.js, não neste repositório. Os arquivos `03` e `05` daqui são das lojas em `sites/` e **não** servem para ele.
 
 ## O que ainda depende de você
 
