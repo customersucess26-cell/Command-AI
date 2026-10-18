@@ -1,0 +1,696 @@
+{
+ "products": [
+  {
+   "id": "ratatouille",
+   "name": "Ratatouille",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 32.0,
+   "active": true,
+   "featured": false,
+   "position": 1,
+   "image_url": "img/ratatouille.jpg",
+   "category_id": "acompanhamentos",
+   "description": "Legumes assados em camadas ao molho de tomate."
+  },
+  {
+   "id": "legumes",
+   "name": "Legumes assados",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 38.0,
+   "active": true,
+   "featured": false,
+   "position": 2,
+   "image_url": "img/legumes.jpg",
+   "category_id": "acompanhamentos",
+   "description": "Com azeitonas, tomates e burrata."
+  },
+  {
+   "id": "salada-burrata",
+   "name": "Salada verde com burrata",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 36.0,
+   "active": true,
+   "featured": false,
+   "position": 3,
+   "image_url": "img/salada-burrata.jpg",
+   "category_id": "acompanhamentos",
+   "description": "Folhas da estação, flores e vinagrete."
+  },
+  {
+   "id": "cogumelos",
+   "name": "Cogumelos e funcho assados",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 34.0,
+   "active": true,
+   "featured": false,
+   "position": 4,
+   "image_url": "img/cogumelos.jpg",
+   "category_id": "acompanhamentos",
+   "description": "Com nozes tostadas e ervas."
+  },
+  {
+   "id": "vieira",
+   "name": "Vieira selada",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 58.0,
+   "active": true,
+   "featured": true,
+   "position": 1,
+   "image_url": "img/vieira.jpg",
+   "category_id": "entradas",
+   "description": "Na manteiga noisette com ervas frescas."
+  },
+  {
+   "id": "tartare",
+   "name": "Tartare de filé",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 62.0,
+   "active": true,
+   "featured": false,
+   "position": 2,
+   "image_url": "img/tartare.jpg",
+   "category_id": "entradas",
+   "description": "Com gema curada, alcaparras e torradas."
+  },
+  {
+   "id": "carpaccio",
+   "name": "Carpaccio de wagyu",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 74.0,
+   "active": true,
+   "featured": true,
+   "position": 3,
+   "image_url": "img/carpaccio.jpg",
+   "category_id": "entradas",
+   "description": "Rúcula, lascas de parmesão e azeite de trufa."
+  },
+  {
+   "id": "salmao-defumado",
+   "name": "Rosas de salmão defumado",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 52.0,
+   "active": true,
+   "featured": false,
+   "position": 4,
+   "image_url": "img/salmao-defumado.jpg",
+   "category_id": "entradas",
+   "description": "Sobre pepino, cream cheese e endro."
+  },
+  {
+   "id": "blini",
+   "name": "Blini com caviar",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 98.0,
+   "active": true,
+   "featured": true,
+   "position": 5,
+   "image_url": "img/blini.jpg",
+   "category_id": "entradas",
+   "description": "Panquequinhas, crème fraîche e ovas."
+  },
+  {
+   "id": "tabua",
+   "name": "Tábua de frios e queijos",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 89.0,
+   "active": true,
+   "featured": false,
+   "position": 6,
+   "image_url": "img/tabua.jpg",
+   "category_id": "entradas",
+   "description": "Presunto cru, queijos curados, nozes e geleia."
+  },
+  {
+   "id": "bruschetta",
+   "name": "Bruschetta de lagosta",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 78.0,
+   "active": true,
+   "featured": false,
+   "position": 7,
+   "image_url": "img/bruschetta.jpg",
+   "category_id": "entradas",
+   "description": "Pão de fermentação natural, tomate e limão."
+  },
+  {
+   "id": "sopa-cebola",
+   "name": "Sopa de cebola gratinada",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 42.0,
+   "active": true,
+   "featured": false,
+   "position": 8,
+   "image_url": "img/sopa-cebola.jpg",
+   "category_id": "entradas",
+   "description": "Clássico francês com gruyère derretido."
+  },
+  {
+   "id": "chateaubriand",
+   "name": "Chateaubriand",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 169.0,
+   "active": true,
+   "featured": true,
+   "position": 1,
+   "image_url": "img/chateaubriand.jpg",
+   "category_id": "principais",
+   "description": "Filé alto ao molho de vinho tinto e legumes."
+  },
+  {
+   "id": "risoto-trufas",
+   "name": "Risoto de trufas negras",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 118.0,
+   "active": true,
+   "featured": true,
+   "position": 2,
+   "image_url": "img/risoto-trufas.jpg",
+   "category_id": "principais",
+   "description": "Arbóreo, parmesão e lâminas de trufa."
+  },
+  {
+   "id": "confit-pato",
+   "name": "Confit de pato",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 132.0,
+   "active": true,
+   "featured": true,
+   "position": 3,
+   "image_url": "img/confit-pato.jpg",
+   "category_id": "principais",
+   "description": "Coxa confitada com redução de frutas vermelhas."
+  },
+  {
+   "id": "bourguignon",
+   "name": "Boeuf bourguignon",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 112.0,
+   "active": true,
+   "featured": false,
+   "position": 4,
+   "image_url": "img/bourguignon.jpg",
+   "category_id": "principais",
+   "description": "Carne cozida no vinho por seis horas."
+  },
+  {
+   "id": "coq-au-vin",
+   "name": "Coq au vin",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 98.0,
+   "active": true,
+   "featured": false,
+   "position": 5,
+   "image_url": "img/coq-au-vin.jpg",
+   "category_id": "principais",
+   "description": "Frango no vinho tinto com cogumelos e bacon."
+  },
+  {
+   "id": "papillote",
+   "name": "Salmão en papillote",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 116.0,
+   "active": true,
+   "featured": false,
+   "position": 6,
+   "image_url": "img/papillote.jpg",
+   "category_id": "principais",
+   "description": "Assado no papel com ervas e legumes."
+  },
+  {
+   "id": "frutos-mar",
+   "name": "Frutos do mar grelhados",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 189.0,
+   "active": true,
+   "featured": true,
+   "position": 7,
+   "image_url": "img/frutos-mar.jpg",
+   "category_id": "principais",
+   "description": "Lagostins, camarões e arroz de ervas."
+  },
+  {
+   "id": "bouillabaisse",
+   "name": "Bouillabaisse",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 138.0,
+   "active": true,
+   "featured": false,
+   "position": 8,
+   "image_url": "img/bouillabaisse.jpg",
+   "category_id": "principais",
+   "description": "Caldo provençal de peixes e mariscos."
+  },
+  {
+   "id": "tiramisu",
+   "name": "Tiramisù",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 34.0,
+   "active": true,
+   "featured": true,
+   "position": 1,
+   "image_url": "img/tiramisu.jpg",
+   "category_id": "sobremesas",
+   "description": "Café, mascarpone e cacau."
+  },
+  {
+   "id": "pavlova",
+   "name": "Pavlova",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 38.0,
+   "active": true,
+   "featured": true,
+   "position": 2,
+   "image_url": "img/pavlova.jpg",
+   "category_id": "sobremesas",
+   "description": "Merengue, creme e frutas vermelhas."
+  },
+  {
+   "id": "torta-limao",
+   "name": "Torta de limão",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 32.0,
+   "active": true,
+   "featured": false,
+   "position": 3,
+   "image_url": "img/torta-limao.jpg",
+   "category_id": "sobremesas",
+   "description": "Com merengue maçaricado."
+  },
+  {
+   "id": "creme-brulee",
+   "name": "Crème brûlée",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 34.0,
+   "active": true,
+   "featured": true,
+   "position": 4,
+   "image_url": "img/creme-brulee.jpg",
+   "category_id": "sobremesas",
+   "description": "Baunilha e açúcar caramelizado."
+  },
+  {
+   "id": "eclairs",
+   "name": "Éclairs de chocolate",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 32.0,
+   "active": true,
+   "featured": false,
+   "position": 5,
+   "image_url": "img/eclairs.jpg",
+   "category_id": "sobremesas",
+   "description": "Massa choux e creme de baunilha."
+  },
+  {
+   "id": "flan",
+   "name": "Flan de doce de leite",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 28.0,
+   "active": true,
+   "featured": false,
+   "position": 6,
+   "image_url": "img/flan.jpg",
+   "category_id": "sobremesas",
+   "description": "Com calda de caramelo."
+  },
+  {
+   "id": "cheesecake",
+   "name": "Cheesecake de matcha",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 36.0,
+   "active": true,
+   "featured": false,
+   "position": 7,
+   "image_url": "img/cheesecake.jpg",
+   "category_id": "sobremesas",
+   "description": "Base crocante e chá verde."
+  },
+  {
+   "id": "churros",
+   "name": "Churros",
+   "unit": "",
+   "badge": "",
+   "extra": {},
+   "price": 29.0,
+   "active": true,
+   "featured": false,
+   "position": 8,
+   "image_url": "img/churros.jpg",
+   "category_id": "sobremesas",
+   "description": "Com doce de leite para mergulhar."
+  },
+  {
+   "id": "vinho-amelia",
+   "name": "Amelia Chardonnay",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Limarí, Chile"
+   },
+   "price": 279.0,
+   "active": true,
+   "featured": false,
+   "position": 1,
+   "image_url": "img/amelia.png",
+   "category_id": "vinhos-brancos-e-rose",
+   "description": ""
+  },
+  {
+   "id": "vinho-chablis",
+   "name": "Chablis Louis Jadot",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Borgonha, França"
+   },
+   "price": 349.0,
+   "active": true,
+   "featured": false,
+   "position": 2,
+   "image_url": "img/chablis.png",
+   "category_id": "vinhos-brancos-e-rose",
+   "description": ""
+  },
+  {
+   "id": "vinho-margherita",
+   "name": "Santa Margherita Pinot Grigio",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Vêneto, Itália"
+   },
+   "price": 229.0,
+   "active": true,
+   "featured": false,
+   "position": 3,
+   "image_url": "img/margherita.png",
+   "category_id": "vinhos-brancos-e-rose",
+   "description": ""
+  },
+  {
+   "id": "vinho-mateus",
+   "name": "Mateus Rosé",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Bairrada, Portugal"
+   },
+   "price": 129.0,
+   "active": true,
+   "featured": false,
+   "position": 4,
+   "image_url": "img/mateus.png",
+   "category_id": "vinhos-brancos-e-rose",
+   "description": ""
+  },
+  {
+   "id": "vinho-veuve",
+   "name": "Veuve Clicquot Brut",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Champagne, França"
+   },
+   "price": 649.0,
+   "active": true,
+   "featured": false,
+   "position": 1,
+   "image_url": "img/veuve.png",
+   "category_id": "vinhos-espumantes",
+   "description": ""
+  },
+  {
+   "id": "vinho-chandon",
+   "name": "Chandon Brut",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Serra Gaúcha, Brasil"
+   },
+   "price": 159.0,
+   "active": true,
+   "featured": false,
+   "position": 2,
+   "image_url": "img/chandon.png",
+   "category_id": "vinhos-espumantes",
+   "description": ""
+  },
+  {
+   "id": "vinho-catena",
+   "name": "Catena Zapata Malbec",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Mendoza, Argentina"
+   },
+   "price": 245.0,
+   "active": true,
+   "featured": false,
+   "position": 1,
+   "image_url": "img/catena.png",
+   "category_id": "vinhos-tintos",
+   "description": ""
+  },
+  {
+   "id": "vinho-enemigo",
+   "name": "El Enemigo Cabernet Franc",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Mendoza, Argentina"
+   },
+   "price": 289.0,
+   "active": true,
+   "featured": false,
+   "position": 2,
+   "image_url": "img/enemigo.png",
+   "category_id": "vinhos-tintos",
+   "description": ""
+  },
+  {
+   "id": "vinho-terrazas",
+   "name": "Terrazas Reserva Malbec",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Mendoza, Argentina"
+   },
+   "price": 198.0,
+   "active": true,
+   "featured": false,
+   "position": 3,
+   "image_url": "img/terrazas.png",
+   "category_id": "vinhos-tintos",
+   "description": ""
+  },
+  {
+   "id": "vinho-montes",
+   "name": "Montes Alpha Carménère",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Colchagua, Chile"
+   },
+   "price": 229.0,
+   "active": true,
+   "featured": false,
+   "position": 4,
+   "image_url": "img/montes.png",
+   "category_id": "vinhos-tintos",
+   "description": ""
+  },
+  {
+   "id": "vinho-esporao",
+   "name": "Esporão Reserva",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Alentejo, Portugal"
+   },
+   "price": 259.0,
+   "active": true,
+   "featured": false,
+   "position": 5,
+   "image_url": "img/esporao.png",
+   "category_id": "vinhos-tintos",
+   "description": ""
+  },
+  {
+   "id": "vinho-mouton",
+   "name": "Mouton Cadet",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Bordeaux, França"
+   },
+   "price": 219.0,
+   "active": true,
+   "featured": false,
+   "position": 6,
+   "image_url": "img/mouton.png",
+   "category_id": "vinhos-tintos",
+   "description": ""
+  },
+  {
+   "id": "vinho-ruffino",
+   "name": "Ruffino Chianti Classico",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Toscana, Itália"
+   },
+   "price": 189.0,
+   "active": true,
+   "featured": false,
+   "position": 7,
+   "image_url": "img/ruffino.png",
+   "category_id": "vinhos-tintos",
+   "description": ""
+  },
+  {
+   "id": "vinho-miolo",
+   "name": "Miolo Lote 43",
+   "unit": "",
+   "badge": "",
+   "extra": {
+    "origem": "Vale dos Vinhedos, Brasil"
+   },
+   "price": 239.0,
+   "active": true,
+   "featured": false,
+   "position": 8,
+   "image_url": "img/miolo.png",
+   "category_id": "vinhos-tintos",
+   "description": ""
+  }
+ ],
+ "settings": {
+  "extra": {},
+  "hours": "Ter a sex: 19h às 23h · Sáb e dom: 12h às 23h",
+  "address": "Endereço do restaurante",
+  "whatsapp": "",
+  "instagram": "",
+  "min_order": 0.0,
+  "store_name": "Âmbar · Cozinha & Vinhos",
+  "delivery_fee": 0.0,
+  "accept_orders": false
+ },
+ "categories": [
+  {
+   "id": "entradas",
+   "name": "Entradas",
+   "extra": {
+    "tipo": "prato"
+   },
+   "active": true,
+   "position": 1
+  },
+  {
+   "id": "principais",
+   "name": "Pratos principais",
+   "extra": {
+    "tipo": "prato"
+   },
+   "active": true,
+   "position": 2
+  },
+  {
+   "id": "acompanhamentos",
+   "name": "Acompanhamentos",
+   "extra": {
+    "tipo": "prato"
+   },
+   "active": true,
+   "position": 3
+  },
+  {
+   "id": "sobremesas",
+   "name": "Sobremesas",
+   "extra": {
+    "tipo": "prato"
+   },
+   "active": true,
+   "position": 4
+  },
+  {
+   "id": "vinhos-tintos",
+   "name": "Tintos",
+   "extra": {
+    "tipo": "vinho"
+   },
+   "active": true,
+   "position": 10
+  },
+  {
+   "id": "vinhos-brancos-e-rose",
+   "name": "Brancos e rosé",
+   "extra": {
+    "tipo": "vinho"
+   },
+   "active": true,
+   "position": 11
+  },
+  {
+   "id": "vinhos-espumantes",
+   "name": "Espumantes",
+   "extra": {
+    "tipo": "vinho"
+   },
+   "active": true,
+   "position": 12
+  }
+ ]
+}

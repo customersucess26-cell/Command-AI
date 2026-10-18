@@ -36,13 +36,35 @@ Todos esses itens foram testados aqui: o `.htaccess` num Apache 2.4 real, as pá
 6. Os leads já exigem as 2 etapas no banco. Para exigir o mesmo nas lojas (`03-loja-pedidos.sql`), troque a função `eh_admin()` pela versão com `aal2`, comentada no `01-admins.sql`, mas só depois que o painel da loja também pedir o código.
 7. Database > Backups: confira se o backup diário está ligado.
 
-## Sites de nicho (padaria, hamburgueria, restaurante...)
+## Sites de nicho com painel (hamburgueria, Âmbar e próximos)
 
-Para cada cliente:
+Cada site de nicho agora é uma pasta pronta para publicar em `sites/<nome>/`:
 
-1. Copie o `.htaccess` da raiz para a pasta do site do cliente. Se houver painel, copie também o `admin/.htaccess`.
-2. Se editar algum `<script>` da página, rode `python3 ferramentas/csp.py caminho/da/pagina.html` antes de publicar. Sem isso, o script editado é bloqueado pela própria proteção.
-3. Se o site tiver pedidos com Supabase, use **um projeto Supabase por cliente** (isolamento total) e rode `01-admins.sql` e `03-loja-pedidos.sql` nele.
+| Pasta ou arquivo | O que é |
+|---|---|
+| `index.html` | O site. As fotos saíram de dentro do HTML para `img/` (a hamburgueria caiu de 2,6 MB para cerca de 70 KB de HTML e abre bem mais rápido no celular) |
+| `assets/config.js` | Nome, WhatsApp, Supabase e cor da marca no painel |
+| `assets/cardapio.json` | Cardápio usado pela demonstração do painel |
+| `admin/` | Painel da loja: pedidos ao vivo com alerta sonoro e aviso no computador, comanda para impressora, financeiro (vendido × recebido × a receber, por forma de pagamento), clientes, cardápio com fotos, pausa de pedidos e dados da loja |
+| `.htaccess` e `admin/.htaccess` | As mesmas proteções do site oficial |
+
+O código do painel fica em `paineis/loja/`, num lugar só. Depois de mudar algo ali, rode `sh ferramentas/montar-paineis.sh`: ele copia o painel para todos os sites e recalcula a proteção das páginas.
+
+**Sem Supabase**, o site funciona como antes: cardápio do próprio arquivo e pedido pelo WhatsApp. O painel abre só em modo demonstração.
+
+**Com Supabase** (um projeto por cliente):
+1. Crie o projeto e, no SQL Editor, rode nesta ordem: `01-admins.sql`, `05-loja-tabelas.sql`, `03-loja-pedidos.sql` e o seed do site (`seed-hamburgueria.sql` ou `seed-ambar.sql`).
+2. Desligue novos cadastros, crie o usuário do dono e coloque o e-mail dele na tabela `admins` (fim do `01-admins.sql`).
+3. Preencha `assets/config.js` do site com a URL e a chave **anon**.
+4. No primeiro login, o painel pede o cadastro da 2ª etapa (QR Code).
+
+A partir daí:
+- o site lê o cardápio do banco;
+- cada pedido é gravado e aparece no painel na hora;
+- o banco recalcula preço, taxa e total de cada pedido;
+- todo pedido feito pelo site começa como "a receber", mesmo que alguém tente gravar "pago".
+
+O modelo `modelos/padaria-cafe.html` continua com o painel próprio dele, embutido no arquivo (acesso por `#admin`).
 
 ## O que ainda depende de você
 
@@ -82,6 +104,13 @@ Não existe site impossível de invadir. O que existe é fechar todas as portas 
 | SQL: produto pausado; quantidade 1000 | ✅ Recusado |
 | SQL: usuário logado que não é admin | ✅ Vê 0 leads e não altera nada |
 | SQL: rodar os 3 arquivos duas vezes | ✅ Sem erro |
+| Lojas: `05-loja-tabelas.sql` + `03` + seeds num banco novo, duas vezes | ✅ Sem erro; 24 produtos na hamburgueria e 42 no Âmbar, iguais aos sites |
+| Lojas: pedido do site com preço R$ 1 e pagamento "pago" | ✅ Gravado com o preço do banco (2 × R$ 36 + R$ 7 de entrega = R$ 79) e "a receber" |
+| Hamburgueria sem Supabase: carrinho, nome obrigatório, WhatsApp | ✅ |
+| Hamburgueria com Supabase simulado: cardápio e preço vindos do banco, nome com HTML exibido como texto, taxa de entrega, pedido gravado com código e WhatsApp aberto | ✅ |
+| Âmbar com Supabase simulado: pratos, vinhos, coverflow, números da casa, endereço e reserva pelo WhatsApp | ✅ Nenhum prato ficou invisível |
+| Painel da loja (demonstração): pedidos, avanço de status, pagamento, financeiro, cardápio, pausa de produto, nova categoria, pedido novo chegando com alerta e contador no título, celular | ✅ Sem erros |
+| Painel da loja com Supabase simulado: login com 2 etapas, pedido com nome malicioso exibido como texto, gravação de status, produto pausado e pedidos pausados | ✅ |
 
 | Painel: senha errada, cadastro da 2ª etapa, código errado, entrada, edição de lead e saída (Supabase simulado no navegador) | ✅ Nenhum dado aparece antes da 2ª etapa; sessão fica só na aba (`sessionStorage`) |
 | Painel: nome de lead com código malicioso (`<img onerror>`) | ✅ Exibido como texto, não executa |

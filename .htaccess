@@ -15,7 +15,7 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # 2) Arquivos internos nunca vão para a web (documentação, scripts, SQL, backups, git)
 RewriteRule (^|/)\.(?!well-known/) - [F,L]
-RewriteRule ^(ferramentas|supabase|historico)(/|$) - [F,L,NC]
+RewriteRule ^(ferramentas|supabase|historico|paineis)(/|$) - [F,L,NC]
 RewriteRule \.(md|py|sql|sh|bak|old|orig|log|env|ini|conf|zip|tar|gz|rar|7z)$ - [F,L,NC]
 
 # 3) Só métodos que um site estático usa

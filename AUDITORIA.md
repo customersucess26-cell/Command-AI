@@ -1,5 +1,7 @@
 # eBistrô: auditoria e correções (18/10/2026)
 
+> Atualização: a hamburgueria e o Âmbar mudaram de `modelos/` para `sites/hamburgueria-bruto/` e `sites/ambar/`, cada um com painel próprio (ver SEGURANCA.md). O painel do eBistrô foi refeito a partir do painel original, que está guardado em `historico/painel-original.html`.
+
 ## O que foi auditado
 
 Os 4 arquivos enviados nesta sessão, salvos sem alteração no primeiro commit (`393cc87`), para que dê para comparar e recuperar o original:

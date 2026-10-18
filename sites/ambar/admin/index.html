@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0B111E">
+<title>Painel da loja</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B111E'/%3E%3Cpath d='M9 22V10h7a4 4 0 0 1 0 8H9' fill='none' stroke='%232BA8FF' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<link rel="stylesheet" href="painel.css">
+<script src="../assets/config.js"></script>
+<script src="vendor/supabase-2.45.4.js"></script>
+<script src="painel.js" defer></script>
+</head>
+<body>
+
+<!-- ================= ENTRADA ================= -->
+<main class="auth" id="auth" hidden>
+  <div class="auth-card">
+    <div class="auth-brand"><span class="marca-ico" aria-hidden="true"></span><div><b class="loja-nome">Minha loja</b><small>Painel da loja</small></div></div>
+    <form id="fLogin" novalidate>
+      <h1>Entrar no painel</h1>
+      <label>E-mail<input id="lgEmail" type="email" autocomplete="username" maxlength="190" required></label>
+      <label>Senha<input id="lgSenha" type="password" autocomplete="current-password" maxlength="200" required></label>
+      <button class="btn primary big" type="submit">Entrar</button>
+    </form>
+    <form id="fCodigo" novalidate hidden>
+      <h1>Confirme que é você</h1>
+      <p class="muted">Digite o código de 6 números do seu aplicativo autenticador.</p>
+      <label>Código<input id="cdCodigo" class="codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required></label>
+      <button class="btn primary big" type="submit">Confirmar</button>
+      <button class="btn link" type="button" data-sair>Usar outra conta</button>
+    </form>
+    <form id="fCadastro2fa" novalidate hidden>
+      <h1>Ative o login em 2 etapas</h1>
+      <p class="muted">Obrigatório para abrir o painel. Abra o Google Authenticator (ou Microsoft Authenticator) no celular e leia o QR Code.</p>
+      <img id="qr2fa" class="qr" alt="QR Code para o aplicativo autenticador">
+      <p class="muted fino">Sem câmera? Digite esta chave no app: <code id="seg2fa"></code></p>
+      <label>Código que apareceu no app<input id="cdNovo" class="codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required></label>
+      <button class="btn primary big" type="submit">Ativar e entrar</button>
+      <button class="btn link" type="button" data-sair>Cancelar</button>
+    </form>
+    <div id="semConfig" hidden>
+      <h1>Painel ainda não conectado</h1>
+      <p class="muted">Preencha <code>supabaseUrl</code> e <code>supabaseKey</code> em <code>assets/config.js</code> do site e rode os arquivos SQL da loja. Enquanto isso, veja como o painel funciona:</p>
+      <button class="btn primary big" type="button" id="btnDemo">Ver demonstração com dados fictícios</button>
+    </div>
+    <p class="auth-msg" id="authMsg" role="alert"></p>
+    <p class="auth-pe">Conexão protegida · login em 2 etapas · saída automática após 30 min parado</p>
+  </div>
+</main>
+
+<!-- ================= PAINEL ================= -->
+<div class="app" id="app" hidden>
+  <aside class="side" aria-label="Menu">
+    <div class="side-brand"><span class="marca-ico" aria-hidden="true"></span><div><b class="loja-nome">Minha loja</b><small id="lojaStatus">Loja aberta</small></div></div>
+    <nav class="side-nav">
+      <span class="side-grupo">Vendas</span>
+      <button type="button" data-aba="inicio"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H5z"/></svg><span>Início</span></button>
+      <button type="button" data-aba="pedidos" data-recurso="pedidos"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg><span>Pedidos</span><em id="cNovos"></em></button>
+      <button type="button" data-aba="financeiro" data-recurso="pedidos"><svg viewBox="0 0 24 24"><path d="M3 7h18v12H3zM3 11h18M7 15h3"/></svg><span>Financeiro</span></button>
+      <button type="button" data-aba="clientes" data-recurso="pedidos"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11a3 3 0 0 0 0-6M21 20c0-2-1-4-3-4.5"/></svg><span>Clientes</span></button>
+      <span class="side-grupo">Cardápio</span>
+      <button type="button" data-aba="cardapio"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9h16M9 9v11"/></svg><span>Produtos e categorias</span></button>
+      <span class="side-grupo">Loja</span>
+      <button type="button" data-aba="loja"><svg viewBox="0 0 24 24"><path d="M4 9h16l-1-5H5zM5 9v11h14V9M9 20v-6h6v6"/></svg><span>Dados da loja</span></button>
+      <button type="button" data-aba="ajustes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg><span>Conta e ajustes</span></button>
+    </nav>
+    <div class="side-pe">
+      <button class="btn pausa" type="button" id="btnPausa" data-recurso="pedidos"></button>
+      <div class="side-acoes">
+        <a class="btn ghost-escuro small" href="../" target="_blank" rel="noopener">Ver site ↗</a>
+        <button class="btn ghost-escuro small" type="button" id="btnTema">Tema</button>
+        <button class="btn ghost-escuro small" type="button" data-sair>Sair</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="faixa-demo" id="faixaDemo" hidden>Demonstração com dados fictícios: nada aqui é salvo. Pedidos novos chegam sozinhos a cada 40 s para você ver o alerta.</div>
+    <div class="faixa-aviso" id="notice" role="alert" hidden></div>
+    <header class="topo">
+      <div><h1 id="titulo">Início</h1><p class="muted" id="subtitulo"></p></div>
+      <div class="topo-acoes">
+        <span class="ao-vivo" id="aoVivo" title="Atualização em tempo real"><i></i>ao vivo</span>
+        <button class="btn" type="button" id="btnSom" data-recurso="pedidos" aria-pressed="true">🔔 Som ligado</button>
+        <button class="btn primary" type="button" id="btnNovoProduto">+ Produto</button>
+      </div>
+    </header>
+
+    <!-- INÍCIO -->
+    <section class="panel" data-panel="inicio">
+      <div class="kpis" id="kpisInicio"></div>
+      <div class="grid2" data-recurso="pedidos">
+        <div class="box"><div class="box-head"><h2>Pedidos dos últimos 14 dias</h2><span class="muted fino">valor dos pedidos não cancelados</span></div><div class="grafico" id="grafDias"></div></div>
+        <div class="box"><div class="box-head"><h2>Horário de pico</h2><span class="muted fino">últimos 30 dias</span></div><div class="grafico horas" id="grafHoras"></div></div>
+      </div>
+      <div class="grid2">
+        <div class="box" data-recurso="pedidos"><div class="box-head"><h2>Mais vendidos</h2><span class="muted fino">últimos 30 dias</span></div><div id="maisVendidos" class="ranking"></div></div>
+        <div class="box"><div class="box-head"><h2>Cardápio</h2><button class="btn link small" type="button" data-ir="cardapio">Gerenciar</button></div><div id="resumoCardapio" class="ranking"></div></div>
+      </div>
+    </section>
+
+    <!-- PEDIDOS -->
+    <section class="panel" data-panel="pedidos" hidden>
+      <div class="toolbar">
+        <input id="buscaPedido" type="search" placeholder="Buscar por código, nome ou telefone" maxlength="60" aria-label="Buscar pedido">
+        <span class="grow"></span>
+        <label class="inline-lbl fino"><input type="checkbox" id="mostrarFechados"> Mostrar entregues e cancelados de hoje</label>
+        <button class="btn small" type="button" id="btnNotif">Ativar avisos no computador</button>
+      </div>
+      <div class="kanban" id="kanban"></div>
+      <div class="box" id="fechadosBox" hidden><div class="box-head"><h2>Entregues e cancelados hoje</h2></div><div class="list" id="listaFechados"></div></div>
+    </section>
+
+    <!-- FINANCEIRO -->
+    <section class="panel" data-panel="financeiro" hidden>
+      <div class="toolbar">
+        <div class="seg" role="group" aria-label="Período" id="periodos"><button type="button" data-p="hoje">Hoje</button><button type="button" data-p="7">7 dias</button><button type="button" data-p="mes">Este mês</button><button type="button" data-p="mesant">Mês passado</button><button type="button" data-p="custom">Período</button></div>
+        <span id="periodoCustom" hidden class="toolbar"><input type="date" id="pIni" aria-label="Data inicial"><input type="date" id="pFim" aria-label="Data final"></span>
+        <span class="grow"></span>
+        <button class="btn small" type="button" id="btnCsvFin">Exportar pedidos</button>
+      </div>
+      <div class="kpis" id="kpisFin"></div>
+      <div class="grid2">
+        <div class="box"><div class="box-head"><h2>Por forma de pagamento</h2></div><div class="tablewrap"><table class="data compacta"><thead><tr><th>Forma</th><th>Pedidos</th><th>Valor</th><th>Recebido</th></tr></thead><tbody id="tbFormas"></tbody></table></div></div>
+        <div class="box"><div class="box-head"><h2>Vendas por dia</h2></div><div class="grafico" id="grafFin"></div></div>
+      </div>
+      <p class="muted fino">“Recebido” soma os pedidos que você marcou como pagos no painel. Não há conciliação automática com banco ou maquininha. Cancelados não entram no valor vendido.</p>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="panel" data-panel="clientes" hidden>
+      <div class="toolbar"><input id="buscaCliente" type="search" placeholder="Buscar cliente" maxlength="60" aria-label="Buscar cliente"><span class="grow"></span><button class="btn small" type="button" id="btnCsvCli">Exportar</button></div>
+      <div class="tablewrap"><table class="data"><thead><tr><th>Cliente</th><th>Pedidos</th><th>Total gasto</th><th>Ticket médio</th><th>Último pedido</th><th></th></tr></thead><tbody id="tbClientes"></tbody></table></div>
+      <p class="muted fino">Dados vindos dos pedidos. Use só para atender e fidelizar quem já comprou (LGPD). Se um cliente pedir, apague os pedidos dele.</p>
+    </section>
+
+    <!-- CARDÁPIO -->
+    <section class="panel" data-panel="cardapio" hidden>
+      <div class="cardapio">
+        <div class="box cats">
+          <div class="box-head"><h2>Categorias</h2><button class="btn small" type="button" id="btnNovaCat">+ Nova</button></div>
+          <div id="listaCats" class="list"></div>
+        </div>
+        <div class="prods">
+          <div class="toolbar"><input id="buscaProd" type="search" placeholder="Buscar produto" maxlength="60" aria-label="Buscar produto"><span class="grow"></span><span class="muted fino" id="resumoProds"></span></div>
+          <div id="gradeProds" class="grade-prods"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOJA -->
+    <section class="panel" data-panel="loja" hidden>
+      <form class="box form-loja" id="lojaForm" novalidate>
+        <div class="box-head"><h2>Dados que aparecem no site</h2></div>
+        <div class="form">
+          <label class="full">Nome da loja<input id="sNome" maxlength="80" required></label>
+          <label>WhatsApp que recebe os pedidos<input id="sWhats" inputmode="tel" maxlength="20" placeholder="(42) 99999-9999"></label>
+          <label>Instagram<input id="sInsta" maxlength="60" placeholder="@sualoja"></label>
+          <label class="full">Endereço<input id="sEnd" maxlength="160"></label>
+          <label class="full">Horário de funcionamento<input id="sHoras" maxlength="160" placeholder="Terça a domingo, 18h às 23h30"></label>
+          <label data-recurso="pedidos">Taxa de entrega (R$)<input id="sTaxa" inputmode="decimal" maxlength="8"></label>
+          <label data-recurso="pedidos">Pedido mínimo (R$)<input id="sMin" inputmode="decimal" maxlength="8"></label>
+          <label class="full inline" data-recurso="pedidos"><input type="checkbox" id="sAceita"> Receber pedidos pelo site agora</label>
+        </div>
+        <div class="acoes-linha"><button class="btn primary" type="submit">Salvar</button><span class="muted fino">As mudanças aparecem no site na hora.</span></div>
+      </form>
+    </section>
+
+    <!-- AJUSTES -->
+    <section class="panel" data-panel="ajustes" hidden>
+      <div class="grid2">
+        <form class="box" id="senhaForm" novalidate>
+          <div class="box-head"><h2>Segurança da conta</h2><span class="chip ok">2 etapas ativas</span></div>
+          <p class="muted fino" id="contaEmail"></p>
+          <label>Nova senha<input id="nsSenha" type="password" autocomplete="new-password" minlength="12" maxlength="200"></label>
+          <label>Repita a nova senha<input id="nsSenha2" type="password" autocomplete="new-password" minlength="12" maxlength="200"></label>
+          <p class="muted fino">Mínimo de 12 caracteres. Cada pessoa da equipe deve ter o próprio login.</p>
+          <div class="acoes-linha"><button type="submit" class="btn">Trocar senha</button><button type="button" class="btn perigo" id="btnSairTudo">Sair de todos os aparelhos</button></div>
+        </form>
+        <div class="box">
+          <div class="box-head"><h2>Aparência</h2></div>
+          <div class="seg" role="group" aria-label="Tema"><button type="button" data-tema="auto">Automático</button><button type="button" data-tema="light">Claro</button><button type="button" data-tema="dark">Escuro</button></div>
+          <div class="box-head" data-recurso="pedidos"><h2>Avisos de pedido</h2></div>
+          <p class="muted fino" data-recurso="pedidos">Com o painel aberto, cada pedido novo toca um alerta, pisca o título da aba e (se você permitir) mostra um aviso no computador ou celular.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ================= GAVETAS ================= -->
+<div class="veu" id="veu" hidden></div>
+<aside class="ficha" id="fichaPedido" role="dialog" aria-modal="true" aria-labelledby="pdTitulo" hidden>
+  <div class="ficha-wrap">
+    <header class="ficha-topo"><div><h2 id="pdTitulo">Pedido</h2><p class="muted fino" id="pdSub"></p></div><button type="button" class="x" data-fechar aria-label="Fechar">×</button></header>
+    <div class="ficha-acoes" id="pdAcoes"></div>
+    <div class="ficha-corpo" id="pdCorpo"></div>
+  </div>
+</aside>
+<aside class="ficha" id="fichaProduto" role="dialog" aria-modal="true" aria-labelledby="prTitulo" hidden>
+  <form class="ficha-wrap" id="prForm" novalidate>
+    <header class="ficha-topo"><div><h2 id="prTitulo">Produto</h2></div><button type="button" class="x" data-fechar aria-label="Fechar">×</button></header>
+    <div class="ficha-corpo">
+      <div class="foto-campo">
+        <div class="foto-prev" id="prFotoPrev"><span>Sem foto</span></div>
+        <div class="foto-acoes"><label class="btn small">Enviar foto<input type="file" id="prFoto" accept="image/jpeg,image/png,image/webp" hidden></label><button type="button" class="btn small" id="prSemFoto">Tirar foto</button><p class="muted fino">JPG, PNG ou WebP até 5 MB. A foto é reduzida automaticamente.</p></div>
+      </div>
+      <div class="form">
+        <label class="full">Nome<input id="prNome" maxlength="100" required></label>
+        <label class="full">Descrição<textarea id="prDesc" maxlength="400" rows="3"></textarea></label>
+        <label>Preço (R$)<input id="prPreco" inputmode="decimal" maxlength="10" placeholder="0 = sob consulta"></label>
+        <label>Unidade / porção<input id="prUnid" maxlength="40" placeholder="Unidade, 300 ml, 2 pessoas"></label>
+        <label>Categoria<select id="prCat"></select></label>
+        <label>Selo<input id="prSelo" maxlength="24" placeholder="Novo, Mais pedido…"></label>
+        <label class="full" id="prOrigemLbl" hidden>Origem (vinhos)<input id="prOrigem" maxlength="60" placeholder="Mendoza, Argentina"></label>
+        <label class="full inline"><input type="checkbox" id="prAtivo"> Disponível no site</label>
+        <label class="full inline"><input type="checkbox" id="prDestaque"> Destaque (aparece nas vitrines do site)</label>
+      </div>
+      <p class="auth-msg" id="prMsg" role="alert"></p>
+    </div>
+    <footer class="ficha-pe"><button type="button" class="btn perigo small" id="prExcluir">Excluir</button><span class="grow"></span><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn primary" id="prSalvar">Salvar</button></footer>
+  </form>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div id="comanda" aria-hidden="true"></div>
+</body>
+</html>
