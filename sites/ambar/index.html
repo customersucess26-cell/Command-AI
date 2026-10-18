@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-4s+6KvYnNA0qTSin/srKXUH2VB9THLRkFqRFTKrp2DE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-8H9f8xDU9hhhfMwpWoxauo0G3MzJtTkWmo0lLbqodE0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Âmbar | Cozinha &amp; Vinhos</title>
 <meta name="description" content="Âmbar, cozinha autoral e carta de vinhos. Entradas, pratos principais, acompanhamentos, sobremesas e vinhos selecionados.">
@@ -64,7 +64,7 @@ em{font-style:italic;color:var(--ambar-2)}
 
 /* ---------- topo ---------- */
 .topo{position:fixed;inset:0 0 auto;z-index:50;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
-.topo.solido{background:rgba(17,15,13,.85);backdrop-filter:blur(12px);border-color:var(--fio-2)}
+.topo.solido{background:rgba(17,15,13,.85);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-color:var(--fio-2)}
 .topo .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:18px;transition:padding .4s}
 .topo.solido .wrap{padding-block:12px}
 .marca{text-decoration:none;font:italic 600 1.9rem/1 var(--serif);color:var(--ambar-2)}
@@ -85,7 +85,7 @@ em{font-style:italic;color:var(--ambar-2)}
 .hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(0deg,var(--carvao) 0%,transparent 18%)}
 #poeira{z-index:0}
 .hero .wrap{z-index:2}
-#poeira{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none}
+#poeira{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
 .hero .wrap{position:relative;width:100%;display:block;padding-block:40px 110px}
 .hero .wrap>div{max-width:560px}
 @media (max-width:860px){.hero{align-items:flex-start;padding-bottom:min(80vw,470px)}.hero .wrap{padding-top:30px}.hero-bg{width:135vw;right:8vw;top:auto;bottom:30px;margin-top:0}.hero-brilho{width:90vw;right:5vw;top:auto;bottom:0;translate:0 0}}
@@ -182,7 +182,7 @@ em{font-style:italic;color:var(--ambar-2)}
 .js-fx .on .foto{clip-path:inset(0 0 0 0)}
 
 /* ---------- cardápio ---------- */
-.nav-cardapio{position:sticky;top:62px;z-index:40;background:rgba(17,15,13,.88);backdrop-filter:blur(10px);border-block:1px solid var(--fio-2)}
+.nav-cardapio{position:sticky;top:var(--topo-h,62px);z-index:40;background:rgba(17,15,13,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-block:1px solid var(--fio-2)}
 .nav-cardapio .wrap{display:flex;justify-content:center;gap:4px;padding-block:6px;overflow-x:auto;scrollbar-width:none}
 .nav-cardapio a{position:relative;white-space:nowrap;text-decoration:none;font-size:.93rem;padding:10px 18px;color:var(--creme-2);transition:color .3s}
 .nav-cardapio a::after{content:"";position:absolute;left:18px;right:18px;bottom:4px;height:1px;background:var(--ambar-2);transform:scaleX(0);transition:transform .45s var(--ease)}
@@ -355,6 +355,26 @@ footer{border-top:1px solid var(--fio-2);background:#0c0a09}
 .cf-barra i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--ambar),var(--ambar-2));transform-origin:0 50%;animation:enche 2.8s linear}
 @keyframes enche{from{transform:scaleX(0)}}
 @media (prefers-reduced-motion:reduce){.raio,.bokeh,.estrela,.varre,.grao,.cf-halo,.cf-card,.cf-card.ativo,.cf-card.ativo .foto::after,.cf-card.ativo .real{animation:none}}
+
+/* ===== celular e iPhone (Safari) ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@supports not (overflow-x:clip){html,body{overflow-x:hidden}}
+a,button,[role=button]{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+section[id],footer[id]{scroll-margin-top:118px}
+@media (max-width:860px){
+  .nav-cardapio a{padding:13px 16px;font-size:.95rem}
+  .topo .btn{min-height:44px;display:inline-flex;align-items:center}
+  .subir{right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:48px;height:48px}
+  .rodape{padding-bottom:calc(30px + env(safe-area-inset-bottom,0px))}
+}
+@media (hover:none){
+  .prato:hover .foto .real,.moldura:hover .foto .real{transform:none}
+  .prato:hover .foto::before,.moldura:hover::after{opacity:0}
+  .vinho:hover img{transform:none}
+  .vinho:hover .garrafa::before{opacity:0}
+  .prato:hover h4,.doce .prato:hover h4{color:inherit}
+  .btn:active,.cf-nav button:active{transform:scale(.97)}
+}
 </style>
 </head>
 <body>
@@ -591,7 +611,7 @@ document.querySelectorAll('[data-conta]').forEach(el=>{if(REDUZ)return;const fim
 const c=document.getElementById('poeira');
 if(c&&!REDUZ){const x=c.getContext('2d'),hero=document.body,dpr=Math.min(2,devicePixelRatio||1);let W,H,P=[],m={x:-999,y:-999},vis=true;
   const nova=y=>({x:Math.random()*W,y:y??Math.random()*H,vy:-(Math.random()*.25+.05),vx:(Math.random()-.5)*.15,r:Math.random()*1.4+.4,a:Math.random()*.5+.2,t:Math.random()*6.28});
-  function tam(){W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);P=Array.from({length:Math.round(Math.min(70,W*H/16000))},()=>nova())}
+  function tam(){W=innerWidth;H=innerHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);P=Array.from({length:Math.round(Math.min(FINO?70:28,W*H/16000))},()=>nova())}
   tam();addEventListener('resize',tam);
   addEventListener('mousemove',e=>{m.x=e.clientX;m.y=e.clientY});
   hero.addEventListener('mouseleave',()=>{m.x=m.y=-999});
@@ -670,6 +690,9 @@ const obs=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)retur
 document.querySelectorAll('.categoria').forEach(s=>obs.observe(s));
 })();
 
+/* barra de categorias sempre logo abaixo do cabeçalho, em qualquer tela */
+(function(){const t=document.querySelector('.topo');if(!t)return;const ajusta=()=>document.documentElement.style.setProperty('--topo-h',Math.round(t.getBoundingClientRect().height)+'px');
+  ajusta();if('ResizeObserver' in window)new ResizeObserver(ajusta).observe(t);else addEventListener('resize',ajusta)})();
 /* ===== cardápio e carta de vinhos vindos do painel (Supabase). Sem configuração, vale o conteúdo acima ===== */
 (function(){
 const L=window.LOJA||{},B=String(L.supabaseUrl||'').replace(/\/$/,''),K=String(L.supabaseKey||'');

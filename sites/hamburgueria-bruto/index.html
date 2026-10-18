@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-A/sS1+BW6FHApWXRANd0LP92JfQ4xfiM3EoWIpkdLnE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hfduYnt70sPDsdcUSTDAtdjhjtjORtttWc9D9w42tBw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bruto Burger Co. | Hamburgueria artesanal na brasa</title>
 <meta name="description" content="Hamburgueria artesanal com blend de 160g grelhado na brasa, pão brioche e molho da casa. Peça pelo WhatsApp.">
@@ -404,6 +404,43 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   .rv.pre,.fade,.vids{opacity:1!important;transform:none!important}
   .hero h1 .ln>span{transform:none!important}
 }
+
+/* ===== celular e iPhone (Safari) ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+a,button,label,[role=button]{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.stick{height:100vh;height:100svh}
+#explode{height:250vh;height:250svh}
+section[id],#topo{scroll-margin-top:84px}
+.barra-pedido{position:fixed;left:calc(12px + env(safe-area-inset-left,0px));right:calc(12px + env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:95;display:none;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;border:0;border-radius:14px;background:var(--ember);color:#1a0d04;font:700 1rem var(--f-body);box-shadow:0 18px 40px -12px rgba(0,0,0,.8);cursor:pointer}
+.barra-pedido b{font-family:var(--f-display);font-weight:400;font-size:1.25rem;letter-spacing:.02em}
+.barra-pedido .qtd{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:99px;background:#1a0d04;color:var(--ember);font-size:.9rem;margin-right:8px;padding:0 7px}
+html.trava,html.trava body{overflow:hidden}
+@media (max-width:860px){
+  .opts input:not([type=radio]),.opts textarea{font-size:16px}
+  .opts .seg label{min-height:46px}
+  .li .add{min-width:44px;min-height:44px;font-size:1rem}
+  .q button{min-width:40px;min-height:40px}
+  .fab{width:54px;height:54px}
+  body.tem-pedido .barra-pedido{display:flex}
+  body.tem-pedido .fab{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
+  body.tem-pedido main{padding-bottom:84px}
+  body.tem-pedido .toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+  .lab span{display:none}
+  .lab b{font-size:.95rem;padding-bottom:3px;margin-bottom:0}
+  .drawer{padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+  #send{min-height:52px;font-size:1rem}
+}
+@media (hover:none){
+  .btn:hover,.combo .btn:hover,.bigcta .btn:hover{transform:none}
+  .card:hover::before{opacity:0}
+  .card:hover .ph .fg,.combo:hover .pic .fg,.sides .ph:hover img,.fireshot:hover img{transform:none;filter:none}
+  .hrow:hover::before{transform:scaleY(0)}
+  .hrow:hover h3{color:var(--cream);-webkit-text-stroke-color:var(--cream);transform:none}
+  .hrow:hover .rk,.hrow:hover .ds,.hrow:hover .price{color:inherit}
+  .hero h1 .ch:hover{transform:none!important;color:inherit}
+  .add:active,.btn:active,.hrow:active,.barra-pedido:active{transform:scale(.97)}
+  .hrow:active::before{transform:scaleY(1)}
+}
 </style>
 </head>
 <body>
@@ -501,7 +538,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   <div class="wrap">
     <div class="sec-head rv">
       <div><span class="eyebrow">Ranking da semana</span><h2>Os mais <span class="script">pedidos</span></h2></div>
-      <p>Passe o mouse para ver cada um. Clique para colocar no pedido.</p>
+      <p id="dicaHot">Passe o mouse para ver cada um. Clique para colocar no pedido.</p>
     </div>
     <ol class="hlist" id="hlist"></ol>
   </div>
@@ -574,6 +611,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
   <button class="btn" id="send" type="button">Enviar pedido</button>
   <p class="note" id="sendNote">O pedido abre no WhatsApp da hamburgueria já escrito.</p>
 </aside>
+<button class="barra-pedido" id="barraPedido" type="button" aria-label="Ver pedido"><span><span class="qtd" id="bpQtd">0</span>Ver pedido</span><b id="bpTot">R$ 0</b></button>
 <div class="toast" id="toast" role="status"></div>
 
 <script src="assets/config.js"></script>
@@ -708,8 +746,8 @@ function carregaLoja(){if(!LOJA_OK)return;
 var CART_KEY="bruto-pedido",cart={};try{cart=JSON.parse(localStorage.getItem(CART_KEY))||{}}catch(e){}
 var drawer=$("#drawer"),scrim=$("#scrim"),toast=$("#toast"),tt;
 function say(m){toast.textContent=m;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show")},2600)}
-function openCart(){drawer.classList.add("open");scrim.classList.add("open");drawer.setAttribute("aria-hidden","false");drawer.inert=false;$("#closeCart").focus()}
-function closeCart(){drawer.classList.remove("open");scrim.classList.remove("open");drawer.setAttribute("aria-hidden","true");drawer.inert=true}
+function openCart(){document.documentElement.classList.add("trava");drawer.classList.add("open");scrim.classList.add("open");drawer.setAttribute("aria-hidden","false");drawer.inert=false;$("#closeCart").focus()}
+function closeCart(){document.documentElement.classList.remove("trava");drawer.classList.remove("open");scrim.classList.remove("open");drawer.setAttribute("aria-hidden","true");drawer.inert=true}
 drawer.inert=true;
 function fly(btn,img){
   if(reduce)return;var a=btn.getBoundingClientRect(),b=$("#cartN").getBoundingClientRect(),f=document.createElement("img");
@@ -731,7 +769,7 @@ function renderCart(){
     return '<div class="line"><img src="'+esc(src(c.i))+'" alt=""><b>'+esc(k)+'</b><span class="price">'+money(c.q*c.p)+'</span><div class="q"><button type="button" data-d="-1" data-k="'+esc(k)+'" aria-label="Menos">−</button><span>'+c.q+'</span><button type="button" data-d="1" data-k="'+esc(k)+'" aria-label="Mais">+</button></div></div>'}).join("")||'<p class="empty">Nenhum item ainda. Adicione um burger do cardápio.</p>';
   try{localStorage.setItem(CART_KEY,JSON.stringify(cart))}catch(e){}
   $("#cEnd").hidden=d.tipo!=="entrega";$("#linhaTaxa").hidden=!d.taxa;$("#vTaxa").textContent=money(d.taxa);
-  $("#cartN").textContent=d.cnt;$("#total").textContent=money(d.total);
+  $("#cartN").textContent=d.cnt;$("#total").textContent=money(d.total);document.body.classList.toggle("tem-pedido",d.cnt>0);$("#bpQtd").textContent=d.cnt;$("#bpTot").textContent=money(d.total);
   var btn=$("#send");btn.disabled=!d.cnt||!ABERTA;btn.textContent=ABERTA?(LOJA_OK?"Enviar pedido":"Enviar pelo WhatsApp"):"Pedidos pausados agora";
   if(!enviando)$("#sendNote").textContent=!ABERTA?"A casa não está recebendo pedidos pelo site agora. Chame no WhatsApp.":MINIMO&&d.sub<MINIMO?"Pedido mínimo: "+money(MINIMO)+".":LOJA_OK?"O pedido é registrado na hamburgueria e abre no WhatsApp já escrito.":"O pedido abre no WhatsApp da hamburgueria já escrito."}
 var enviando=false;
@@ -762,12 +800,13 @@ document.addEventListener("click",function(e){
   var a=e.target.closest("[data-n]");if(a){add(a);return}
   var q=e.target.closest(".q button");if(q){var k=q.dataset.k;if(!cart[k])return;cart[k].q=Math.min(99,cart[k].q+(+q.dataset.d));if(cart[k].q<=0)delete cart[k];renderCart()}
 });
-["#openCart","#heroOrder","#visitOrder"].forEach(function(id){$(id).addEventListener("click",openCart)});
+["#openCart","#heroOrder","#visitOrder","#barraPedido"].forEach(function(id){$(id).addEventListener("click",openCart)});
 $("#closeCart").addEventListener("click",closeCart);scrim.addEventListener("click",closeCart);
 ["#obs","#cNome","#cFone","#cEnd"].forEach(function(id){$(id).addEventListener("input",renderCart)});
 [].forEach.call($$("input[name=tipo],input[name=pag]"),function(r){r.addEventListener("change",renderCart)});
 addEventListener("keydown",function(e){if(e.key==="Escape")closeCart();var r=e.target.closest&&e.target.closest(".hrow");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();add(r)}});
 carregaLoja();
+if(!fine){var dh=$("#dicaHot");if(dh)dh.textContent="Toque em um deles para colocar no pedido."}
 
 /* ---- scroll: header, progresso, faixa, explodido ---- */
 var hdr=$("#hdr"),prog=$("#progress"),ticking=false;
@@ -802,7 +841,7 @@ function counters(){$$("[data-count]").forEach(function(el){var to=+el.dataset.c
   var cv=$("#embers");if(reduce)return;var cx=cv.getContext("2d"),W,H,ps=[],dpr=Math.min(2,devicePixelRatio||1),vis=true;
   function size(){var r=cv.parentNode.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
   function mk(init){return{x:Math.random()*W,y:init?Math.random()*H:H+10,r:Math.random()*2.3+.6,v:Math.random()*.8+.3,w:Math.random()*6.28,a:Math.random()*.6+.35}}
-  size();for(var i=0;i<110;i++)ps.push(mk(true));var sm=[];for(var j=0;j<14;j++)sm.push({x:Math.random()*W,y:Math.random()*H,r:120+Math.random()*180,v:.15+Math.random()*.3,a:Math.random()*6.28});addEventListener("resize",size);
+  size();for(var i=0,np=fine?110:40;i<np;i++)ps.push(mk(true));var sm=[];for(var j=0;j<14;j++)sm.push({x:Math.random()*W,y:Math.random()*H,r:120+Math.random()*180,v:.15+Math.random()*.3,a:Math.random()*6.28});addEventListener("resize",size);
   if("IntersectionObserver" in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(cv.parentNode);
   (function loop(){requestAnimationFrame(loop);if(!vis)return;cx.clearRect(0,0,W,H);cx.shadowBlur=0;sm.forEach(function(s){s.y-=s.v;s.a+=.004;s.x+=Math.sin(s.a)*.5;if(s.y<-s.r){s.y=H+s.r;s.x=Math.random()*W}var g=cx.createRadialGradient(s.x,s.y,0,s.x,s.y,s.r);g.addColorStop(0,"rgba(150,120,100,.06)");g.addColorStop(1,"rgba(150,120,100,0)");cx.fillStyle=g;cx.fillRect(s.x-s.r,s.y-s.r,s.r*2,s.r*2)});
     ps.forEach(function(p,i){p.y-=p.v;p.w+=.02;p.x+=Math.sin(p.w)*.45;if(p.y<-10)ps[i]=mk(false);
