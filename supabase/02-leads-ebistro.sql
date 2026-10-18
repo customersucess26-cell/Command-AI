@@ -6,7 +6,7 @@
 --   * cada lead tem tamanho e formato conferidos no banco, não só no navegador;
 --   * limite de envios contra robôs: 30 leads a cada 10 minutos no total
 --     e 3 por WhatsApp por dia;
---   * só administradores (tabela admins) veem e mexem nos leads.
+--   * só administradores (tabela admins), logados com 2 etapas, veem e mexem nos leads.
 --
 -- ATENÇÃO: o bloco "remove políticas antigas" apaga as políticas que existirem
 -- hoje na tabela leads e põe estas no lugar. Se o painel parar de listar os
@@ -55,10 +55,11 @@ create policy "visitante cria lead valido" on public.leads
     and regexp_replace(coalesce(doc ->> 'whatsapp', ''), '\D', '', 'g') ~ '^\d{10,13}$'
   );
 
+-- o painel (admin/) sempre entra com 2 etapas; o banco exige o mesmo (aal2)
 create policy "admin gerencia leads" on public.leads
   for all to authenticated
-  using (public.eh_admin())
-  with check (public.eh_admin());
+  using (public.eh_admin() and coalesce(auth.jwt() ->> 'aal', '') = 'aal2')
+  with check (public.eh_admin() and coalesce(auth.jwt() ->> 'aal', '') = 'aal2');
 
 -- limite de envios (roda no banco, o navegador não consegue pular)
 create or replace function public.leads_limite()
