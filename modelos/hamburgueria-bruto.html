@@ -313,6 +313,12 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 .empty{color:var(--muted);padding:30px 0;text-align:center}
 .total{display:flex;justify-content:space-between;align-items:baseline;padding:16px 0;font-family:var(--f-display);font-size:1.7rem}
 .drawer .btn{justify-content:center;width:100%}
+.opts{display:grid;gap:10px;padding-top:14px;border-top:1px solid var(--line)}
+.opts .seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opts .seg label{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border:1px solid var(--line);border-radius:10px;cursor:pointer;font-size:.95rem}
+.opts .seg label:has(input:checked){border-color:var(--ember);color:var(--ember)}
+.opts textarea{width:100%;min-height:58px;resize:vertical;background:transparent;color:var(--cream);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:.95rem}
+.opts textarea:focus-visible{outline:2px solid var(--ember);outline-offset:1px}
 .drawer .note{font-size:.78rem;color:var(--muted);margin-top:10px}
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:140;opacity:0;pointer-events:none;transition:opacity .3s}
 .scrim.open{opacity:1;pointer-events:auto}
@@ -544,9 +550,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 <aside class="drawer" id="drawer" aria-label="Seu pedido" aria-hidden="true">
   <div class="drawer-head"><h3>Seu pedido</h3><button class="x" id="closeCart" type="button" aria-label="Fechar">✕</button></div>
   <div class="lines" id="lines"></div>
+  <div class="opts"><div class="seg" role="radiogroup" aria-label="Como receber"><label><input type="radio" name="tipo" value="Entrega" checked> Entrega</label><label><input type="radio" name="tipo" value="Retirada no balcão"> Retirada</label></div><textarea id="obs" maxlength="300" aria-label="Observações do pedido" placeholder="Observações: sem cebola, ponto da carne, troco para..."></textarea></div>
   <div class="total"><span>Total</span><span id="total">R$ 0</span></div>
   <a class="btn" id="send" href="#" target="_blank" rel="noopener">Enviar pelo WhatsApp</a>
-  <p class="note">O pedido abre no WhatsApp da hamburgueria já escrito. Você confirma o endereço lá.</p>
+  <p class="note">O pedido abre no WhatsApp da hamburgueria já escrito. Você confirma o endereço e a forma de pagamento lá.</p>
 </aside>
 <div class="toast" id="toast" role="status"></div>
 
@@ -621,7 +628,7 @@ function layoutEx(){
 var cur="Burgers",tabs=$("#tabs"),menu=$("#menu"),th="";
 Object.keys(MENU).forEach(function(k){th+='<button class="tab" role="tab" type="button" data-t="'+k+'" aria-selected="'+(k===cur)+'">'+k+'</button>'});
 tabs.innerHTML=th;
-function money(v){return "R$ "+v}
+function money(v){return "R$ "+(v%1?v.toFixed(2).replace(".",","):v)}
 function pic(k,alt){return '<div class="pic"><img class="bf" src="'+IMG[k]+'" alt=""><img class="fg" src="'+IMG[k]+'" alt="'+(alt||"")+'"></div>'}
 function renderMenu(){
   menu.innerHTML=MENU[cur].map(function(it,i){
@@ -635,7 +642,7 @@ $("#sides").innerHTML='<h3 style="font-size:clamp(1.5rem,5vw,2rem);padding:14px 
 
 /* ---- faixa de fotos ---- */
 var HOT=[["Barbecue Onion","barbecue",39,"Onion rings, cheddar e barbecue defumado"],["Bacon Cheddar","classico",36,"Bacon crocante e cheddar derretido"],["Duplo Cheddar","w2",42,"Dois blends e cheddar em dobro"],["Trufado","trufado",44,"Pão preto, cogumelos e aioli trufado"],["Crispy Chicken","crispy",33,"Frango empanado e molho caesar"],["Mexicano","mexicano",40,"Jalapeño, abacate e queijo cotija"]];
-$("#hlist").innerHTML=HOT.map(function(h,i){return '<li class="hrow" tabindex="0" data-n="'+h[0]+'" data-p="'+h[2]+'" data-img="'+h[1]+'" data-k="'+i+'"><span class="rk">#'+(i+1)+'</span><img class="th" src="'+IMG[h[1]]+'" alt=""><h3>'+h[0]+'</h3><span class="ds">'+h[3]+'</span><span class="price">'+money(h[2])+'</span></li>'}).join("");
+$("#hlist").innerHTML=HOT.map(function(h,i){return '<li class="hrow" tabindex="0" role="button" data-n="'+h[0]+'" data-p="'+h[2]+'" data-img="'+h[1]+'" data-k="'+i+'"><span class="rk">#'+(i+1)+'</span><img class="th" src="'+IMG[h[1]]+'" alt=""><h3>'+h[0]+'</h3><span class="ds">'+h[3]+'</span><span class="price">'+money(h[2])+'</span></li>'}).join("");
 (function(){var box=$("#hoverImg");box.innerHTML=HOT.map(function(h){return '<img src="'+IMG[h[1]]+'" alt="">'}).join("");
   var imgs=box.children,x=0,y=0,tx=0,ty=0,lastX=0,on=false;
   $("#hlist").addEventListener("pointerover",function(e){var r=e.target.closest(".hrow");if(!r)return;[].forEach.call(imgs,function(im,i){im.classList.toggle("on",i==r.dataset.k)});box.classList.add("on");on=true;var im=imgs[r.dataset.k];if(im.naturalWidth)box.style.setProperty("--ar",im.naturalWidth/im.naturalHeight)});
@@ -646,10 +653,12 @@ $("#hlist").innerHTML=HOT.map(function(h,i){return '<li class="hrow" tabindex="0
 })();
 
 /* ---- carrinho ---- */
-var cart={},drawer=$("#drawer"),scrim=$("#scrim"),toast=$("#toast"),tt;
+var CART_KEY="bruto-pedido",cart={};try{cart=JSON.parse(localStorage.getItem(CART_KEY))||{}}catch(e){}
+var drawer=$("#drawer"),scrim=$("#scrim"),toast=$("#toast"),tt;
 function say(m){toast.textContent=m;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show")},1800)}
-function openCart(){drawer.classList.add("open");scrim.classList.add("open");drawer.setAttribute("aria-hidden","false")}
-function closeCart(){drawer.classList.remove("open");scrim.classList.remove("open");drawer.setAttribute("aria-hidden","true")}
+function openCart(){drawer.classList.add("open");scrim.classList.add("open");drawer.setAttribute("aria-hidden","false");drawer.inert=false;$("#closeCart").focus()}
+function closeCart(){drawer.classList.remove("open");scrim.classList.remove("open");drawer.setAttribute("aria-hidden","true");drawer.inert=true}
+drawer.inert=true;
 function fly(btn,img){
   if(reduce)return;var a=btn.getBoundingClientRect(),b=$("#cartN").getBoundingClientRect(),f=document.createElement("img");
   f.src=IMG[img];f.className="fly";f.style.left=(a.left+a.width/2-32)+"px";f.style.top=(a.top+a.height/2-32)+"px";document.body.appendChild(f);
@@ -662,7 +671,9 @@ function renderCart(){
   var keys=Object.keys(cart),cnt=0,tot=0,msg="Olá, Bruto! Quero fazer um pedido:\n";
   $("#lines").innerHTML=keys.map(function(k){var c=cart[k];cnt+=c.q;tot+=c.q*c.p;msg+=c.q+"x "+k+" ("+money(c.q*c.p)+")\n";
     return '<div class="line"><img src="'+IMG[c.i]+'" alt=""><b>'+k+'</b><span class="price">'+money(c.q*c.p)+'</span><div class="q"><button type="button" data-d="-1" data-k="'+k+'" aria-label="Menos">−</button><span>'+c.q+'</span><button type="button" data-d="1" data-k="'+k+'" aria-label="Mais">+</button></div></div>'}).join("")||'<p class="empty">Nenhum item ainda. Adicione um burger do cardápio.</p>';
-  msg+="\nTotal: "+money(tot);
+  var tipo=($("input[name=tipo]:checked")||{}).value||"Entrega",obs=$("#obs").value.trim();
+  msg+="\nTotal: "+money(tot)+"\n"+tipo+(obs?"\nObs.: "+obs:"");
+  try{localStorage.setItem(CART_KEY,JSON.stringify(cart))}catch(e){}
   $("#cartN").textContent=cnt;$("#total").textContent=money(tot);
   $("#send").href=cnt?wa(msg):"#cardapio";$("#send").style.opacity=cnt?1:.5;
 }
@@ -673,8 +684,8 @@ document.addEventListener("click",function(e){
   var q=e.target.closest(".q button");if(q){var k=q.dataset.k;cart[k].q+=+q.dataset.d;if(cart[k].q<=0)delete cart[k];renderCart()}
 });
 ["#openCart","#heroOrder","#visitOrder"].forEach(function(id){$(id).addEventListener("click",openCart)});
-$("#closeCart").addEventListener("click",closeCart);scrim.addEventListener("click",closeCart);
-addEventListener("keydown",function(e){if(e.key==="Escape")closeCart()});
+$("#closeCart").addEventListener("click",closeCart);$("#obs").addEventListener("input",renderCart);[].forEach.call($$("input[name=tipo]"),function(r){r.addEventListener("change",renderCart)});scrim.addEventListener("click",closeCart);
+addEventListener("keydown",function(e){if(e.key==="Escape")closeCart();var r=e.target.closest&&e.target.closest(".hrow");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();add(r)}});
 $("#send").addEventListener("click",function(e){if(!Object.keys(cart).length){e.preventDefault();closeCart()}});
 
 /* ---- scroll: header, progresso, faixa, explodido ---- */

@@ -1139,6 +1139,7 @@ header.nav{box-shadow:0 1px 0 rgba(201,162,74,.35)!important}
         <label for="lWhats">Seu WhatsApp<input id="lWhats" name="whatsapp" inputmode="tel" autocomplete="tel" placeholder="(42) 9 9999-9999" required></label>
         <button class="btn btn-mint" type="submit">Quero ver o meu cardápio</button>
         <p class="fine" id="formMsg">Grátis e sem compromisso. A conversa continua no WhatsApp.</p>
+        <p class="fine" style="opacity:.75">Usamos seus dados só para montar a amostra e falar com você sobre ela. Para pedir a exclusão, é só mandar uma mensagem no WhatsApp.</p>
       </form>
     </div>
   </section>
@@ -1474,7 +1475,7 @@ header.nav{box-shadow:0 1px 0 rgba(201,162,74,.35)!important}
     track('Lead',{content_name:g('lPlano')});
     salvarLead({nome:g('lEst'),responsavel:g('lNome'),tipo:g('lTipo'),whatsapp:g('lWhats'),plano:g('lPlano')==='Ainda não sei'?'':g('lPlano'),origem:origem});
     var txt='Olá! Quero uma demonstração do cardápio digital.\n\nNome: '+g('lNome')+'\nEstabelecimento: '+g('lEst')+' ('+g('lTipo')+')\nPlano de interesse: '+g('lPlano')+'\nWhatsApp: '+g('lWhats')+'\nOrigem: '+origem;
-    msg.style.color='';msg.textContent='Abrindo o WhatsApp...';window.open(waLink(txt),'_blank','noopener')||(location.href=waLink(txt))});
+    msg.style.color='';msg.textContent='Abrindo o WhatsApp...';var w=window.open(waLink(txt),'_blank');if(w)w.opener=null;else location.href=waLink(txt)});
 })();
 </script>
 </body>
