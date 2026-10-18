@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
-<title>Painel eBistrô</title>
+<title>Painel · eBistrô</title>
 <link rel="icon" href="img/icone.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,159 +14,338 @@
 <link rel="stylesheet" href="painel.css">
 <script src="../assets/config.js"></script>
 <script src="vendor/supabase-2.45.4.js"></script>
+<script src="vendor/html2canvas-1.4.1.min.js" defer></script>
+<script src="vendor/jspdf-2.5.1.umd.min.js" defer></script>
 <script src="painel.js" defer></script>
 </head>
 <body>
 
-<!-- ===== Entrada ===== -->
-<main class="auth" id="telaAuth" hidden>
+<!-- ================= ENTRADA ================= -->
+<main class="auth" id="auth" hidden>
   <div class="auth-card">
-    <div class="brand"><img src="img/marca.png" alt=""><img class="brand-nome" src="img/nome.png" alt="eBistrô"></div>
+    <div class="auth-brand"><img src="img/logo.png" alt=""><div><b class="marca-nome">eBistrô</b><small>Painel administrativo</small></div></div>
 
     <form id="fLogin" novalidate>
       <h1>Acesso restrito</h1>
-      <p class="sub">Entre com o seu e-mail e senha.</p>
       <label>E-mail<input id="lgEmail" type="email" autocomplete="username" maxlength="190" required></label>
       <label>Senha<input id="lgSenha" type="password" autocomplete="current-password" maxlength="200" required></label>
-      <button class="btn btn-mint" type="submit">Entrar</button>
+      <button class="btn primary big" type="submit">Entrar</button>
     </form>
 
     <form id="fCodigo" novalidate hidden>
       <h1>Confirme que é você</h1>
-      <p class="sub">Digite o código de 6 números do seu aplicativo autenticador.</p>
-      <label>Código<input id="cdCodigo" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
-      <button class="btn btn-mint" type="submit">Confirmar</button>
-      <button class="btn-link" type="button" data-sair>Usar outra conta</button>
+      <p class="muted">Digite o código de 6 números do seu aplicativo autenticador.</p>
+      <label>Código<input id="cdCodigo" class="codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required></label>
+      <button class="btn primary big" type="submit">Confirmar</button>
+      <button class="btn link" type="button" data-sair>Usar outra conta</button>
     </form>
 
     <form id="fCadastro2fa" novalidate hidden>
-      <h1>Proteja sua conta</h1>
-      <p class="sub">O painel exige login em 2 etapas. Abra o Google Authenticator, Microsoft Authenticator ou similar e leia o QR Code.</p>
+      <h1>Ative o login em 2 etapas</h1>
+      <p class="muted">Obrigatório para abrir o painel. No celular, abra o Google Authenticator (ou Microsoft Authenticator) e leia o QR Code.</p>
       <img id="qr2fa" class="qr" alt="QR Code para o aplicativo autenticador">
-      <p class="segredo">Sem câmera? Digite esta chave no app: <code id="seg2fa"></code></p>
-      <label>Código que apareceu no app<input id="cdNovo" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></label>
-      <button class="btn btn-mint" type="submit">Ativar e entrar</button>
-      <button class="btn-link" type="button" data-sair>Cancelar</button>
+      <p class="muted fino">Sem câmera? Digite esta chave no app: <code id="seg2fa"></code></p>
+      <label>Código que apareceu no app<input id="cdNovo" class="codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required></label>
+      <button class="btn primary big" type="submit">Ativar e entrar</button>
+      <button class="btn link" type="button" data-sair>Cancelar</button>
     </form>
 
     <div id="semConfig" hidden>
       <h1>Painel ainda não conectado</h1>
-      <p class="sub">Preencha <code>supabaseUrl</code> e <code>supabaseKey</code> em <code>assets/config.js</code> e rode os arquivos da pasta <code>supabase/</code> no seu projeto. O passo a passo está no SEGURANCA.md.</p>
-      <button class="btn btn-mint" type="button" id="btnDemo">Ver demonstração com dados fictícios</button>
+      <p class="muted">Preencha <code>supabaseUrl</code> e <code>supabaseKey</code> em <code>assets/config.js</code> e rode os arquivos da pasta <code>supabase/</code>. O passo a passo está no SEGURANCA.md.</p>
+      <button class="btn primary big" type="button" id="btnDemo">Ver demonstração com dados fictícios</button>
     </div>
 
-    <p class="msg" id="authMsg" role="alert"></p>
+    <p class="auth-msg" id="authMsg" role="alert"></p>
+    <p class="auth-pe">Conexão protegida · login em 2 etapas · saída automática após 30 min parado</p>
   </div>
 </main>
 
-<!-- ===== Painel ===== -->
-<div class="app" id="telaApp" hidden>
-  <aside class="side">
-    <div class="brand"><img src="img/marca.png" alt=""><img class="brand-nome" src="img/nome.png" alt="eBistrô"></div>
-    <nav aria-label="Painel">
-      <button type="button" data-vista="inicio" aria-current="page"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H5z"/></svg>Início</button>
-      <button type="button" data-vista="funil"><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg>Funil</button>
-      <button type="button" data-vista="lista"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Todos os leads</button>
-      <button type="button" data-vista="clientes"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11a3 3 0 0 0 0-6M21 20c0-2-1-4-3-4.5"/></svg>Clientes</button>
+<!-- ================= PAINEL ================= -->
+<div class="app" id="app" hidden>
+  <aside class="side" aria-label="Menu">
+    <div class="side-brand"><img src="img/logo.png" alt=""><div><b class="marca-nome">eBistrô</b><small>Painel</small></div></div>
+    <nav class="side-nav">
+      <span class="side-grupo">Operação</span>
+      <button type="button" data-aba="hoje"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H5z"/></svg><span>Hoje</span></button>
+      <button type="button" data-aba="leads"><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg><span>Leads</span><em id="cLeads"></em></button>
+      <button type="button" data-aba="orcamentos"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg><span>Orçamentos</span><em id="cOrc"></em></button>
+      <button type="button" data-aba="entregas"><svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg><span>Entregas</span><em id="cEntregas"></em></button>
+      <button type="button" data-aba="clientes"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11a3 3 0 0 0 0-6M21 20c0-2-1-4-3-4.5"/></svg><span>Clientes</span><em id="cClientes"></em></button>
+      <span class="side-grupo">Crescimento</span>
+      <button type="button" data-aba="resultados"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Resultados e metas</span></button>
+      <button type="button" data-aba="scripts"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><span>Scripts de venda</span></button>
+      <span class="side-grupo">Sistema</span>
+      <button type="button" data-aba="ajuda"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17h.01"/></svg><span>Ajuda</span></button>
+      <button type="button" data-aba="ajustes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Ajustes</span></button>
     </nav>
     <div class="side-pe">
-      <span id="quem"></span>
-      <button type="button" class="btn-link" data-sair>Sair</button>
+      <div class="quem"><span class="avatar" id="avatar">A</span><div><b id="quemNome">Administrador</b><small id="quemEmail"></small></div></div>
+      <div class="side-acoes">
+        <a class="btn ghost-escuro small" href="../" target="_blank" rel="noopener">Ver site ↗</a>
+        <button class="btn ghost-escuro small" type="button" id="btnTema">Tema</button>
+        <button class="btn ghost-escuro small" type="button" data-sair>Sair</button>
+      </div>
     </div>
   </aside>
 
   <div class="main">
-    <div class="demo-faixa" id="faixaDemo" hidden>Demonstração: dados fictícios. Nada aqui é salvo.</div>
+    <div class="faixa-demo" id="faixaDemo" hidden>Demonstração com dados fictícios: nada aqui é salvo.</div>
+    <div class="faixa-aviso" id="notice" role="alert" hidden></div>
+
     <header class="topo">
-      <h1 id="titulo">Início</h1>
+      <div><h1 id="titulo">Hoje</h1><p class="muted" id="subtitulo"></p></div>
       <div class="topo-acoes">
-        <input id="busca" type="search" placeholder="Buscar nome, cidade ou WhatsApp" aria-label="Buscar lead" maxlength="80">
-        <button class="btn btn-ghost" type="button" id="btnAtualizar" aria-label="Atualizar"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/></svg></button>
-        <button class="btn btn-mint" type="button" id="btnNovo">+ Novo lead</button>
+        <button class="btn busca-btn" type="button" id="btnPaleta"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Buscar ou agir</span><kbd>Ctrl K</kbd></button>
+        <button class="btn" type="button" id="btnOrcTop">+ Orçamento</button>
+        <button class="btn primary" type="button" id="btnNovo">+ Novo lead</button>
       </div>
     </header>
 
-    <section id="vInicio" class="vista">
-      <div class="kpis" id="kpis"></div>
-      <div class="duas">
-        <div class="card">
-          <h2>Retornos para hoje</h2>
-          <p class="hint">Próximo contato de hoje ou atrasado.</p>
-          <div id="agenda" class="mini-lista"></div>
-        </div>
-        <div class="card">
-          <h2>Chegaram agora</h2>
-          <p class="hint">Últimos leads do site e do chat.</p>
-          <div id="recentes" class="mini-lista"></div>
-        </div>
+    <!-- HOJE -->
+    <section class="panel" data-panel="hoje">
+      <div class="kpis">
+        <div class="kpi"><span class="lbl">Clientes ativos</span><span class="val" id="kAtivos">0</span><div class="meta-bar"><i id="kAtivosBar"></i></div><span class="sub" id="kAtivosSub"></span></div>
+        <div class="kpi"><span class="lbl">Receita mensal</span><span class="val" id="kMrr">R$ 0</span><div class="meta-bar"><i id="kMrrBar"></i></div><span class="sub" id="kMrrSub"></span></div>
+        <div class="kpi"><span class="lbl">Contatos hoje</span><span class="val" id="kHoje">0</span><div class="meta-bar"><i id="kHojeBar"></i></div><span class="sub" id="kHojeSub"></span></div>
+        <div class="kpi" id="kpiAtraso"><span class="lbl">Retornos atrasados</span><span class="val" id="kAtraso">0</span><span class="sub">leads com retorno vencido</span></div>
+        <div class="kpi"><span class="lbl">Orçamentos abertos</span><span class="val" id="kOrc">0</span><span class="sub" id="kOrcSub"></span></div>
       </div>
-      <div class="card">
-        <h2>Funil</h2>
-        <div id="barrasFunil" class="barras"></div>
+      <div class="grid-hoje">
+        <div class="box">
+          <div class="box-head"><h2>Retornos para hoje</h2><span class="chip" id="cRetornos">0</span></div>
+          <div class="list" id="listaRetornos"></div>
+        </div>
+        <div class="box">
+          <div class="box-head"><h2>Rotina do dia</h2><span class="anel" id="rotinaAnel" aria-hidden="true"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5"/><circle id="rotinaArco" cx="18" cy="18" r="15.5" pathLength="100" stroke-dasharray="0 100"/></svg><b id="rotinaPct">0%</b></span></div>
+          <div id="rotina"></div>
+          <p class="muted fino">A rotina zera todo dia e fica salva só neste navegador.</p>
+        </div>
+        <div class="box">
+          <div class="box-head"><h2>Cobranças, orçamentos e alertas</h2></div>
+          <div class="list" id="listaAlertas"></div>
+        </div>
+        <div class="box">
+          <div class="box-head"><h2>Funil deste mês</h2><button class="btn link small" type="button" data-ir="resultados">Ver resultados</button></div>
+          <div class="funil-mini" id="funilMini"></div>
+        </div>
       </div>
     </section>
 
-    <section id="vFunil" class="vista" hidden>
-      <div class="kanban" id="kanban"></div>
-    </section>
-
-    <section id="vLista" class="vista" hidden>
-      <div class="filtros">
-        <select id="fEtapa" aria-label="Filtrar por etapa"><option value="">Todas as etapas</option></select>
-        <select id="fOrigem" aria-label="Filtrar por origem"><option value="">Todas as origens</option></select>
+    <!-- LEADS -->
+    <section class="panel" data-panel="leads" hidden>
+      <div class="toolbar">
+        <input id="busca" type="search" placeholder="Buscar por nome, bairro ou WhatsApp" maxlength="80" aria-label="Buscar leads">
+        <select id="fTipoFiltro" aria-label="Filtrar por tipo"><option value="">Todos os tipos</option></select>
+        <select id="fOrigemFiltro" aria-label="Filtrar por origem"><option value="">Todas as origens</option></select>
         <span class="grow"></span>
-        <button class="btn btn-ghost" type="button" id="btnCsv">Exportar planilha</button>
+        <div class="seg" role="group" aria-label="Visualização"><button type="button" data-modo="quadro" aria-pressed="true">Quadro</button><button type="button" data-modo="lista" aria-pressed="false">Lista</button></div>
+        <button class="btn small" type="button" id="btnPerdidos">Perdidos (0)</button>
+        <button class="btn small" type="button" id="btnCsvLeads">Exportar</button>
       </div>
-      <div class="card tabela-wrap"><table class="tabela"><thead><tr><th>Estabelecimento</th><th>Responsável</th><th>Etapa</th><th>Próximo contato</th><th>Origem</th><th>Entrou em</th></tr></thead><tbody id="tbLeads"></tbody></table></div>
+      <div class="board" id="board"></div>
+      <div class="tablewrap" id="listaLeadsWrap" hidden><table class="data"><thead><tr><th>Estabelecimento</th><th>Etapa</th><th>Bairro</th><th>Próximo retorno</th><th>Origem</th><th>Entrou</th></tr></thead><tbody id="tbLeads"></tbody></table></div>
+      <div class="box" id="perdidosBox" hidden><div class="box-head"><h2>Perdidos</h2></div><div class="list" id="listaPerdidos"></div></div>
     </section>
 
-    <section id="vClientes" class="vista" hidden>
+    <!-- ORÇAMENTOS -->
+    <section class="panel" data-panel="orcamentos" hidden>
+      <div class="quote">
+        <form class="box" id="qForm" novalidate>
+          <div class="box-head"><h2 id="qTitulo">Novo orçamento</h2><button type="button" class="btn small" id="qLimpar">Limpar</button></div>
+          <div class="form">
+            <label class="full">Lead (opcional)<select id="qLead"><option value="">Digitar dados manualmente</option></select></label>
+            <label class="full">Estabelecimento<input id="qEst" maxlength="100" required></label>
+            <label>Responsável<input id="qResp" maxlength="80" placeholder="Nome do dono"></label>
+            <label>WhatsApp<input id="qWhats" maxlength="20" inputmode="tel"></label>
+            <label>Cidade / bairro<input id="qLocal" maxlength="80" placeholder="Ponta Grossa · Centro"></label>
+            <label>Plano<select id="qPlano"><option>Essencial</option><option selected>Profissional</option><option>Premium</option></select></label>
+            <div class="full"><span class="lbl-form">Itens da implantação</span><div class="items-ed" id="qItens"></div><button type="button" class="btn small" id="qAddItem">+ Adicionar item</button></div>
+            <label>Mensalidade (R$)<input id="qMens" inputmode="decimal" maxlength="10"></label>
+            <label>Desconto na implantação (%)<input id="qDesc" inputmode="numeric" maxlength="3" value="0"></label>
+            <label class="full inline"><input type="checkbox" id="qLanc"> Oferta de lançamento (50% na implantação, em troca de depoimento)</label>
+            <label>Validade (dias)<input id="qVal" inputmode="numeric" maxlength="3" value="7"></label>
+            <label>Prazo de entrega<input id="qPrazo" maxlength="120" value="5 dias úteis após o recebimento do material"></label>
+            <label class="full">Pagamento<input id="qPag" maxlength="160" value="50% no aceite e 50% na entrega · Pix ou cartão em até 3x"></label>
+            <label class="full">Observações<textarea id="qObs" maxlength="1000" placeholder="Algo combinado na visita"></textarea></label>
+          </div>
+          <div class="acoes-linha">
+            <button type="submit" class="btn primary" id="qSalvar">Salvar orçamento</button>
+            <button type="button" class="btn" id="qPdf">Baixar PDF</button>
+            <button type="button" class="btn zap" id="qZap">Enviar no WhatsApp</button>
+            <button type="button" class="btn link" id="qMsg">Copiar mensagem</button>
+          </div>
+          <p class="muted fino" id="qStatus">O PDF sai igual à folha ao lado.</p>
+        </form>
+        <div class="sheet-wrap" id="sheetWrap"><div class="sheet-scale" id="sheetScale"><div class="sheet" id="sheet"></div></div></div>
+      </div>
+      <div class="box">
+        <div class="box-head"><h2>Orçamentos enviados</h2><span class="muted" id="qResumo"></span></div>
+        <div class="tablewrap"><table class="data"><thead><tr><th>Nº</th><th>Estabelecimento</th><th>Plano</th><th>Implantação</th><th>Mensalidade</th><th>Validade</th><th>Status</th><th></th></tr></thead><tbody id="tbOrc"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- ENTREGAS -->
+    <section class="panel" data-panel="entregas" hidden>
+      <p class="muted">Roteiro padrão de 5 dias + acompanhamento no dia 15. Concluída a entrega, o cliente vira ativo e entra na receita mensal.</p>
+      <div class="deliv" id="entregas"></div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="panel" data-panel="clientes" hidden>
       <div class="kpis" id="kpisClientes"></div>
-      <div class="card tabela-wrap"><table class="tabela"><thead><tr><th>Cliente</th><th>Plano</th><th>Mensalidade</th><th>Implantação</th><th>Checklist</th></tr></thead><tbody id="tbClientes"></tbody></table></div>
+      <div class="toolbar"><span class="muted" id="resumoClientes"></span><span class="grow"></span><button class="btn small" type="button" id="btnCsvClientes">Exportar</button></div>
+      <div class="tablewrap"><table class="data">
+        <thead><tr><th>Cliente</th><th>Plano</th><th>Mensalidade</th><th>Vence dia</th><th>Pagamento</th><th>Último relatório</th><th></th></tr></thead>
+        <tbody id="tbClientes"></tbody></table></div>
+    </section>
+
+    <!-- RESULTADOS E PLANO -->
+    <section class="panel" data-panel="resultados" hidden>
+      <div class="plan-grid" id="planMetrics"></div>
+      <div class="grid2">
+        <div class="box"><div class="box-head"><h2>Funil do mês: real × meta</h2><span class="muted fino">registrado a partir das mudanças de etapa</span></div><div id="funilReal" class="funil-real"></div></div>
+        <div class="box"><div class="box-head"><h2>Receita recorrente</h2><span class="muted fino">clientes ativos por mês de ativação</span></div><div id="graficoMrr" class="grafico"></div></div>
+      </div>
+      <div class="box">
+        <div class="box-head"><h2>Plano de negócio · resumo</h2><a class="btn link small" href="https://claude.ai/code/artifact/1359ab99-430c-48d6-8ff9-c8713dba12dd" target="_blank" rel="noopener noreferrer">Abrir plano completo ↗</a></div>
+        <p id="planoResumo"></p>
+      </div>
+      <div class="tablewrap"><table class="data"><thead><tr><th>Plano</th><th>Implantação</th><th>Mensalidade</th><th>Prazo</th><th>Inclui</th></tr></thead><tbody id="tbPlanos"></tbody></table></div>
+      <h2 class="h-sec">Plano de 90 dias</h2>
+      <div class="steps90">
+        <div class="box"><span class="tag">Semana 1</span><b>Preparação</b><ul class="tight"><li>Conta separada para o negócio</li><li>Template do cardápio pronto</li><li>WhatsApp Business e Instagram</li><li>100 estabelecimentos listados</li><li>Contrato e orçamento modelo</li></ul></div>
+        <div class="box"><span class="tag">Dias 8 a 30</span><b>3 primeiros clientes</b><ul class="tight"><li>10 contatos por dia útil</li><li>Visitas no sábado</li><li>Oferta de lançamento (50%)</li><li>Colher depoimentos</li></ul></div>
+        <div class="box"><span class="tag">Dias 31 a 60</span><b>+5 clientes</b><ul class="tight"><li>Preço cheio</li><li>Usar os cases nas mensagens</li><li>Ativar indicação (1 mês grátis)</li></ul></div>
+        <div class="box"><span class="tag">Dias 61 a 90</span><b>+7 clientes</b><ul class="tight"><li>Primeiro relatório mensal</li><li>Upsells: fotos, Instagram, tráfego</li><li>Testar Meta Ads (R$ 300)</li></ul></div>
+      </div>
+      <div class="box"><div class="box-head"><h2>Rotina com o emprego</h2></div><table class="data compacta"><tbody>
+        <tr><td><b>Almoço (30 min)</b></td><td>10 mensagens de prospecção e respostas</td></tr>
+        <tr><td><b>Noite (1h30)</b></td><td>Demonstrações e entregas</td></tr>
+        <tr><td><b>Sábado manhã</b></td><td>5 a 10 visitas presenciais</td></tr>
+        <tr><td><b>Sábado tarde</b></td><td>Entregas, suporte e painel</td></tr>
+        <tr><td><b>Domingo</b></td><td>Descanso e família</td></tr></tbody></table></div>
+    </section>
+
+    <!-- SCRIPTS -->
+    <section class="panel" data-panel="scripts" hidden>
+      <div class="toolbar"><label class="inline-lbl">Preencher para<select id="scLead"><option value="">Nenhum lead (texto com campos)</option></select></label></div>
+      <div class="deliv" id="scripts"></div>
+    </section>
+
+    <!-- AJUDA -->
+    <section class="panel" data-panel="ajuda" hidden>
+      <div class="toolbar"><input type="search" id="hpBusca" placeholder="Buscar na ajuda…" aria-label="Buscar na ajuda" maxlength="60"><button type="button" class="btn small" id="hpAbrir">Abrir tudo</button></div>
+      <div id="hpLista">
+<details class="hp" open><summary>1. O que é o eBistrô (visão geral)</summary><div class="hb"><p>Você vende <b>cardápio digital interativo com pedido direto no WhatsApp, sem comissão</b>, para padarias, cafés, hamburguerias e restaurantes de Ponta Grossa. O cliente final abre o cardápio, monta o pedido e ele chega pronto no WhatsApp da loja.</p><p>Também faz o <b>site completo</b> da casa (história, fotos, horários, como chegar) com o cardápio dentro, e entrega um <b>painel de gestão</b> para o dono cuidar de tudo.</p><p><b>Slogan:</b> A evolução digital da sua gastronomia.</p></div></details>
+<details class="hp"><summary>2. Como funciona o site de vendas (o que o visitante vê)</summary><div class="hb"><ul><li><b>Primeiro bloco:</b> cardápio de demonstração em celular (padaria, café, hamburgueria e restaurante) e um cartão de pedido que mostra o rastreio mudando de status.</li><li><b>Sites completos:</b> vitrine do template de site já ligado ao cardápio.</li><li><b>Sistema de gestão incluso:</b> demonstração do painel recebendo pedidos ao vivo, com a tela de rastreio do cliente ao lado.</li><li><b>Calculadora:</b> mostra quanto o dono economiza deixando de pagar comissão de app.</li><li><b>Como funciona, comparativo, oferta de lançamento, planos, perguntas frequentes e formulário.</b></li><li><b>Bia, a atendente do site:</b> chat que responde dúvidas e coleta o contato do interessado.</li></ul><p>Todo contato (formulário ou chat) vira um <b>lead</b> aqui no painel, com a origem registrada.</p></div></details>
+<details class="hp"><summary>3. Captação de leads (aba Leads)</summary><div class="hb"><ul><li>Formulário e chat do site criam o lead sozinhos, na coluna <b>Lead</b>.</li><li>A <b>origem</b> vem do link: use <code>?utm_source=meta&amp;utm_campaign=nome</code> nos anúncios para saber qual campanha trouxe cada contato. Filtre por origem na aba Leads.</li><li>Funil: Lead → Contatado → Respondeu → Demonstração → Proposta → Fechado (em entrega) → Cliente ativo. Também existe Perdido.</li><li>Arraste o cartão entre as colunas ou use o seletor de etapa. Cada mudança fica no <b>histórico</b> do lead e alimenta a aba Resultados.</li><li>Defina o <b>próximo retorno</b> de cada lead: ele aparece na aba <b>Hoje</b> no dia certo.</li><li>O botão de WhatsApp do lead abre a conversa com o script certo para a etapa.</li></ul></div></details>
+<details class="hp"><summary>4. Orçamento timbrado em PDF (aba Orçamentos)</summary><div class="hb"><ol><li>Abra o lead e clique em <b>Orçamento</b> (ou use <b>+ Orçamento</b> no topo).</li><li>Escolha o plano: <b>Essencial</b> (implantação R$ 997, R$ 149/mês), <b>Profissional</b> (R$ 1.497, R$ 199/mês) ou <b>Premium</b> (R$ 2.497, R$ 299/mês). Os itens já vêm preenchidos e podem ser ajustados.</li><li>A numeração é automática (BT-ANO-NNN), com validade e prazo.</li><li><b>Baixar PDF</b> gera uma folha A4 com a logo, os itens, as condições e o campo de aceite. <b>Enviar no WhatsApp</b> abre a conversa com o resumo pronto.</li><li>Ao salvar, o lead vai para <b>Proposta</b>. Ao marcar <b>Aceito</b>, vai para <b>Fechado · em entrega</b>.</li></ol><p>Preencha sua chave Pix e e-mail em <b>Ajustes</b> para saírem no orçamento.</p></div></details>
+<details class="hp"><summary>5. Entregas e clientes (abas Entregas e Clientes)</summary><div class="hb"><p>Cada cliente fechado ganha um checklist de entrega:</p><ol><li>Kickoff: receber logo, cardápio, fotos, horários e bairros.</li><li>Montagem: template, identidade e produtos.</li><li>Revisão: link de teste e ajustes.</li><li>Publicação: no ar, QR Codes e arte do Instagram.</li><li>Treinamento de 30 minutos com o dono.</li><li>Dia 15: conferir pedidos e pedir depoimento.</li></ol><p>Concluída a entrega, o cliente vira <b>ativo</b> e entra na receita mensal. Na aba Clientes, o botão <b>Cobrar</b> abre o WhatsApp com a mensagem de cobrança gentil e a sua chave Pix.</p></div></details>
+<details class="hp"><summary>6. O que o dono recebe: painel da loja</summary><div class="hb"><ul><li><b>Pedidos em tempo real:</b> cada pedido do site aparece na hora, com status e histórico.</li><li><b>Produtos e categorias:</b> muda preços, pausa o que acabou, cria novidades.</li><li><b>Fotos, vídeos e textos do site</b> editáveis sem chamar ninguém.</li><li><b>Vendas e mais vendidos:</b> dia, mês e ranking.</li><li><b>Clientes e newsletter:</b> guarda os contatos de quem compra.</li><li><b>Usuários e senha:</b> acesso protegido, cada pessoa com login.</li></ul></div></details>
+<details class="hp"><summary>7. Rastreio do pedido (o que já existe e o que falta construir)</summary><div class="hb"><p><b>Hoje, no site de vendas, é demonstração visual.</b> O cartão do primeiro bloco e a tela do celular na seção "Sistema" mostram o que o cliente veria: Pedido recebido → Em preparo → Saiu para entrega → Entregue.</p><p><b>Para virar produto de verdade:</b></p><ol><li>A mensagem do pedido no WhatsApp leva um link de acompanhamento (ex.: <code>suaLoja.com.br/pedido/126</code>).</li><li>A página do cliente atualiza sozinha, em tempo real, pelo Supabase.</li><li>O dono toca no status no painel ("Em preparo", "Saiu para entrega") e a página muda na hora.</li><li>Botão <b>Avisar cliente</b>: abre o WhatsApp da loja com a mensagem pronta; o dono só envia. Sem custo.</li><li>Aviso automático exige a API oficial do WhatsApp: a Meta cobra mensagens de serviço desde 1º/10/2026, com 1.000 grátis por mês. Pode ser um extra nos planos maiores.</li></ol><p>Argumento de venda: o cliente acompanha o pedido como no iFood, sem pagar comissão.</p></div></details>
+<details class="hp"><summary>8. Atendente com IA (Bia)</summary><div class="hb"><ul><li>No site de vendas, a <b>Bia</b> responde sobre como funciona, preço, comissão, prazo, segurança e modelos, e coleta nome, tipo de casa e WhatsApp do interessado.</li><li>Sem configuração extra ela usa respostas prontas. Com a função <code>assistente</code> do Supabase e a chave da Anthropic, passa a usar IA de verdade, restrita ao seu negócio.</li><li><b>Para vender aos clientes:</b> atendente de IA no WhatsApp do restaurante (cardápio, horário, taxa, status do pedido). Regra da Meta: robôs de uso geral estão proibidos na API do WhatsApp Business desde 15/01/2026; robôs de tarefa (atendimento do próprio negócio) são permitidos. Passe para um humano quando o assunto fugir disso.</li></ul></div></details>
+<details class="hp"><summary>9. Preços e oferta de lançamento</summary><div class="hb"><ul><li>Planos: Essencial R$ 997 + R$ 149/mês · Profissional R$ 1.497 + R$ 199/mês · Premium R$ 2.497 + R$ 299/mês.</li><li><b>Oferta de lançamento:</b> as 3 primeiras vagas pagam metade da implantação, em troca de depoimento depois de 30 dias de uso. Use a escassez com honestidade: são 3 vagas reais.</li><li>Comparativo: apps de delivery cobram comissão por pedido; aqui é mensalidade fixa.</li></ul></div></details>
+<details class="hp"><summary>10. Configuração e publicação (resumo)</summary><div class="hb"><ol><li><b>Supabase:</b> crie o projeto e rode, no SQL Editor, os arquivos da pasta <code>supabase/</code> na ordem (01, 02, 04). Crie seu usuário em Authentication, desligue novos cadastros e coloque seu e-mail na tabela <code>admins</code>.</li><li><b>assets/config.js:</b> cole a URL e a chave <b>anon public</b>, o WhatsApp e o Pixel. Nunca use a chave <code>service_role</code> aí.</li><li><b>hPanel:</b> envie <code>index.html</code>, <code>.htaccess</code>, <code>admin</code> e <code>assets</code> para <code>public_html</code>.</li><li><b>Primeiro login:</b> o painel mostra um QR Code para ativar o login em 2 etapas.</li><li><b>Teste:</b> preencha o formulário do site e confira o lead aqui; crie um orçamento e baixe o PDF.</li></ol><p>O passo a passo completo está no SEGURANCA.md.</p></div></details>
+<details class="hp"><summary>11. Segurança</summary><div class="hb"><ul><li><b>Login em 2 etapas obrigatório</b>: senha + código do app autenticador. O banco também exige as 2 etapas para mostrar leads, orçamentos e ajustes.</li><li>A sessão vale só para a aba aberta e termina sozinha após 30 minutos sem uso. Em Ajustes dá para sair de todos os aparelhos.</li><li>Visitantes do site só conseguem <b>criar</b> leads. Ler, editar ou apagar exige o seu login.</li><li>Cadastro aberto desligado: ninguém cria conta no painel.</li><li>HTTPS obrigatório, proteção contra scripts maliciosos e bibliotecas servidas do próprio site, sem depender de terceiros.</li><li>Use senha forte e não compartilhe o login. Cada colaborador deve ter o seu.</li></ul></div></details>
+<details class="hp"><summary>12. Rotina diária sugerida</summary><div class="hb"><ol><li>Abra a aba <b>Hoje</b>: veja retornos do dia, cobranças e alertas.</li><li>Envie 10 mensagens de prospecção (scripts na aba Scripts de venda).</li><li>Monte 1 demonstração personalizada para um lead quente.</li><li>Cobre orçamentos pendentes e avance as entregas.</li><li>Marque o próximo retorno de cada lead mexido.</li></ol><p>Atalho: <kbd>Ctrl</kbd> + <kbd>K</kbd> abre a busca rápida de leads, orçamentos e ações de qualquer tela.</p></div></details>
+      </div>
+      <p class="muted" id="hpVazio" hidden>Nada encontrado para essa busca.</p>
+    </section>
+
+    <!-- AJUSTES -->
+    <section class="panel" data-panel="ajustes" hidden>
+      <div class="grid2">
+        <form class="box" id="cfgForm" novalidate>
+          <div class="box-head"><h2>Dados que aparecem no orçamento</h2></div>
+          <div class="form">
+            <label>Marca<input id="cMarca" maxlength="40" placeholder="eBistrô"></label>
+            <label>Seu nome<input id="cNome" maxlength="60"></label>
+            <label>WhatsApp<input id="cWhats" maxlength="20"></label>
+            <label>E-mail<input id="cEmail" type="email" maxlength="120"></label>
+            <label>Cidade<input id="cCidade" maxlength="60"></label>
+            <label>Site<input id="cSite" maxlength="80" placeholder="ebistro.com.br"></label>
+            <label>Chave Pix<input id="cPix" maxlength="120"></label>
+            <label>Documento (opcional)<input id="cDoc" maxlength="30" placeholder="CPF ou CNPJ"></label>
+          </div>
+          <div class="box-head"><h2>Metas</h2></div>
+          <div class="form">
+            <label>Clientes ativos (90 dias)<input id="mClientes" inputmode="numeric" maxlength="4"></label>
+            <label>Receita mensal (R$)<input id="mMrr" inputmode="decimal" maxlength="10"></label>
+            <label>Contatos por dia útil<input id="mContatos" inputmode="numeric" maxlength="3"></label>
+            <label>Fechamentos por mês<input id="mFechados" inputmode="numeric" maxlength="3"></label>
+          </div>
+          <div class="acoes-linha"><button type="submit" class="btn primary">Salvar ajustes</button></div>
+        </form>
+        <div class="col-ajustes">
+          <form class="box" id="senhaForm" novalidate>
+            <div class="box-head"><h2>Segurança da conta</h2><span class="chip ok" id="chip2fa">2 etapas ativas</span></div>
+            <label>Nova senha<input id="nsSenha" type="password" autocomplete="new-password" minlength="12" maxlength="200"></label>
+            <label>Repita a nova senha<input id="nsSenha2" type="password" autocomplete="new-password" minlength="12" maxlength="200"></label>
+            <p class="muted fino">Mínimo de 12 caracteres. Use uma frase que só você saiba.</p>
+            <div class="acoes-linha"><button type="submit" class="btn">Trocar senha</button><button type="button" class="btn perigo" id="btnSairTudo">Sair de todos os aparelhos</button></div>
+          </form>
+          <div class="box">
+            <div class="box-head"><h2>Aparência</h2></div>
+            <div class="seg" role="group" aria-label="Tema"><button type="button" data-tema="auto">Automático</button><button type="button" data-tema="light">Claro</button><button type="button" data-tema="dark">Escuro</button></div>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 </div>
 
-<!-- ===== Ficha do lead ===== -->
+<!-- ================= FICHA DO LEAD ================= -->
 <div class="veu" id="veu" hidden></div>
-<aside class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo" hidden>
-  <form id="fFicha" novalidate>
-    <header><h2 id="fichaTitulo">Lead</h2><button type="button" class="x" data-fechar aria-label="Fechar">×</button></header>
-    <div class="ficha-corpo">
-      <div class="linha2">
-        <label>Estabelecimento<input name="nome" maxlength="100" required></label>
-        <label>Responsável<input name="responsavel" maxlength="80"></label>
-      </div>
-      <div class="linha2">
-        <label>WhatsApp<input name="whatsapp" inputmode="tel" maxlength="20" required></label>
-        <label>Cidade<input name="cidade" maxlength="60"></label>
-      </div>
-      <div class="linha2">
-        <label>Tipo<select name="tipo"><option>Padaria</option><option>Cafeteria</option><option>Confeitaria</option><option>Restaurante</option><option>Hamburgueria</option><option>Pizzaria</option><option>Outro</option></select></label>
-        <label>Etapa<select name="stage" id="selEtapa"></select></label>
-      </div>
-      <div class="linha2">
-        <label>Plano<select name="plano"><option value="">Ainda não definido</option><option>Essencial</option><option>Profissional</option><option>Premium</option></select></label>
-        <label>Próximo contato<input name="proximoContato" type="date"></label>
-      </div>
-      <div class="linha2">
-        <label>Mensalidade (R$)<input name="mensalidade" inputmode="decimal" maxlength="10" placeholder="199,00"></label>
-        <label>Implantação (R$)<input name="implantacao" inputmode="decimal" maxlength="10" placeholder="1.497,00"></label>
-      </div>
-      <fieldset class="check"><legend>Implantação</legend><div id="checklist"></div></fieldset>
-      <label>Notas<textarea name="notas" maxlength="4000" rows="5"></textarea></label>
-      <p class="hint" id="fichaInfo"></p>
-      <p class="msg" id="fichaMsg" role="alert"></p>
+<aside class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="mTitulo" hidden>
+  <form id="form" novalidate>
+    <header class="ficha-topo">
+      <div><h2 id="mTitulo">Novo lead</h2><p class="muted fino" id="mSub"></p></div>
+      <button type="button" class="x" id="mFechar" aria-label="Fechar">×</button>
+    </header>
+    <div class="ficha-acoes" id="fichaAcoes">
+      <a class="btn zap small" id="mZap" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <button type="button" class="btn small" id="mContato">Contato feito</button>
+      <button type="button" class="btn small" id="mOrc">Orçamento</button>
     </div>
-    <footer>
-      <a class="btn btn-zap" id="fichaZap" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-      <button type="button" class="btn btn-perigo" id="btnExcluir">Excluir</button>
+    <div class="ficha-corpo">
+      <div class="form">
+        <label class="full">Nome do estabelecimento<input id="fNome" maxlength="100" required></label>
+        <label>Tipo<select id="fTipo"><option>Padaria</option><option>Cafeteria</option><option>Confeitaria</option><option>Restaurante</option><option>Hamburgueria</option><option>Pizzaria</option><option>Marmitaria</option><option>Outro</option></select></label>
+        <label>Bairro<input id="fBairro" maxlength="60"></label>
+        <label>Responsável<input id="fResp" maxlength="80"></label>
+        <label>WhatsApp<input id="fWhats" inputmode="tel" maxlength="20"></label>
+        <label>Instagram<input id="fInsta" maxlength="60" placeholder="@perfil"></label>
+        <label>Nota no Google<input id="fNota" inputmode="decimal" maxlength="4" placeholder="4,8"></label>
+        <label>Nº de avaliações<input id="fAval" inputmode="numeric" maxlength="6"></label>
+        <label>Etapa<select id="fStage"></select></label>
+        <label>Próximo retorno<input id="fProx" type="date"></label>
+        <label>Plano<select id="fPlano"><option value="">—</option><option>Essencial</option><option>Profissional</option><option>Premium</option></select></label>
+        <label>Implantação (R$)<input id="fImpl" inputmode="decimal" maxlength="10"></label>
+        <label>Mensalidade (R$)<input id="fMens" inputmode="decimal" maxlength="10"></label>
+        <label>Dia de vencimento<input id="fVenc" inputmode="numeric" maxlength="2" placeholder="10"></label>
+        <label class="full">Anotações<textarea id="fNotas" maxlength="4000" placeholder="Quem é o dono, objeções, o que combinaram"></textarea></label>
+      </div>
+      <div class="historico" id="mHistWrap"><span class="lbl-form">Histórico</span><ol id="mHist"></ol></div>
+    </div>
+    <footer class="ficha-pe">
+      <button type="button" class="btn perigo small" id="mExcluir" hidden>Excluir lead</button>
       <span class="grow"></span>
-      <button type="submit" class="btn btn-mint" id="btnSalvar">Salvar</button>
+      <button type="button" class="btn" id="mCancelar">Cancelar</button>
+      <button type="submit" class="btn primary">Salvar</button>
     </footer>
   </form>
 </aside>
 
-<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+<!-- ================= BUSCA RÁPIDA ================= -->
+<div class="paleta-fundo" id="paleta" hidden>
+  <div class="paleta" role="dialog" aria-modal="true" aria-label="Busca rápida">
+    <input id="paletaInput" placeholder="Buscar lead, orçamento ou ação…" autocomplete="off" maxlength="80" aria-label="Buscar">
+    <ul id="paletaLista" role="listbox"></ul>
+    <p class="paleta-pe"><kbd>↑</kbd><kbd>↓</kbd> navegar · <kbd>Enter</kbd> abrir · <kbd>Esc</kbd> fechar</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 </body>
 </html>
