@@ -65,6 +65,10 @@ create table if not exists public.orders (
 alter table public.orders add column if not exists payment_method text not null default '';
 alter table public.orders add column if not exists payment_status text not null default 'pendente';
 alter table public.orders add column if not exists updated_at timestamptz not null default now();
+-- código secreto do link de rastreio (pedido.html#codigo) que vai para o cliente no WhatsApp
+alter table public.orders add column if not exists track_token text not null
+  default replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', '');
+create unique index if not exists orders_track_token_idx on public.orders (track_token);
 create index if not exists orders_created_idx on public.orders (created_at desc);
 
 create table if not exists public.subscribers (
@@ -103,6 +107,35 @@ create trigger orders_updated_at before update on public.orders
 drop trigger if exists settings_updated_at on public.settings;
 create trigger settings_updated_at before update on public.settings
   for each row execute function public.toca_updated_at();
+
+-- rastreio: o cliente vê só status, itens e valores do próprio pedido (nada de telefone ou endereço)
+create or replace function public.rastrear_pedido(p_token text)
+returns jsonb
+language plpgsql stable security definer
+set search_path = ''
+as $$
+declare o public.orders; cfg public.settings;
+begin
+  if coalesce(p_token, '') !~ '^[a-f0-9]{32,64}$' then
+    return null;
+  end if;
+  select * into o from public.orders where track_token = p_token;
+  if not found then
+    return null;
+  end if;
+  select * into cfg from public.settings where id = 1;
+  return jsonb_build_object(
+    'code', o.code, 'status', o.status, 'delivery_type', o.delivery_type, 'scheduled_for', o.scheduled_for,
+    'created_at', o.created_at, 'updated_at', o.updated_at, 'first_name', split_part(o.customer_name, ' ', 1),
+    'items', (select coalesce(jsonb_agg(jsonb_build_object('name', i ->> 'name', 'unit', coalesce(i ->> 'unit', ''),
+                                                           'qty', (i ->> 'qty')::int, 'price', (i ->> 'price')::numeric)), '[]'::jsonb)
+                from jsonb_array_elements(o.items) i),
+    'subtotal', o.subtotal, 'delivery_fee', o.delivery_fee, 'total', o.total,
+    'payment_method', o.payment_method, 'payment_status', o.payment_status, 'history', '[]'::jsonb,
+    'store_name', coalesce(cfg.store_name, ''), 'whatsapp', coalesce(cfg.whatsapp, ''));
+end $$;
+revoke all on function public.rastrear_pedido(text) from public;
+grant execute on function public.rastrear_pedido(text) to anon, authenticated;
 
 -- bucket público de fotos do cardápio (as regras de envio estão no 03-loja-pedidos.sql)
 do $$

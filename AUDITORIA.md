@@ -86,6 +86,11 @@ Prioridades: **P0** = crítico, perda de dados ou segurança; **P1** = função 
 
 Não testado: Supabase real, Meta Pixel, `aiUrl` do chat e a pasta `admin/`. Esses dependem de configuração e código que não estão aqui.
 
+## Atualização: padaria com banco e rastreio de pedidos
+
+- **Padaria & Café ligada ao banco** (`sites/padaria-cafe/`): o build v17 tinha o código de loja real desligado. Ele foi religado ao Supabase sem mudar o visual. O banco (`supabase/06-padaria.sql`) foi escrito a partir das chamadas do próprio código: `stores`, `settings`, `products`, `orders`, `order_events`, `create_order` e as funções do painel. As regras de preço, data, status e pagamento foram repetidas no servidor. Por isso o item 1 abaixo deixou de ser obrigatório: o código-fonte Next.js só faz falta se você quiser mudar o layout da padaria.
+- **Rastreio** (prometido no site oficial e que não existia em nenhuma loja): página `pedido.html` com link secreto por pedido, na hamburgueria e na padaria. O Âmbar não recebe pedidos pelo site, então não tem rastreio.
+
 ## Pendências e próximos passos
 
 1. **Enviar o código-fonte do projeto Next.js** (pasta com `package.json`, `src/` ou `app/`, e as migrações do Supabase). Com ele dá para:

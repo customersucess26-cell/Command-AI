@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-hfduYnt70sPDsdcUSTDAtdjhjtjORtttWc9D9w42tBw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ZCdMeyVkMJeFMp9ZRgbvRplT0tIBqt6/PiB33QgftGc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bruto Burger Co. | Hamburgueria artesanal na brasa</title>
 <meta name="description" content="Hamburgueria artesanal com blend de 160g grelhado na brasa, pão brioche e molho da casa. Peça pelo WhatsApp.">
@@ -763,10 +763,12 @@ function add(btn){var n=btn.dataset.n;if(!cart[n])cart[n]={p:+btn.dataset.p,q:0,
 function wa(text){return "https://wa.me/"+WHATS+"?text="+encodeURIComponent(text)}
 function dados(){var tipo=($("input[name=tipo]:checked")||{}).value||"entrega",sub=0,cnt=0;Object.keys(cart).forEach(function(k){sub+=cart[k].q*cart[k].p;cnt+=cart[k].q});sub=Math.round(sub*100)/100;
   var taxa=tipo==="entrega"?TAXA:0;return {tipo:tipo,nome:$("#cNome").value.trim(),fone:$("#cFone").value.trim(),end:$("#cEnd").value.trim(),pag:($("input[name=pag]:checked")||{}).value||"",obs:$("#obs").value.trim(),sub:sub,taxa:taxa,total:Math.round((sub+taxa)*100)/100,cnt:cnt}}
-function mensagem(d,code){var m="Olá! Quero fazer um pedido"+(code?" (nº "+code+")":"")+":\n";
+function rastreio(tk){return new URL("pedido.html#"+tk,location.href).href}
+function novoToken(){var b=new Uint8Array(24);crypto.getRandomValues(b);return Array.prototype.map.call(b,function(x){return ("0"+x.toString(16)).slice(-2)}).join("")}
+function mensagem(d,code,tk){var m="Olá! Quero fazer um pedido"+(code?" (nº "+code+")":"")+":\n";
   Object.keys(cart).forEach(function(k){m+=cart[k].q+"x "+k+" ("+money(cart[k].q*cart[k].p)+")\n"});
   if(d.taxa)m+="Entrega: "+money(d.taxa)+"\n";
-  m+="\nTotal: "+money(d.total)+"\n"+(d.tipo==="entrega"?"Entrega"+(d.end?": "+d.end:""):"Retirada no balcão")+"\nPagamento: "+d.pag+(d.nome?"\nNome: "+d.nome:"")+(d.obs?"\nObs.: "+d.obs:"");return m}
+  m+="\nTotal: "+money(d.total)+"\n"+(d.tipo==="entrega"?"Entrega"+(d.end?": "+d.end:""):"Retirada no balcão")+"\nPagamento: "+d.pag+(d.nome?"\nNome: "+d.nome:"")+(d.obs?"\nObs.: "+d.obs:"")+(tk?"\n\nAcompanhe o pedido: "+rastreio(tk):"");return m}
 function renderCart(){
   var keys=Object.keys(cart),d=dados();
   $("#lines").innerHTML=keys.map(function(k){var c=cart[k];
@@ -788,11 +790,11 @@ $("#send").addEventListener("click",function(){
   if(registra&&(digitos(d.fone).length<10||digitos(d.fone).length>13))return marca($("#cFone"),"Informe seu WhatsApp com DDD.");
   var w=window.open("about:blank","_blank");
   if(!registra){abre(w,wa(mensagem(d,null)));return}
-  var code="BR"+Date.now().toString(36).slice(-5).toUpperCase(),btn=$("#send");
+  var code="BR"+Date.now().toString(36).slice(-5).toUpperCase(),tk=novoToken(),btn=$("#send");
   enviando=true;btn.disabled=true;btn.textContent="Registrando pedido…";
-  api("orders",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({code:code,status:"novo",customer_name:d.nome.slice(0,80),customer_phone:d.fone.slice(0,20),delivery_type:d.tipo,address:d.tipo==="entrega"?d.end.slice(0,160):"",notes:d.obs.slice(0,300),payment_method:d.pag,items:keys.map(function(k){return {product_id:cart[k].id,name:k,price:cart[k].p,qty:cart[k].q}}),subtotal:d.sub,delivery_fee:d.taxa,total:d.total})})
+  api("orders",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({code:code,track_token:tk,status:"novo",customer_name:d.nome.slice(0,80),customer_phone:d.fone.slice(0,20),delivery_type:d.tipo,address:d.tipo==="entrega"?d.end.slice(0,160):"",notes:d.obs.slice(0,300),payment_method:d.pag,items:keys.map(function(k){return {product_id:cart[k].id,name:k,price:cart[k].p,qty:cart[k].q}}),subtotal:d.sub,delivery_fee:d.taxa,total:d.total})})
   .then(function(r){if(r.ok)return;return r.json().catch(function(){return {}}).then(function(j){throw new Error(j.message||"")})})
-  .then(function(){abre(w,wa(mensagem(d,code)));cart={};enviando=false;renderCart();closeCart();say("Pedido "+code+" registrado! Confirme no WhatsApp.")})
+  .then(function(){abre(w,wa(mensagem(d,code,tk)));cart={};enviando=false;renderCart();closeCart();say("Pedido "+code+" registrado! Confirme no WhatsApp.")})
   .catch(function(err){if(w)w.close();enviando=false;renderCart();
     var m=String(err&&err.message||"");$("#sendNote").textContent=(/[a-zà-ú]{4}/i.test(m)&&m.length<140?m:"Não conseguimos registrar o pedido agora.")+" ";
     var a=document.createElement("a");a.href=wa(mensagem(d,null));a.target="_blank";a.rel="noopener";a.textContent="Enviar só pelo WhatsApp";$("#sendNote").appendChild(a)})

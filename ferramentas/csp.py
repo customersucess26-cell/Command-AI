@@ -13,6 +13,7 @@ senão aquele script deixa de funcionar.
 """
 import base64
 import hashlib
+import os
 import re
 import sys
 from html.parser import HTMLParser
@@ -76,7 +77,14 @@ def aplicar(caminho):
     p.feed(limpo)
     hashes = [base64.b64encode(hashlib.sha256(s.encode("utf-8")).digest()).decode()
               for s in p.inline]
-    meta = f'\n<meta http-equiv="Content-Security-Policy" content="{politica(limpo, hashes)}">'
+    # scripts locais (<script src="assets/app.js">) também contam para saber o que a página usa
+    texto = limpo
+    pasta = os.path.dirname(caminho)
+    for src in re.findall(r'<script[^>]+src="([^":]+)"', limpo):
+        arq = os.path.join(pasta, src)
+        if os.path.isfile(arq):
+            texto += open(arq, encoding="utf-8", errors="ignore").read()
+    meta = f'\n<meta http-equiv="Content-Security-Policy" content="{politica(texto, hashes)}">'
     m = re.search(r'<meta charset="?utf-8"?\s*/?>', limpo, re.I)
     if not m:
         sys.exit(f"{caminho}: falta <meta charset=\"utf-8\"> no <head>")

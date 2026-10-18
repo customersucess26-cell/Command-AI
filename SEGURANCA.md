@@ -64,14 +64,35 @@ A partir daí:
 - o banco recalcula preço, taxa e total de cada pedido;
 - todo pedido feito pelo site começa como "a receber", mesmo que alguém tente gravar "pago".
 
-O modelo `modelos/padaria-cafe.html` usa a versão 17 do projeto Padaria & Café, com painel próprio embutido no arquivo (acesso por `#admin`; login de demonstração `admin@demo.ebistro`, senha `admin@2026`). As versões anteriores estão em `historico/`.
+### Rastreio do pedido (hamburgueria e padaria)
 
-Atenção: esse arquivo é um build de demonstração. Nele os dados ficam só no navegador. A versão com banco usa o esquema próprio do projeto (`stores`, `store_id` e a função `create_order`), que está no código-fonte Next.js, não neste repositório. Os arquivos `03` e `05` daqui são das lojas em `sites/` e **não** servem para ele.
+Todo pedido feito pelo site ganha um link secreto de acompanhamento, `pedido.html#<código de 48 a 64 letras>`, que vai na mensagem do WhatsApp. O cliente vê a linha do tempo do pedido (recebido → confirmado → em preparo → pronto ou saiu para entrega → entregue), os itens, o total e o pagamento. A página se atualiza sozinha a cada 20 segundos.
+
+- O link não mostra telefone, endereço nem anotações internas. Ele lê só pela função `rastrear_pedido` do banco.
+- No painel da hamburgueria, as mensagens de status já levam o link, e o pedido tem o botão "Copiar link de rastreio".
+- `pedido.html#demo` mostra um exemplo andando sozinho, bom para apresentar a clientes.
+- O código-fonte fica em `paineis/rastreio/`. O `montar-paineis.sh` copia para os sites que recebem pedidos.
+
+### Padaria & Café com banco (`sites/padaria-cafe/`)
+
+É o projeto v17 que você enviou, com o mesmo visual e o mesmo painel (`#admin`, ou o endereço `admin/` que leva até ele). O código compilado foi ligado ao Supabase pelo `ferramentas/padaria-ligar-banco.py`. O original está em `historico/padaria-v17-app-original.js`. As 117 fotos saíram de dentro do HTML para `images/`.
+
+**Sem Supabase**, funciona como demonstração: a encomenda abre no WhatsApp da loja (configurado em `assets/config.js`) e nada fica salvo para a loja.
+
+**Com Supabase** (um projeto só para a padaria):
+1. No SQL Editor, rode nesta ordem: `01-admins.sql`, `06-padaria.sql` e `seed-padaria.sql`.
+2. Desligue novos cadastros (Authentication > Sign In / Providers > "Allow new users to sign up" desligado). Crie o usuário do dono em Authentication > Users e coloque o e-mail dele na tabela `admins` (fim do `01-admins.sql`).
+3. Preencha `assets/config.js` com a URL, a chave **anon** e o WhatsApp.
+4. Entre em `seusite.com.br/admin/` e troque, em Painel > Site, os textos, endereço e telefone de exemplo.
+
+O que o banco garante: o preço é recalculado em cada pedido (com aviso se mudou), a data e a antecedência são conferidas, e pedido repetido por clique duplo não é gravado duas vezes. Status, pagamento, estorno e desconto só mudam pelas regras do painel, e cada mudança fica no histórico com quem fez. O visitante não lê nenhum pedido. Por segurança, usuários do painel são criados e removidos no Supabase, não pelo painel.
+
+O arquivo `modelos/padaria-cafe.html` continua sendo a demonstração em arquivo único (login `admin@demo.ebistro`, senha `admin@2026`), para mostrar a clientes.
 
 ## O que ainda depende de você
 
 - **Painel `admin/`:** antes de conectar o Supabase, ele abre em modo demonstração, com dados fictícios e nada salvo. Para usar com dados reais, siga os passos do Supabase acima.
-- **Modelo padaria:** no arquivo atual, o login do painel é só de demonstração e fica no navegador. Proteção real exige ligar o Supabase no código-fonte Next.js (que também não está aqui) e aplicar o `03-loja-pedidos.sql`. Os usuários criados pelo painel precisam entrar na tabela `admins`.
+- **Padaria (`sites/padaria-cafe/`):** o painel dela não tem a 2ª etapa de login (ela não existia no projeto v17). Use senha forte e única. Se quiser exigir 2 etapas pelo banco, siga a dica do `01-admins.sql`, mas aí o painel da padaria precisará ganhar a tela do código.
 - **Chat da Bia com IA (`aiUrl`):** se usar, a chave da IA tem que ficar só na função do servidor, com limite de mensagens por visitante.
 
 ## Sobre "segurança da NASA"
@@ -108,6 +129,14 @@ Não existe site impossível de invadir. O que existe é fechar todas as portas 
 | SQL: rodar os 3 arquivos duas vezes | ✅ Sem erro |
 | Lojas: `05-loja-tabelas.sql` + `03` + seeds num banco novo, duas vezes | ✅ Sem erro; 24 produtos na hamburgueria e 42 no Âmbar, iguais aos sites |
 | Lojas: pedido do site com preço R$ 1 e pagamento "pago" | ✅ Gravado com o preço do banco (2 × R$ 36 + R$ 7 de entrega = R$ 79) e "a receber" |
+| Padaria: `06-padaria.sql` + seed duas vezes num banco novo | ✅ Sem erro; 52 produtos, 8 categorias |
+| Padaria (SQL): total adulterado, data passada, quantidade 100, entrega sem endereço | ✅ Recusados com a mensagem certa |
+| Padaria (SQL): clique duplo (mesma chave) | ✅ Um pedido só |
+| Padaria (SQL): pular etapa, confirmar "sob consulta" sem valor, receber mais que o total, estornar mais que o recebido | ✅ Recusados |
+| Padaria (SQL): visitante e usuário que não é admin leem pedidos ou mudam status | ✅ Negado |
+| Ponta a ponta com PostgREST 12 (a mesma API do Supabase): pedido na padaria, total R$ 184,80, link de rastreio no WhatsApp, rastreio na tela, pedido no painel | ✅ |
+| Ponta a ponta: pedido na hamburgueria com link de rastreio; o código do link é o mesmo gravado no banco | ✅ |
+| Rastreio no iPhone (emulação): sem rolagem lateral; sem banco mostra aviso | ✅ |
 | Hamburgueria sem Supabase: carrinho, nome obrigatório, WhatsApp | ✅ |
 | Hamburgueria com Supabase simulado: cardápio e preço vindos do banco, nome com HTML exibido como texto, taxa de entrega, pedido gravado com código e WhatsApp aberto | ✅ |
 | Âmbar com Supabase simulado: pratos, vinhos, coverflow, números da casa, endereço e reserva pelo WhatsApp | ✅ Nenhum prato ficou invisível |

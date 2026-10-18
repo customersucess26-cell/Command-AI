@@ -129,6 +129,10 @@ begin
   new.admin_notes  := '';
   new.created_at   := now();
   new.code         := left(coalesce(new.code, ''), 16);
+  if to_jsonb(new) ? 'track_token' and coalesce(to_jsonb(new) ->> 'track_token', '') !~ '^[a-f0-9]{32,64}$' then
+    new := jsonb_populate_record(new, jsonb_build_object('track_token',
+             replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', '')));
+  end if;
 
   if (select count(*) from public.orders
        where created_at > now() - interval '10 minutes'
