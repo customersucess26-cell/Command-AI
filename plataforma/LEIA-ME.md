@@ -23,7 +23,7 @@ O painel é gerado a partir de `paineis/loja/` pelo `ferramentas/montar-painel-p
 ### 1. Supabase (um projeto só para a plataforma)
 1. Crie o projeto em supabase.com. No SQL Editor, cole e rode `supabase/01-plataforma.sql`.
 2. **Authentication > Sign In / Providers > Email:** deixe o cadastro ligado (os empreendedores se cadastram sozinhos) e a confirmação de e-mail ligada.
-3. **Authentication > URL Configuration:** em *Site URL*, coloque o endereço da plataforma (ex.: `https://app.bistroconnect.com.br`). Em *Redirect URLs*, adicione `https://app.bistroconnect.com.br/entrar.html`.
+3. **Authentication > URL Configuration:** em *Site URL*, coloque o endereço da plataforma (ex.: `https://app.bistroconnect.com.br`). Em *Redirect URLs*, adicione `https://app.bistroconnect.com.br/entrar.html*` (com o asterisco, para os links de confirmação, de nova senha e de convite).
 4. **Authentication > Multi-Factor:** confira se o TOTP (aplicativo autenticador) está ligado. Ele já vem ligado.
 5. Se o plano tiver a opção, ligue a proteção contra senhas vazadas.
 6. Crie a **sua** conta pelo `entrar.html` e torne-se administrador da plataforma. Rode no SQL Editor, trocando o e-mail:

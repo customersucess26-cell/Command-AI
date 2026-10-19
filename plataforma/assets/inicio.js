@@ -17,10 +17,10 @@
   }
 
   var EXTRAS = [
-    ["Loja e cardápio completos", "Pedidos e rastreio", "Painel e financeiro"],
-    ["Tudo do Começo", "Equipe com funções", "Suporte pelo WhatsApp"],
-    ["Tudo do Crescendo", "Relatórios por período", "Até 30 pessoas na equipe"],
-    ["Tudo do Forte", "Valor fixo, venda o quanto quiser", "Atendimento prioritário"]
+    ["Todos os recursos incluídos", "Sem comissão por pedido", "Suporte pelo WhatsApp"],
+    ["Todos os recursos incluídos", "Sem comissão por pedido", "Suporte pelo WhatsApp"],
+    ["Todos os recursos incluídos", "Sem comissão por pedido", "Suporte pelo WhatsApp"],
+    ["Todos os recursos incluídos", "Valor fixo, venda o quanto quiser", "Suporte pelo WhatsApp"]
   ];
 
   function desenha(planos) {
@@ -28,7 +28,7 @@
     box.textContent = "";
     planos.forEach(function (p, i) {
       var art = el("article", "plano" + (i === 1 ? " destaque" : ""));
-      if (i === 1) art.appendChild(el("span", "tag", "Mais comum"));
+      if (i === 1) art.appendChild(el("span", "tag", "Para crescer"));
       art.appendChild(el("h3", "", p.nome));
       var faixa = p.ate_valor == null ? "Acima de " + brl(anterior) + "/mês" : "Vendas de até " + brl(p.ate_valor) + "/mês";
       art.appendChild(el("span", "faixa", faixa));
