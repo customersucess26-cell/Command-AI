@@ -808,7 +808,11 @@ header.nav{box-shadow:0 1px 0 rgba(201,162,74,.35)!important}
 .stage-browser .bar span{display:flex;align-items:center;gap:6px}
 @media (max-width:920px){.tpl-sw{left:10px;top:8px}.tpl-sw button{font-size:11px;padding:5px 10px}}
 
-/* Bistrô Connect: marca em texto e planos em 4 faixas */
+/* Bistrô Connect: logo e planos em 4 faixas */
+.logo img.bc-logo{height:78px!important;width:auto!important;max-width:none!important;display:block;filter:none!important;border-radius:0!important}
+.logo::before,.logo::after{display:none!important}
+header.nav .in{height:88px!important}
+@media (max-width:560px){.logo img.bc-logo{height:60px!important}header.nav .in{height:70px!important}}
 .bc-word{display:block;font:600 22px/1 'Fraunces',Georgia,serif;color:#0E2433;letter-spacing:-.01em;white-space:nowrap;text-align:center}
 .bc-word .bc-c{display:inline!important;font:inherit;color:#B8862F!important}
 footer .bc-word,.dark .bc-word{color:#fff}
@@ -829,7 +833,7 @@ footer .bc-word,.dark .bc-word{color:#fff}
 
 <header class="nav">
   <div class="in">
-    <a class="logo" href="#topo" aria-label="Bistrô Connect, início"><span class="lk "><img class="lk-mark" src="/assets/img/inicio/d5ce3b350d.png" alt=""><span class="lk-txt"><span class="lk-word bc-word">Bistrô <span class="bc-c">Connect</span></span><small>A evolução digital da sua gastronomia</small></span></span></a>
+    <a class="logo" href="#topo" aria-label="Bistrô Connect, início"><img class="bc-logo" src="/assets/img/logo-bistro-connect.png" alt="Bistrô Connect · A evolução digital da sua gastronomia" width="302" height="170"></a>
     <nav class="nav-links" aria-label="Seções">
       <a href="#modelos">Modelos</a>
       <a href="#sites">Painel</a>
