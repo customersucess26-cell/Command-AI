@@ -82,6 +82,13 @@ def aplicar(caminho):
     pasta = os.path.dirname(caminho)
     for src in re.findall(r'<script[^>]+src="([^":]+)"', limpo):
         arq = os.path.join(pasta, src)
+        if src.startswith("/"):  # caminho a partir da raiz do site: procura subindo as pastas
+            base = os.path.abspath(pasta)
+            while True:
+                arq = os.path.join(base, src.lstrip("/"))
+                if os.path.isfile(arq) or os.path.dirname(base) == base:
+                    break
+                base = os.path.dirname(base)
         if os.path.isfile(arq):
             texto += open(arq, encoding="utf-8", errors="ignore").read()
     meta = f'\n<meta http-equiv="Content-Security-Policy" content="{politica(texto, hashes)}">'

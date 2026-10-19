@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#1c1612">
+<meta name="description" content="Cardápio e pedidos online. Feito com Bistrô Connect.">
+<title>Cardápio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Bebas+Neue&family=Cormorant+Garamond:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/assets/loja.css">
+</head>
+<body>
+<div class="estado" id="estado" role="status" aria-live="polite">
+  <div class="giro" aria-hidden="true"></div>
+  <p id="estadoTxt">Abrindo o cardápio…</p>
+  <a class="btn" id="estadoBtn" href="/" hidden>Conhecer o Bistrô Connect</a>
+</div>
+
+<div id="app" hidden>
+  <header class="capa">
+    <div class="capa-fundo" id="capaFundo"></div>
+    <div class="capa-conteudo">
+      <div class="logo" id="logo" aria-hidden="true"></div>
+      <div class="capa-txt">
+        <span class="selo" id="selo"></span>
+        <h1 id="nome"></h1>
+        <p class="descricao" id="descricao"></p>
+      </div>
+    </div>
+  </header>
+
+  <section class="infos" id="infos" aria-label="Informações da loja"></section>
+  <div class="pausa" id="pausa" hidden>
+    <b>Pedidos pelo site pausados agora.</b>
+    <span>Você pode ver o cardápio e chamar a loja no WhatsApp.</span>
+  </div>
+
+  <nav class="abas" id="abas" aria-label="Categorias do cardápio"><div class="abas-trilho" id="abasTrilho"></div></nav>
+
+  <main class="menu" id="menu"></main>
+
+  <footer class="rodape">
+    <p id="rodapeLoja"></p>
+    <a href="/">Feito com <b>Bistrô Connect</b></a>
+  </footer>
+</div>
+
+<button class="barra" id="barra" type="button" hidden>
+  <span class="barra-qtd" id="barraQtd">0</span>
+  <span class="barra-txt">Ver pedido</span>
+  <span class="barra-total" id="barraTotal">R$ 0,00</span>
+</button>
+
+<div class="veu" id="veu" hidden></div>
+<aside class="folha" id="folha" role="dialog" aria-modal="true" aria-labelledby="folhaTitulo" hidden>
+  <div class="folha-topo">
+    <button class="voltar" id="folhaVoltar" type="button" aria-label="Voltar" hidden>‹</button>
+    <h2 id="folhaTitulo" tabindex="-1">Seu pedido</h2>
+    <button class="fechar" id="folhaFechar" type="button" aria-label="Fechar">×</button>
+  </div>
+
+  <div class="folha-corpo" id="passoCarrinho">
+    <div id="linhas"></div>
+    <div class="resumo" id="resumoCarrinho"></div>
+    <p class="nota" id="notaCarrinho"></p>
+  </div>
+
+  <form class="folha-corpo" id="passoDados" novalidate hidden>
+    <label class="campo"><span>Seu nome</span><input id="fNome" name="nome" maxlength="80" autocomplete="name" required></label>
+    <label class="campo"><span>Seu WhatsApp</span><input id="fFone" name="fone" maxlength="16" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" required></label>
+    <fieldset class="opcoes" id="tipoBox">
+      <legend>Como você quer receber?</legend>
+      <label class="opcao" id="optEntrega"><input type="radio" name="tipo" value="entrega"><span>Entrega <small id="taxaTxt"></small></span></label>
+      <label class="opcao" id="optRetirada"><input type="radio" name="tipo" value="retirada"><span>Retirar na loja <small>sem taxa</small></span></label>
+    </fieldset>
+    <label class="campo" id="campoEnd"><span>Endereço para entrega</span><input id="fEnd" name="endereco" maxlength="200" autocomplete="street-address" placeholder="Rua, número, bairro e complemento"></label>
+    <fieldset class="opcoes" id="pagBox"><legend>Pagamento</legend><div id="pagOpcoes"></div></fieldset>
+    <label class="campo"><span>Para quando? <small>(opcional)</small></span><input id="fQuando" name="quando" maxlength="60" placeholder="Ex.: o quanto antes, hoje 19h"></label>
+    <label class="campo"><span>Observações <small>(opcional)</small></span><textarea id="fObs" name="obs" maxlength="300" rows="2" placeholder="Ex.: sem cebola, troco para R$ 50"></textarea></label>
+    <div class="resumo" id="resumoDados"></div>
+    <p class="erro" id="erroDados" role="alert"></p>
+  </form>
+
+  <div class="folha-corpo pronto" id="passoPronto" hidden>
+    <div class="ok-ico" aria-hidden="true">✓</div>
+    <p class="ok-titulo">Pedido recebido!</p>
+    <span class="ok-codigo" id="okCodigo"></span>
+    <p class="ok-txt" id="okTxt"></p>
+    <a class="btn zap" id="okZap" target="_blank" rel="noopener noreferrer">Enviar no WhatsApp</a>
+    <a class="btn claro" id="okRastreio" target="_blank" rel="noopener">Acompanhar pedido</a>
+    <button class="btn claro" id="okFechar" type="button">Voltar ao cardápio</button>
+  </div>
+
+  <div class="folha-pe" id="folhaPe">
+    <button class="btn" id="btnAvancar" type="button">Continuar</button>
+  </div>
+</aside>
+
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+
+<noscript><p class="semjs">Este cardápio precisa de JavaScript. Se abriu pela pré-visualização do celular, abra o link no navegador (Safari ou Chrome).</p></noscript>
+<script src="/assets/config.js"></script>
+<script src="/assets/loja.js"></script>
+</body>
+</html>

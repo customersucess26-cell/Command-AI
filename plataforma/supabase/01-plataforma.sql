@@ -271,7 +271,8 @@ create trigger lojas_updated_at before update on public.lojas for each row execu
 create or replace function public.lojas_quem_altera()
 returns trigger language plpgsql security definer set search_path = '' as $$
 begin
-  if public.eh_admin_plataforma() or public.pode(new.id, array['dono','gerente']) then
+  -- auth.uid() vazio = SQL Editor ou chave service_role (o visitante não tem permissão de UPDATE em lojas)
+  if auth.uid() is null or public.eh_admin_plataforma() or public.pode(new.id, array['dono','gerente']) then
     return new;
   end if;
   if (to_jsonb(new) - 'accept_orders' - 'updated_at') is distinct from (to_jsonb(old) - 'accept_orders' - 'updated_at') then
