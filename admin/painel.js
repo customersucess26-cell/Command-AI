@@ -275,7 +275,7 @@ function qData(){const sub=qItems.reduce((s,i)=>s+(i.q||0)*(i.v||0),0),lanc=$('#
 function nextNumero(){const y=hoje().slice(0,4),ns=orcs.filter(o=>String(o.numero||'').startsWith('BT-'+y)).map(o=>parseInt(String(o.numero).split('-')[2])||0);return 'BT-'+y+'-'+String((ns.length?Math.max(...ns):0)+1).padStart(3,'0')}
 function drawSheet(){if(!$('#sheet'))return;const o=qData(),P=PLANOS[o.plano]||PLANOS.Profissional,mk=esc(cfg.marca||'Bistrô Connect');
   $('#sheet').innerHTML=`
-  <div class="sh-head"><div class="sh-brand"><img class="sh-logo" src="img/logo-bistro-connect.png" alt="${mk}"></div>
+  <div class="sh-head"><div class="sh-brand"><img class="sh-logo" src="img/logo-bistro-connect-clara.png" alt="${mk}"></div>
   <div class="sh-num"><div class="k">Orçamento</div><div class="n">${esc(o.numero)}</div><div class="d">Emitido em ${fmtDataLonga(o.data)}<br>Válido até ${fmtDataLonga(o.validoAte)}</div></div></div>
   <div class="sh-body">
     <div class="sh-cols">
@@ -483,10 +483,40 @@ async function start(){if(started)return;started=true;
 
 modo=lsGet('eb-modo','quadro')==='lista'?'lista':'quadro';document.querySelectorAll('[data-modo]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.modo===modo));
 setPlano('Profissional');fillCfg();
+
+/* ================= conectar o painel pela própria tela ================= */
+const RX_URL=/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/;
+function conexaoLocal(){try{const v=JSON.parse(localStorage.getItem('bc-supa')||'null');return v&&RX_URL.test(v.url||'')&&/^eyJ/.test(v.key||'')?v:{}}catch(e){return {}}}
+let cxDados=null;
+$('#fConecta').addEventListener('submit',async function(e){e.preventDefault();msgAuth('');
+  const url=$('#cxUrl').value.trim().replace(/\/+$/,''),key=$('#cxKey').value.replace(/\s+/g,''),zap=$('#cxZap').value.replace(/\D/g,'');
+  if(!RX_URL.test(url))return msgAuth('A Project URL tem este formato: https://xxxxxxxx.supabase.co');
+  if(!/^eyJ[\w-]+\.[\w-]+\.[\w-]+$/.test(key))return msgAuth('A chave anon começa com "eyJ" e tem dois pontos no meio. Copie de novo, inteira.');
+  try{const p=JSON.parse(atob(key.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));if(p.role==='service_role')return msgAuth('Essa é a chave service_role (secreta). Use a chave anon public.')}catch(x){}
+  if(zap&&(zap.length<10||zap.length>13))return msgAuth('Confira o WhatsApp: DDD + número.');
+  const b=this.querySelector('button[type=submit]');b.disabled=true;b.textContent='Testando…';
+  try{const r=await fetch(url+'/rest/v1/leads?select=id&limit=1',{headers:{apikey:key,Authorization:'Bearer '+key},cache:'no-store'});
+    let j={};try{j=await r.json()}catch(x){}
+    const txt=JSON.stringify(j);
+    if(r.status===404||/PGRST205|42P01|does not exist|Could not find the table/i.test(txt))throw new Error('Conectou, mas as tabelas não existem. Rode o arquivo ebistro-banco-completo.sql no SQL Editor do Supabase e tente de novo.');
+    if(/Invalid API key|No API key|JWSError|JWT/i.test(txt))throw new Error('A chave não confere com essa URL. Copie a chave anon public do mesmo projeto.');
+    if(!r.ok&&!/42501|permission denied/i.test(txt))throw new Error('O Supabase respondeu com erro ('+r.status+'). Confira a URL e a chave.');
+    cxDados={url,key,zap:zap.length===10||zap.length===11?'55'+zap:zap};
+    try{localStorage.setItem('bc-supa',JSON.stringify({url,key}))}catch(x){}
+    $('#fConecta').hidden=true;$('#cxOk').hidden=false}
+  catch(err){msgAuth(/Failed to fetch|NetworkError|Load failed/i.test(err.message)?'Não encontrei esse endereço. Confira a Project URL.':err.message)}
+  finally{b.disabled=false;b.textContent='Testar e conectar'}});
+$('#btnBaixaCfg').addEventListener('click',()=>{const B=window.BISTRO||{},d=cxDados||{};const q=v=>JSON.stringify(String(v||''));
+  const txt='/* Configuração do site Bistrô Connect (gerada pelo painel). Este arquivo é público: só a chave anon, nunca a service_role. */\nwindow.BISTRO = {\n  // WhatsApp que recebe os contatos: 55 + DDD + número, só dígitos\n  whatsapp: '+q(d.zap||B.whatsapp)+',\n  // ID do Meta Pixel (opcional)\n  pixelId: '+q(B.pixelId)+',\n  // Supabase: leads do formulário e do chat\n  supabaseUrl: '+q(d.url)+',\n  supabaseKey: '+q(d.key)+',\n  // Função de IA do chat (opcional)\n  aiUrl: '+q(B.aiUrl)+'\n};\nif (!window.BISTRO.whatsapp) console.warn("Bistrô Connect: preencha o WhatsApp em assets/config.js");\n';
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:'application/javascript'}));a.download='config.js';document.body.appendChild(a);a.click();a.remove()});
+$('#btnEntrarAgora').addEventListener('click',()=>location.reload());
+$('#btnTrocaBanco').addEventListener('click',()=>{if(!confirm('Desligar este navegador do banco atual e conectar outro?'))return;try{localStorage.removeItem('bc-supa')}catch(e){}location.reload()});
+
 (async()=>{
   let msg='';try{msg=sessionStorage.getItem('eb-msg')||'';sessionStorage.removeItem('eb-msg')}catch(e){}
-  const B=window.BISTRO||{},url=String(B.supabaseUrl||''),chave=String(B.supabaseKey||'');
+  const B=window.BISTRO||{},LOCAL=conexaoLocal(),url=String(B.supabaseUrl||LOCAL.url||''),chave=String(B.supabaseKey||LOCAL.key||'');
   if(!window.supabase||!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(url)||!chave){mostraForm('semConfig');return}
+  if(!B.supabaseUrl&&LOCAL.url)$('#btnTrocaBanco').hidden=false;
   db=window.supabase.createClient(url.replace(/\/$/,''),chave,{auth:{storage:window.sessionStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
   db.auth.onAuthStateChange(ev=>{if(ev==='SIGNED_OUT'&&!$('#app').hidden&&!saindo)sair('Sua sessão terminou. Entre de novo.')});
   const {data}=await db.auth.getSession();

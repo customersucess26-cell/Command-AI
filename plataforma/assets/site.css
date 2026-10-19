@@ -210,5 +210,5 @@ p.intro{font-size:19px;color:var(--suave);max-width:38em;margin:0 0 40px}
 @media (max-width:420px){.marca{font-size:17px;gap:8px}.marca svg{width:30px;height:30px}.topo nav{gap:2px}.topo nav a{padding:12px 8px}.topo .btn{padding:0 14px}}
 
 /* logo oficial (imagem) em placa clara, legível no fundo escuro */
-.marca-logo{height:72px;width:auto;display:block;background:#fff;border-radius:16px;padding:6px 12px}
+.marca-logo{height:80px;width:auto;display:block}
 @media (max-width:560px){.marca-logo{height:58px}}

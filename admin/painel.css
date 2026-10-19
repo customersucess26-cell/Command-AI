@@ -349,4 +349,9 @@ details.hp .hb li{margin:5px 0}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* orçamento: logo Bistrô Connect completa */
-.sh-brand img.sh-logo{height:92px!important;width:auto!important;border-radius:12px!important;filter:none!important;background:#fff;padding:6px 12px}
+.sh-brand img.sh-logo{height:96px!important;width:auto!important;border-radius:0!important;filter:none!important;background:none!important;padding:0!important;box-shadow:none!important}
+
+/* conectar o painel: campo da chave com o mesmo visual dos outros campos */
+.auth-card textarea{display:block;width:100%;margin-top:6px;background:var(--side);border:1px solid var(--side-3);color:var(--side-fg);border-radius:12px;padding:12px 14px;font:inherit;font-size:16px;line-height:1.4;resize:vertical;word-break:break-all}
+.auth-card textarea:focus{outline:2px solid var(--accent,#2BA8FF);outline-offset:1px}
+#cxOk .btn{width:100%;margin-top:10px}

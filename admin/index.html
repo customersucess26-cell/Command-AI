@@ -30,6 +30,7 @@
       <label>E-mail<input id="lgEmail" type="email" autocomplete="username" maxlength="190" required></label>
       <label>Senha<input id="lgSenha" type="password" autocomplete="current-password" maxlength="200" required></label>
       <button class="btn primary big" type="submit">Entrar</button>
+      <button class="btn link" type="button" id="btnTrocaBanco" hidden>Trocar a conexão com o banco</button>
     </form>
 
     <form id="fCodigo" novalidate hidden>
@@ -51,9 +52,22 @@
     </form>
 
     <div id="semConfig" hidden>
-      <h1>Painel ainda não conectado</h1>
-      <p class="muted">Preencha <code>supabaseUrl</code> e <code>supabaseKey</code> em <code>assets/config.js</code> e rode os arquivos da pasta <code>supabase/</code>. O passo a passo está no SEGURANCA.md.</p>
-      <button class="btn primary big" type="button" id="btnDemo">Ver demonstração com dados fictícios</button>
+      <h1>Conectar o painel</h1>
+      <p class="muted">Falta ligar o painel ao banco de dados (Supabase). No Supabase, abra <b>Project Settings › API</b> e cole aqui as duas informações:</p>
+      <form id="fConecta" novalidate>
+        <label>Project URL<input id="cxUrl" type="url" inputmode="url" placeholder="https://xxxxxxxx.supabase.co" autocomplete="off" spellcheck="false" maxlength="120"></label>
+        <label>Chave anon public<textarea id="cxKey" rows="3" placeholder="eyJhbGciOi..." spellcheck="false" maxlength="600"></textarea></label>
+        <label>WhatsApp que recebe os leads do site (opcional)<input id="cxZap" inputmode="tel" placeholder="(42) 99999-9999" maxlength="20"></label>
+        <p class="muted fino">Nunca cole a chave <b>service_role</b>: ela é secreta e não deve ficar em nenhum site.</p>
+        <button class="btn primary big" type="submit">Testar e conectar</button>
+      </form>
+      <div id="cxOk" hidden>
+        <p class="auth-msg ok">Conectado! O banco respondeu e as tabelas estão prontas.</p>
+        <p class="muted">Este navegador já está ligado ao painel. Para o <b>formulário e a Bia do site</b> também gravarem os leads, baixe o <code>config.js</code> e envie para a pasta <code>assets/</code> na Hostinger, substituindo o antigo.</p>
+        <button class="btn big" type="button" id="btnBaixaCfg">Baixar config.js</button>
+        <button class="btn primary big" type="button" id="btnEntrarAgora">Entrar no painel</button>
+      </div>
+      <button class="btn link" type="button" id="btnDemo">Ver demonstração com dados fictícios</button>
     </div>
 
     <p class="auth-msg" id="authMsg" role="alert"></p>
