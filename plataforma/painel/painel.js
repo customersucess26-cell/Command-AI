@@ -77,7 +77,7 @@ async function segundaEtapa(){
   const f=await db.auth.mfa.listFactors();if(f.error)throw f.error;
   if(f.data.totp&&f.data.totp.length){$('#cdCodigo').value='';return mostraForm('fCodigo')}
   for(const p of (f.data.all||[]).filter(x=>x.status==='unverified'))await db.auth.mfa.unenroll({factorId:p.id});
-  const e=await db.auth.mfa.enroll({factorType:'totp',friendlyName:'Bistrô Connect '+Date.now()});if(e.error)throw e.error;
+  const e=await db.auth.mfa.enroll({factorType:'totp',issuer:'Bistrô Connect',friendlyName:'Bistrô Connect '+Date.now()});if(e.error)throw e.error;
   fatorNovo=e.data.id;$('#qr2fa').src=e.data.totp.qr_code;$('#seg2fa').textContent=e.data.totp.secret;$('#cdNovo').value='';mostraForm('fCadastro2fa')}
 async function verifica(fatorId,codigo,botao){if(!/^\d{6}$/.test(codigo))return msgAuth('Digite os 6 números do app.');botao.disabled=true;msgAuth('');
   try{const r=await db.auth.mfa.challengeAndVerify({factorId:fatorId,code:codigo});if(r.error)throw r.error;await escolheLoja()}catch(e){msgAuth(erroAmigavel(e))}finally{botao.disabled=false}}

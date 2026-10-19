@@ -153,8 +153,8 @@ j = troca(j, "function mostraForm(id){['fLogin','fCodigo','fCadastro2fa','semCon
 j = troca(j, "  if(n.data.currentLevel==='aal2')return start();", "  if(n.data.currentLevel==='aal2')return escolheLoja();")
 j = troca(j, "const r=await db.auth.mfa.challengeAndVerify({factorId:fatorId,code:codigo});if(r.error)throw r.error;await start()}",
           "const r=await db.auth.mfa.challengeAndVerify({factorId:fatorId,code:codigo});if(r.error)throw r.error;await escolheLoja()}")
-j = troca(j, "const e=await db.auth.mfa.enroll({factorType:'totp',friendlyName:'Painel da loja '+Date.now()});",
-          "const e=await db.auth.mfa.enroll({factorType:'totp',friendlyName:'Bistrô Connect '+Date.now()});")
+j = troca(j, "const e=await db.auth.mfa.enroll({factorType:'totp',issuer:String(CFG.nome||'Painel da loja').slice(0,60),friendlyName:'Painel da loja '+Date.now()});",
+          "const e=await db.auth.mfa.enroll({factorType:'totp',issuer:'Bistrô Connect',friendlyName:'Bistrô Connect '+Date.now()});")
 
 # dados por loja
 j = troca(j, "if(!qual||qual==='settings')tarefas.push(db.from('settings').select('*').eq('id',1).maybeSingle().then(r=>{if(r.error)throw r.error;if(r.data)settings=r.data}));",
