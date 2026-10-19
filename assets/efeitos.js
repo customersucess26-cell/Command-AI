@@ -94,7 +94,16 @@
     });
   }
 
-  function iniciar() { revelar(); contar(); vidro(); mascaras(); }
+  /* [data-aparece-apos=".hero"]: ganha .mostra quando o elemento indicado sai da tela (botão fixo no celular) */
+  function aparecer() {
+    document.querySelectorAll("[data-aparece-apos]").forEach(function (el) {
+      var alvo = document.querySelector(el.getAttribute("data-aparece-apos"));
+      if (!alvo || !("IntersectionObserver" in window)) { el.classList.add("mostra"); return; }
+      new IntersectionObserver(function (es) { el.classList.toggle("mostra", !es[0].isIntersecting && es[0].boundingClientRect.top < 0); }).observe(alvo);
+    });
+  }
+
+  function iniciar() { revelar(); contar(); vidro(); mascaras(); aparecer(); }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciar); else iniciar();
   window.BCEfeitos = { revelar: revelar, contar: contar, confete: confete, parado: parado };
 })();
