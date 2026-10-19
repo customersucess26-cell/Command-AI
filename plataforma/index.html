@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pC5C2eQy7CwWSy0A4T47tZF4vz3TW/B0TXtVQtSkLEA=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-v/BP6AWXJgMNzSAh4ZxI5DhH7nmf81b960EMT0/ffFM=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-cb1zVs6bMBnxPH0EyUams8EMHH07Ma8gDI6Xb3vFh9k=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Cardápio digital e pedidos no WhatsApp, sem comissão</title>
 <meta name="description" content="Crie grátis a loja online da sua padaria, café, hamburgueria ou restaurante: cardápio com fotos, pedido pronto no WhatsApp, rastreio para o cliente e painel completo. Sem comissão por pedido.">
@@ -16,14 +16,9 @@
 
 <!-- ========= CONFIGURAÇÃO: troque estes valores antes de publicar ========= -->
 <script src="/assets/config.js"></script>
-<script>window.MRTECH={whatsapp:(window.BC||{}).suporteWhatsapp||"",pixelId:(window.BC||{}).pixelId||""};</script>
-<!-- Meta Pixel: só carrega se pixelId estiver preenchido -->
-<script>
-  window.ebPixel=function(){var id=window.MRTECH.pixelId;if(!id||window.fbq)return;
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init',id);fbq('track','PageView');};
-  try{if(localStorage.getItem('eb-consent')==='sim')window.ebPixel()}catch(e){}
-</script>
+<script>window.MRTECH={whatsapp:(window.BC||{}).suporteWhatsapp||""};</script>
+<script src="/assets/medicao.js"></script>
+<script src="/assets/nicho.js"></script>
 <!-- ======================================================================= -->
 
 <style>
@@ -1478,16 +1473,11 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
   var CFG=window.MRTECH||{};
   var brl=function(n){return 'R$ '+Math.round(n).toLocaleString('pt-BR')};
   var brl2=function(n){return 'R$ '+n.toFixed(2).replace('.',',')};
-  var track=function(ev,data){try{if(window.fbq)fbq('track',ev,data||{})}catch(e){}};
+  var track=function(ev,data){if(window.BCMedir)window.BCMedir(ev,data)};
   var waLink=function(txt){return 'https://wa.me/'+(CFG.whatsapp||'')+'?text='+encodeURIComponent(txt)};
   document.getElementById('ano').textContent=new Date().getFullYear();
 
-  /* consentimento de cookies de marketing (LGPD): o Pixel só liga depois do "Aceitar" */
-  (function(){var esc;try{esc=localStorage.getItem('eb-consent')}catch(e){}if(!CFG.pixelId||esc)return;
-    var b=document.createElement('div');b.className='consent';b.setAttribute('role','region');b.setAttribute('aria-label','Aviso de cookies');
-    b.innerHTML='<p>Usamos cookies de marketing (Meta Pixel) para medir nossas campanhas. Você escolhe.</p><div><button type="button" data-c="nao">Recusar</button><button type="button" class="btn-mint" data-c="sim">Aceitar</button></div>';
-    b.addEventListener('click',function(e){var c=e.target.getAttribute('data-c');if(!c)return;try{localStorage.setItem('eb-consent',c)}catch(x){}if(c==='sim'&&window.ebPixel)window.ebPixel();b.remove()});
-    document.body.appendChild(b)})();
+  /* aviso de cookies e Pixel/Google: assets/medicao.js */
   /* WhatsApp flutuante */
   var wf=document.getElementById('waFloat');
   wf.href=waLink('Olá! Vi o site do Bistrô Connect e quero saber mais sobre o cardápio digital.');
@@ -1600,7 +1590,9 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
   function heroPick(k){document.querySelectorAll('[data-model]').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.model===k)});heroSet(k)}
   document.querySelectorAll('[data-model]').forEach(function(b){b.addEventListener('click',function(e){if(e.isTrusted)hero.__user=true;heroPick(b.dataset.model)})});
   document.querySelectorAll('[data-mount]').forEach(function(p,i){mountMenu(p,p.dataset.mount);autoLoop(p,1500+i*2200)});
-  autoLoop(hero,600,function(){cur=(cur+1)%ORDER.length;heroPick(ORDER[cur])});
+  /* página por nicho (?para=...): o celular fica no modelo do anúncio, sem trocar sozinho */
+  var NICHO=window.BC_NICHO;if(NICHO&&NICHO.modelo){heroPick(NICHO.modelo);cur=Math.max(0,ORDER.indexOf(NICHO.modelo))}
+  autoLoop(hero,600,NICHO?null:function(){cur=(cur+1)%ORDER.length;heroPick(ORDER[cur])});
 
   /* ===== rede de partículas no topo ===== */
   (function(){var c=document.getElementById('net');if(!c)return;var x=c.getContext('2d'),W,H,P=[],m={x:-999,y:-999},dpr=Math.min(2,window.devicePixelRatio||1);
@@ -1614,7 +1606,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
         for(var j=i+1;j<P.length;j++){var q=P[j],ex=p.x-q.x,ey=p.y-q.y,e=ex*ex+ey*ey;if(e<13000){x.strokeStyle='rgba(43,168,255,'+(0.22*(1-e/13000))+')';x.lineWidth=1;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.stroke()}}
         if(d<160){x.strokeStyle='rgba(92,200,255,'+(0.35*(1-d/160))+')';x.beginPath();x.moveTo(p.x,p.y);x.lineTo(m.x,m.y);x.stroke()}}})()})();
   /* ===== palavra digitando ===== */
-  (function(){var el=document.getElementById('typed');if(!el)return;var W=['padarias','cafeterias','hamburguerias','restaurantes','confeitarias','pizzarias'],i=0,k=0,del=false;
+  (function(){var el=document.getElementById('typed');if(!el||window.BC_NICHO)return;var W=['padarias','cafeterias','hamburguerias','restaurantes','confeitarias','pizzarias'],i=0,k=0,del=false;
     (function tick(){var w=W[i];el.textContent=w.slice(0,k);if(!del&&k<w.length){k++;setTimeout(tick,85)}else if(!del){del=true;setTimeout(tick,1600)}else if(k>0){k--;setTimeout(tick,40)}else{del=false;i=(i+1)%W.length;setTimeout(tick,250)}})()})();
   /* ===== luz que segue o mouse nas seções escuras ===== */
   document.querySelectorAll('.dark').forEach(function(s){s.addEventListener('mousemove',function(e){var r=s.getBoundingClientRect();s.style.setProperty('--mx',(e.clientX-r.left)+'px');s.style.setProperty('--my',(e.clientY-r.top)+'px')})});
@@ -1693,7 +1685,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
       if(step==='est'){lead.est=txt;step='nome';return bot('Que nome bonito! E o seu nome?')}
       if(step==='nome'){lead.nome=txt.split(' ')[0]?txt:txt;step='whats';return bot('Prazer, '+txt.split(' ')[0]+'! Por último: qual o seu WhatsApp com DDD? É por lá que a nossa equipe vai te chamar.')}
       if(step==='whats'){var d=txt.replace(/\D/g,'');if(d.length<10)return bot('Hmm, esse número parece incompleto. Pode mandar com o DDD? Exemplo: 42 99999-9999');
-        lead.whats=txt;step=null;var params=new URLSearchParams(location.search);var origem='chat'+(params.get('utm_source')?' / '+params.get('utm_source')+(params.get('utm_campaign')?' / '+params.get('utm_campaign'):''):'');
+        lead.whats=txt;step=null;var origem='chat / '+(window.BCOrigem?BCOrigem.texto():'site');
         salvarLead({nome:lead.est,responsavel:lead.nome,tipo:lead.tipo,whatsapp:lead.whats,plano:'',origem:origem});track('Lead',{content_name:'chat'});
         var msg='Olá! Sou '+lead.nome+', de '+lead.est+' ('+lead.tipo+'). Falei com a Bia no site e quero ajuda para montar a minha loja na Bistrô Connect.';
         return bot('Pronto, '+lead.nome.split(' ')[0]+'! ✅ Anotei tudo. A nossa equipe vai te chamar no WhatsApp para ajudar a montar a loja de '+lead.est+'.\n\nSe quiser adiantar, é só tocar no botão abaixo.',[waBtn(msg),'Quanto custa?'])}
@@ -1801,7 +1793,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
     if(g('lSite')||Date.now()-formT0<2500)return;
     if(Date.now()-ultimoEnvio<30000){msg.textContent='Já recebemos seu pedido. Se o WhatsApp não abriu, toque no botão verde no canto da tela.';msg.style.color='';return}
     ultimoEnvio=Date.now();
-    var params=new URLSearchParams(location.search);var origem=params.get('utm_source')?(params.get('utm_source')+(params.get('utm_campaign')?' / '+params.get('utm_campaign'):'')):'site';
+    var origem=window.BCOrigem?BCOrigem.texto():'site';
     track('Lead',{content_name:g('lPlano')});
     salvarLead({nome:g('lEst'),responsavel:g('lNome'),tipo:g('lTipo'),whatsapp:g('lWhats'),plano:g('lPlano')==='Ainda não sei'?'':g('lPlano'),origem:origem});
     var txt='Olá! Quero ajuda para montar a minha loja na Bistrô Connect.\n\nNome: '+g('lNome')+'\nEstabelecimento: '+g('lEst')+' ('+g('lTipo')+')\nPlano de interesse: '+g('lPlano')+'\nWhatsApp: '+g('lWhats')+'\nOrigem: '+origem;

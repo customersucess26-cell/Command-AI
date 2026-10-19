@@ -14,6 +14,10 @@ Uma plataforma só, com várias lojas. O empreendedor se cadastra, cria a loja e
 | `admin/` | Seu painel de dono da plataforma: todas as lojas, vendas do mês, plano e situação (ativa, suspensa, cancelada) |
 | `assets/config.js` | Endereço e chave pública do Supabase da plataforma |
 | `assets/efeitos.js` e `assets/efeitos.css` | Efeitos visuais (blocos que surgem, contadores, confete, cabeçalho de vidro, máscara de WhatsApp). Quem pede "reduzir movimento" no celular vê tudo parado |
+| `crm/` | Seu painel de leads, orçamentos e plano de negócio (o mesmo do site oficial). Usa o Supabase do site oficial, configurado em `window.BISTRO` no `assets/config.js`. Gerado por `ferramentas/montar-crm-plataforma.py` |
+| `termos.html` e `privacidade.html` | Termos de uso e Política de privacidade. Os dados da empresa vêm de `empresa` no `assets/config.js` |
+| `assets/medicao.js` | Meta Pixel, Google Ads e Google Analytics, com aviso de cookies (LGPD) |
+| `assets/nicho.js` | Página de vendas por nicho: `/?para=padaria`, `cafeteria`, `hamburgueria`, `restaurante`, `pizzaria`, `confeitaria`, `marmitaria` |
 | `.htaccess` | Segurança e o endereço curto `/l/nome-da-loja` |
 | `supabase/01-plataforma.sql` | Banco: tabelas, regras de acesso e funções |
 
@@ -38,6 +42,24 @@ A plataforma precisa ficar **na raiz** de um domínio ou subdomínio, por causa 
 
 **Capacidade:** a hospedagem compartilhada só entrega arquivos. Pedidos, login e regras rodam no Supabase. Por isso ela aguenta bem mais que 20 lojas. O limite real é o plano do Supabase (no plano gratuito, o projeto pausa se ficar uma semana sem uso).
 
+## Campanhas (Meta Ads e Google Ads)
+1. **Códigos no `assets/config.js`:** `pixelId` (Meta), `googleAdsId` (começa com `AW-`), `googleAdsRotuloLoja` e `googleAdsRotuloLead` (o texto depois da barra na tag da conversão) e `googleAnalyticsId` (começa com `G-`). Vazio = desligado.
+2. **Nada carrega antes do "Aceitar"** no aviso de cookies (LGPD).
+3. **Eventos enviados:**
+
+   | Momento | Meta | Google |
+   |---|---|---|
+   | Conta criada | `CompleteRegistration` | `sign_up` |
+   | **Loja criada (conversão principal)** | `StartTrial` + `LojaCriada` | `loja_criada` + conversão `googleAdsRotuloLoja` |
+   | Formulário "Quero ajuda" ou chat | `Lead` | `generate_lead` + conversão `googleAdsRotuloLead` |
+   | Clique no WhatsApp | `Contact` | `contact` |
+
+4. **Link de cada anúncio:** use a página do nicho e as UTMs, por exemplo
+   `https://seudominio.com.br/?para=hamburgueria&utm_source=meta&utm_medium=pago&utm_campaign=burger-pg`.
+   No Google Ads, ligue a marcação automática (gclid) e use `?para=padaria` no URL final.
+5. **De onde veio cada loja:** a origem (fonte, campanha, termo, gclid) é gravada na loja e aparece na coluna **Origem** do seu painel `/admin/` e no CSV. Os leads do formulário chegam no CRM com a origem.
+6. **No texto do anúncio, não use a marca "iFood".** Use "app de delivery".
+
 ## Segurança (vale no banco, não depende da tela)
 - **Separação entre lojas:** toda linha de cardápio, pedido e equipe é marcada com a loja dona. Os testes confirmam que uma loja não vê nem altera nada de outra, nem usa a categoria de outra.
 - **Funções:**
@@ -59,4 +81,4 @@ A tabela `planos` define as faixas (Começo grátis até R$ 3 mil; Crescendo R$ 
 1. **Cobrança automática (Asaas):** assinatura mensal pela faixa do mês, aviso de vencimento e suspensão automática por falta de pagamento (precisa de conta Asaas com CNPJ).
 2. **Pix no pedido**, cupons, fidelidade, tela da cozinha, taxa de entrega por bairro e horário de funcionamento automático.
 3. **App instalável (PWA)** e domínio próprio por loja.
-4. **Termos de uso e Política de Privacidade**, revisados por advogado (os links já existem nas páginas).
+4. **Revisão jurídica** dos Termos de uso e da Política de privacidade (as páginas já existem; peça a um advogado para revisar antes de escalar as campanhas).

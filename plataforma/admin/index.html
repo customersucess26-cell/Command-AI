@@ -27,12 +27,12 @@
 <div class="main plataforma" id="app" hidden>
   <header class="topo">
     <div><h1>Bistrô Connect · Plataforma</h1><p class="muted" id="subtitulo"></p></div>
-    <div class="topo-acoes"><a class="btn" href="../painel/">Voltar ao painel</a><button class="btn" type="button" id="btnCsv">Exportar</button></div>
+    <div class="topo-acoes"><a class="btn" href="../crm/">Leads (CRM)</a><a class="btn" href="../painel/">Voltar ao painel</a><button class="btn" type="button" id="btnCsv">Exportar</button></div>
   </header>
   <div class="kpis k4" id="kpis"></div>
   <div class="toolbar"><input id="busca" type="search" placeholder="Buscar loja, endereço ou e-mail do dono" maxlength="60" aria-label="Buscar loja"><span class="grow"></span>
     <select id="filtro" aria-label="Filtrar por situação"><option value="">Todas</option><option value="ativa">Ativas</option><option value="suspensa">Suspensas</option><option value="cancelada">Canceladas</option></select></div>
-  <div class="tablewrap"><table class="data"><thead><tr><th>Loja</th><th>Dono</th><th>Criada</th><th>Pedidos no mês</th><th>Vendido no mês</th><th>Plano</th><th>Situação</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <div class="tablewrap"><table class="data"><thead><tr><th>Loja</th><th>Dono</th><th>Criada</th><th>Origem</th><th>Pedidos no mês</th><th>Vendido no mês</th><th>Plano</th><th>Situação</th></tr></thead><tbody id="tb"></tbody></table></div>
   <p class="muted fino">Plano calculado pelo vendido no mês (pedidos não cancelados), conforme a tabela de planos. A cobrança automática entra na próxima fase (Asaas).</p>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>

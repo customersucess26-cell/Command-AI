@@ -49,6 +49,12 @@ def politica(html, hashes):
     if usa("fbevents.js"):  # Meta Pixel
         script.append("https://connect.facebook.net")
         connect += ["https://connect.facebook.net", "https://www.facebook.com"]
+    if usa("googletagmanager.com/gtag"):  # Google Ads e Google Analytics 4 (assets/medicao.js)
+        script.append("https://www.googletagmanager.com")
+        connect += ["https://www.googletagmanager.com", "https://www.google-analytics.com",
+                    "https://*.google-analytics.com", "https://*.analytics.google.com",
+                    "https://googleads.g.doubleclick.net", "https://*.doubleclick.net", "https://www.google.com"]
+        frame = ["https://td.doubleclick.net", "https://www.googletagmanager.com"]
     if usa("supabase"):  # leads, painel e chat
         connect += ["https://*.supabase.co", "wss://*.supabase.co"]
     if usa("youtube.com/embed") or usa("instagram.com/reel"):  # vídeos do modelo padaria

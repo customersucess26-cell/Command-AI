@@ -65,9 +65,13 @@ create table if not exists public.lojas (
   status        text not null default 'ativa' check (status in ('ativa','suspensa','cancelada')),
   plano         text not null default 'inicio' references public.planos (id),
   criado_por    uuid references auth.users (id) on delete set null,
+  -- de onde veio quem criou a loja (anúncio, Google, Instagram...): só a plataforma lê
+  origem        jsonb not null default '{}'::jsonb check (jsonb_typeof(origem) = 'object' and pg_column_size(origem) < 4000),
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
+-- quem já rodou uma versão anterior deste arquivo ganha a coluna nova
+alter table public.lojas add column if not exists origem jsonb not null default '{}'::jsonb;
 
 create table if not exists public.membros (
   loja_id   uuid not null references public.lojas (id) on delete cascade,
@@ -331,9 +335,11 @@ returns void language plpgsql set search_path = '' as $$
 begin raise exception '%', msg using errcode = 'P0001', hint = dica; end $$;
 
 -- ================= criar loja (cadastro do empreendedor) =================
-create or replace function public.criar_loja(p_nome text, p_slug text, p_modelo text, p_whatsapp text)
+drop function if exists public.criar_loja(text, text, text, text);
+create or replace function public.criar_loja(p_nome text, p_slug text, p_modelo text, p_whatsapp text, p_origem jsonb default '{}'::jsonb)
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare
+  v_origem jsonb := '{}'::jsonb;
   eu    uuid := auth.uid();
   meu_email text := coalesce(auth.jwt() ->> 'email', '');
   nova  public.lojas;
@@ -364,8 +370,15 @@ begin
     perform public.recusa('Cada conta pode ter até 3 lojas. Fale com o suporte para mais.');
   end if;
 
-  insert into public.lojas (slug, store_name, modelo, whatsapp, criado_por)
-  values (v_slug, btrim(p_nome), p_modelo, fone, eu) returning * into nova;
+  -- origem da campanha: só as chaves conhecidas, cada valor com no máximo 150 caracteres
+  if jsonb_typeof(p_origem) = 'object' then
+    select coalesce(jsonb_object_agg(e.k, left(e.v, 150)), '{}'::jsonb) into v_origem
+      from jsonb_each_text(p_origem) as e(k, v)
+     where e.k in ('fonte','meio','campanha','termo','conteudo','gclid','fbclid','referencia','pagina','nicho','quando');
+  end if;
+
+  insert into public.lojas (slug, store_name, modelo, whatsapp, criado_por, origem)
+  values (v_slug, btrim(p_nome), p_modelo, fone, eu, v_origem) returning * into nova;
   insert into public.membros (loja_id, user_id, papel, email) values (nova.id, eu, 'dono', meu_email);
 
   cats := case p_modelo
@@ -606,9 +619,10 @@ begin
 end $$;
 
 -- painel da plataforma (só você): lojas, vendas do mês e plano
+drop function if exists public.admin_lojas();
 create or replace function public.admin_lojas()
 returns table (id uuid, slug text, store_name text, modelo text, status text, criada timestamptz,
-               dono text, pedidos_mes bigint, vendido_mes numeric, plano text, mensalidade numeric)
+               dono text, pedidos_mes bigint, vendido_mes numeric, plano text, mensalidade numeric, origem jsonb)
 language plpgsql stable security definer set search_path = '' as $$
 begin
   if not public.eh_admin_plataforma() then raise exception 'Sem permissão.' using errcode = '42501'; end if;
@@ -621,7 +635,7 @@ begin
   select l.id, l.slug, l.store_name, l.modelo, l.status, l.created_at,
          (select m.email from public.membros m where m.loja_id = l.id and m.papel = 'dono' order by m.criado_em limit 1),
          coalesce(mes.n, 0), coalesce(mes.v, 0),
-         pl.nome, pl.mensalidade
+         pl.nome, pl.mensalidade, l.origem
     from public.lojas l
     left join mes on mes.loja_id = l.id
     left join lateral (select * from public.planos p where p.ate_valor is null or coalesce(mes.v, 0) <= p.ate_valor
@@ -640,7 +654,7 @@ end $$;
 do $$
 declare f text;
 begin
-  foreach f in array array['criar_loja(text, text, text, text)', 'minhas_lojas()', 'convidar_membro(uuid, text, text)',
+  foreach f in array array['criar_loja(text, text, text, text, jsonb)', 'minhas_lojas()', 'convidar_membro(uuid, text, text)',
                            'aceitar_convite(text)', 'mudar_membro(uuid, uuid, text)', 'faturamento_loja(uuid, date)',
                            'admin_lojas()', 'admin_status_loja(uuid, text)'] loop
     execute 'revoke all on function public.' || f || ' from public';

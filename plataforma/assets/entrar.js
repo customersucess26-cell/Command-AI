@@ -122,11 +122,13 @@
     if (!$("cAceite").checked) return erro($("msgConta"), "Para continuar, aceite os Termos de uso e a Política de privacidade.");
     erro($("msgConta"), ""); ocupado(btn, true, "Criando conta…");
     var volta = base + "/entrar.html" + (convite ? "?convite=" + convite : "");
-    db.auth.signUp({ email: email, password: senha, options: { data: { name: nome }, emailRedirectTo: volta } })
+    var origem = window.BCOrigem ? window.BCOrigem.dados() : {};
+    db.auth.signUp({ email: email, password: senha, options: { data: { name: nome, origem: origem }, emailRedirectTo: volta } })
       .then(function (r) {
         if (r.error) throw r.error;
         if (r.data && r.data.user && Array.isArray(r.data.user.identities) && r.data.user.identities.length === 0)
           throw new Error("User already registered");
+        if (window.BCMedir) window.BCMedir("cadastro");
         if (r.data && r.data.session) return continuar();
         $("emailEnviado").textContent = email; mostra("passoConfirmar");
       })
@@ -277,7 +279,7 @@
     if (!modelo) return erro(msg, "Escolha o tipo do seu negócio.");
     if (!confere(["lZap"])) return erro(msg, "");
     erro(msg, ""); ocupado(btn, true, "Criando a loja…");
-    db.rpc("criar_loja", { p_nome: nome, p_slug: slug, p_modelo: modelo, p_whatsapp: fone }).then(function (r) {
+    db.rpc("criar_loja", { p_nome: nome, p_slug: slug, p_modelo: modelo, p_whatsapp: fone, p_origem: window.BCOrigem ? window.BCOrigem.dados() : {} }).then(function (r) {
       if (r.error) {
         if (r.error.hint === "SLUG") { disp("Esse endereço já está em uso. Tente outro.", "nao"); $("lSlug").focus(); }
         throw r.error;
@@ -286,6 +288,7 @@
       $("nomeCriada").textContent = nome;
       $("linkLoja").textContent = url;
       mostra("passoPronto");
+      if (window.BCMedir) window.BCMedir("loja_criada", { tipo: modelo });
       setTimeout(function () { if (window.BCEfeitos) window.BCEfeitos.confete($("passoPronto").querySelector(".selo-ok")); }, 450);
     }).catch(function (e) { erro(msg, amigavel(e)); })
       .then(function () { ocupado(btn, false); });
