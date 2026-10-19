@@ -1,0 +1,55 @@
+# Bistrô Connect: segurança e endereços da plataforma para Hostinger (Apache/LiteSpeed).
+# A plataforma precisa ficar na raiz do domínio ou subdomínio (ex.: app.bistroconnect.com.br).
+# Envie este arquivo para a pasta public_html junto com o index.html.
+# Serve também para os sites de nicho: copie para a pasta de cada um.
+
+Options -Indexes
+ServerSignature Off
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# 1) Sempre HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 2) Arquivos internos nunca vão para a web (documentação, scripts, SQL, backups, git)
+RewriteRule (^|/)\.(?!well-known/) - [F,L]
+RewriteRule ^(ferramentas|supabase|historico|paineis)(/|$) - [F,L,NC]
+RewriteRule \.(md|py|sql|sh|bak|old|orig|log|env|ini|conf|zip|tar|gz|rar|7z)$ - [F,L,NC]
+
+# 3) Endereço curto de cada loja: /l/nome-da-loja abre a vitrine (loja.html)
+RewriteRule ^l/([a-z0-9-]{3,40})/?$ loja.html?l=$1 [L,QSA]
+
+# 4) Só métodos que um site estático usa
+RewriteCond %{REQUEST_METHOD} !^(GET|HEAD|POST|OPTIONS)$
+RewriteRule ^ - [F,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+# Força HTTPS no navegador por 1 ano (depois de ativar, o site precisa ter SSL sempre)
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+# Complementa a CSP de cada página: outro site não pode embutir o seu (clickjacking); o próprio painel pode
+Header always set Content-Security-Policy "frame-ancestors 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()"
+Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+Header always set Cross-Origin-Resource-Policy "same-origin"
+Header always unset X-Powered-By
+Header unset X-Powered-By
+
+# HTML sempre atualizado; config.js sem cache (troca de número entra na hora)
+<FilesMatch "\.(html?)$">
+  Header set Cache-Control "no-cache"
+</FilesMatch>
+<FilesMatch "^config\.js$">
+  Header set Cache-Control "no-store"
+</FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml
+</IfModule>

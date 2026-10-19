@@ -1,0 +1,692 @@
+-- Bistrô Connect · banco da plataforma (várias lojas num Supabase só)
+-- Rode no SQL Editor do Supabase da plataforma. Pode rodar de novo sem perder dados.
+--
+-- Regras de segurança (valem no banco, não dependem da tela):
+--   * cada linha de cardápio, pedido e equipe tem a loja dona (loja_id);
+--   * quem é da equipe de uma loja só enxerga e altera aquela loja;
+--   * dono e gerente precisam do login em 2 etapas (aal2) para mudar cardápio, loja e equipe;
+--     atendente e cozinha mexem só nos pedidos;
+--   * visitante lê só o cardápio ativo de lojas ativas e cria pedido pela função create_order,
+--     que recalcula preço, taxa e total com os valores do banco;
+--   * o cliente acompanha o pedido pelo link secreto (rastrear_pedido), sem ver dados pessoais;
+--   * cada mudança de pedido fica registrada (order_events).
+
+-- ================= administradores da plataforma (você) =================
+create table if not exists public.plataforma_admins (
+  user_id   uuid primary key references auth.users (id) on delete cascade,
+  criado_em timestamptz not null default now()
+);
+alter table public.plataforma_admins enable row level security;
+revoke all on public.plataforma_admins from anon, authenticated;
+
+create or replace function public.eh_admin_plataforma()
+returns boolean language sql stable security definer set search_path = '' as $$
+  select exists (select 1 from public.plataforma_admins a where a.user_id = auth.uid())
+         and coalesce(auth.jwt() ->> 'aal', '') = 'aal2'
+$$;
+
+-- ================= planos (preço pelo faturamento da loja na plataforma) =================
+create table if not exists public.planos (
+  id          text primary key,
+  nome        text not null,
+  ate_valor   numeric(12,2),            -- faturamento mensal máximo da faixa (null = sem limite)
+  mensalidade numeric(10,2) not null,
+  ordem       int not null default 0
+);
+insert into public.planos (id, nome, ate_valor, mensalidade, ordem) values
+  ('inicio',   'Começo',      3000,  0,   1),
+  ('cresce',   'Crescendo',   10000, 49,  2),
+  ('forte',    'Forte',       30000, 99,  3),
+  ('completo', 'Sem limites', null,  199, 4)
+on conflict (id) do nothing;
+
+-- ================= lojas =================
+create table if not exists public.lojas (
+  id            uuid primary key default gen_random_uuid(),
+  slug          text not null unique check (slug ~ '^[a-z0-9](?:[a-z0-9-]{1,38}[a-z0-9])$'),
+  store_name    text not null check (length(store_name) between 2 and 80),
+  modelo        text not null default 'outro'
+                check (modelo in ('padaria','cafeteria','hamburgueria','pizzaria','restaurante','doceria','outro')),
+  descricao     text not null default '' check (length(descricao) <= 300),
+  whatsapp      text not null default '' check (whatsapp ~ '^[0-9]{0,13}$'),
+  address       text not null default '' check (length(address) <= 200),
+  hours         text not null default '' check (length(hours) <= 200),
+  instagram     text not null default '' check (length(instagram) <= 120),
+  cor           text not null default '#B0703F' check (cor ~ '^#[0-9A-Fa-f]{6}$'),
+  logo_url      text not null default '' check (length(logo_url) <= 600),
+  capa_url      text not null default '' check (length(capa_url) <= 600),
+  delivery_fee  numeric(10,2) not null default 0 check (delivery_fee between 0 and 999),
+  min_order     numeric(10,2) not null default 0 check (min_order between 0 and 9999),
+  accept_orders boolean not null default true,
+  faz_entrega   boolean not null default true,
+  faz_retirada  boolean not null default true,
+  pagamentos    text[] not null default array['Pix','Cartão','Dinheiro'],
+  extra         jsonb not null default '{}'::jsonb,
+  status        text not null default 'ativa' check (status in ('ativa','suspensa','cancelada')),
+  plano         text not null default 'inicio' references public.planos (id),
+  criado_por    uuid references auth.users (id) on delete set null,
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now()
+);
+
+create table if not exists public.membros (
+  loja_id   uuid not null references public.lojas (id) on delete cascade,
+  user_id   uuid not null references auth.users (id) on delete cascade,
+  papel     text not null check (papel in ('dono','gerente','atendente','cozinha')),
+  nome      text not null default '',
+  email     text not null default '',
+  criado_em timestamptz not null default now(),
+  primary key (loja_id, user_id)
+);
+create index if not exists membros_user_idx on public.membros (user_id);
+
+create table if not exists public.convites (
+  id        uuid primary key default gen_random_uuid(),
+  loja_id   uuid not null references public.lojas (id) on delete cascade,
+  email     text not null check (email ~* '^[^@\s]{1,64}@[^@\s]{1,190}\.[^@\s]{2,24}$'),
+  papel     text not null check (papel in ('gerente','atendente','cozinha')),
+  token     text not null unique,
+  criado_por uuid references auth.users (id) on delete set null,
+  criado_em timestamptz not null default now(),
+  expira_em timestamptz not null default now() + interval '7 days',
+  aceito_em timestamptz
+);
+
+-- ================= cardápio e pedidos =================
+create table if not exists public.categories (
+  id       text primary key default gen_random_uuid()::text,
+  loja_id  uuid not null references public.lojas (id) on delete cascade,
+  name     text not null check (length(name) between 1 and 60),
+  position int not null default 0,
+  active   boolean not null default true,
+  extra    jsonb not null default '{}'::jsonb
+);
+create index if not exists categories_loja_idx on public.categories (loja_id, position);
+
+create table if not exists public.products (
+  id          text primary key default gen_random_uuid()::text,
+  loja_id     uuid not null references public.lojas (id) on delete cascade,
+  category_id text references public.categories (id) on delete set null,
+  name        text not null check (length(name) between 1 and 100),
+  description text not null default '' check (length(description) <= 400),
+  price       numeric(10,2) not null default 0 check (price between 0 and 99999),
+  unit        text not null default '' check (length(unit) <= 40),
+  image_url   text not null default '' check (length(image_url) <= 600),
+  active      boolean not null default true,
+  featured    boolean not null default false,
+  badge       text not null default '' check (length(badge) <= 30),
+  position    int not null default 0,
+  extra       jsonb not null default '{}'::jsonb,
+  created_at  timestamptz not null default now()
+);
+create index if not exists products_loja_idx on public.products (loja_id, position);
+
+create table if not exists public.orders (
+  id             uuid primary key default gen_random_uuid(),
+  loja_id        uuid not null references public.lojas (id) on delete cascade,
+  seq            int not null,
+  code           text not null,
+  idem_key       text not null,
+  track_token    text not null unique,
+  created_at     timestamptz not null default now(),
+  updated_at     timestamptz not null default now(),
+  status         text not null default 'novo'
+                 check (status in ('novo','confirmado','em_preparo','pronto','entregue','cancelado')),
+  customer_name  text not null,
+  customer_phone text not null,
+  delivery_type  text not null check (delivery_type in ('retirada','entrega')),
+  address        text not null default '',
+  scheduled_for  text not null default '',
+  notes          text not null default '',
+  items          jsonb not null default '[]'::jsonb,
+  subtotal       numeric(10,2) not null default 0,
+  delivery_fee   numeric(10,2) not null default 0,
+  total          numeric(10,2) not null default 0,
+  payment_method text not null default '',
+  payment_status text not null default 'pendente' check (payment_status in ('pendente','pago','estornado')),
+  admin_notes    text not null default '' check (length(admin_notes) <= 2000),
+  unique (loja_id, seq),
+  unique (loja_id, idem_key)
+);
+create index if not exists orders_loja_created_idx on public.orders (loja_id, created_at desc);
+
+create table if not exists public.order_events (
+  id         bigint generated always as identity primary key,
+  order_id   uuid not null references public.orders (id) on delete cascade,
+  loja_id    uuid not null references public.lojas (id) on delete cascade,
+  at         timestamptz not null default now(),
+  actor      text not null default '',
+  campo      text not null,
+  de         text,
+  para       text
+);
+create index if not exists order_events_order_idx on public.order_events (order_id, id);
+
+-- ================= quem pode o quê =================
+-- papel do usuário logado na loja (null = não é da equipe)
+create or replace function public.papel_na_loja(p_loja uuid)
+returns text language sql stable security definer set search_path = '' as $$
+  select m.papel from public.membros m where m.loja_id = p_loja and m.user_id = auth.uid()
+$$;
+
+-- atendente e cozinha: basta estar logado. dono e gerente: login em 2 etapas.
+create or replace function public.pode(p_loja uuid, p_papeis text[] default array['dono','gerente','atendente','cozinha'])
+returns boolean language sql stable security definer set search_path = '' as $$
+  select coalesce((
+    select m.papel = any (p_papeis)
+           and (m.papel not in ('dono','gerente') or coalesce(auth.jwt() ->> 'aal', '') = 'aal2')
+      from public.membros m
+     where m.loja_id = p_loja and m.user_id = auth.uid()
+  ), false) or public.eh_admin_plataforma()
+$$;
+
+do $$
+declare f text;
+begin
+  foreach f in array array['eh_admin_plataforma()', 'papel_na_loja(uuid)', 'pode(uuid, text[])'] loop
+    execute 'revoke all on function public.' || f || ' from public';
+    execute 'grant execute on function public.' || f || ' to anon, authenticated';
+  end loop;
+end $$;
+
+-- ================= permissões (RLS) =================
+do $$
+declare t text; p record;
+begin
+  foreach t in array array['planos','lojas','membros','convites','categories','products','orders','order_events'] loop
+    execute format('alter table public.%I enable row level security', t);
+    execute format('alter table public.%I force row level security', t);
+    for p in select policyname from pg_policies where schemaname = 'public' and tablename = t loop
+      execute format('drop policy %I on public.%I', p.policyname, t);
+    end loop;
+    execute format('revoke all on public.%I from anon, authenticated', t);
+  end loop;
+end $$;
+
+-- planos: todos leem (página de preços)
+grant select on public.planos to anon, authenticated;
+create policy "publico le" on public.planos for select using (true);
+
+-- lojas: visitante lê só os campos do site, de loja ativa; equipe lê tudo da própria loja
+grant select (id, slug, store_name, modelo, descricao, whatsapp, address, hours, instagram, cor, logo_url, capa_url,
+              delivery_fee, min_order, accept_orders, faz_entrega, faz_retirada, pagamentos, extra, status)
+  on public.lojas to anon;
+grant select on public.lojas to authenticated;
+grant update (store_name, descricao, whatsapp, address, hours, instagram, cor, logo_url, capa_url,
+              delivery_fee, min_order, accept_orders, faz_entrega, faz_retirada, pagamentos, extra)
+  on public.lojas to authenticated;
+create policy "publico le ativas" on public.lojas for select to anon using (status = 'ativa');
+create policy "equipe le" on public.lojas for select to authenticated
+  using (public.papel_na_loja(id) is not null or public.eh_admin_plataforma());
+-- pausar pedidos também vale para atendente (balcão lotado); o resto só dono/gerente (ver gatilho lojas_quem_altera)
+create policy "equipe altera" on public.lojas for update to authenticated
+  using (public.pode(id)) with check (public.pode(id));
+
+-- equipe: cada um vê a equipe das lojas onde está; mudanças só pelas funções
+grant select on public.membros to authenticated;
+create policy "equipe le" on public.membros for select to authenticated
+  using (public.papel_na_loja(loja_id) is not null or public.eh_admin_plataforma());
+
+grant select, delete on public.convites to authenticated;
+create policy "dono e gerente leem" on public.convites for select to authenticated
+  using (public.pode(loja_id, array['dono','gerente']));
+create policy "dono e gerente cancelam" on public.convites for delete to authenticated
+  using (public.pode(loja_id, array['dono','gerente']));
+
+-- cardápio: visitante lê o ativo de lojas ativas; dono e gerente alteram
+do $$
+declare t text;
+begin
+  foreach t in array array['categories','products'] loop
+    execute format('grant select on public.%I to anon, authenticated', t);
+    execute format('grant insert, update, delete on public.%I to authenticated', t);
+    execute format($p$create policy "publico le" on public.%I for select
+      using ((active and exists (select 1 from public.lojas l where l.id = loja_id and l.status = 'ativa'))
+             or public.papel_na_loja(loja_id) is not null or public.eh_admin_plataforma())$p$, t);
+    execute format($p$create policy "gestao insere" on public.%I for insert to authenticated
+      with check (public.pode(loja_id, array['dono','gerente']))$p$, t);
+    execute format($p$create policy "gestao altera" on public.%I for update to authenticated
+      using (public.pode(loja_id, array['dono','gerente'])) with check (public.pode(loja_id, array['dono','gerente']))$p$, t);
+    execute format($p$create policy "gestao apaga" on public.%I for delete to authenticated
+      using (public.pode(loja_id, array['dono','gerente']))$p$, t);
+  end loop;
+end $$;
+
+-- pedidos: a equipe lê e muda só status, pagamento e anotações. Itens e valores ninguém altera.
+grant select on public.orders, public.order_events to authenticated;
+grant update (status, payment_method, payment_status, admin_notes) on public.orders to authenticated;
+create policy "equipe le" on public.orders for select to authenticated using (public.pode(loja_id));
+create policy "equipe altera" on public.orders for update to authenticated
+  using (public.pode(loja_id)) with check (public.pode(loja_id));
+create policy "equipe le" on public.order_events for select to authenticated using (public.pode(loja_id));
+
+-- ================= gatilhos =================
+create or replace function public.toca_updated_at()
+returns trigger language plpgsql set search_path = '' as $$
+begin new.updated_at := now(); return new; end $$;
+drop trigger if exists lojas_updated_at on public.lojas;
+create trigger lojas_updated_at before update on public.lojas for each row execute function public.toca_updated_at();
+
+-- atendente/cozinha só podem pausar ou reabrir pedidos; o resto da loja é com dono/gerente
+create or replace function public.lojas_quem_altera()
+returns trigger language plpgsql security definer set search_path = '' as $$
+begin
+  if public.eh_admin_plataforma() or public.pode(new.id, array['dono','gerente']) then
+    return new;
+  end if;
+  if (to_jsonb(new) - 'accept_orders' - 'updated_at') is distinct from (to_jsonb(old) - 'accept_orders' - 'updated_at') then
+    raise exception 'Só o dono ou o gerente podem mudar os dados da loja.' using errcode = '42501';
+  end if;
+  return new;
+end $$;
+drop trigger if exists lojas_quem_altera on public.lojas;
+create trigger lojas_quem_altera before update on public.lojas for each row execute function public.lojas_quem_altera();
+
+-- histórico de cada mudança de pedido; cozinha não mexe em pagamento
+create or replace function public.pedido_alterado()
+returns trigger language plpgsql security definer set search_path = '' as $$
+declare quem text := coalesce((select u.email from auth.users u where u.id = auth.uid()), 'sistema');
+begin
+  if new.payment_status is distinct from old.payment_status or new.payment_method is distinct from old.payment_method then
+    if public.papel_na_loja(new.loja_id) = 'cozinha' and not public.eh_admin_plataforma() then
+      raise exception 'A cozinha não altera pagamento.' using errcode = '42501';
+    end if;
+  end if;
+  if new.payment_status = 'pago' and old.payment_status <> 'pago' and new.status = 'cancelado' then
+    raise exception 'Pedido cancelado não recebe pagamento.' using errcode = 'P0001';
+  end if;
+  new.updated_at := now();
+  if new.status is distinct from old.status then
+    insert into public.order_events (order_id, loja_id, actor, campo, de, para) values (new.id, new.loja_id, quem, 'status', old.status, new.status);
+  end if;
+  if new.payment_status is distinct from old.payment_status or new.payment_method is distinct from old.payment_method then
+    insert into public.order_events (order_id, loja_id, actor, campo, de, para)
+    values (new.id, new.loja_id, quem, 'pagamento', old.payment_status || ' ' || old.payment_method, new.payment_status || ' ' || new.payment_method);
+  end if;
+  if new.admin_notes is distinct from old.admin_notes then
+    insert into public.order_events (order_id, loja_id, actor, campo) values (new.id, new.loja_id, quem, 'anotacao');
+  end if;
+  return new;
+end $$;
+drop trigger if exists pedido_alterado on public.orders;
+create trigger pedido_alterado before update on public.orders for each row execute function public.pedido_alterado();
+
+-- produto só pode usar categoria da mesma loja
+create or replace function public.produto_confere()
+returns trigger language plpgsql security definer set search_path = '' as $$
+begin
+  if new.category_id is not null and not exists (
+       select 1 from public.categories c where c.id = new.category_id and c.loja_id = new.loja_id) then
+    raise exception 'Categoria de outra loja.' using errcode = '42501';
+  end if;
+  return new;
+end $$;
+drop trigger if exists produto_confere on public.products;
+create trigger produto_confere before insert or update on public.products for each row execute function public.produto_confere();
+
+-- ================= erro amigável para a tela =================
+create or replace function public.recusa(msg text, dica text default '')
+returns void language plpgsql set search_path = '' as $$
+begin raise exception '%', msg using errcode = 'P0001', hint = dica; end $$;
+
+-- ================= criar loja (cadastro do empreendedor) =================
+create or replace function public.criar_loja(p_nome text, p_slug text, p_modelo text, p_whatsapp text)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare
+  eu    uuid := auth.uid();
+  meu_email text := coalesce(auth.jwt() ->> 'email', '');
+  nova  public.lojas;
+  v_slug text := lower(btrim(coalesce(p_slug, '')));
+  fone  text := regexp_replace(coalesce(p_whatsapp, ''), '\D', '', 'g');
+  cats  text[];
+  i     int := 0;
+  c     text;
+begin
+  if eu is null then perform public.recusa('Entre na sua conta para criar a loja.'); end if;
+  if length(btrim(coalesce(p_nome, ''))) not between 2 and 80 then perform public.recusa('Informe o nome da loja.'); end if;
+  if v_slug !~ '^[a-z0-9](?:[a-z0-9-]{1,38}[a-z0-9])$' then
+    perform public.recusa('O endereço da loja usa só letras minúsculas, números e hífen (3 a 40 caracteres).');
+  end if;
+  if v_slug = any (array['admin','painel','api','www','entrar','loja','lojas','pedido','planos','suporte','ajuda',
+                       'bistro','bistroconnect','connect','login','cadastro','conta','app','static','assets']) then
+    perform public.recusa('Esse endereço é reservado. Escolha outro.');
+  end if;
+  if exists (select 1 from public.lojas l where l.slug = v_slug) then
+    perform public.recusa('Esse endereço já está em uso. Tente outro.', 'SLUG');
+  end if;
+  if p_modelo not in ('padaria','cafeteria','hamburgueria','pizzaria','restaurante','doceria','outro') then
+    perform public.recusa('Escolha o tipo da loja.');
+  end if;
+  if length(fone) in (10, 11) then fone := '55' || fone; end if;
+  if length(fone) not between 12 and 13 then perform public.recusa('Informe o WhatsApp da loja com DDD.'); end if;
+  if (select count(*) from public.membros m where m.user_id = eu and m.papel = 'dono') >= 3 then
+    perform public.recusa('Cada conta pode ter até 3 lojas. Fale com o suporte para mais.');
+  end if;
+
+  insert into public.lojas (slug, store_name, modelo, whatsapp, criado_por)
+  values (v_slug, btrim(p_nome), p_modelo, fone, eu) returning * into nova;
+  insert into public.membros (loja_id, user_id, papel, email) values (nova.id, eu, 'dono', meu_email);
+
+  cats := case p_modelo
+    when 'padaria'      then array['Pães','Bolos','Doces','Salgados','Bebidas']
+    when 'cafeteria'    then array['Cafés','Com leite','Gelados','Comidinhas','Doces']
+    when 'hamburgueria' then array['Burgers','Combos','Acompanhamentos','Bebidas','Sobremesas']
+    when 'pizzaria'     then array['Pizzas salgadas','Pizzas doces','Bebidas']
+    when 'restaurante'  then array['Entradas','Pratos principais','Sobremesas','Bebidas']
+    when 'doceria'      then array['Bolos','Doces','Tortas','Encomendas']
+    else array['Destaques','Cardápio','Bebidas'] end;
+  foreach c in array cats loop
+    i := i + 1;
+    insert into public.categories (loja_id, name, position) values (nova.id, c, i);
+  end loop;
+  return jsonb_build_object('id', nova.id, 'slug', nova.slug);
+end $$;
+
+-- lojas do usuário logado, com o papel dele
+create or replace function public.minhas_lojas()
+returns table (id uuid, slug text, store_name text, modelo text, papel text, status text)
+language sql stable security definer set search_path = '' as $$
+  select l.id, l.slug, l.store_name, l.modelo, m.papel, l.status
+    from public.membros m join public.lojas l on l.id = m.loja_id
+   where m.user_id = auth.uid()
+   order by m.criado_em
+$$;
+
+-- ================= equipe =================
+create or replace function public.convidar_membro(p_loja uuid, p_email text, p_papel text)
+returns text language plpgsql security definer set search_path = '' as $$
+declare tk text := replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', '');
+        quem text := public.papel_na_loja(p_loja);
+begin
+  if not public.pode(p_loja, array['dono','gerente']) then
+    raise exception 'Só o dono ou o gerente convidam pessoas (com login em 2 etapas).' using errcode = '42501';
+  end if;
+  if p_papel not in ('gerente','atendente','cozinha') then perform public.recusa('Escolha a função da pessoa.'); end if;
+  if p_papel = 'gerente' and quem <> 'dono' and not public.eh_admin_plataforma() then
+    perform public.recusa('Só o dono convida gerentes.');
+  end if;
+  if lower(btrim(p_email)) !~ '^[^@\s]{1,64}@[^@\s]{1,190}\.[^@\s]{2,24}$' then perform public.recusa('E-mail inválido.'); end if;
+  if (select count(*) from public.membros m where m.loja_id = p_loja) >= 30 then
+    perform public.recusa('A equipe chegou ao limite de 30 pessoas.');
+  end if;
+  delete from public.convites c where c.loja_id = p_loja and c.email = lower(btrim(p_email)) and c.aceito_em is null;
+  insert into public.convites (loja_id, email, papel, token, criado_por)
+  values (p_loja, lower(btrim(p_email)), p_papel, tk, auth.uid());
+  return tk;
+end $$;
+
+create or replace function public.aceitar_convite(p_token text)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare cv public.convites; meu_email text := lower(coalesce(auth.jwt() ->> 'email', ''));
+begin
+  if auth.uid() is null then perform public.recusa('Entre na sua conta para aceitar o convite.'); end if;
+  select * into cv from public.convites c where c.token = p_token for update;
+  if not found or cv.aceito_em is not null or cv.expira_em < now() then
+    perform public.recusa('Convite inválido ou vencido. Peça um novo para a loja.');
+  end if;
+  if cv.email <> meu_email then
+    perform public.recusa('Este convite foi enviado para outro e-mail. Entre com o e-mail convidado.');
+  end if;
+  insert into public.membros (loja_id, user_id, papel, email) values (cv.loja_id, auth.uid(), cv.papel, meu_email)
+  on conflict (loja_id, user_id) do update set papel = excluded.papel;
+  update public.convites set aceito_em = now() where id = cv.id;
+  return jsonb_build_object('loja_id', cv.loja_id, 'papel', cv.papel);
+end $$;
+
+create or replace function public.mudar_membro(p_loja uuid, p_user uuid, p_papel text)
+returns void language plpgsql security definer set search_path = '' as $$
+begin
+  if not public.pode(p_loja, array['dono']) then
+    raise exception 'Só o dono muda a equipe (com login em 2 etapas).' using errcode = '42501';
+  end if;
+  if p_papel is not null and p_papel not in ('dono','gerente','atendente','cozinha') then
+    perform public.recusa('Função inválida.');
+  end if;
+  if (select papel from public.membros where loja_id = p_loja and user_id = p_user) = 'dono'
+     and (p_papel is null or p_papel <> 'dono')
+     and (select count(*) from public.membros where loja_id = p_loja and papel = 'dono') <= 1 then
+    perform public.recusa('A loja precisa de pelo menos um dono.');
+  end if;
+  if p_papel is null then
+    delete from public.membros where loja_id = p_loja and user_id = p_user;
+  else
+    update public.membros set papel = p_papel where loja_id = p_loja and user_id = p_user;
+  end if;
+end $$;
+
+-- ================= pedido feito pelo site =================
+create or replace function public.create_order(p_slug text, p_idem text, p_order jsonb)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare
+  loja    public.lojas;
+  ja      public.orders;
+  novo    public.orders;
+  nome    text := btrim(coalesce(p_order ->> 'customer_name', ''));
+  fone    text := btrim(coalesce(p_order ->> 'customer_phone', ''));
+  digs    text := regexp_replace(coalesce(p_order ->> 'customer_phone', ''), '\D', '', 'g');
+  tipo    text := coalesce(p_order ->> 'delivery_type', '');
+  ender   text := btrim(coalesce(p_order ->> 'address', ''));
+  obs     text := btrim(coalesce(p_order ->> 'notes', ''));
+  quando  text := btrim(coalesce(p_order ->> 'scheduled_for', ''));
+  forma   text := coalesce(p_order ->> 'payment_method', '');
+  it      jsonb;
+  qtds    jsonb := '{}'::jsonb;
+  pid     text;
+  qtd     int;
+  prod    public.products;
+  itens   jsonb := '[]'::jsonb;
+  soma    numeric := 0;
+  taxa    numeric := 0;
+  total   numeric;
+  proximo int;
+begin
+  select * into loja from public.lojas l where l.slug = lower(coalesce(p_slug, ''));
+  if not found or loja.status <> 'ativa' then perform public.recusa('Loja não encontrada.'); end if;
+  if coalesce(p_idem, '') !~ '^[A-Za-z0-9_-]{8,80}$' then perform public.recusa('Pedido inválido. Atualize a página.'); end if;
+
+  select * into ja from public.orders o where o.loja_id = loja.id and o.idem_key = p_idem;
+  if found then
+    return jsonb_build_object('code', ja.code, 'track_token', ja.track_token, 'total', ja.total,
+                              'subtotal', ja.subtotal, 'delivery_fee', ja.delivery_fee, 'items', ja.items);
+  end if;
+
+  if not loja.accept_orders then
+    perform public.recusa('A loja não está recebendo pedidos pelo site agora. Chame no WhatsApp.');
+  end if;
+  if length(nome) not between 2 and 80 then perform public.recusa('Informe seu nome.'); end if;
+  if length(digs) not between 10 and 13 or length(fone) > 30 then
+    perform public.recusa('Informe seu WhatsApp com DDD.');
+  end if;
+  if tipo = 'entrega' then
+    if not loja.faz_entrega then perform public.recusa('Esta loja não faz entrega. Escolha retirada.'); end if;
+    if length(ender) not between 8 and 200 then perform public.recusa('Informe o endereço completo para entrega.'); end if;
+  elsif tipo = 'retirada' then
+    if not loja.faz_retirada then perform public.recusa('Esta loja só faz entrega.'); end if;
+    ender := '';
+  else
+    perform public.recusa('Escolha entrega ou retirada.');
+  end if;
+  if length(obs) > 300 then perform public.recusa('As observações passam de 300 caracteres.'); end if;
+  if length(quando) > 60 then perform public.recusa('Horário inválido.'); end if;
+  if forma = '' or not (forma = any (loja.pagamentos)) then perform public.recusa('Escolha a forma de pagamento.'); end if;
+
+  if jsonb_typeof(p_order -> 'items') is distinct from 'array'
+     or jsonb_array_length(p_order -> 'items') < 1 or jsonb_array_length(p_order -> 'items') > 50 then
+    perform public.recusa('Seu pedido está vazio.');
+  end if;
+  for it in select * from jsonb_array_elements(p_order -> 'items') loop
+    if jsonb_typeof(it) <> 'object' or jsonb_typeof(it -> 'qty') <> 'number' or jsonb_typeof(it -> 'product_id') <> 'string'
+       or (it ->> 'qty')::numeric <> trunc((it ->> 'qty')::numeric)
+       or (it ->> 'qty')::numeric < 1 or (it ->> 'qty')::numeric > 99 then
+      perform public.recusa('Quantidade inválida: de 1 a 99 por item.');
+    end if;
+    pid := it ->> 'product_id';
+    qtds := jsonb_set(qtds, array[pid], to_jsonb(coalesce((qtds ->> pid)::int, 0) + (it ->> 'qty')::int));
+  end loop;
+
+  for pid, qtd in select key, value::int from jsonb_each_text(qtds) loop
+    select * into prod from public.products p where p.id = pid and p.loja_id = loja.id;
+    if not found or not prod.active then
+      perform public.recusa('Um dos produtos saiu do cardápio. Atualize a página.', 'PRICE_CHANGED');
+    end if;
+    if qtd > 99 then perform public.recusa('Quantidade inválida: de 1 a 99 por item.'); end if;
+    soma := soma + prod.price * qtd;
+    itens := itens || jsonb_build_object('product_id', prod.id, 'name', prod.name, 'unit', prod.unit,
+                                         'price', prod.price, 'qty', qtd);
+  end loop;
+
+  soma  := round(soma, 2);
+  if soma < loja.min_order then
+    perform public.recusa(format('Pedido mínimo: R$ %s.', replace(to_char(loja.min_order, 'FM999990.00'), '.', ',')));
+  end if;
+  taxa  := case when tipo = 'entrega' then loja.delivery_fee else 0 end;
+  total := round(soma + taxa, 2);
+  if jsonb_typeof(p_order -> 'expected_total') = 'number' and round((p_order ->> 'expected_total')::numeric, 2) <> total then
+    perform public.recusa('Os preços mudaram desde que você montou o pedido. Confira o novo total e envie de novo.', 'PRICE_CHANGED');
+  end if;
+
+  if (select count(*) from public.orders o where o.loja_id = loja.id and o.created_at > now() - interval '10 minutes'
+        and regexp_replace(o.customer_phone, '\D', '', 'g') = digs) >= 5
+     or (select count(*) from public.orders o where o.loja_id = loja.id and o.created_at > now() - interval '10 minutes') >= 120 then
+    perform public.recusa('Muitos pedidos seguidos. Fale com a loja no WhatsApp.');
+  end if;
+
+  perform pg_advisory_xact_lock(hashtext('pedido:' || loja.id::text));
+  select coalesce(max(o.seq), 0) + 1 into proximo from public.orders o where o.loja_id = loja.id;
+
+  insert into public.orders (loja_id, seq, code, idem_key, track_token, customer_name, customer_phone, delivery_type,
+                             address, scheduled_for, notes, items, subtotal, delivery_fee, total, payment_method)
+  values (loja.id, proximo, '#' || proximo::text, p_idem,
+          replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', ''),
+          nome, fone, tipo, ender, quando, obs, itens, soma, taxa, total, forma)
+  returning * into novo;
+  insert into public.order_events (order_id, loja_id, actor, campo, para) values (novo.id, loja.id, 'cliente', 'status', 'novo');
+
+  return jsonb_build_object('code', novo.code, 'track_token', novo.track_token, 'total', novo.total,
+                            'subtotal', novo.subtotal, 'delivery_fee', novo.delivery_fee, 'items', novo.items);
+end $$;
+
+-- ================= rastreio do pedido =================
+create or replace function public.rastrear_pedido(p_token text)
+returns jsonb language plpgsql stable security definer set search_path = '' as $$
+declare o public.orders; l public.lojas;
+begin
+  if coalesce(p_token, '') !~ '^[a-f0-9]{32,64}$' then return null; end if;
+  select * into o from public.orders where track_token = p_token;
+  if not found then return null; end if;
+  select * into l from public.lojas where id = o.loja_id;
+  return jsonb_build_object(
+    'code', o.code, 'status', o.status, 'delivery_type', o.delivery_type, 'scheduled_for', o.scheduled_for,
+    'created_at', o.created_at, 'updated_at', o.updated_at, 'first_name', split_part(o.customer_name, ' ', 1),
+    'items', (select coalesce(jsonb_agg(jsonb_build_object('name', i ->> 'name', 'unit', coalesce(i ->> 'unit', ''),
+                                         'qty', (i ->> 'qty')::int, 'price', (i ->> 'price')::numeric)), '[]'::jsonb)
+                from jsonb_array_elements(o.items) i),
+    'subtotal', o.subtotal, 'delivery_fee', o.delivery_fee, 'total', o.total,
+    'payment_method', o.payment_method, 'payment_status', o.payment_status,
+    'history', (select coalesce(jsonb_agg(jsonb_build_object('status', e.para, 'at', e.at) order by e.id), '[]'::jsonb)
+                  from public.order_events e where e.order_id = o.id and e.campo = 'status'),
+    'store_name', l.store_name, 'whatsapp', l.whatsapp, 'slug', l.slug, 'cor', l.cor);
+end $$;
+
+-- ================= faturamento e plano =================
+-- vendido no mês (pedidos não cancelados) e o plano que essa faixa indica
+create or replace function public.faturamento_loja(p_loja uuid, p_mes date default (now() at time zone 'America/Sao_Paulo')::date)
+returns jsonb language plpgsql stable security definer set search_path = '' as $$
+declare ini timestamptz; fim timestamptz; vendido numeric; pl public.planos;
+begin
+  if not public.pode(p_loja) then raise exception 'Sem permissão.' using errcode = '42501'; end if;
+  ini := (date_trunc('month', p_mes::timestamp) at time zone 'America/Sao_Paulo');
+  fim := ((date_trunc('month', p_mes::timestamp) + interval '1 month') at time zone 'America/Sao_Paulo');
+  select coalesce(sum(o.total), 0) into vendido from public.orders o
+   where o.loja_id = p_loja and o.status <> 'cancelado' and o.created_at >= ini and o.created_at < fim;
+  select * into pl from public.planos p where p.ate_valor is null or vendido <= p.ate_valor order by p.ordem limit 1;
+  return jsonb_build_object('vendido', vendido, 'plano', pl.id, 'plano_nome', pl.nome, 'mensalidade', pl.mensalidade,
+                            'ate_valor', pl.ate_valor);
+end $$;
+
+-- painel da plataforma (só você): lojas, vendas do mês e plano
+create or replace function public.admin_lojas()
+returns table (id uuid, slug text, store_name text, modelo text, status text, criada timestamptz,
+               dono text, pedidos_mes bigint, vendido_mes numeric, plano text, mensalidade numeric)
+language plpgsql stable security definer set search_path = '' as $$
+begin
+  if not public.eh_admin_plataforma() then raise exception 'Sem permissão.' using errcode = '42501'; end if;
+  return query
+  with mes as (
+    select o.loja_id, count(*) n, sum(o.total) v from public.orders o
+     where o.status <> 'cancelado'
+       and o.created_at >= (date_trunc('month', now() at time zone 'America/Sao_Paulo') at time zone 'America/Sao_Paulo')
+     group by o.loja_id)
+  select l.id, l.slug, l.store_name, l.modelo, l.status, l.created_at,
+         (select m.email from public.membros m where m.loja_id = l.id and m.papel = 'dono' order by m.criado_em limit 1),
+         coalesce(mes.n, 0), coalesce(mes.v, 0),
+         pl.nome, pl.mensalidade
+    from public.lojas l
+    left join mes on mes.loja_id = l.id
+    left join lateral (select * from public.planos p where p.ate_valor is null or coalesce(mes.v, 0) <= p.ate_valor
+                        order by p.ordem limit 1) pl on true
+   order by l.created_at desc;
+end $$;
+
+create or replace function public.admin_status_loja(p_loja uuid, p_status text)
+returns void language plpgsql security definer set search_path = '' as $$
+begin
+  if not public.eh_admin_plataforma() then raise exception 'Sem permissão.' using errcode = '42501'; end if;
+  if p_status not in ('ativa','suspensa','cancelada') then perform public.recusa('Status inválido.'); end if;
+  update public.lojas set status = p_status where id = p_loja;
+end $$;
+
+do $$
+declare f text;
+begin
+  foreach f in array array['criar_loja(text, text, text, text)', 'minhas_lojas()', 'convidar_membro(uuid, text, text)',
+                           'aceitar_convite(text)', 'mudar_membro(uuid, uuid, text)', 'faturamento_loja(uuid, date)',
+                           'admin_lojas()', 'admin_status_loja(uuid, text)'] loop
+    execute 'revoke all on function public.' || f || ' from public';
+    execute 'grant execute on function public.' || f || ' to authenticated';
+  end loop;
+  foreach f in array array['create_order(text, text, jsonb)', 'rastrear_pedido(text)'] loop
+    execute 'revoke all on function public.' || f || ' from public';
+    execute 'grant execute on function public.' || f || ' to anon, authenticated';
+  end loop;
+  foreach f in array array['recusa(text, text)', 'toca_updated_at()', 'lojas_quem_altera()', 'pedido_alterado()', 'produto_confere()'] loop
+    execute 'revoke all on function public.' || f || ' from public';
+  end loop;
+end $$;
+
+-- ================= fotos (bucket "lojas", uma pasta por loja) =================
+do $$
+declare p record;
+begin
+  if to_regclass('storage.buckets') is null then return; end if;
+  insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+  values ('lojas', 'lojas', true, 5242880, array['image/jpeg','image/png','image/webp'])
+  on conflict (id) do nothing;
+  for p in select policyname from pg_policies where schemaname = 'storage' and tablename = 'objects'
+           and policyname like 'lojas: %' loop
+    execute format('drop policy %I on storage.objects', p.policyname);
+  end loop;
+  create policy "lojas: publico le" on storage.objects for select using (bucket_id = 'lojas');
+  create policy "lojas: gestao envia" on storage.objects for insert to authenticated
+    with check (bucket_id = 'lojas' and public.pode(((storage.foldername(name))[1])::uuid, array['dono','gerente']));
+  create policy "lojas: gestao altera" on storage.objects for update to authenticated
+    using (bucket_id = 'lojas' and public.pode(((storage.foldername(name))[1])::uuid, array['dono','gerente']));
+  create policy "lojas: gestao apaga" on storage.objects for delete to authenticated
+    using (bucket_id = 'lojas' and public.pode(((storage.foldername(name))[1])::uuid, array['dono','gerente']));
+end $$;
+
+-- ================= painel atualiza sozinho =================
+do $$
+declare t text;
+begin
+  if exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+    foreach t in array array['orders', 'products', 'categories', 'lojas'] loop
+      if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = t) then
+        execute format('alter publication supabase_realtime add table public.%I', t);
+      end if;
+    end loop;
+  end if;
+end $$;
+
+-- Depois de criar a SUA conta (Authentication > Users), torne-se administrador da plataforma:
+-- insert into public.plataforma_admins (user_id) select id from auth.users where email = 'seu-email@exemplo.com';
