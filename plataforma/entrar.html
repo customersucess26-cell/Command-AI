@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Criar sua loja · Bistrô Connect</title>
+<meta name="description" content="Crie sua conta na Bistrô Connect e coloque o cardápio da sua loja no ar.">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#1E1410">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231E1410'/%3E%3Cpath d='M16 38h32a16 16 0 0 0-32 0z' fill='%23E2552B'/%3E%3Crect x='12' y='40' width='40' height='5' rx='2.5' fill='%23F2B544'/%3E%3Ccircle cx='32' cy='19' r='3' fill='%23F2B544'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Figtree:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<div class="pagina-entrar">
+  <aside class="lado">
+    <div>
+      <a class="marca" href="/" aria-label="Bistrô Connect, página inicial">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#2B1D17"/><path d="M16 38h32a16 16 0 0 0-32 0z" fill="#E2552B"/><rect x="12" y="40" width="40" height="5" rx="2.5" fill="#F2B544"/><circle cx="32" cy="19" r="3" fill="#F2B544"/></svg>
+        <span>Bistrô <b>Connect</b></span>
+      </a>
+    </div>
+    <div>
+      <h1>Sua loja no ar em <em>poucos minutos</em>.</h1>
+      <p>Crie a conta, dê um nome para a loja e escolha o tipo do seu negócio. O cardápio já começa com as categorias prontas.</p>
+      <ul class="so-largo">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Grátis enquanto você vender até R$ 3 mil por mês.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Sem comissão por pedido e sem fidelidade.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Os dados da sua loja ficam separados e protegidos.</span></li>
+      </ul>
+    </div>
+    <a class="voltar so-largo" href="/">← Voltar para a página inicial</a>
+  </aside>
+
+  <main class="painel-form">
+    <div class="caixa">
+
+      <!-- plataforma sem banco configurado -->
+      <section id="semConexao" class="aviso-conexao" hidden>
+        <h2>Plataforma ainda não conectada</h2>
+        <p class="dica">Os cadastros abrem assim que o banco de dados for ligado. Quem administra a plataforma precisa preencher <code>supabaseUrl</code> e <code>supabaseKey</code> em <code>assets/config.js</code>.</p>
+        <a class="btn btn-tomate" href="/">Voltar para a página inicial</a>
+      </section>
+
+      <!-- carregando sessão -->
+      <section id="carregando" aria-live="polite"><p class="dica">Carregando…</p></section>
+
+      <!-- conta: criar ou entrar -->
+      <section id="passoConta" hidden>
+        <h2 id="tituloConta">Crie sua conta</h2>
+        <p class="dica" id="dicaConta">É com ela que você entra no painel da loja.</p>
+        <div class="abas" role="tablist" aria-label="Criar conta ou entrar">
+          <button type="button" role="tab" id="abaCriar" aria-selected="true" aria-controls="formCriar">Criar conta</button>
+          <button type="button" role="tab" id="abaEntrar" aria-selected="false" aria-controls="formEntrar">Já tenho conta</button>
+        </div>
+        <p class="msg erro" id="msgConta" role="alert" hidden></p>
+
+        <form id="formCriar" novalidate>
+          <div class="campo"><label for="cNome">Seu nome</label>
+            <input id="cNome" name="nome" autocomplete="name" maxlength="80" required></div>
+          <div class="campo"><label for="cEmail">E-mail</label>
+            <input id="cEmail" name="email" type="email" inputmode="email" autocomplete="email" maxlength="200" required></div>
+          <div class="campo"><label for="cSenha">Senha</label>
+            <input id="cSenha" name="senha" type="password" autocomplete="new-password" minlength="10" maxlength="72" required aria-describedby="cSenhaDica">
+            <div class="forca" aria-hidden="true"><i id="forcaBarra"></i></div>
+            <small id="cSenhaDica">Pelo menos 10 caracteres. Misture letras, números e símbolos.</small></div>
+          <label class="aceite"><input type="checkbox" id="cAceite" required>
+            <span>Li e aceito os <a href="/termos.html" target="_blank" rel="noopener">Termos de uso</a> e a <a href="/privacidade.html" target="_blank" rel="noopener">Política de privacidade</a>.</span></label>
+          <button class="btn btn-tomate btn-bloco" type="submit" id="btnCriar">Criar conta</button>
+        </form>
+
+        <form id="formEntrar" novalidate hidden>
+          <div class="campo"><label for="eEmail">E-mail</label>
+            <input id="eEmail" name="email" type="email" inputmode="email" autocomplete="username" maxlength="200" required></div>
+          <div class="campo"><label for="eSenha">Senha</label>
+            <input id="eSenha" name="senha" type="password" autocomplete="current-password" maxlength="72" required></div>
+          <button class="btn btn-tomate btn-bloco" type="submit" id="btnEntrar">Entrar</button>
+          <button class="link" type="button" id="btnEsqueci">Esqueci a senha</button>
+        </form>
+      </section>
+
+      <!-- confirmar e-mail -->
+      <section id="passoConfirmar" hidden>
+        <h2>Confirme seu e-mail</h2>
+        <p class="dica">Enviamos um link para <b id="emailEnviado"></b>. Abra o e-mail e toque no link para continuar. Ele volta para esta página.</p>
+        <p class="dica">Não chegou? Veja a caixa de spam ou promoções.</p>
+        <button class="link" type="button" id="btnVoltarConta">Usar outro e-mail</button>
+      </section>
+
+      <!-- nova senha (link de recuperação) -->
+      <section id="passoNovaSenha" hidden>
+        <h2>Crie uma nova senha</h2>
+        <p class="msg erro" id="msgSenha" role="alert" hidden></p>
+        <form id="formNovaSenha" novalidate>
+          <div class="campo"><label for="nSenha">Nova senha</label>
+            <input id="nSenha" type="password" autocomplete="new-password" minlength="10" maxlength="72" required>
+            <small>Pelo menos 10 caracteres.</small></div>
+          <button class="btn btn-tomate btn-bloco" type="submit">Salvar nova senha</button>
+        </form>
+      </section>
+
+      <!-- já tem loja -->
+      <section id="passoTemLoja" hidden>
+        <h2>Você já tem loja</h2>
+        <p class="dica">Entre no painel para cuidar dos pedidos e do cardápio.</p>
+        <ul class="checklist" id="listaLojas"></ul>
+        <a class="btn btn-tomate btn-bloco" href="/painel/">Abrir o painel</a>
+        <button class="link" type="button" id="btnOutraLoja">Criar outra loja</button>
+      </section>
+
+      <!-- criar loja -->
+      <section id="passoLoja" hidden>
+        <h2>Agora, a sua loja</h2>
+        <p class="dica">Dá para mudar o nome, as cores e o cardápio depois, pelo painel.</p>
+        <p class="msg erro" id="msgLoja" role="alert" hidden></p>
+        <form id="formLoja" novalidate>
+          <div class="campo"><label for="lNome">Nome da loja</label>
+            <input id="lNome" maxlength="80" autocomplete="organization" placeholder="Ex.: Padaria da Ana" required></div>
+          <div class="campo"><label for="lSlug">Endereço da loja</label>
+            <div class="prefixo"><span id="prefixoSlug">/l/</span><input id="lSlug" maxlength="40" autocapitalize="none" autocomplete="off" spellcheck="false" inputmode="url" required aria-describedby="slugDisp"></div>
+            <small class="disp" id="slugDisp" aria-live="polite">Use letras minúsculas, números e hífen.</small></div>
+          <fieldset class="campo" style="border:0;padding:0;margin:0 0 16px">
+            <legend class="leg" style="margin-bottom:8px">Tipo de negócio</legend>
+            <div class="tipos" id="tipos"></div>
+          </fieldset>
+          <div class="campo"><label for="lZap">WhatsApp da loja</label>
+            <input id="lZap" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(42) 99999-9999" required>
+            <small>Os pedidos chegam neste número.</small></div>
+          <button class="btn btn-tomate btn-bloco" type="submit" id="btnLoja">Criar minha loja</button>
+        </form>
+      </section>
+
+      <!-- loja criada -->
+      <section id="passoPronto" hidden>
+        <h2>Sua loja está no ar! 🎉</h2>
+        <div class="cartao-ok">
+          <b id="nomeCriada"></b>
+          <div class="link-loja"><code id="linkLoja"></code><button class="btn btn-tomate" type="button" id="btnCopiar">Copiar</button></div>
+        </div>
+        <h3 style="font:600 20px var(--f-titulo);margin:0 0 12px">Próximos passos</h3>
+        <ol class="checklist">
+          <li><b>1</b><span><strong>Ative o login em 2 etapas</strong> no painel. Ele protege a sua loja e é pedido no primeiro acesso.</span></li>
+          <li><b>2</b><span><strong>Cadastre produtos e fotos</strong>, a taxa de entrega e as formas de pagamento.</span></li>
+          <li><b>3</b><span><strong>Divulgue o link</strong> no Instagram, no Google e no status do WhatsApp.</span></li>
+        </ol>
+        <a class="btn btn-tomate btn-bloco" href="/painel/">Ir para o painel</a>
+      </section>
+
+      <!-- convite -->
+      <section id="passoConvite" hidden>
+        <h2>Aceitando o convite…</h2>
+        <p class="msg erro" id="msgConvite" role="alert" hidden></p>
+        <a class="btn btn-tomate btn-bloco" href="/painel/" id="btnConvitePainel" hidden>Abrir o painel</a>
+      </section>
+
+    </div>
+  </main>
+</div>
+<script src="/assets/config.js"></script>
+<script src="/assets/vendor/supabase-2.45.4.js"></script>
+<script src="/assets/entrar.js"></script>
+</body>
+</html>

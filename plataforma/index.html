@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bistrô Connect · Cardápio online, pedidos e painel para o seu negócio de comida</title>
+<meta name="description" content="Cardápio online, pedidos pelo WhatsApp com os valores certos, rastreio do pedido e painel para padarias, cafés, hamburguerias, pizzarias e restaurantes. Você paga pelo que vende, com teto, sem comissão por pedido.">
+<meta name="theme-color" content="#1E1410">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bistrô Connect · sua loja online de comida, com preço justo">
+<meta property="og:description" content="Cardápio online, pedidos no WhatsApp, rastreio para o cliente e painel completo. Comece grátis.">
+<meta property="og:image" content="/assets/img/croissant.jpg">
+<meta property="og:locale" content="pt_BR">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231E1410'/%3E%3Cpath d='M16 38h32a16 16 0 0 0-32 0z' fill='%23E2552B'/%3E%3Crect x='12' y='40' width='40' height='5' rx='2.5' fill='%23F2B544'/%3E%3Ccircle cx='32' cy='19' r='3' fill='%23F2B544'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,600&family=Figtree:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<header class="topo">
+  <div class="wrap">
+    <a class="marca" href="/" aria-label="Bistrô Connect, página inicial">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#2B1D17"/><path d="M16 38h32a16 16 0 0 0-32 0z" fill="#E2552B"/><rect x="12" y="40" width="40" height="5" rx="2.5" fill="#F2B544"/><circle cx="32" cy="19" r="3" fill="#F2B544"/></svg>
+      <span>Bistrô <b>Connect</b></span>
+    </a>
+    <nav aria-label="Principal">
+      <a class="so-largo" href="#como-funciona">Como funciona</a>
+      <a class="so-largo" href="#precos">Preços</a>
+      <a href="/painel/">Entrar</a>
+      <a class="btn btn-tomate" href="/entrar.html">Criar loja</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="selo"><i></i> Para padarias, cafés, hamburguerias, pizzarias e restaurantes</span>
+        <h1>Sua loja online pronta hoje. <em>Sem comissão</em> por pedido.</h1>
+        <p class="sub">Cardápio com fotos, pedidos que chegam no WhatsApp já com os valores somados, rastreio para o cliente acompanhar e um painel para cuidar de tudo pelo celular.</p>
+        <div class="acoes">
+          <a class="btn btn-tomate" href="/entrar.html">Criar minha loja grátis
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="btn btn-claro" href="/l/padaria-da-ana">Ver uma loja de exemplo</a>
+        </div>
+        <p class="nota">Grátis enquanto você vender até R$ 3 mil por mês pela plataforma. Sem cartão de crédito para começar.</p>
+      </div>
+
+      <div class="vitrine" aria-hidden="true">
+        <div class="balao rastreio"><b>Pedido #27</b>Saiu para entrega<div class="barra"><i class="ok"></i><i class="ok"></i><i class="ok"></i><i></i></div></div>
+        <div class="celular">
+          <div class="capa"><span>A</span></div>
+          <h3>Padaria da Ana</h3>
+          <p class="aberto">● Aberto agora · entrega e retirada</p>
+          <div class="item"><img src="/assets/img/croissant.jpg" alt="" width="62" height="62"><div><b>Croissant de amêndoas</b><small>R$ 14,90</small></div><span class="mais">+</span></div>
+          <div class="item"><img src="/assets/img/bolo.jpg" alt="" width="62" height="62"><div><b>Bolo red velvet</b><small>R$ 94,90</small></div><span class="mais">+</span></div>
+          <div class="item"><img src="/assets/img/burger.jpg" alt="" width="62" height="62"><div><b>Smash clássico</b><small>R$ 32,00</small></div><span class="mais">+</span></div>
+        </div>
+        <div class="balao zap"><b>Novo pedido no WhatsApp</b>2× Croissant · 1× Bolo<br>Total: R$ 124,70</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco" id="como-funciona">
+    <div class="wrap">
+      <span class="rotulo">Como funciona</span>
+      <h2 class="titulo">Do cadastro ao primeiro pedido em uma tarde</h2>
+      <p class="intro">Você não precisa de programador nem de máquina nova. Só do seu celular e das fotos dos seus produtos.</p>
+      <ol class="passos">
+        <li><h3>Crie sua conta</h3><p>Escolha o tipo do seu negócio e o endereço da loja, como <b>/l/padaria-da-ana</b>. As categorias do cardápio já vêm prontas.</p></li>
+        <li><h3>Monte o cardápio</h3><p>Cadastre produtos, preços e fotos pelo painel. Defina taxa de entrega, pedido mínimo e formas de pagamento.</p></li>
+        <li><h3>Divulgue o link</h3><p>Coloque o link no Instagram, no Google e no status do WhatsApp. Os pedidos chegam no painel e no seu WhatsApp.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="bloco recursos" id="recursos">
+    <div class="wrap">
+      <span class="rotulo">Tudo o que vem junto</span>
+      <h2 class="titulo">Feito para quem vive o balcão</h2>
+      <p class="intro">Cada recurso nasceu de pedido real de padaria, café e hamburgueria. Nada de tela complicada.</p>
+      <div class="grade">
+        <article class="cartao"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg></span><h3>Cardápio online</h3><p>Categorias, fotos, destaques e produto pausado com um toque quando acaba.</p></article>
+        <article class="cartao"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.5 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/><path d="M9 10h6M9 14h4"/></svg></span><h3>Pedido no WhatsApp com valores</h3><p>O pedido chega escrito, com itens, total, entrega e forma de pagamento. Sem conta errada.</p></article>
+        <article class="cartao"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10" r="3"/><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/></svg></span><h3>Rastreio para o cliente</h3><p>O cliente recebe um link e acompanha: recebido, em preparo, saiu para entrega, entregue.</p></article>
+        <article class="cartao"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></span><h3>Pedidos ao vivo no painel</h3><p>Aviso sonoro quando chega pedido, comanda para impressora e um toque para avançar o status.</p></article>
+        <article class="cartao"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><h3>Financeiro sem planilha</h3><p>Vendido, recebido e a receber, por dia e por forma de pagamento. Exporta para o contador.</p></article>
+        <article class="cartao"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2.4.6 4 2.6 4 6"/></svg></span><h3>Equipe com funções</h3><p>Dono, gerente, atendente e cozinha. Cada pessoa vê só o que precisa. A cozinha não mexe no caixa.</p></article>
+        <article class="cartao escuro"><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg></span><h3>Segurança de verdade</h3><p>Login em 2 etapas para quem administra, dados de cada loja separados no banco e preço conferido em todo pedido.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco" id="precos">
+    <div class="wrap">
+      <span class="rotulo">Preço justo</span>
+      <h2 class="titulo">Você paga pelo que vende, e o preço tem teto</h2>
+      <p class="intro">A mensalidade acompanha o que sua loja vendeu pela plataforma no mês. Começou agora? É grátis. Cresceu? O valor sobe pouco e para no teto.</p>
+      <div class="planos" id="planos">
+        <article class="plano"><h3>Começo</h3><span class="faixa">Vendas de até R$ 3 mil/mês</span><div class="preco">Grátis</div><ul><li>Loja e cardápio completos</li><li>Pedidos e rastreio</li><li>Painel e financeiro</li></ul></article>
+        <article class="plano destaque"><span class="tag">Mais comum</span><h3>Crescendo</h3><span class="faixa">Vendas de até R$ 10 mil/mês</span><div class="preco">R$ 49<small>/mês</small></div><ul><li>Tudo do Começo</li><li>Equipe com funções</li><li>Suporte pelo WhatsApp</li></ul></article>
+        <article class="plano"><h3>Forte</h3><span class="faixa">Vendas de até R$ 30 mil/mês</span><div class="preco">R$ 99<small>/mês</small></div><ul><li>Tudo do Crescendo</li><li>Relatórios por período</li><li>Até 30 pessoas na equipe</li></ul></article>
+        <article class="plano"><h3>Sem limites</h3><span class="faixa">Acima de R$ 30 mil/mês</span><div class="preco">R$ 199<small>/mês</small></div><ul><li>Tudo do Forte</li><li>Valor fixo, venda o quanto quiser</li><li>Atendimento prioritário</li></ul></article>
+      </div>
+      <div class="explica">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M17 6.5C16 5 14.2 4.5 12 4.5c-2.8 0-5 1.3-5 3.7 0 5.3 10 2.7 10 8 0 2.4-2.3 3.8-5 3.8-2.4 0-4.4-.8-5.3-2.5"/></svg>
+        <p><b>Sem comissão por pedido.</b> Aplicativos de entrega costumam cobrar uma porcentagem de cada venda. Aqui a mensalidade é fixa dentro da faixa e tem teto: quem cresce não é punido. A faixa é calculada pelo total de pedidos não cancelados feitos pelo seu link no mês.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco recursos" id="perguntas">
+    <div class="wrap">
+      <span class="rotulo">Perguntas frequentes</span>
+      <h2 class="titulo">Antes de começar</h2>
+      <div class="faq">
+        <details><summary>Preciso de site ou domínio próprio?</summary><p>Não. Sua loja ganha um endereço na plataforma, como <b>/l/sua-loja</b>, pronto para divulgar no Instagram, no Google e no WhatsApp.</p></details>
+        <details><summary>Como recebo o dinheiro dos pedidos?</summary><p>Do jeito que você já recebe hoje: Pix, cartão na entrega ou dinheiro. O cliente escolhe a forma no pedido e você combina pelo WhatsApp. O dinheiro vai direto para você.</p></details>
+        <details><summary>O cliente precisa baixar aplicativo?</summary><p>Não. Ele abre o link no celular, escolhe os produtos e envia. O acompanhamento do pedido também é por link.</p></details>
+        <details><summary>E se eu vender mais de R$ 3 mil no mês?</summary><p>A loja continua funcionando normalmente. A mensalidade passa para a faixa seguinte, e você é avisado antes de qualquer cobrança.</p></details>
+        <details><summary>Meus dados e os dos meus clientes ficam seguros?</summary><p>Cada loja só enxerga os próprios dados, garantido direto no banco de dados. Quem administra entra com login em 2 etapas, e o preço de cada pedido é conferido no servidor, não no navegador.</p></details>
+        <details><summary>Posso cancelar quando quiser?</summary><p>Sim. Não há fidelidade nem multa.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="bloco chamada">
+    <div class="wrap">
+      <h2 class="titulo">Seu cardápio no ar ainda hoje</h2>
+      <p>Crie a conta, escolha o tipo do seu negócio e comece a receber pedidos pelo seu link.</p>
+      <a class="btn" href="/entrar.html">Criar minha loja grátis</a>
+    </div>
+  </section>
+</main>
+
+<footer class="rodape">
+  <div class="wrap">
+    <a class="marca" href="/">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#2B1D17"/><path d="M16 38h32a16 16 0 0 0-32 0z" fill="#E2552B"/><rect x="12" y="40" width="40" height="5" rx="2.5" fill="#F2B544"/><circle cx="32" cy="19" r="3" fill="#F2B544"/></svg>
+      <span>Bistrô <b>Connect</b></span>
+    </a>
+    <nav aria-label="Rodapé">
+      <a href="/painel/">Entrar no painel</a>
+      <a href="/entrar.html">Criar conta</a>
+      <a href="/termos.html">Termos de uso</a>
+      <a href="/privacidade.html">Privacidade</a>
+      <a id="suporte" href="#" target="_blank" rel="noopener noreferrer" hidden>Suporte no WhatsApp</a>
+    </nav>
+    <p class="copy">© <span id="ano">2026</span> Bistrô Connect. Feito para pequenos negócios de comida.</p>
+  </div>
+</footer>
+<script src="/assets/config.js"></script>
+<script src="/assets/inicio.js"></script>
+</body>
+</html>
