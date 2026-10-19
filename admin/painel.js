@@ -1,4 +1,4 @@
-/* Painel eBistrô (Acesso restrito).
+/* Painel Bistrô Connect (Acesso restrito).
    Evolução do painel Bistrô Connection original (historico/painel-original.html): mesmas tabelas
    (leads, orcamentos, config), mesmos campos e regras, com login em 2 etapas, sessão só na aba,
    saída por inatividade, busca rápida, histórico dos leads e scripts que abrem o WhatsApp. */
@@ -28,7 +28,7 @@ const FUNIL_META=[['contato','Contatos feitos',200],['respondeu','Responderam',6
 const INATIVO_MS=30*60*1000;
 
 let db=null, demo=false, leads=[], orcs=[], editId=null, delArm=false, qEdit=null, qItems=[], modo='quadro', abaAtual='hoje';
-let cfg={marca:'eBistrô',nome:'Adilson',whats:'(42) 99900-6578',email:'',cidade:'Ponta Grossa · PR',site:'',pix:'',doc:'',metas:{clientes:15,mrr:3000,contatos:10,fechados:5}};
+let cfg={marca:'Bistrô Connect',nome:'Adilson',whats:'(42) 99900-6578',email:'',cidade:'Ponta Grossa · PR',site:'',pix:'',doc:'',metas:{clientes:15,mrr:3000,contatos:10,fechados:5}};
 
 /* ================= utilidades ================= */
 const $=s=>document.querySelector(s);
@@ -87,7 +87,7 @@ async function segundaEtapa(){
   const f=await db.auth.mfa.listFactors();if(f.error)throw f.error;
   if(f.data.totp&&f.data.totp.length){$('#cdCodigo').value='';return mostraForm('fCodigo')}
   for(const p of (f.data.all||[]).filter(x=>x.status==='unverified'))await db.auth.mfa.unenroll({factorId:p.id});
-  const e=await db.auth.mfa.enroll({factorType:'totp',friendlyName:'Painel eBistrô '+Date.now()});if(e.error)throw e.error;
+  const e=await db.auth.mfa.enroll({factorType:'totp',friendlyName:'Painel Bistrô Connect '+Date.now()});if(e.error)throw e.error;
   fatorNovo=e.data.id;$('#qr2fa').src=e.data.totp.qr_code;$('#seg2fa').textContent=e.data.totp.secret;$('#cdNovo').value='';mostraForm('fCadastro2fa')}
 async function verifica(fatorId,codigo,botao){
   if(!/^\d{6}$/.test(codigo))return msgAuth('Digite os 6 números do app.');
@@ -154,7 +154,7 @@ document.querySelectorAll('[data-aba]').forEach(b=>b.addEventListener('click',()
 document.addEventListener('click',e=>{const b=e.target.closest('[data-ir]');if(b)abrirAba(b.dataset.ir)});
 function subtitulo(){const h=new Date().getHours(),s=h<12?'Bom dia':h<18?'Boa tarde':'Boa noite';
   $('#subtitulo').textContent=abaAtual==='hoje'?s+', '+primeiroNome(cfg.nome||'Adilson')+' · '+new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'}):''}
-function aplicaMarca(){document.querySelectorAll('.marca-nome').forEach(e=>e.textContent=cfg.marca||'eBistrô');document.title='Painel · '+(cfg.marca||'eBistrô')}
+function aplicaMarca(){document.querySelectorAll('.marca-nome').forEach(e=>e.textContent=cfg.marca||'Bistrô Connect');document.title='Painel · '+(cfg.marca||'Bistrô Connect')}
 
 /* ================= render geral ================= */
 function render(){
@@ -245,12 +245,12 @@ function renderResultados(ativos,mrr){
   const serie=meses.map(m=>ativos.filter(l=>String(l.ativoEm||l.fechadoEm||l.criadoEm||'0000').slice(0,7)<=m).reduce((s,l)=>s+num(l.mensalidade),0));
   const mx=Math.max(1,...serie);
   $('#graficoMrr').innerHTML=serie.map((v,i)=>{const d=new Date(meses[i]+'-15T12:00:00');return `<div class="gb"><b>${brl0(v)}</b><i style="height:${Math.max(2,v/mx*100)}%"></i><span>${esc(d.toLocaleDateString('pt-BR',{month:'short'}).replace('.',''))}</span></div>`}).join('');
-  $('#planoResumo').innerHTML=`O ${esc(cfg.marca||'eBistrô')} vende cardápio digital com pedido direto no WhatsApp para padarias, cafés e restaurantes de Ponta Grossa, cobrando implantação + mensalidade, sem comissão por pedido. Meta: <b>${esc(+M.clientes||15)} clientes ativos</b> e cerca de <b>${esc(brl0(+M.mrr||3000))}/mês recorrentes</b> em 90 dias.`;
+  $('#planoResumo').innerHTML=`O ${esc(cfg.marca||'Bistrô Connect')} vende cardápio digital com pedido direto no WhatsApp para padarias, cafés e restaurantes de Ponta Grossa, cobrando implantação + mensalidade, sem comissão por pedido. Meta: <b>${esc(+M.clientes||15)} clientes ativos</b> e cerca de <b>${esc(brl0(+M.mrr||3000))}/mês recorrentes</b> em 90 dias.`;
   $('#tbPlanos').innerHTML=Object.entries(PLANOS).map(([k,p])=>`<tr><td><b>${k}</b></td><td>${brl0(p.impl)}</td><td>${brl0(p.mens)}/mês</td><td>${p.prazo}</td><td class="muted">${esc(p.itens.map(i=>i[0]).slice(0,4).join(' · '))}</td></tr>`).join('')}
 
 /* ================= scripts ================= */
 function preencher(txt,l){l=l||{};const o=l.id?orcs.filter(x=>mesmo(x.leadId,l.id)).sort((a,b)=>String(b.numero).localeCompare(String(a.numero)))[0]:null;
-  const r={nome:primeiroNome(l.responsavel)||'[nome]',estabelecimento:l.nome||'[estabelecimento]',data:o?fmtDataLonga(o.validoAte):'[data]',dia:l.vencimento||'[dia]',chave:cfg.pix||'[chave]',marca:cfg.marca||'eBistrô',eu:primeiroNome(cfg.nome)||'Adilson'};
+  const r={nome:primeiroNome(l.responsavel)||'[nome]',estabelecimento:l.nome||'[estabelecimento]',data:o?fmtDataLonga(o.validoAte):'[data]',dia:l.vencimento||'[dia]',chave:cfg.pix||'[chave]',marca:cfg.marca||'Bistrô Connect',eu:primeiroNome(cfg.nome)||'Adilson'};
   return txt.replace(/\[(nome|estabelecimento|data|dia|chave|marca|eu)\]/g,(m,k)=>r[k])}
 function scriptPara(l){const i=SCRIPT_DA_ETAPA[l.stage||'lead'];return i==null?'':preencher(SCRIPTS[i][1],l)}
 function renderScripts(){const sel=$('#scLead'),l=L(sel.value);
@@ -273,9 +273,9 @@ function qData(){const sub=qItems.reduce((s,i)=>s+(i.q||0)*(i.v||0),0),lanc=$('#
   const base=qEdit?O(qEdit):null,data=base?base.data:hoje(),d=new Date(data+'T12:00:00');d.setDate(d.getDate()+val);
   return {numero:base?base.numero:nextNumero(),data,validoAte:iso(d),est:$('#qEst').value.trim(),resp:$('#qResp').value.trim(),whats:$('#qWhats').value.trim(),local:$('#qLocal').value.trim(),plano:$('#qPlano').value,itens:qItems.map(i=>({d:i.d,q:i.q,v:i.v})),subtotal:Math.round(sub*100)/100,descPct:pct,lanc,desconto:desc,totalImpl:Math.round((sub-desc)*100)/100,mens:num($('#qMens').value),validade:val,prazo:$('#qPrazo').value.trim(),pag:$('#qPag').value.trim(),obs:$('#qObs').value.trim(),leadId:$('#qLead').value||''}}
 function nextNumero(){const y=hoje().slice(0,4),ns=orcs.filter(o=>String(o.numero||'').startsWith('BT-'+y)).map(o=>parseInt(String(o.numero).split('-')[2])||0);return 'BT-'+y+'-'+String((ns.length?Math.max(...ns):0)+1).padStart(3,'0')}
-function drawSheet(){if(!$('#sheet'))return;const o=qData(),P=PLANOS[o.plano]||PLANOS.Profissional,mk=esc(cfg.marca||'eBistrô');
+function drawSheet(){if(!$('#sheet'))return;const o=qData(),P=PLANOS[o.plano]||PLANOS.Profissional,mk=esc(cfg.marca||'Bistrô Connect');
   $('#sheet').innerHTML=`
-  <div class="sh-head"><div class="sh-brand"><img src="img/logo.png" alt=""><div><b>${mk}</b><small>A evolução digital da sua gastronomia</small></div></div>
+  <div class="sh-head"><div class="sh-brand"><img class="sh-logo" src="img/logo-bistro-connect.png" alt="${mk}"></div>
   <div class="sh-num"><div class="k">Orçamento</div><div class="n">${esc(o.numero)}</div><div class="d">Emitido em ${fmtDataLonga(o.data)}<br>Válido até ${fmtDataLonga(o.validoAte)}</div></div></div>
   <div class="sh-body">
     <div class="sh-cols">
@@ -319,7 +319,7 @@ async function gerarPdf(){const st=$('#qStatus');
     pdf.save(nome);st.textContent='PDF baixado: '+nome;fitSheet()}
   catch(e){console.error(e);st.textContent='Não foi possível gerar o PDF.';fitSheet()}
   btn.disabled=false}
-function msgEnvio(){const o=qData();return `Olá${o.resp?', '+primeiroNome(o.resp):''}! Segue o orçamento ${o.numero} do cardápio digital da ${o.est||'sua casa'} (plano ${o.plano}).\n\nImplantação: ${brl(o.totalImpl)}\nMensalidade: ${brl(o.mens)}/mês\nPrazo: ${o.prazo}\nVálido até ${fmtDataLonga(o.validoAte)}.\n\nQualquer dúvida, me chama aqui! ${cfg.nome||'Adilson'} · ${cfg.marca||'eBistrô'}`}
+function msgEnvio(){const o=qData();return `Olá${o.resp?', '+primeiroNome(o.resp):''}! Segue o orçamento ${o.numero} do cardápio digital da ${o.est||'sua casa'} (plano ${o.plano}).\n\nImplantação: ${brl(o.totalImpl)}\nMensalidade: ${brl(o.mens)}/mês\nPrazo: ${o.prazo}\nVálido até ${fmtDataLonga(o.validoAte)}.\n\nQualquer dúvida, me chama aqui! ${cfg.nome||'Adilson'} · ${cfg.marca||'Bistrô Connect'}`}
 function renderOrcList(){const t=hoje(),ord=orcs.slice().sort((a,b)=>String(b.numero||'').localeCompare(String(a.numero||'')));
   const acc=orcs.filter(o=>o.status==='aceito').length;$('#qResumo').textContent=`${orcs.length} orçamentos · ${acc} aceitos`;
   $('#tbOrc').innerHTML=ord.length?ord.map(o=>{const venc=o.status==='enviado'&&o.validoAte<t,cls={enviado:venc?'bad':'info',aceito:'ok',recusado:''}[o.status]||'',lbl=o.status==='enviado'?(venc?'Vencido':'Enviado'):o.status==='aceito'?'Aceito':'Recusado';
@@ -384,7 +384,7 @@ $('#hpAbrir').addEventListener('click',e=>{const ds=[...document.querySelectorAl
 /* ================= ajustes ================= */
 const CAMPOS={cMarca:'marca',cNome:'nome',cWhats:'whats',cEmail:'email',cCidade:'cidade',cSite:'site',cPix:'pix',cDoc:'doc'},METAS={mClientes:'clientes',mMrr:'mrr',mContatos:'contatos',mFechados:'fechados'};
 function fillCfg(){Object.entries(CAMPOS).forEach(([i,k])=>{if(document.activeElement!==$('#'+i))$('#'+i).value=cfg[k]||''});Object.entries(METAS).forEach(([i,k])=>{if(document.activeElement!==$('#'+i))$('#'+i).value=(cfg.metas||{})[k]||''})}
-$('#cfgForm').addEventListener('submit',async e=>{e.preventDefault();const d={};Object.entries(CAMPOS).forEach(([i,k])=>d[k]=$('#'+i).value.trim());d.marca=d.marca||'eBistrô';
+$('#cfgForm').addEventListener('submit',async e=>{e.preventDefault();const d={};Object.entries(CAMPOS).forEach(([i,k])=>d[k]=$('#'+i).value.trim());d.marca=d.marca||'Bistrô Connect';
   d.metas={};Object.entries(METAS).forEach(([i,k])=>d.metas[k]=num($('#'+i).value)||cfg.metas[k]);
   if(!demo){const {error}=await db.from('config').upsert({id:'empresa',doc:d});if(error){toast('Não foi possível salvar: '+erroAmigavel(error));return}}
   cfg=Object.assign({},cfg,d);aplicaMarca();drawSheet();render();toast('Ajustes salvos')});

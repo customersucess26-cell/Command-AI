@@ -1,4 +1,4 @@
-/* Painel eBistrô. Base: painel Bistrô Connection original (historico/painel-original.html).
+/* Painel Bistrô Connect. Base: painel Bistrô Connection original (historico/painel-original.html).
    Menu lateral escuro com a marca, área de trabalho clara ou escura, folha A4 sempre clara. */
 :root{
   --bg:#F2F4F8; --surface:#FFFFFF; --surface-2:#E9EDF4; --line:#DCE2EC; --hover:#F6F8FB;
@@ -347,3 +347,6 @@ details.hp .hb li{margin:5px 0}
 }
 @media (max-width:560px){.form{grid-template-columns:1fr}.kpi .val{font-size:23px}.plan-grid,.steps90{grid-template-columns:1fr}.toolbar select,.toolbar input[type=search],.inline-lbl select{min-width:0;max-width:none;width:100%}.inline-lbl{flex-wrap:wrap}.items-ed .it{grid-template-columns:1fr 46px 80px 34px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* orçamento: logo Bistrô Connect completa */
+.sh-brand img.sh-logo{height:92px!important;width:auto!important;border-radius:12px!important;filter:none!important;background:#fff;padding:6px 12px}

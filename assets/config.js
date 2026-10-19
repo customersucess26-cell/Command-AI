@@ -1,4 +1,4 @@
-/* Configuração do site eBistrô. Preencha antes de publicar.
+/* Configuração do site Bistrô Connect. Preencha antes de publicar.
    Este arquivo é público: coloque aqui só chaves feitas para o navegador
    (a "anon key" do Supabase, nunca a "service_role"). */
 window.BISTRO = {
@@ -13,4 +13,4 @@ window.BISTRO = {
   // Função que responde no chat com IA (opcional). Vazio = respostas automáticas.
   aiUrl: ""
 };
-if (!window.BISTRO.whatsapp) console.warn("eBistrô: preencha o WhatsApp em assets/config.js; sem ele os botões de contato não chegam até você.");
+if (!window.BISTRO.whatsapp) console.warn("Bistrô Connect: preencha o WhatsApp em assets/config.js; sem ele os botões de contato não chegam até você.");
