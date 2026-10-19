@@ -144,7 +144,7 @@ function mudarEtapa(id,st){const patch={stage:st};const x=L(id);if(!x||x.stage==
   salvar('leads',id,patch);toast(st==='fechado'?'Fechado! Ele está na aba Entregas':(x.nome||'Lead')+': '+stageName(st))}
 
 /* ================= navegação ================= */
-const TITULOS={hoje:'Hoje',leads:'Funil de leads',orcamentos:'Orçamentos',entregas:'Entregas em andamento',clientes:'Clientes e manutenção',resultados:'Resultados e metas',scripts:'Scripts de venda',ajuda:'Ajuda · como tudo funciona',ajustes:'Ajustes'};
+const TITULOS={hoje:'Hoje',leads:'Funil de leads',orcamentos:'Orçamentos',entregas:'Entregas em andamento',clientes:'Clientes e manutenção',resultados:'Plano de negócio e metas',scripts:'Scripts de venda',ajuda:'Ajuda · como tudo funciona',ajustes:'Ajustes'};
 function abrirAba(t){if(!TITULOS[t])t='hoje';abaAtual=t;
   document.querySelectorAll('[data-aba]').forEach(b=>{if(b.dataset.aba===t)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   document.querySelectorAll('section.panel').forEach(p=>p.hidden=p.dataset.panel!==t);
