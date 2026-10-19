@@ -415,3 +415,24 @@ details.hp .hb li{margin:5px 0}
 @media (max-width:980px){.cardapio{grid-template-columns:1fr}.cats{position:static}}
 @media (max-width:860px){.btn.pausa{width:auto}}
 @media (max-width:560px){.foto-campo{grid-template-columns:1fr}.grafico.dias14 .gb b{display:none}}
+
+/* ===== efeitos v5: mini gráficos, pedido novo piscando, produto sem foto ===== */
+.kpi{transition:transform .2s ease,box-shadow .2s ease}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 18px 34px -22px rgba(11,17,30,.45)}
+.kpi.com-spark{padding-bottom:44px}
+.kpi .spark{position:absolute;left:0;right:0;bottom:0;width:100%;height:38px;pointer-events:none}
+.kpi .spark polygon{fill:var(--accent);opacity:.12}
+.kpi .spark polyline{fill:none;stroke:var(--accent);stroke-width:1.8;vector-effect:non-scaling-stroke;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;animation:desenha 1.2s .15s ease-out forwards}
+.kpi .spark circle{fill:var(--accent)}
+@keyframes desenha{to{stroke-dashoffset:0}}
+.ped.chegou{animation:chegou2 .9s ease-in-out 5;position:relative;z-index:2}
+@keyframes chegou2{0%,100%{box-shadow:0 0 0 0 transparent;transform:none}40%{box-shadow:0 0 0 5px var(--accent-soft),0 18px 40px -16px var(--accent);transform:scale(1.025)}}
+.ped.chegou::before{content:"NOVO";position:absolute;top:-9px;right:12px;font:800 10.5px/1 var(--f-display,inherit);letter-spacing:.08em;background:var(--accent);color:#fff;padding:4px 8px;border-radius:99px;animation:popNovo .4s cubic-bezier(.3,1.6,.5,1)}
+@keyframes popNovo{from{transform:scale(0)}}
+.prod .ft .sem-ft{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:700;color:var(--muted);
+  background:repeating-linear-gradient(135deg,transparent 0 14px,color-mix(in srgb,var(--accent) 6%,transparent) 14px 28px);border-bottom:1px dashed var(--line);transition:color .2s}
+.prod .ft .sem-ft svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round;opacity:.75}
+.prod .ft:hover .sem-ft{color:var(--accent)}
+.prod{transition:transform .2s ease,box-shadow .2s ease}
+.prod:hover{transform:translateY(-3px);box-shadow:0 20px 36px -24px rgba(11,17,30,.5)}
+@media (prefers-reduced-motion:reduce){.kpi .spark polyline{animation:none;stroke-dashoffset:0}.ped.chegou,.ped.chegou::before{animation:none}}

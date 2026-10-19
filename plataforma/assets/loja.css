@@ -167,3 +167,36 @@ h1,h2,h3{font-family:var(--f-titulo);font-weight:var(--titulo-peso);letter-spaci
 .aviso.mostra{opacity:1;transform:translate(-50%,0)}
 .semjs{padding:24px;font:16px/1.5 sans-serif;background:#FBF6EE;color:#2A1C14;margin:0}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ===== efeitos: capa padrão, fotos com brilho ao carregar, item voando até a sacola ===== */
+.capa-fundo img{opacity:0;transform:scale(1.06);transition:opacity .6s ease,transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.capa-fundo.carregou img{opacity:1;transform:none}
+.capa-fundo img.padrao{filter:saturate(1.05) blur(1px)}
+.capa-fundo.carregou img.padrao{transform:scale(1.03)}
+.logo{animation:logoEntra .6s .1s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes logoEntra{from{transform:scale(.6) rotate(-6deg);opacity:0}}
+.capa-txt>*{animation:entraTxt .6s cubic-bezier(.2,.7,.2,1) both}
+.capa-txt>*:nth-child(2){animation-delay:.08s}.capa-txt>*:nth-child(3){animation-delay:.16s}
+@keyframes entraTxt{from{transform:translateY(14px);opacity:0}}
+.foto.brilhando{background:linear-gradient(100deg,color-mix(in srgb,var(--cor) 10%,var(--cartao)) 30%,color-mix(in srgb,var(--cor) 24%,var(--cartao)) 50%,color-mix(in srgb,var(--cor) 10%,var(--cartao)) 70%);background-size:300% 100%;animation:shimmer 1.3s linear infinite}
+.foto.brilhando img{opacity:0}
+.foto img{transition:opacity .45s ease,transform .45s ease}
+.foto.carregou img{opacity:1}
+@keyframes shimmer{from{background-position:100% 0}to{background-position:-200% 0}}
+.prod,.dest{transition:transform .25s ease,box-shadow .25s ease}
+@media (hover:hover){.prod:hover,.dest:hover,.js-efeitos .revela.visto.prod:hover,.js-efeitos .revela.visto.dest:hover{transform:translateY(-3px);box-shadow:0 22px 40px -24px rgba(0,0,0,.45)}.prod:hover .foto img,.dest:hover .foto img{transform:scale(1.06)}}
+.add{transition:transform .15s cubic-bezier(.3,1.5,.5,1),filter .2s,box-shadow .2s;box-shadow:0 8px 18px -10px var(--cor)}
+.add:hover{filter:brightness(1.06)}
+.add:active,.passo button:active{transform:scale(.9)}
+.passo.novo{animation:abre .3s cubic-bezier(.3,1.5,.5,1)}
+@keyframes abre{from{transform:scale(.7);opacity:0}}
+.voando{position:fixed;left:0;top:0;width:48px;height:48px;border-radius:50%;z-index:80;pointer-events:none;overflow:hidden;background:var(--cor);color:var(--cor-txt);display:grid;place-items:center;font:800 15px var(--f-corpo);box-shadow:0 10px 24px -8px rgba(0,0,0,.5);border:3px solid #fff}
+.voando img{width:100%;height:100%;object-fit:cover}
+.barra.pula{animation:pulaBarra .55s cubic-bezier(.3,1.6,.5,1)}
+.barra.pula .barra-qtd{animation:pulaQtd .55s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pulaBarra{30%{transform:scale(1.04) translateY(-4px)}60%{transform:scale(.99)}}
+@keyframes pulaQtd{40%{transform:scale(1.45) rotate(-8deg)}}
+.barra{box-shadow:0 18px 40px -16px color-mix(in srgb,var(--cor) 80%,#000)}
+.aba{transition:background .2s,color .2s,transform .15s}
+.aba:active{transform:scale(.95)}
+@media (prefers-reduced-motion:reduce){.logo,.capa-txt>*,.passo,.barra.pula,.barra.pula .barra-qtd{animation:none!important}.foto.brilhando{animation:none}}

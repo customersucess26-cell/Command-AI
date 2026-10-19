@@ -146,14 +146,18 @@ function render(){if($('#app').hidden)return;marca();
   $('#lojaStatus').textContent=RECURSOS.pedidos?(aberta?'Recebendo pedidos':'Pedidos pausados'):'Cardápio online';$('#lojaStatus').classList.toggle('fechada',RECURSOS.pedidos&&!aberta);
   const h=new Date().getHours();$('#subtitulo').textContent=aba==='inicio'?(h<12?'Bom dia':h<18?'Boa tarde':'Boa noite')+' · '+new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'}):'';
   if(aba==='inicio')desenhaInicio();if(aba==='pedidos')desenhaPedidos();if(aba==='financeiro')desenhaFinanceiro();if(aba==='clientes')desenhaClientes();if(aba==='cardapio')desenhaCardapio();if(aba==='loja')preencheLoja();if(aba==='equipe')desenhaEquipe();if(aba==='inicio')desenhaLink()}
-function kpi(l,v,s,cls){return `<div class="kpi${cls?' '+cls:''}"><span class="lbl">${esc(l)}</span><span class="val">${esc(v)}</span>${s?`<span class="sub">${esc(s)}</span>`:''}</div>`}
+function kpi(l,v,s,cls,serie){return `<div class="kpi${cls?' '+cls:''}${serie?' com-spark':''}"><span class="lbl">${esc(l)}</span><span class="val">${esc(v)}</span>${s?`<span class="sub">${esc(s)}</span>`:''}${serie?spark(serie):''}</div>`}
+/* mini gráfico dos últimos 7 dias dentro do cartão */
+function spark(serie){const mx=Math.max(1,...serie),w=100,h=30,n=serie.length-1||1,pts=serie.map((v,i)=>[i/n*w,h-2-(v/mx)*(h-6)]);const linha=pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true"><polygon points="0,${h} ${linha} ${w},${h}"/><polyline points="${linha}"/><circle cx="${pts[pts.length-1][0]}" cy="${pts[pts.length-1][1]}" r="2.6"/></svg>`}
+function ultimos7(fn){const r=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const dia=iso(d);r.push(fn(validos(orders).filter(o=>diaLocal(o.created_at)===dia)))}return r}
 function barras(el,serie,rotulos,fmt,cls){const mx=Math.max(1,...serie);el.className='grafico'+(cls?' '+cls:'');el.style.gridTemplateColumns='repeat('+serie.length+',minmax(0,1fr))';el.innerHTML=serie.map((v,i)=>`<div class="gb"><b>${esc(fmt?fmt(v):v)}</b><i style="height:${Math.max(2,v/mx*100)}%"></i><span>${esc(rotulos[i])}</span></div>`).join('')}
 const validos=lista=>lista.filter(o=>o.status!=='cancelado');
 
 function desenhaInicio(){
   const k=$('#kpisInicio');
   if(RECURSOS.pedidos){const t=hoje(),hj=validos(orders.filter(o=>diaLocal(o.created_at)===t)),abertos=orders.filter(o=>['novo','confirmado','em_preparo','pronto'].includes(o.status)),d30=validos(orders.filter(o=>Date.now()-new Date(o.created_at)<30*864e5)),soma=d30.reduce((s,o)=>s+num(o.total),0);
-    k.className='kpis k4';k.innerHTML=kpi('Pedidos hoje',hj.length,hj.length?'último às '+horaBR(hj[0].created_at):'nenhum ainda')+kpi('Vendido hoje',brl(hj.reduce((s,o)=>s+num(o.total),0)),'pedidos não cancelados')+kpi('Em aberto agora',abertos.length,pendentes()?pendentes()+' esperando confirmação':'tudo encaminhado',pendentes()?'alert':'')+kpi('Ticket médio',brl(d30.length?soma/d30.length:0),'últimos 30 dias');
+    k.className='kpis k4';k.innerHTML=kpi('Pedidos hoje',hj.length,hj.length?'último às '+horaBR(hj[0].created_at):'nenhum ainda','',ultimos7(l=>l.length))+kpi('Vendido hoje',brl(hj.reduce((s,o)=>s+num(o.total),0)),'pedidos não cancelados','',ultimos7(l=>l.reduce((s,o)=>s+num(o.total),0)))+kpi('Em aberto agora',abertos.length,pendentes()?pendentes()+' esperando confirmação':'tudo encaminhado',pendentes()?'alert':'')+kpi('Ticket médio',brl(d30.length?soma/d30.length:0),'últimos 30 dias');
     const dias=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);dias.push(iso(d))}
     barras($('#grafDias'),dias.map(d=>validos(orders).filter(o=>diaLocal(o.created_at)===d).reduce((s,o)=>s+num(o.total),0)),dias.map(d=>d.slice(8,10)+'/'+d.slice(5,7)),brl0,'dias14');
     const hs=Array(24).fill(0);d30.forEach(o=>hs[new Date(o.created_at).getHours()]++);barras($('#grafHoras'),hs,hs.map((_,i)=>i%3===0?i+'h':''),null,'horas');
@@ -253,7 +257,7 @@ function desenhaCardapio(){
   const L=prods.filter(p=>(!catSel||p.category_id===catSel)&&(!q||String(p.name).toLowerCase().includes(q)||String(p.description).toLowerCase().includes(q))).sort((a,b)=>(cats.findIndex(c=>c.id===a.category_id)-cats.findIndex(c=>c.id===b.category_id))||(a.position-b.position));
   $('#resumoProds').textContent=L.length+' produto(s) · '+L.filter(p=>!p.active).length+' pausado(s)';
   $('#gradeProds').innerHTML=L.map(p=>{const img=imgUrl(p.image_url),irmaos=prods.filter(x=>x.category_id===p.category_id).sort((a,b)=>a.position-b.position),i=irmaos.indexOf(p);
-    return `<article class="prod${p.active?'':' off'}"><div class="ft" data-prod="${esc(p.id)}" style="${img?`background-image:url('${esc(img)}')`:''}">${p.badge?`<span class="selo">${esc(p.badge)}</span>`:''}<button class="estrela" type="button" data-destaque="${esc(p.id)}" aria-pressed="${!!p.featured}" aria-label="Destaque">★</button></div><div class="ct"><b data-prod="${esc(p.id)}">${esc(p.name)}</b><small>${esc(p.description||((p.extra||{}).origem)||C(p.category_id)?.name||'')}</small></div><div class="rod"><span class="preco">${num(p.price)>0?brl(p.price):'Sob consulta'}</span><span class="ord"><button type="button" data-prod-sobe="${esc(p.id)}" aria-label="Mover para cima" ${i<=0?'disabled':''}>↑</button><button type="button" data-prod-desce="${esc(p.id)}" aria-label="Mover para baixo" ${i>=irmaos.length-1?'disabled':''}>↓</button></span><label class="switch" title="${p.active?'Disponível':'Pausado'}"><input type="checkbox" data-ativo="${esc(p.id)}" ${p.active?'checked':''} aria-label="${esc(p.name)} disponível"><span></span></label></div></article>`}).join('')||'<div class="empty">Nenhum produto aqui. Use “+ Produto”.</div>'}
+    return `<article class="prod${p.active?'':' off'}"><div class="ft" data-prod="${esc(p.id)}" style="${img?`background-image:url('${esc(img)}')`:''}">${img?'':'<span class="sem-ft"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Adicionar foto</span>'}${p.badge?`<span class="selo">${esc(p.badge)}</span>`:''}<button class="estrela" type="button" data-destaque="${esc(p.id)}" aria-pressed="${!!p.featured}" aria-label="Destaque">★</button></div><div class="ct"><b data-prod="${esc(p.id)}">${esc(p.name)}</b><small>${esc(p.description||((p.extra||{}).origem)||C(p.category_id)?.name||'')}</small></div><div class="rod"><span class="preco">${num(p.price)>0?brl(p.price):'Sob consulta'}</span><span class="ord"><button type="button" data-prod-sobe="${esc(p.id)}" aria-label="Mover para cima" ${i<=0?'disabled':''}>↑</button><button type="button" data-prod-desce="${esc(p.id)}" aria-label="Mover para baixo" ${i>=irmaos.length-1?'disabled':''}>↓</button></span><label class="switch" title="${p.active?'Disponível':'Pausado'}"><input type="checkbox" data-ativo="${esc(p.id)}" ${p.active?'checked':''} aria-label="${esc(p.name)} disponível"><span></span></label></div></article>`}).join('')||'<div class="empty">Nenhum produto aqui. Use “+ Produto”.</div>'}
 $('#buscaProd').addEventListener('input',desenhaCardapio);
 async function troca(tabela,lista,id,dir){const L=lista.slice().sort((a,b)=>a.position-b.position),i=L.findIndex(x=>String(x.id)===String(id)),j=i+dir;if(i<0||j<0||j>=L.length)return;
   L.splice(j,0,L.splice(i,1)[0]);const mud=L.map((x,k)=>[x,k+1]).filter(([x,k])=>x.position!==k);
@@ -358,14 +362,37 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-usa-loja]'
 $('#btnTrocaLoja').addEventListener('click',()=>{try{sessionStorage.removeItem('bc-loja')}catch(e){}location.reload()});
 function desenhaLink(){const u=linkDaLoja();$('#linkLoja').textContent=u.replace(/^https?:\/\//,'');$('#linkLoja').href=u;$('#verSite').href=u;
   $('#btnZapLink').href='https://wa.me/?text='+encodeURIComponent('Agora você pode fazer seu pedido na '+(settings.store_name||'nossa loja')+' pelo site: '+u);
-  if(['dono','gerente'].includes(papel))desenhaPlano()}
+  if(['dono','gerente'].includes(papel)){desenhaPlano();desenhaPassos()}}
 $('#btnCopiaLink').addEventListener('click',()=>copia(linkDaLoja(),'Link copiado'));
 async function copia(t,ok){try{await navigator.clipboard.writeText(t);toast(ok)}catch(e){prompt('Copie:',t)}}
 let planoEm=0;
-async function desenhaPlano(){if(demo){$('#kpisPlano').className='kpis';$('#kpisPlano').innerHTML=kpi('Vendido no mês','R$ 2.480,00','pedidos não cancelados')+kpi('Plano','Começo','grátis até R$ 3 mil');$('#planoFaixa').textContent='demonstração';return}
+/* plano do mês: quanto vendeu, em que faixa está e quanto falta para a próxima */
+function planoHtml(f){const v=num(f.vendido),ate=num(f.ate_valor),pct=ate?Math.min(100,v/ate*100):100,mens=num(f.mensalidade);
+  const txt=ate?(v<ate?'Faltam '+brl(ate-v)+' em vendas para mudar de faixa.':'Você passou desta faixa. Parabéns pelas vendas!'):'Faixa sem limite: pode vender à vontade.';
+  return `<div class="pm-linha"><div><span class="lbl">Vendido no mês</span><b>${esc(brl(v))}</b><small>pedidos não cancelados</small></div>`+
+    `<div class="pm-plano"><span class="lbl">Plano ${esc(f.plano_nome||'')}</span><b>${esc(mens?brl(mens):'Grátis')}${mens?'<small>/mês</small>':''}</b><small>${esc(ate?'faixa até '+brl0(ate):'sem limite')}</small></div></div>`+
+    `<div class="pm-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct)}"><i style="width:${pct.toFixed(1)}%"></i></div><p class="pm-nota">${esc(txt)}</p>`}
+/* primeiros passos: guia para quem acabou de criar a loja */
+const PASSOS_LOJA=[
+  ['logo','Envie o logo da loja','Aparece no topo do seu cardápio.','loja',()=>!!settings.logo_url],
+  ['produtos','Cadastre pelo menos 3 produtos','Com nome, preço e descrição.','cardapio',()=>prods.length>=3],
+  ['foto','Coloque fotos nos produtos','Foto boa vende mais: use luz natural.','cardapio',()=>prods.some(p=>!!p.image_url)],
+  ['entrega','Defina horário e entrega','Horário, taxa de entrega e pedido mínimo.','loja',()=>!!(settings.hours&&String(settings.hours).trim())],
+  ['divulgar','Divulgue o seu link','No Instagram, no status e nos grupos do WhatsApp.','',()=>{try{return localStorage.getItem('bc-divulgou-'+lojaId)==='1'}catch(e){return false}}]];
+function desenhaPassos(){const box=$('#primeirosPassos');if(!box||!['dono','gerente'].includes(papel))return;
+  let fechado=false;try{fechado=localStorage.getItem('bc-passos-'+lojaId)==='fechado'}catch(e){}
+  const feitos=PASSOS_LOJA.map(p=>{try{return !!p[4]()}catch(e){return false}}),n=feitos.filter(Boolean).length;
+  box.hidden=fechado||n===PASSOS_LOJA.length;if(box.hidden)return;
+  const pct=Math.round(n/PASSOS_LOJA.length*100);$('#ppAnel').style.setProperty('--p',pct);$('#ppPct').textContent=pct+'%';
+  $('#ppLista').innerHTML=PASSOS_LOJA.map((p,i)=>`<li class="${feitos[i]?'feito':''}"><span class="pp-n" aria-hidden="true">${feitos[i]?'✓':i+1}</span><div><b>${esc(p[1])}</b><small>${esc(p[2])}</small></div>${feitos[i]?'<span class="pp-ok">Feito</span>':p[3]?`<button class="btn small primary" type="button" data-ir="${p[3]}">Fazer agora</button>`:'<button class="btn small primary" type="button" data-pp-divulga>Copiar link</button>'}</li>`).join('')}
+function marcaDivulgou(){try{localStorage.setItem('bc-divulgou-'+lojaId,'1')}catch(e){}desenhaPassos()}
+document.addEventListener('click',e=>{if(e.target.closest('[data-pp-divulga]')){copia(linkDaLoja(),'Link copiado. Agora é só colar no Instagram e no WhatsApp');marcaDivulgou()}
+  if(e.target.closest('#btnCopiaLink,#btnZapLink'))marcaDivulgou();
+  if(e.target.closest('#ppFecha')){try{localStorage.setItem('bc-passos-'+lojaId,'fechado')}catch(e){}desenhaPassos()}});
+async function desenhaPlano(){if(demo){$('#kpisPlano').innerHTML=planoHtml({vendido:2480,plano_nome:'Começo',mensalidade:0,ate_valor:3000});$('#planoFaixa').textContent='demonstração';return}
   if(Date.now()-planoEm<60000)return;planoEm=Date.now();
   const r=await db.rpc('faturamento_loja',{p_loja:lojaId});if(r.error)return;const f=r.data||{};
-  $('#kpisPlano').className='kpis';$('#kpisPlano').innerHTML=kpi('Vendido no mês',brl(f.vendido),'pedidos não cancelados')+kpi('Plano '+(f.plano_nome||''),num(f.mensalidade)?brl(f.mensalidade)+'/mês':'Grátis',f.ate_valor?'faixa até '+brl0(f.ate_valor):'faixa sem limite');
+  $('#kpisPlano').innerHTML=planoHtml(f);
   $('#planoFaixa').textContent=new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}
 let equipe=[],convites=[];
 async function desenhaEquipe(){if(!demo){const [m,c]=await Promise.all([db.from('membros').select('*').eq('loja_id',lojaId).order('criado_em'),db.from('convites').select('id,email,papel,criado_em,expira_em').eq('loja_id',lojaId).is('aceito_em',null).order('criado_em',{ascending:false})]);

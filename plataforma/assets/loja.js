@@ -102,10 +102,21 @@
 
     var fundo = $("capaFundo"); fundo.textContent = "";
     var capa = urlSegura(loja.capa_url);
-    if (capa) { var ic = el("img"); ic.alt = ""; ic.src = capa; ic.addEventListener("error", function () { ic.remove(); }); fundo.appendChild(ic); }
+    /* sem capa própria: foto padrão pelo tipo do negócio, até a loja enviar a dela */
+    var CAPAS = { padaria: "/assets/img/croissant.jpg", cafeteria: "/assets/img/inicio/19cca48161.jpg", hamburgueria: "/assets/img/burger.jpg",
+      doceria: "/assets/img/inicio/e2ae4d8fc3.jpg", restaurante: "/assets/img/inicio/6d12c20478.jpg" };
+    var padrao = !capa && CAPAS[loja.modelo];
+    if (capa || padrao) {
+      var ic = el("img", padrao ? "padrao" : ""); ic.alt = ""; ic.src = capa || padrao;
+      ic.addEventListener("load", function () { fundo.classList.add("carregou"); });
+      ic.addEventListener("error", function () { ic.remove(); }); fundo.appendChild(ic);
+    }
     var logo = $("logo"); logo.textContent = "";
     var lu = urlSegura(loja.logo_url);
-    var iniciais = String(loja.store_name || "?").split(/\s+/).filter(Boolean).slice(0, 2).map(function (p) { return p[0]; }).join("").toUpperCase();
+    /* iniciais sem "da", "de", "do"…: "Doceria da Marina" vira DM */
+    var palavras = String(loja.store_name || "?").split(/\s+/).filter(Boolean);
+    var fortes = palavras.filter(function (p) { return !/^(d[aeo]s?|e|&|a|o|na|no)$/i.test(p); });
+    var iniciais = (fortes.length ? fortes : palavras).slice(0, 2).map(function (p) { return p[0]; }).join("").toUpperCase();
     if (lu) { var il = el("img"); il.alt = ""; il.src = lu; il.addEventListener("error", function () { logo.textContent = iniciais; }); logo.appendChild(il); }
     else logo.textContent = iniciais;
 
@@ -146,7 +157,7 @@
       b.setAttribute("aria-label", "Adicionar " + p.name); b.disabled = !aberta;
       box.appendChild(b);
     } else {
-      var s = el("div", "passo");
+      var s = el("div", "passo" + (q === 1 ? " novo" : ""));
       var m = el("button", "", "−"); m.type = "button"; m.dataset.menos = p.id; m.setAttribute("aria-label", "Tirar um " + p.name);
       var n = el("span", "", String(q)); n.setAttribute("aria-live", "polite");
       var mais = el("button", "", "+"); mais.type = "button"; mais.dataset.mais = p.id; mais.setAttribute("aria-label", "Mais um " + p.name);
@@ -156,8 +167,10 @@
   function foto(p, cls) {
     var f = el("div", cls || "foto"), u = urlSegura(p.image_url);
     if (u) {
+      f.classList.add("brilhando");
       var i = el("img"); i.alt = p.name; i.loading = "lazy"; i.decoding = "async"; i.src = u;
-      i.addEventListener("error", function () { i.remove(); f.textContent = (p.name || "?")[0].toUpperCase(); });
+      i.addEventListener("load", function () { f.classList.remove("brilhando"); f.classList.add("carregou"); });
+      i.addEventListener("error", function () { f.classList.remove("brilhando"); i.remove(); f.textContent = (p.name || "?")[0].toUpperCase(); });
       f.appendChild(i);
     } else f.textContent = (p.name || "?")[0].toUpperCase();
     return f;
@@ -168,7 +181,7 @@
     return d;
   }
   function cartao(p) {
-    var c = el("article", "prod" + (urlSegura(p.image_url) ? "" : " sem-foto"));
+    var c = el("article", "prod revela" + (urlSegura(p.image_url) ? "" : " sem-foto"));
     var t = el("div");
     if (p.badge) t.appendChild(el("span", "badge", p.badge));
     t.appendChild(el("h3", "", p.name));
@@ -188,7 +201,7 @@
       sd.appendChild(el("h2", "", "Destaques"));
       var tr = el("div", "destaques");
       destaques.forEach(function (p) {
-        var d = el("article", "dest"); d.appendChild(foto(p));
+        var d = el("article", "dest revela dir"); d.appendChild(foto(p));
         var tx = el("div", "dest-txt"); if (p.badge) tx.appendChild(el("span", "badge", p.badge));
         tx.appendChild(el("h3", "", p.name));
         var meta = el("div", "meta"); meta.appendChild(precoEl(p)); meta.appendChild(controle(p));
@@ -219,6 +232,7 @@
     });
     $("abas").hidden = secoes.length < 2;
     observaSecoes();
+    if (window.BCEfeitos) window.BCEfeitos.revelar(menu);
   }
   var observador = null;
   function marcaAba(id) {
@@ -253,9 +267,33 @@
     if (!$("folha").hidden && passo === "carrinho") desenhaCarrinho();
     if (d > 0 && n === 1) aviso(p.name + " no pedido");
   }
+  /* o item "voa" do botão até a barra do pedido, e a barra dá um pulinho */
+  function voaParaSacola(origem, id) {
+    var barra = $("barra"), parado = window.BCEfeitos && window.BCEfeitos.parado;
+    if (barra.hidden) return;
+    var pula = function () { barra.classList.remove("pula"); void barra.offsetWidth; barra.classList.add("pula"); };
+    if (parado || !document.body.animate || !origem) return pula();
+    var a = origem.getBoundingClientRect(), qtdEl = $("barraQtd").getBoundingClientRect();
+    var p = porId[id], u = p && urlSegura(p.image_url);
+    var bola = el("div", "voando");
+    if (u) { var im = el("img"); im.alt = ""; im.src = u; bola.appendChild(im); } else bola.textContent = "+1";
+    document.body.appendChild(bola);
+    var x0 = a.left + a.width / 2 - 24, y0 = a.top + a.height / 2 - 24, x1 = qtdEl.left + qtdEl.width / 2 - 24, y1 = qtdEl.top + qtdEl.height / 2 - 24;
+    var meio = Math.min(y0, y1) - 120;
+    var anim = bola.animate([
+      { transform: "translate(" + x0 + "px," + y0 + "px) scale(1)", opacity: 1 },
+      { transform: "translate(" + (x0 + (x1 - x0) * 0.5) + "px," + meio + "px) scale(1.1)", opacity: 1, offset: 0.45 },
+      { transform: "translate(" + x1 + "px," + y1 + "px) scale(.35)", opacity: 0.6 }
+    ], { duration: 720, easing: "cubic-bezier(.45,.05,.55,.95)" });
+    anim.onfinish = function () { bola.remove(); pula(); };
+  }
   document.addEventListener("click", function (e) {
     var b = e.target.closest("[data-mais],[data-menos]"); if (!b) return;
-    if (b.dataset.mais) muda(b.dataset.mais, 1); else muda(b.dataset.menos, -1);
+    if (b.dataset.mais) {
+      var r = b.getBoundingClientRect(), fake = { getBoundingClientRect: function () { return r; } };
+      var antes = qtd(b.dataset.mais); muda(b.dataset.mais, 1);
+      if (qtd(b.dataset.mais) > antes && b.closest(".ctrl")) voaParaSacola(fake, b.dataset.mais);
+    } else muda(b.dataset.menos, -1);
   });
   function itensCarrinho() {
     return Object.keys(carrinho).filter(function (id) { return porId[id] && carrinho[id] > 0; })

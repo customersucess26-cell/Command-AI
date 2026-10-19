@@ -816,11 +816,37 @@ header.nav{box-shadow:0 1px 0 rgba(201,162,74,.35)!important}
 .logo::before,.logo::after{display:none!important}
 header.nav .in{height:88px!important}
 @media (max-width:560px){.logo img.bc-logo{height:60px!important}header.nav .in{height:70px!important}}
+/* ===== v5: efeitos extras ===== */
+header.nav{transition:background .35s ease,box-shadow .35s ease}
+header.nav .in{transition:height .35s ease}
+header.nav.rolou{background:rgba(255,255,255,.78)!important;-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);box-shadow:0 1px 0 rgba(201,162,74,.3),0 14px 34px -22px rgba(14,21,38,.55)!important}
+.hero{overflow:hidden}
+.hero::after{content:"";position:absolute;inset:-25%;z-index:0;pointer-events:none;filter:blur(50px);opacity:.75;
+  background:radial-gradient(28% 32% at 22% 28%,rgba(43,168,255,.22),transparent 70%),radial-gradient(24% 30% at 78% 70%,rgba(201,162,74,.18),transparent 70%),radial-gradient(22% 26% at 60% 18%,rgba(124,92,255,.14),transparent 70%);
+  animation:aurora 22s ease-in-out infinite alternate}
+@keyframes aurora{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(4%,-3%) rotate(6deg)}100%{transform:translate(-4%,3%) rotate(-5deg)}}
+.hero>.in{position:relative;z-index:1}
+.stage .phone{animation:flutua 6.5s ease-in-out infinite}
+@keyframes flutua{0%,100%{translate:0 0}50%{translate:0 -12px}}
+.btn{transition:transform .15s cubic-bezier(.3,1.5,.5,1),box-shadow .2s ease,background .2s ease}
+.btn:active{transform:translateY(1px) scale(.97)!important}
+.btn-mint:hover{box-shadow:0 14px 34px -12px rgba(43,168,255,.85)}
+.plan .price [data-conta]{font-variant-numeric:tabular-nums}
+form.lead{box-shadow:0 40px 80px -40px rgba(0,0,0,.6)}
+form.lead label{transition:color .2s}
+form.lead label:focus-within{color:var(--mint-deep)}
+form.lead input,form.lead select{min-height:52px;border-radius:14px;transition:border-color .2s,box-shadow .25s,background .2s;-webkit-appearance:none;appearance:none}
+form.lead select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234C5668' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:18px;padding-right:40px}
+form.lead input:hover,form.lead select:hover{border-color:#B9C3D3}
+form.lead input:focus,form.lead select:focus{outline:none;border-color:var(--mint);background-color:#fff;box-shadow:0 0 0 4px rgba(43,168,255,.16),0 10px 24px -14px rgba(43,168,255,.6)}
+form.lead input:not(:placeholder-shown):valid{border-color:#2F9E6B;padding-right:44px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='%232F9E6B'/%3E%3Cpath d='M7 12.5l3.2 3.2L17 9' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 12px center/22px}
+form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F;box-shadow:0 0 0 4px rgba(180,55,47,.1)}
+@media (prefers-reduced-motion:reduce){.hero::after,.stage .phone{animation:none!important}}
 </style>
 </head>
 <body>
 
-<header class="nav">
+<header class="nav vidro-ao-rolar">
   <div class="in">
     <a class="logo" href="#topo" aria-label="Bistrô Connect, início"><img class="bc-logo" src="assets/logo-bistro-connect.png" alt="Bistrô Connect · A evolução digital da sua gastronomia" width="302" height="170"></a>
     <nav class="nav-links" aria-label="Seções">
@@ -1083,7 +1109,7 @@ header.nav .in{height:88px!important}
       <div class="plans">
         <div class="plan">
           <h3>Essencial</h3>
-          <p class="price">R$ 149<small>/mês</small></p>
+          <p class="price">R$ <span data-conta="149">149</span><small>/mês</small></p>
           <p class="setup">+ R$ 997 de implantação</p>
           <ul>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Cardápio digital com fotos</li>
@@ -1095,7 +1121,7 @@ header.nav .in{height:88px!important}
         <div class="plan hot">
           <span class="badge">MAIS ESCOLHIDO</span>
           <h3>Profissional</h3>
-          <p class="price" style="color:var(--mint)">R$ 199<small>/mês</small></p>
+          <p class="price" style="color:var(--mint)">R$ <span data-conta="199">199</span><small>/mês</small></p>
           <p class="setup">+ R$ 1.497 de implantação</p>
           <p class="setup" style="color:var(--mint)">Mensalidade de menos de R$ 7 por dia</p>
           <ul>
@@ -1108,7 +1134,7 @@ header.nav .in{height:88px!important}
         </div>
         <div class="plan">
           <h3>Premium</h3>
-          <p class="price">R$ 299<small>/mês</small></p>
+          <p class="price">R$ <span data-conta="299">299</span><small>/mês</small></p>
           <p class="setup">+ R$ 2.497 de implantação</p>
           <ul>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Tudo do Profissional</li>
@@ -1146,13 +1172,13 @@ header.nav .in{height:88px!important}
         <p style="color:var(--on-navy-soft);margin-top:24px">Adilson · Bistrô Connect · Ponta Grossa-PR</p>
       </div>
       <form class="lead" id="leadForm" novalidate>
-        <label for="lNome">Seu nome<input id="lNome" name="nome" autocomplete="name" maxlength="80" required></label>
-        <label for="lEst">Nome do estabelecimento<input id="lEst" name="estabelecimento" maxlength="100" required></label>
+        <label for="lNome">Seu nome<input id="lNome" name="nome" autocomplete="name" maxlength="80" placeholder="Ex.: Ana Souza" required></label>
+        <label for="lEst">Nome do estabelecimento<input id="lEst" name="estabelecimento" maxlength="100" placeholder="Ex.: Padaria da Ana" required></label>
         <div class="row2">
           <label for="lTipo">Tipo<select id="lTipo" name="tipo"><option>Padaria</option><option>Cafeteria</option><option>Confeitaria</option><option>Restaurante</option><option>Hamburgueria</option><option>Pizzaria</option><option>Outro</option></select></label>
           <label for="lPlano">Plano de interesse<select id="lPlano" name="plano"><option>Ainda não sei</option><option>Essencial</option><option>Profissional</option><option>Premium</option></select></label>
         </div>
-        <label for="lWhats">Seu WhatsApp<input id="lWhats" name="whatsapp" inputmode="tel" autocomplete="tel" placeholder="(42) 9 9999-9999" maxlength="20" required></label>
+        <label for="lWhats">Seu WhatsApp<input id="lWhats" name="whatsapp" inputmode="tel" autocomplete="tel" placeholder="(42) 99999-9999" maxlength="20" pattern=".{14,}" data-mascara="zap" required></label>
         <input name="site" id="lSite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
         <button class="btn btn-mint" type="submit">Quero ver o meu cardápio</button>
         <p class="fine" id="formMsg">Grátis e sem compromisso. A conversa continua no WhatsApp.</p>
@@ -1506,5 +1532,6 @@ header.nav .in{height:88px!important}
     msg.style.color='';msg.textContent='Abrindo o WhatsApp...';var w=window.open(waLink(txt),'_blank');if(w)w.opener=null;else location.href=waLink(txt)});
 })();
 </script>
+<script src="assets/efeitos.js"></script>
 </body>
 </html>

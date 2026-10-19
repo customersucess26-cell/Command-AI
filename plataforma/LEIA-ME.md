@@ -13,6 +13,7 @@ Uma plataforma só, com várias lojas. O empreendedor se cadastra, cria a loja e
 | `painel/` | Painel da loja: pedidos ao vivo, financeiro, clientes, cardápio, dados da loja, equipe, link e plano do mês |
 | `admin/` | Seu painel de dono da plataforma: todas as lojas, vendas do mês, plano e situação (ativa, suspensa, cancelada) |
 | `assets/config.js` | Endereço e chave pública do Supabase da plataforma |
+| `assets/efeitos.js` e `assets/efeitos.css` | Efeitos visuais (blocos que surgem, contadores, confete, cabeçalho de vidro, máscara de WhatsApp). Quem pede "reduzir movimento" no celular vê tudo parado |
 | `.htaccess` | Segurança e o endereço curto `/l/nome-da-loja` |
 | `supabase/01-plataforma.sql` | Banco: tabelas, regras de acesso e funções |
 

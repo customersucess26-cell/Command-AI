@@ -13,14 +13,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,600&family=Figtree:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/efeitos.css">
 </head>
 <body>
 <div class="pagina-entrar">
   <aside class="lado">
+    <div class="lado-foto" aria-hidden="true"></div>
     <div>
       <a class="marca" href="/" aria-label="Bistrô Connect, página inicial">
         <img class="marca-logo" src="/assets/img/logo-bistro-connect-clara.png" alt="Bistrô Connect" width="302" height="170">
       </a>
+    </div>
+    <div class="flutuantes so-largo" aria-hidden="true">
+      <div class="flut f1"><span class="pin verde"></span><div><b>Novo pedido #128</b><small>2 itens · R$ 86,90</small></div></div>
+      <div class="flut f2"><span class="pin ouro"></span><div><b>Saiu para entrega</b><small>Cliente acompanhando pelo link</small></div></div>
+      <div class="flut f3"><span class="pin tomate"></span><div><b>R$ 0 de comissão</b><small>O valor do pedido é todo seu</small></div></div>
     </div>
     <div>
       <h1>Sua loja no ar em <em>poucos minutos</em>.</h1>
@@ -35,7 +42,10 @@
   </aside>
 
   <main class="painel-form">
-    <div class="caixa">
+    <div class="caixa vidro">
+      <ol class="etapas" id="etapas" aria-label="Etapas do cadastro" hidden>
+        <li data-e="1"><i>1</i><span>Conta</span></li><li data-e="2"><i>2</i><span>Loja</span></li><li data-e="3"><i>3</i><span>Pronto</span></li>
+      </ol>
 
       <!-- plataforma sem banco configurado -->
       <section id="semConexao" class="aviso-conexao" hidden>
@@ -58,25 +68,18 @@
         <p class="msg erro" id="msgConta" role="alert" hidden></p>
 
         <form id="formCriar" novalidate>
-          <div class="campo"><label for="cNome">Seu nome</label>
-            <input id="cNome" name="nome" autocomplete="name" maxlength="80" required></div>
-          <div class="campo"><label for="cEmail">E-mail</label>
-            <input id="cEmail" name="email" type="email" inputmode="email" autocomplete="email" maxlength="200" required></div>
-          <div class="campo"><label for="cSenha">Senha</label>
-            <input id="cSenha" name="senha" type="password" autocomplete="new-password" minlength="10" maxlength="72" required aria-describedby="cSenhaDica">
-            <div class="forca" aria-hidden="true"><i id="forcaBarra"></i></div>
-            <small id="cSenhaDica">Pelo menos 10 caracteres. Misture letras, números e símbolos.</small></div>
+          <div class="campo f"><svg class="f-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></svg><input id="cNome" placeholder=" " name="nome" autocomplete="name" maxlength="80" required aria-describedby="cNomeErro"><label for="cNome">Seu nome</label><span class="f-ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><small class="f-erro" id="cNomeErro" aria-live="polite"></small></div>
+          <div class="campo f"><svg class="f-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 7l9 6 9-6"/></svg><input id="cEmail" placeholder=" " name="email" type="email" inputmode="email" autocomplete="email" maxlength="200" required aria-describedby="cEmailErro"><label for="cEmail">E-mail</label><span class="f-ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><small class="f-erro" id="cEmailErro" aria-live="polite"></small></div>
+          <div class="campo f"><svg class="f-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><input id="cSenha" placeholder=" " name="senha" type="password" autocomplete="new-password" minlength="10" maxlength="72" required aria-describedby="cSenhaErro cSenhaDica"><label for="cSenha">Senha</label><span class="f-ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><button class="f-olho" type="button" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="risco" d="M4 4l16 16"/></svg></button><div class="forca" aria-hidden="true"><i id="forcaBarra"></i></div><small class="f-erro" id="cSenhaErro" aria-live="polite"></small><small class="f-dica" id="cSenhaDica"><b id="forcaNome"></b>Pelo menos 10 caracteres. Misture letras, números e símbolos.</small></div>
           <label class="aceite"><input type="checkbox" id="cAceite" required>
             <span>Li e aceito os <a href="/termos.html" target="_blank" rel="noopener">Termos de uso</a> e a <a href="/privacidade.html" target="_blank" rel="noopener">Política de privacidade</a>.</span></label>
-          <button class="btn btn-tomate btn-bloco" type="submit" id="btnCriar">Criar conta</button>
+          <button class="btn btn-tomate btn-bloco brilho afunda" type="submit" id="btnCriar">Criar conta</button>
         </form>
 
         <form id="formEntrar" novalidate hidden>
-          <div class="campo"><label for="eEmail">E-mail</label>
-            <input id="eEmail" name="email" type="email" inputmode="email" autocomplete="username" maxlength="200" required></div>
-          <div class="campo"><label for="eSenha">Senha</label>
-            <input id="eSenha" name="senha" type="password" autocomplete="current-password" maxlength="72" required></div>
-          <button class="btn btn-tomate btn-bloco" type="submit" id="btnEntrar">Entrar</button>
+          <div class="campo f"><svg class="f-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3 7l9 6 9-6"/></svg><input id="eEmail" placeholder=" " name="email" type="email" inputmode="email" autocomplete="username" maxlength="200" required aria-describedby="eEmailErro"><label for="eEmail">E-mail</label><span class="f-ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><small class="f-erro" id="eEmailErro" aria-live="polite"></small></div>
+          <div class="campo f"><svg class="f-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><input id="eSenha" placeholder=" " name="senha" type="password" autocomplete="current-password" maxlength="72" required aria-describedby="eSenhaErro"><label for="eSenha">Senha</label><span class="f-ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><button class="f-olho" type="button" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="risco" d="M4 4l16 16"/></svg></button><small class="f-erro" id="eSenhaErro" aria-live="polite"></small></div>
+          <button class="btn btn-tomate btn-bloco brilho afunda" type="submit" id="btnEntrar">Entrar</button>
           <button class="link" type="button" id="btnEsqueci">Esqueci a senha</button>
         </form>
       </section>
@@ -94,10 +97,8 @@
         <h2>Crie uma nova senha</h2>
         <p class="msg erro" id="msgSenha" role="alert" hidden></p>
         <form id="formNovaSenha" novalidate>
-          <div class="campo"><label for="nSenha">Nova senha</label>
-            <input id="nSenha" type="password" autocomplete="new-password" minlength="10" maxlength="72" required>
-            <small>Pelo menos 10 caracteres.</small></div>
-          <button class="btn btn-tomate btn-bloco" type="submit">Salvar nova senha</button>
+          <div class="campo f"><svg class="f-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="3"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><input id="nSenha" placeholder=" " type="password" autocomplete="new-password" minlength="10" maxlength="72" required aria-describedby="nSenhaErro nSenhaDica"><label for="nSenha">Nova senha</label><span class="f-ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><button class="f-olho" type="button" aria-label="Mostrar senha" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="risco" d="M4 4l16 16"/></svg></button><small class="f-erro" id="nSenhaErro" aria-live="polite"></small><small class="f-dica" id="nSenhaDica">Pelo menos 10 caracteres.</small></div>
+        <button class="btn btn-tomate btn-bloco brilho afunda" type="submit">Salvar nova senha</button>
         </form>
       </section>
 
@@ -106,7 +107,7 @@
         <h2>Você já tem loja</h2>
         <p class="dica">Entre no painel para cuidar dos pedidos e do cardápio.</p>
         <ul class="checklist" id="listaLojas"></ul>
-        <a class="btn btn-tomate btn-bloco" href="/painel/">Abrir o painel</a>
+        <a class="btn btn-tomate btn-bloco brilho afunda" href="/painel/">Abrir o painel</a>
         <button class="link" type="button" id="btnOutraLoja">Criar outra loja</button>
       </section>
 
@@ -116,24 +117,20 @@
         <p class="dica">Dá para mudar o nome, as cores e o cardápio depois, pelo painel.</p>
         <p class="msg erro" id="msgLoja" role="alert" hidden></p>
         <form id="formLoja" novalidate>
-          <div class="campo"><label for="lNome">Nome da loja</label>
-            <input id="lNome" maxlength="80" autocomplete="organization" placeholder="Ex.: Padaria da Ana" required></div>
-          <div class="campo"><label for="lSlug">Endereço da loja</label>
-            <div class="prefixo"><span id="prefixoSlug">/l/</span><input id="lSlug" maxlength="40" autocapitalize="none" autocomplete="off" spellcheck="false" inputmode="url" required aria-describedby="slugDisp"></div>
-            <small class="disp" id="slugDisp" aria-live="polite">Use letras minúsculas, números e hífen.</small></div>
-          <fieldset class="campo" style="border:0;padding:0;margin:0 0 16px">
-            <legend class="leg" style="margin-bottom:8px">Tipo de negócio</legend>
+          <div class="campo f"><svg class="f-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/><path d="M10 20v-5h4v5"/></svg><input id="lNome" placeholder=" " maxlength="80" autocomplete="organization" required aria-describedby="lNomeErro lNomeDica"><label for="lNome">Nome da loja</label><span class="f-ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><small class="f-erro" id="lNomeErro" aria-live="polite"></small><small class="f-dica" id="lNomeDica">Ex.: Padaria da Ana, Burger do Beto</small></div>
+          <div class="campo f prefixo-f"><svg class="f-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span class="f-pre" id="prefixoSlug" aria-hidden="true">/l/</span><input id="lSlug" placeholder=" " maxlength="40" autocapitalize="none" autocomplete="off" spellcheck="false" inputmode="url" required aria-describedby="slugDisp"><label for="lSlug">Endereço da loja</label><span class="f-ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><small class="disp" id="slugDisp" aria-live="polite">Use letras minúsculas, números e hífen.</small></div>
+          <fieldset class="campo tipos-campo">
+            <legend class="leg">Tipo de negócio</legend>
             <div class="tipos" id="tipos"></div>
           </fieldset>
-          <div class="campo"><label for="lZap">WhatsApp da loja</label>
-            <input id="lZap" type="tel" inputmode="tel" autocomplete="tel" maxlength="16" placeholder="(42) 99999-9999" required>
-            <small>Os pedidos chegam neste número.</small></div>
-          <button class="btn btn-tomate btn-bloco" type="submit" id="btnLoja">Criar minha loja</button>
+          <div class="campo f"><svg class="f-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-13.4 7.8L3 21l1.3-4.4A9 9 0 1 1 21 12z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1.2-1.4-2-1-.8.8a4 4 0 0 1-2.3-2.3l.8-.8-1-2z"/></svg><input id="lZap" placeholder=" " type="tel" inputmode="tel" autocomplete="tel" maxlength="16" required aria-describedby="lZapErro lZapDica"><label for="lZap">WhatsApp da loja</label><span class="f-ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></span><small class="f-erro" id="lZapErro" aria-live="polite"></small><small class="f-dica" id="lZapDica">Os pedidos chegam neste número.</small></div>
+          <button class="btn btn-tomate btn-bloco brilho afunda" type="submit" id="btnLoja">Criar minha loja</button>
         </form>
       </section>
 
       <!-- loja criada -->
       <section id="passoPronto" hidden>
+        <div class="selo-ok" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-16"/></svg></div>
         <h2>Sua loja está no ar! 🎉</h2>
         <div class="cartao-ok">
           <b id="nomeCriada"></b>
@@ -145,14 +142,14 @@
           <li><b>2</b><span><strong>Cadastre produtos e fotos</strong>, a taxa de entrega e as formas de pagamento.</span></li>
           <li><b>3</b><span><strong>Divulgue o link</strong> no Instagram, no Google e no status do WhatsApp.</span></li>
         </ol>
-        <a class="btn btn-tomate btn-bloco" href="/painel/">Ir para o painel</a>
+        <a class="btn btn-tomate btn-bloco brilho afunda" href="/painel/">Ir para o painel</a>
       </section>
 
       <!-- convite -->
       <section id="passoConvite" hidden>
         <h2>Aceitando o convite…</h2>
         <p class="msg erro" id="msgConvite" role="alert" hidden></p>
-        <a class="btn btn-tomate btn-bloco" href="/painel/" id="btnConvitePainel" hidden>Abrir o painel</a>
+        <a class="btn btn-tomate btn-bloco brilho afunda" href="/painel/" id="btnConvitePainel" hidden>Abrir o painel</a>
       </section>
 
     </div>
@@ -160,6 +157,7 @@
 </div>
 <script src="/assets/config.js"></script>
 <script src="/assets/vendor/supabase-2.45.4.js"></script>
+<script src="/assets/efeitos.js"></script>
 <script src="/assets/entrar.js"></script>
 </body>
 </html>

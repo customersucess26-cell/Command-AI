@@ -74,12 +74,18 @@ h = troca(h, '''        <button class="btn primary" type="button" id="btnNovoPro
           '''        <button class="btn primary" type="button" id="btnNovoProduto" data-papel="dono gerente">+ Produto</button>''')
 h = troca(h, '''    <section class="panel" data-panel="inicio">
       <div class="kpis" id="kpisInicio"></div>''', '''    <section class="panel" data-panel="inicio">
+      <div class="box passos-box" id="primeirosPassos" data-papel="dono gerente" hidden>
+        <div class="pp-topo"><div class="pp-anel" id="ppAnel" style="--p:0"><b id="ppPct">0%</b></div>
+          <div><h2>Primeiros passos</h2><p class="muted fino">Complete estes passos e a sua loja fica pronta para vender.</p></div>
+          <button class="btn small pp-fecha" type="button" id="ppFecha" aria-label="Esconder os primeiros passos">Esconder</button></div>
+        <ol class="pp-lista" id="ppLista"></ol>
+      </div>
       <div class="grid2">
         <div class="box"><div class="box-head"><h2>Link da sua loja</h2><span class="muted fino">mande para os clientes</span></div>
           <p class="link-loja"><a id="linkLoja" href="#" target="_blank" rel="noopener"></a></p>
           <div class="acoes-linha"><button class="btn small" type="button" id="btnCopiaLink">Copiar link</button><a class="btn zap small" id="btnZapLink" href="#" target="_blank" rel="noopener noreferrer">Divulgar no WhatsApp</a></div></div>
         <div class="box" data-papel="dono gerente"><div class="box-head"><h2>Plano do mês</h2><span class="muted fino" id="planoFaixa"></span></div>
-          <div class="kpis" id="kpisPlano"></div>
+          <div class="plano-mes" id="kpisPlano"></div>
           <p class="muted fino">Você paga pelo que vende na plataforma, com teto. Sem comissão por pedido.</p></div>
       </div>
       <div class="kpis" id="kpisInicio"></div>''')
@@ -214,14 +220,37 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-usa-loja]'
 $('#btnTrocaLoja').addEventListener('click',()=>{try{sessionStorage.removeItem('bc-loja')}catch(e){}location.reload()});
 function desenhaLink(){const u=linkDaLoja();$('#linkLoja').textContent=u.replace(/^https?:\/\//,'');$('#linkLoja').href=u;$('#verSite').href=u;
   $('#btnZapLink').href='https://wa.me/?text='+encodeURIComponent('Agora você pode fazer seu pedido na '+(settings.store_name||'nossa loja')+' pelo site: '+u);
-  if(['dono','gerente'].includes(papel))desenhaPlano()}
+  if(['dono','gerente'].includes(papel)){desenhaPlano();desenhaPassos()}}
 $('#btnCopiaLink').addEventListener('click',()=>copia(linkDaLoja(),'Link copiado'));
 async function copia(t,ok){try{await navigator.clipboard.writeText(t);toast(ok)}catch(e){prompt('Copie:',t)}}
 let planoEm=0;
-async function desenhaPlano(){if(demo){$('#kpisPlano').className='kpis';$('#kpisPlano').innerHTML=kpi('Vendido no mês','R$ 2.480,00','pedidos não cancelados')+kpi('Plano','Começo','grátis até R$ 3 mil');$('#planoFaixa').textContent='demonstração';return}
+/* plano do mês: quanto vendeu, em que faixa está e quanto falta para a próxima */
+function planoHtml(f){const v=num(f.vendido),ate=num(f.ate_valor),pct=ate?Math.min(100,v/ate*100):100,mens=num(f.mensalidade);
+  const txt=ate?(v<ate?'Faltam '+brl(ate-v)+' em vendas para mudar de faixa.':'Você passou desta faixa. Parabéns pelas vendas!'):'Faixa sem limite: pode vender à vontade.';
+  return `<div class="pm-linha"><div><span class="lbl">Vendido no mês</span><b>${esc(brl(v))}</b><small>pedidos não cancelados</small></div>`+
+    `<div class="pm-plano"><span class="lbl">Plano ${esc(f.plano_nome||'')}</span><b>${esc(mens?brl(mens):'Grátis')}${mens?'<small>/mês</small>':''}</b><small>${esc(ate?'faixa até '+brl0(ate):'sem limite')}</small></div></div>`+
+    `<div class="pm-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct)}"><i style="width:${pct.toFixed(1)}%"></i></div><p class="pm-nota">${esc(txt)}</p>`}
+/* primeiros passos: guia para quem acabou de criar a loja */
+const PASSOS_LOJA=[
+  ['logo','Envie o logo da loja','Aparece no topo do seu cardápio.','loja',()=>!!settings.logo_url],
+  ['produtos','Cadastre pelo menos 3 produtos','Com nome, preço e descrição.','cardapio',()=>prods.length>=3],
+  ['foto','Coloque fotos nos produtos','Foto boa vende mais: use luz natural.','cardapio',()=>prods.some(p=>!!p.image_url)],
+  ['entrega','Defina horário e entrega','Horário, taxa de entrega e pedido mínimo.','loja',()=>!!(settings.hours&&String(settings.hours).trim())],
+  ['divulgar','Divulgue o seu link','No Instagram, no status e nos grupos do WhatsApp.','',()=>{try{return localStorage.getItem('bc-divulgou-'+lojaId)==='1'}catch(e){return false}}]];
+function desenhaPassos(){const box=$('#primeirosPassos');if(!box||!['dono','gerente'].includes(papel))return;
+  let fechado=false;try{fechado=localStorage.getItem('bc-passos-'+lojaId)==='fechado'}catch(e){}
+  const feitos=PASSOS_LOJA.map(p=>{try{return !!p[4]()}catch(e){return false}}),n=feitos.filter(Boolean).length;
+  box.hidden=fechado||n===PASSOS_LOJA.length;if(box.hidden)return;
+  const pct=Math.round(n/PASSOS_LOJA.length*100);$('#ppAnel').style.setProperty('--p',pct);$('#ppPct').textContent=pct+'%';
+  $('#ppLista').innerHTML=PASSOS_LOJA.map((p,i)=>`<li class="${feitos[i]?'feito':''}"><span class="pp-n" aria-hidden="true">${feitos[i]?'✓':i+1}</span><div><b>${esc(p[1])}</b><small>${esc(p[2])}</small></div>${feitos[i]?'<span class="pp-ok">Feito</span>':p[3]?`<button class="btn small primary" type="button" data-ir="${p[3]}">Fazer agora</button>`:'<button class="btn small primary" type="button" data-pp-divulga>Copiar link</button>'}</li>`).join('')}
+function marcaDivulgou(){try{localStorage.setItem('bc-divulgou-'+lojaId,'1')}catch(e){}desenhaPassos()}
+document.addEventListener('click',e=>{if(e.target.closest('[data-pp-divulga]')){copia(linkDaLoja(),'Link copiado. Agora é só colar no Instagram e no WhatsApp');marcaDivulgou()}
+  if(e.target.closest('#btnCopiaLink,#btnZapLink'))marcaDivulgou();
+  if(e.target.closest('#ppFecha')){try{localStorage.setItem('bc-passos-'+lojaId,'fechado')}catch(e){}desenhaPassos()}});
+async function desenhaPlano(){if(demo){$('#kpisPlano').innerHTML=planoHtml({vendido:2480,plano_nome:'Começo',mensalidade:0,ate_valor:3000});$('#planoFaixa').textContent='demonstração';return}
   if(Date.now()-planoEm<60000)return;planoEm=Date.now();
   const r=await db.rpc('faturamento_loja',{p_loja:lojaId});if(r.error)return;const f=r.data||{};
-  $('#kpisPlano').className='kpis';$('#kpisPlano').innerHTML=kpi('Vendido no mês',brl(f.vendido),'pedidos não cancelados')+kpi('Plano '+(f.plano_nome||''),num(f.mensalidade)?brl(f.mensalidade)+'/mês':'Grátis',f.ate_valor?'faixa até '+brl0(f.ate_valor):'faixa sem limite');
+  $('#kpisPlano').innerHTML=planoHtml(f);
   $('#planoFaixa').textContent=new Date().toLocaleDateString('pt-BR',{month:'long',year:'numeric'})}
 let equipe=[],convites=[];
 async function desenhaEquipe(){if(!demo){const [m,c]=await Promise.all([db.from('membros').select('*').eq('loja_id',lojaId).order('criado_em'),db.from('convites').select('id,email,papel,criado_em,expira_em').eq('loja_id',lojaId).is('aceito_em',null).order('criado_em',{ascending:false})]);
@@ -276,6 +305,36 @@ css = """
 #listaLojas .item{width:100%;text-align:left;cursor:pointer;background:none;border:1px solid var(--linha,rgba(0,0,0,.12));border-radius:12px;margin-bottom:8px;padding:12px}
 #listaEquipe select{min-height:36px}
 @media (max-width:640px){.fotos-loja{grid-template-columns:1fr}}
+/* plano do mês */
+.plano-mes .pm-linha{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.plano-mes .pm-linha>div{background:var(--surface-2);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.plano-mes .lbl{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+.plano-mes b{font-family:var(--f-display);font-size:24px;line-height:1.15;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.plano-mes b small{font-size:13px;color:var(--muted);font-weight:600}
+.plano-mes small{font-size:12.5px;color:var(--muted)}
+.plano-mes .pm-plano b{color:var(--accent)}
+.pm-barra{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin:14px 0 6px}
+.pm-barra i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),#7CD3FF);transform-origin:left;animation:enche 1.1s cubic-bezier(.2,.7,.2,1)}
+@keyframes enche{from{transform:scaleX(0)}}
+.pm-nota{margin:0 0 6px;font-size:13.5px;font-weight:600}
+/* primeiros passos */
+.passos-box{margin-bottom:16px;border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 7%,var(--surface)),var(--surface))}
+.pp-topo{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;margin-bottom:12px}
+.pp-topo h2{margin:0 0 2px}
+.pp-anel{--p:0;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--surface-2) 0);transition:--p .8s}
+.pp-anel::before{content:"";position:absolute}
+.pp-anel b{width:50px;height:50px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-size:14px}
+.pp-lista{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.pp-lista li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);transition:transform .2s,box-shadow .2s}
+.pp-lista li:hover{transform:translateX(3px)}
+.pp-lista li b{display:block;font-size:14.5px}
+.pp-lista li small{color:var(--muted);font-size:12.5px}
+.pp-n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:13px;background:var(--surface-2);color:var(--muted)}
+.pp-lista li.feito .pp-n{background:#1F9D63;color:#fff}
+.pp-lista li.feito b{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--muted) 60%,transparent);color:var(--muted)}
+.pp-ok{font-size:12px;font-weight:800;color:#1F9D63}
+@property --p{syntax:'<number>';inherits:false;initial-value:0}
+@media (max-width:640px){.pp-topo{grid-template-columns:auto 1fr}.pp-fecha{grid-column:1/-1;justify-self:start}.pp-lista li{grid-template-columns:auto 1fr}.pp-lista li .btn,.pp-ok{grid-column:2;justify-self:start}}
 """
 open(f"{DEST}/painel.css", "a", encoding="utf-8").write(css)
 subprocess.run(["python3", "ferramentas/csp.py", f"{DEST}/index.html"], check=True)

@@ -111,12 +111,18 @@
 
     <!-- INÍCIO -->
     <section class="panel" data-panel="inicio">
+      <div class="box passos-box" id="primeirosPassos" data-papel="dono gerente" hidden>
+        <div class="pp-topo"><div class="pp-anel" id="ppAnel" style="--p:0"><b id="ppPct">0%</b></div>
+          <div><h2>Primeiros passos</h2><p class="muted fino">Complete estes passos e a sua loja fica pronta para vender.</p></div>
+          <button class="btn small pp-fecha" type="button" id="ppFecha" aria-label="Esconder os primeiros passos">Esconder</button></div>
+        <ol class="pp-lista" id="ppLista"></ol>
+      </div>
       <div class="grid2">
         <div class="box"><div class="box-head"><h2>Link da sua loja</h2><span class="muted fino">mande para os clientes</span></div>
           <p class="link-loja"><a id="linkLoja" href="#" target="_blank" rel="noopener"></a></p>
           <div class="acoes-linha"><button class="btn small" type="button" id="btnCopiaLink">Copiar link</button><a class="btn zap small" id="btnZapLink" href="#" target="_blank" rel="noopener noreferrer">Divulgar no WhatsApp</a></div></div>
         <div class="box" data-papel="dono gerente"><div class="box-head"><h2>Plano do mês</h2><span class="muted fino" id="planoFaixa"></span></div>
-          <div class="kpis" id="kpisPlano"></div>
+          <div class="plano-mes" id="kpisPlano"></div>
           <p class="muted fino">Você paga pelo que vende na plataforma, com teto. Sem comissão por pedido.</p></div>
       </div>
       <div class="kpis" id="kpisInicio"></div>

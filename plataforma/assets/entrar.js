@@ -12,8 +12,62 @@
   if (convite && !/^[a-f0-9]{32,64}$/.test(convite)) convite = "";
   var recuperando = false, db = null;
 
-  function mostra(id) { PASSOS.forEach(function (p) { $(p).hidden = p !== id; }); var h = $(id).querySelector("h2"); if (h) { h.setAttribute("tabindex", "-1"); try { h.focus({ preventScroll: true }); } catch (e) {} } window.scrollTo(0, 0); }
+  var ETAPA = { passoConta: 1, passoConfirmar: 1, passoNovaSenha: 1, passoTemLoja: 2, passoLoja: 2, passoPronto: 3 };
+  function etapas(id) {
+    var e = ETAPA[id], ol = $("etapas"); ol.hidden = !e; if (!e) return;
+    ol.style.setProperty("--prog", String((e - 1) / 2));
+    Array.prototype.forEach.call(ol.children, function (li) {
+      var n = +li.getAttribute("data-e");
+      li.className = n < e || e === 3 ? "feito" : n === e ? "atual" : "";
+      if (n === e) li.setAttribute("aria-current", "step"); else li.removeAttribute("aria-current");
+    });
+  }
+  function mostra(id) { etapas(id); PASSOS.forEach(function (p) { $(p).hidden = p !== id; }); var h = $(id).querySelector("h2"); if (h) { h.setAttribute("tabindex", "-1"); try { h.focus({ preventScroll: true }); } catch (e) {} } window.scrollTo(0, 0); }
   function erro(el, txt) { el.textContent = txt || ""; el.hidden = !txt; }
+  /* campo com erro ou certo: mensagem embaixo do próprio campo, ✓ verde quando está certo */
+  function campoDe(inp) { return inp.closest(".campo"); }
+  function marca(inp, msgErro, foco) {
+    var c = campoDe(inp), e = $(inp.id + "Erro");
+    if (e) e.textContent = msgErro || "";
+    inp.setAttribute("aria-invalid", msgErro ? "true" : "false");
+    c.classList.toggle("valido", !msgErro && !!inp.value);
+    if (msgErro && foco) { c.classList.remove("treme"); void c.offsetWidth; c.classList.add("treme"); inp.focus(); }
+    return !msgErro;
+  }
+  var emailOk = function (v) { return /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(v); };
+  var REGRAS = {
+    cNome: function (v) { return v.trim().length < 2 ? "Informe seu nome." : ""; },
+    cEmail: function (v) { return !emailOk(v.trim()) ? "Informe um e-mail válido, como nome@exemplo.com." : ""; },
+    cSenha: function (v) { return v.length < 10 ? "A senha precisa de pelo menos 10 caracteres." : ""; },
+    eEmail: function (v) { return !emailOk(v.trim()) ? "Informe o e-mail do cadastro." : ""; },
+    eSenha: function (v) { return !v ? "Informe a senha." : ""; },
+    nSenha: function (v) { return v.length < 10 ? "A senha precisa de pelo menos 10 caracteres." : ""; },
+    lNome: function (v) { return v.trim().length < 2 ? "Informe o nome da loja." : ""; },
+    lZap: function (v) { var d = v.replace(/\D/g, ""); return d.length < 10 || d.length > 11 ? "Informe o WhatsApp com DDD, como (42) 99999-9999." : ""; }
+  };
+  Object.keys(REGRAS).forEach(function (id) {
+    var inp = $(id), mexeu = false;
+    inp.addEventListener("blur", function () { if (inp.value) { mexeu = true; marca(inp, REGRAS[id](inp.value)); } });
+    inp.addEventListener("input", function () {
+      if (mexeu) marca(inp, REGRAS[id](inp.value));
+      else campoDe(inp).classList.toggle("valido", !!inp.value && !REGRAS[id](inp.value));
+    });
+  });
+  function confere(ids) {
+    var ok = true;
+    ids.forEach(function (id) { var m = REGRAS[id]($(id).value); if (!marca($(id), m, ok && !!m)) ok = false; });
+    return ok;
+  }
+  /* olho: mostrar ou esconder a senha */
+  document.querySelectorAll(".f-olho").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var inp = b.parentNode.querySelector("input"), ver = inp.type === "password";
+      inp.type = ver ? "text" : "password";
+      b.setAttribute("aria-pressed", String(ver)); b.setAttribute("aria-label", ver ? "Esconder senha" : "Mostrar senha");
+      inp.focus();
+    });
+  });
+
   function ocupado(btn, sim, txt) { if (sim) { btn.dataset.txt = btn.textContent; btn.textContent = txt || "Aguarde…"; btn.disabled = true; } else { btn.textContent = btn.dataset.txt || btn.textContent; btn.disabled = false; } }
 
   function amigavel(e) {
@@ -34,12 +88,12 @@
   if (!BC.supabaseUrl || !BC.supabaseKey || !window.supabase) { mostra("semConexao"); return; }
   db = window.supabase.createClient(BC.supabaseUrl.replace(/\/+$/, ""), BC.supabaseKey,
     { auth: { storage: window.sessionStorage, persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
-  $("prefixoSlug").textContent = base.replace(/^https?:\/\//, "") + "/l/";
 
   /* ---------- abas criar / entrar ---------- */
   function aba(criar) {
     $("abaCriar").setAttribute("aria-selected", String(criar));
     $("abaEntrar").setAttribute("aria-selected", String(!criar));
+    $("abaCriar").parentNode.classList.toggle("direita", !criar);
     $("formCriar").hidden = !criar; $("formEntrar").hidden = criar;
     $("tituloConta").textContent = criar ? "Crie sua conta" : "Entre na sua conta";
     $("dicaConta").textContent = convite ? "Entre ou crie a conta com o e-mail que recebeu o convite." : criar ? "É com ela que você entra no painel da loja." : "Use o e-mail e a senha do cadastro.";
@@ -54,16 +108,17 @@
     if (s.length >= 10) p++; if (s.length >= 14) p++;
     if (/[a-z]/.test(s) && /[A-Z]/.test(s)) p++; if (/\d/.test(s)) p++; if (/[^A-Za-z0-9]/.test(s)) p++;
     var b = $("forcaBarra"), cores = ["#B3261E", "#B3261E", "#E2852B", "#F2B544", "#2F7A55", "#2F7A55"];
-    b.style.width = Math.max(8, p * 20) + "%"; b.style.background = cores[p];
-    $("cSenhaDica").textContent = s.length && s.length < 10 ? "Faltam " + (10 - s.length) + " caracteres." : p >= 4 ? "Senha forte." : "Pelo menos 10 caracteres. Misture letras, números e símbolos.";
+    var nomes = ["Fraca.", "Fraca.", "Média.", "Boa.", "Forte.", "Muito forte."];
+    b.style.width = s ? Math.max(8, p * 20) + "%" : "0"; b.style.background = cores[p];
+    var dica = $("cSenhaDica"), forte = $("forcaNome");
+    forte.textContent = s ? nomes[p] : ""; forte.style.color = cores[p];
+    dica.lastChild.textContent = s.length && s.length < 10 ? "Faltam " + (10 - s.length) + " caracteres." : p >= 4 ? "Ótima senha." : "Pelo menos 10 caracteres. Misture letras, números e símbolos.";
   });
 
   $("formCriar").addEventListener("submit", function (ev) {
     ev.preventDefault();
     var nome = $("cNome").value.trim(), email = $("cEmail").value.trim().toLowerCase(), senha = $("cSenha").value, btn = $("btnCriar");
-    if (nome.length < 2) return erro($("msgConta"), "Informe seu nome.");
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) return erro($("msgConta"), "Informe um e-mail válido.");
-    if (senha.length < 10) return erro($("msgConta"), "A senha precisa de pelo menos 10 caracteres.");
+    if (!confere(["cNome", "cEmail", "cSenha"])) return erro($("msgConta"), "");
     if (!$("cAceite").checked) return erro($("msgConta"), "Para continuar, aceite os Termos de uso e a Política de privacidade.");
     erro($("msgConta"), ""); ocupado(btn, true, "Criando conta…");
     var volta = base + "/entrar.html" + (convite ? "?convite=" + convite : "");
@@ -82,7 +137,7 @@
   $("formEntrar").addEventListener("submit", function (ev) {
     ev.preventDefault();
     var email = $("eEmail").value.trim().toLowerCase(), senha = $("eSenha").value, btn = $("btnEntrar");
-    if (!email || !senha) return erro($("msgConta"), "Informe e-mail e senha.");
+    if (!confere(["eEmail", "eSenha"])) return erro($("msgConta"), "");
     erro($("msgConta"), ""); ocupado(btn, true, "Entrando…");
     db.auth.signInWithPassword({ email: email, password: senha })
       .then(function (r) { if (r.error) throw r.error; return continuar(); })
@@ -92,7 +147,7 @@
 
   $("btnEsqueci").addEventListener("click", function () {
     var email = $("eEmail").value.trim().toLowerCase(), msg = $("msgConta");
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(email)) { erro(msg, "Digite seu e-mail acima e toque de novo em “Esqueci a senha”."); $("eEmail").focus(); return; }
+    if (!emailOk(email)) { marca($("eEmail"), "Digite seu e-mail aqui e toque de novo em “Esqueci a senha”.", true); return; }
     db.auth.resetPasswordForEmail(email, { redirectTo: base + "/entrar.html" }).then(function (r) {
       if (r.error) throw r.error;
       msg.className = "msg ok"; erro(msg, "Se existir uma conta com este e-mail, enviamos um link para criar uma nova senha.");
@@ -103,7 +158,7 @@
   $("formNovaSenha").addEventListener("submit", function (ev) {
     ev.preventDefault();
     var s = $("nSenha").value;
-    if (s.length < 10) return erro($("msgSenha"), "A senha precisa de pelo menos 10 caracteres.");
+    if (!confere(["nSenha"])) return;
     db.auth.updateUser({ password: s }).then(function (r) {
       if (r.error) throw r.error; recuperando = false; return continuar();
     }).catch(function (e) { erro($("msgSenha"), amigavel(e)); });
@@ -170,7 +225,10 @@
   }
   var slugMexido = false, timerSlug = null, ultimoSlug = "";
   function slugValido(s) { return /^[a-z0-9](?:[a-z0-9-]{1,38}[a-z0-9])$/.test(s); }
-  function disp(txt, cls) { var d = $("slugDisp"); d.textContent = txt; d.className = "disp" + (cls ? " " + cls : ""); }
+  function disp(txt, cls) {
+    var d = $("slugDisp"); d.textContent = txt; d.className = "disp" + (cls ? " " + cls : "");
+    var inp = $("lSlug"); campoDe(inp).classList.toggle("valido", cls === "ok"); inp.setAttribute("aria-invalid", cls === "nao" ? "true" : "false");
+  }
   function confereSlug() {
     var s = $("lSlug").value;
     clearTimeout(timerSlug);
@@ -214,10 +272,10 @@
     var nome = $("lNome").value.trim(), slug = $("lSlug").value.trim(), msg = $("msgLoja"), btn = $("btnLoja");
     var modelo = (document.querySelector('input[name="modelo"]:checked') || {}).value || "";
     var fone = $("lZap").value.replace(/\D/g, "");
-    if (nome.length < 2) { $("lNome").focus(); return erro(msg, "Informe o nome da loja."); }
-    if (!slugValido(slug)) { $("lSlug").focus(); return erro(msg, "Confira o endereço da loja: de 3 a 40 caracteres, letras minúsculas, números e hífen."); }
+    if (!confere(["lNome"])) return erro(msg, "");
+    if (!slugValido(slug)) { disp("Confira o endereço: de 3 a 40 caracteres, letras minúsculas, números e hífen.", "nao"); $("lSlug").focus(); return erro(msg, ""); }
     if (!modelo) return erro(msg, "Escolha o tipo do seu negócio.");
-    if (fone.length < 10 || fone.length > 11) { $("lZap").focus(); return erro(msg, "Informe o WhatsApp da loja com DDD."); }
+    if (!confere(["lZap"])) return erro(msg, "");
     erro(msg, ""); ocupado(btn, true, "Criando a loja…");
     db.rpc("criar_loja", { p_nome: nome, p_slug: slug, p_modelo: modelo, p_whatsapp: fone }).then(function (r) {
       if (r.error) {
@@ -228,6 +286,7 @@
       $("nomeCriada").textContent = nome;
       $("linkLoja").textContent = url;
       mostra("passoPronto");
+      setTimeout(function () { if (window.BCEfeitos) window.BCEfeitos.confete($("passoPronto").querySelector(".selo-ok")); }, 450);
     }).catch(function (e) { erro(msg, amigavel(e)); })
       .then(function () { ocupado(btn, false); });
   });

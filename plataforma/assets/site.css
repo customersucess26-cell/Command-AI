@@ -212,3 +212,110 @@ p.intro{font-size:19px;color:var(--suave);max-width:38em;margin:0 0 40px}
 /* logo oficial (imagem) em placa clara, legível no fundo escuro */
 .marca-logo{height:80px;width:auto;display:block}
 @media (max-width:560px){.marca-logo{height:58px}}
+
+/* ============ cadastro: campos com nome flutuante, etapas, cartão de vidro ============ */
+.campo.f{position:relative;display:block;margin-bottom:18px}
+.campo.f input{min-height:58px;padding:18px 48px 8px 48px;border-radius:16px;border:1.5px solid rgba(34,23,15,.16);background:rgba(255,253,249,.92);
+  transition:border-color .2s,box-shadow .25s,background .2s}
+.campo.f input:hover{border-color:rgba(34,23,15,.3)}
+.campo.f input:focus{border-color:var(--tomate);box-shadow:0 0 0 4px rgba(226,85,43,.14),0 10px 26px -14px rgba(226,85,43,.55);background:#fff}
+.campo.f label{position:absolute;left:48px;top:18px;font-weight:500;font-size:16px;color:var(--suave);pointer-events:none;transform-origin:left top;
+  transition:transform .2s cubic-bezier(.2,.7,.2,1),color .2s,top .2s;white-space:nowrap;max-width:calc(100% - 100px);overflow:hidden;text-overflow:ellipsis}
+.campo.f input:focus+label,.campo.f input:not(:placeholder-shown)+label{top:7px;transform:scale(.78);font-weight:700;color:var(--suave)}
+.campo.f input:focus+label{color:var(--tomate)}
+.campo.f .f-ico{position:absolute;left:16px;top:18px;width:22px;height:22px;color:rgba(34,23,15,.4);transition:color .2s,transform .2s;pointer-events:none}
+.campo.f:focus-within .f-ico{color:var(--tomate);transform:scale(1.08)}
+.campo.f .f-ok{position:absolute;right:14px;top:17px;width:24px;height:24px;border-radius:50%;background:var(--manjericao);color:#fff;display:grid;place-items:center;
+  opacity:0;transform:scale(.4);transition:opacity .2s,transform .3s cubic-bezier(.3,1.6,.5,1);pointer-events:none}
+.campo.f .f-ok svg{width:14px;height:14px}
+.campo.f.valido .f-ok{opacity:1;transform:none}
+.campo.f.valido input{border-color:rgba(47,122,85,.55)}
+.campo.f .f-olho{position:absolute;right:6px;top:6px;width:46px;height:46px;border:0;background:transparent;border-radius:12px;color:var(--suave);cursor:pointer;display:grid;place-items:center}
+.campo.f .f-olho:hover{background:rgba(34,23,15,.06);color:var(--tinta)}
+.campo.f .f-olho svg{width:22px;height:22px}
+.campo.f .f-olho[aria-pressed="false"] .risco{display:none}
+.campo.f:has(.f-olho) .f-ok{right:52px}
+.campo.f:has(.f-olho) input{padding-right:84px}
+.campo.f .f-erro{display:block;color:var(--erro);font-weight:600;font-size:14px;margin:6px 4px 0;min-height:0}
+.campo.f .f-erro:empty{display:none}
+.campo.f .f-erro::before{content:"!";display:inline-grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--erro);color:#fff;font-size:12px;font-weight:800;margin-right:6px;vertical-align:-2px}
+.campo.f input[aria-invalid="true"]{border-color:var(--erro);box-shadow:0 0 0 4px rgba(179,38,30,.1)}
+.campo.f.treme{animation:treme .38s}
+@keyframes treme{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+.campo.f .f-dica,.campo.f .disp{display:block;margin:6px 4px 0;font-size:14px;color:var(--suave)}
+.campo.f .disp.ok{color:var(--manjericao)}.campo.f .disp.nao{color:var(--erro)}
+.campo.f .forca{margin:8px 4px 0;height:5px}
+.campo.f .forca i{border-radius:3px;transition:width .35s cubic-bezier(.2,.7,.2,1),background .3s}
+#forcaNome{margin-right:6px}#forcaNome:empty{display:none}
+.prefixo-f .f-pre{position:absolute;left:48px;top:24px;font-size:16px;line-height:24px;color:var(--suave);font-weight:600;pointer-events:none}
+.campo.f.prefixo-f input{padding-left:73px}
+.prefixo-f label{top:7px!important;transform:scale(.78)!important;font-weight:700}
+.tipos-campo{border:0;padding:0;margin:0 0 18px}
+.tipos-campo .leg{margin-bottom:10px;padding:0}
+.tipo span{transition:border-color .2s,background .2s,transform .2s cubic-bezier(.3,1.5,.5,1),box-shadow .2s}
+.tipo:hover span{transform:translateY(-2px);box-shadow:0 12px 24px -16px rgba(30,20,16,.5)}
+.tipo input:checked+span{box-shadow:0 0 0 4px rgba(226,85,43,.12),0 14px 28px -18px rgba(226,85,43,.8);transform:translateY(-2px)}
+.tipo input:checked+span svg{animation:pulo .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pulo{0%{transform:scale(.6)}100%{transform:none}}
+.aceite input{accent-color:var(--tomate)}
+
+/* etapas */
+.etapas{list-style:none;margin:0 0 26px;padding:0;display:grid;grid-template-columns:repeat(3,1fr);position:relative;counter-reset:none}
+.etapas::before,.etapas::after{content:"";position:absolute;top:17px;left:16.66%;right:16.66%;height:3px;border-radius:2px;background:var(--areia)}
+.etapas::after{background:linear-gradient(90deg,var(--tomate),var(--mostarda));right:auto;width:calc(66.66% * var(--prog,0));transition:width .6s cubic-bezier(.2,.7,.2,1)}
+.etapas li{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;z-index:1;font-size:13px;font-weight:700;color:var(--suave)}
+.etapas i{font-style:normal;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--papel);border:2px solid var(--areia);color:var(--suave);
+  transition:background .3s,border-color .3s,color .3s,transform .3s cubic-bezier(.3,1.6,.5,1)}
+.etapas li.feito i{background:var(--manjericao);border-color:var(--manjericao);color:#fff}
+.etapas li.feito i{font-size:0}.etapas li.feito i::before{content:"✓";font-size:16px}
+.etapas li.atual i{background:var(--tomate);border-color:var(--tomate);color:#fff;transform:scale(1.12);box-shadow:0 0 0 6px rgba(226,85,43,.15)}
+.etapas li.atual{color:var(--tinta)}
+
+/* lado com foto e cartões flutuando */
+.lado{position:relative;overflow:hidden;isolation:isolate}
+.lado-foto{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(30,20,16,.55),rgba(30,20,16,.92) 70%),url(/assets/img/inicio/0353de7e98.jpg) center/cover;
+  filter:saturate(1.1);transform:scale(1.08);animation:zoomlento 24s ease-in-out infinite alternate}
+@keyframes zoomlento{to{transform:scale(1.18) translateY(-2%)}}
+.lado::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(500px 300px at 100% 0%,rgba(242,181,68,.28),transparent 60%),radial-gradient(600px 400px at 0% 100%,rgba(226,85,43,.4),transparent 60%)}
+.flutuantes{position:relative;height:220px;margin:8px 0}
+.flut{position:absolute;display:flex;gap:12px;align-items:center;background:rgba(255,248,238,.12);border:1px solid rgba(255,248,238,.2);color:var(--creme);
+  -webkit-backdrop-filter:blur(14px) saturate(1.3);backdrop-filter:blur(14px) saturate(1.3);border-radius:18px;padding:12px 16px;box-shadow:0 20px 40px -20px rgba(0,0,0,.6);
+  animation:boia 6s ease-in-out infinite}
+.flut b{display:block;font-size:15px}.flut small{color:rgba(255,248,238,.72);font-size:13px}
+.flut .pin{width:12px;height:12px;border-radius:50%;flex:none;box-shadow:0 0 0 5px rgba(255,255,255,.08)}
+.pin.verde{background:#3DDC84}.pin.ouro{background:var(--mostarda)}.pin.tomate{background:var(--tomate)}
+.flut.f1{left:0;top:0}.flut.f2{right:4%;top:78px;animation-delay:-2s}.flut.f3{left:10%;top:156px;animation-delay:-4s}
+@keyframes boia{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* formulário em cartão de vidro sobre fundo com manchas de cor */
+.painel-form{position:relative;overflow:hidden;isolation:isolate}
+.painel-form::before,.painel-form::after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(60px);opacity:.55;animation:mancha 18s ease-in-out infinite alternate}
+.painel-form::before{width:420px;height:420px;background:rgba(242,181,68,.45);top:-120px;right:-120px}
+.painel-form::after{width:380px;height:380px;background:rgba(226,85,43,.3);bottom:-140px;left:-100px;animation-delay:-9s}
+@keyframes mancha{to{transform:translate(-60px,80px) scale(1.15)}}
+.caixa.vidro{background:rgba(255,253,249,.72);-webkit-backdrop-filter:blur(18px) saturate(1.2);backdrop-filter:blur(18px) saturate(1.2);border:1px solid rgba(255,255,255,.8);
+  border-radius:28px;padding:clamp(22px,4vw,40px);box-shadow:0 30px 70px -36px rgba(30,20,16,.45),inset 0 1px 0 rgba(255,255,255,.9)}
+.caixa section{animation:entra .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes entra{from{opacity:0;transform:translateY(12px)}}
+.abas{position:relative}
+.abas button{position:relative;z-index:1;transition:color .2s}
+.abas::before{content:"";position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:var(--papel);box-shadow:0 4px 14px -6px rgba(30,20,16,.35);
+  transition:transform .35s cubic-bezier(.3,1.3,.5,1)}
+.abas.direita::before{transform:translateX(100%)}
+.abas button[aria-selected="true"]{background:transparent;box-shadow:none}
+.selo-ok{width:76px;height:76px;margin:0 0 14px}
+.selo-ok svg{width:100%;height:100%;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.selo-ok circle{stroke:var(--manjericao);stroke-width:3;fill:rgba(47,122,85,.1);stroke-dasharray:151;stroke-dashoffset:151;animation:traco .7s .1s ease-out forwards}
+.selo-ok path{stroke:var(--manjericao);stroke-width:4;stroke-dasharray:40;stroke-dashoffset:40;animation:traco .45s .65s ease-out forwards}
+@keyframes traco{to{stroke-dashoffset:0}}
+.checklist li{transition:transform .2s,box-shadow .2s}
+.checklist li:hover{transform:translateX(4px);box-shadow:0 10px 24px -18px rgba(30,20,16,.6)}
+@media (max-width:900px){
+  .lado{min-height:0;padding-bottom:30px}.lado h1{font-size:30px}.lado p{font-size:15px}
+  .painel-form{padding-top:0;margin-top:-18px;background:transparent}
+  .caixa.vidro{border-radius:26px 26px 0 0;box-shadow:0 -20px 40px -30px rgba(30,20,16,.4);background:var(--creme);-webkit-backdrop-filter:none;backdrop-filter:none;border:0;padding:26px 18px 10px}
+  .painel-form::before,.painel-form::after{display:none}
+  .pagina-entrar{background:var(--creme)}
+}
+@media (prefers-reduced-motion:reduce){.lado-foto,.flut,.painel-form::before,.painel-form::after{animation:none!important}.selo-ok circle,.selo-ok path{stroke-dashoffset:0}}
+.link-loja code{white-space:normal;word-break:break-all;line-height:1.35;padding:6px 0}
