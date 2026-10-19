@@ -807,6 +807,9 @@ header.nav{box-shadow:0 1px 0 rgba(201,162,74,.35)!important}
 .tpl-sw button[aria-pressed="true"]{background:var(--mint);color:var(--navy)}
 .stage-browser .bar span{display:flex;align-items:center;gap:6px}
 @media (max-width:920px){.tpl-sw{left:10px;top:8px}.tpl-sw button{font-size:11px;padding:5px 10px}}
+
+/* iPhone: campos do celular de demonstração com 16px para o Safari não dar zoom ao tocar */
+@media (hover:none),(pointer:coarse){.phone input,.phone textarea,.phone select{font-size:16px!important}}
 </style>
 </head>
 <body>
