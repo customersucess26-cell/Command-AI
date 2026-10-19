@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Manual Bistrô Connect</title>
+<style>
+@page{size:A4;margin:18mm 16mm 20mm}
+:root{--navy:#0E2433;--ouro:#B8862F;--tinta:#1F2933;--suave:#5B6670;--linha:#E3E6EA;--fundo:#F7F5F0;--ok:#2F7D4F;--alerta:#B23B2E;--azul:#1E6FD9}
+*{box-sizing:border-box}
+body{font:10.5pt/1.55 "DejaVu Sans","Liberation Sans",Arial,sans-serif;color:var(--tinta);margin:0}
+h1,h2,h3{color:var(--navy);line-height:1.25;break-after:avoid}
+h1{font-size:22pt;margin:0 0 6px}
+h2{font-size:15pt;margin:26px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--ouro)}
+h3{font-size:11.5pt;margin:16px 0 6px}
+p{margin:6px 0}
+ul,ol{margin:6px 0 6px 20px;padding:0}
+li{margin:3px 0}
+code{font:9pt "DejaVu Sans Mono",monospace;background:#EEF1F4;padding:1px 4px;border-radius:4px;word-break:break-all}
+pre{font:8.6pt/1.45 "DejaVu Sans Mono",monospace;background:#0F1A24;color:#E8EDF2;padding:10px 12px;border-radius:8px;white-space:pre-wrap;word-break:break-all;break-inside:avoid}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:9.6pt;break-inside:auto}
+th,td{border:1px solid var(--linha);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--fundo);color:var(--navy)}
+tr{break-inside:avoid}
+.capa{height:250mm;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;break-after:page}
+.capa img{width:300px;margin-bottom:28px}
+.capa h1{font-size:28pt}
+.capa .sub{font-size:13pt;color:var(--suave);margin-top:6px}
+.capa .data{margin-top:40px;color:var(--suave);font-size:10pt}
+.caixa{border-radius:10px;padding:10px 14px;margin:10px 0;break-inside:avoid}
+.dica{background:#EEF6FF;border-left:4px solid var(--azul)}
+.atencao{background:#FDF0EE;border-left:4px solid var(--alerta)}
+.ok{background:#EEF7F1;border-left:4px solid var(--ok)}
+.caixa b:first-child{display:block;margin-bottom:2px}
+.sumario ol{columns:2;column-gap:28px}
+.sumario li{break-inside:avoid}
+.pagina{break-before:page}
+.passo{counter-reset:p}
+.check li{list-style:none;margin-left:-18px}
+.check li::before{content:"☐ ";color:var(--ouro);font-weight:700}
+.feito li::before{content:"✔ ";color:var(--ok)}
+.muted{color:var(--suave)}
+small{color:var(--suave)}
+</style>
+</head>
+<body>
+
+<section class="capa">
+  <img src="logo.png" alt="Bistrô Connect">
+  <h1>Manual do Sistema</h1>
+  <p class="sub">Tudo o que foi construído, como está configurado<br>e como fazer atualizações com segurança</p>
+  <p class="data">Versão 1 · outubro de 2026 · Adilson Rutes</p>
+</section>
+
+<section class="sumario">
+<h2>Sumário</h2>
+<ol>
+  <li>Visão geral: o que você tem</li>
+  <li>Onde fica cada coisa</li>
+  <li>Contas e acessos</li>
+  <li>Site oficial e painel de leads</li>
+  <li>Supabase do site oficial (o que já foi feito)</li>
+  <li>Plataforma Bistrô Connect</li>
+  <li>Sites dos clientes (lojas)</li>
+  <li>Segurança: o que protege o sistema</li>
+  <li>Como fazer atualizações</li>
+  <li>Problemas comuns e como resolver</li>
+  <li>O que ainda falta fazer</li>
+  <li>Histórico do que foi feito</li>
+  <li>Glossário</li>
+</ol>
+</section>
+
+<!-- ======================================================= -->
+<h2>1. Visão geral: o que você tem</h2>
+<p>O projeto tem quatro partes. Cada uma tem o seu endereço, o seu painel e o seu banco de dados.</p>
+<table>
+<tr><th>Parte</th><th>Para que serve</th><th>Quem usa</th></tr>
+<tr><td><b>Site oficial Bistrô Connect</b> + painel de leads (<code>/admin/</code>)</td><td>Site das suas campanhas. Vende o seu serviço de cardápio digital e sites. Os contatos do formulário e da Bia viram leads no painel, com funil, orçamentos em PDF, clientes, metas e plano de negócio.</td><td>Você</td></tr>
+<tr><td><b>Plataforma Bistrô Connect</b> (lojas)</td><td>Sistema onde o pequeno empreendedor cria a própria loja sozinho: cardápio, pedidos no WhatsApp, rastreio, painel com equipe. Preço pela faixa de vendas.</td><td>Seus clientes (lojas) e você como dono</td></tr>
+<tr><td><b>Sites de clientes</b>: Hamburgueria Bruto, Âmbar (restaurante) e Padaria &amp; Café</td><td>Sites prontos, um por cliente, cada um com painel da loja e banco próprio.</td><td>Cada cliente</td></tr>
+<tr><td><b>Modelo de demonstração</b> (<code>modelos/padaria-cafe.html</code>)</td><td>Padaria em arquivo único, para mostrar em vendas. Não grava nada de verdade.</td><td>Você, em apresentações</td></tr>
+</table>
+<div class="caixa dica"><b>Ideia central</b>As páginas ficam na <b>Hostinger</b>. Os dados (leads, pedidos, cardápios, logins) ficam no <b>Supabase</b>. O código-fonte e o histórico ficam no <b>GitHub</b>.</div>
+
+<!-- ======================================================= -->
+<h2>2. Onde fica cada coisa</h2>
+<h3>2.1 GitHub (o “cofre” do código)</h3>
+<ul>
+  <li>Repositório: <code>customersucess26-cell/Command-AI</code></li>
+  <li>Ramo (branch) com todo o trabalho: <code>claude/compassionate-mendel-mh86av</code></li>
+  <li>Cada mudança fica registrada com data e explicação. Dá para voltar qualquer arquivo para uma versão anterior.</li>
+</ul>
+<h3>2.2 Pastas do projeto</h3>
+<table>
+<tr><th>Pasta ou arquivo</th><th>O que é</th></tr>
+<tr><td><code>index.html</code>, <code>assets/</code>, <code>admin/</code>, <code>.htaccess</code></td><td>Site oficial e painel de leads</td></tr>
+<tr><td><code>modelos/</code></td><td>Padaria de demonstração (arquivo único)</td></tr>
+<tr><td><code>plataforma/</code></td><td>Plataforma Bistrô Connect inteira (página inicial, cadastro, vitrine, rastreio, painel da loja, painel da plataforma) e o SQL dela em <code>plataforma/supabase/</code></td></tr>
+<tr><td><code>sites/</code></td><td>Sites dos clientes: <code>hamburgueria-bruto</code>, <code>ambar</code>, <code>padaria-cafe</code></td></tr>
+<tr><td><code>paineis/</code></td><td>Código-fonte do painel das lojas e da página de rastreio (é copiado para cada site)</td></tr>
+<tr><td><code>supabase/</code></td><td>Arquivos SQL do site oficial e dos sites de clientes</td></tr>
+<tr><td><code>ferramentas/</code></td><td>Scripts de manutenção (proteção CSP, montagem dos painéis)</td></tr>
+<tr><td><code>historico/</code></td><td>Versões originais que você enviou, guardadas sem alteração</td></tr>
+<tr><td><code>SEGURANCA.md</code>, <code>AUDITORIA.md</code>, <code>plataforma/LEIA-ME.md</code>, <code>manual/</code></td><td>Documentação</td></tr>
+</table>
+<h3>2.3 Pacotes (zips) e para onde vão</h3>
+<table>
+<tr><th>Pacote</th><th>Onde subir</th></tr>
+<tr><td><code>1-site-oficial-bistro-connect.zip</code></td><td><code>public_html</code> do domínio principal</td></tr>
+<tr><td><code>6-bistro-connect-plataforma.zip</code></td><td>Pasta de um subdomínio (ex.: <code>app.seudominio.com.br</code>). A plataforma precisa ficar na raiz do domínio/subdomínio.</td></tr>
+<tr><td><code>2-hamburgueria-bruto.zip</code>, <code>3-ambar.zip</code>, <code>5-padaria-cafe.zip</code></td><td>Domínio de cada cliente</td></tr>
+<tr><td>Arquivos <code>.sql</code>, guias e zips 4 e 7</td><td><b>Não</b> vão para a Hostinger: são para o Supabase e para consulta</td></tr>
+</table>
+
+<!-- ======================================================= -->
+<h2>3. Contas e acessos</h2>
+<table>
+<tr><th>Serviço</th><th>O que guarda</th><th>Como entrar</th></tr>
+<tr><td>Hostinger (hPanel)</td><td>Arquivos dos sites, domínios, SSL</td><td>Seu login da Hostinger</td></tr>
+<tr><td>Supabase</td><td>Banco de dados e logins dos painéis</td><td>supabase.com · organização <b>Bistrô Connect</b> · projeto <b>site-oficial</b></td></tr>
+<tr><td>GitHub</td><td>Código-fonte e histórico</td><td>Conta ligada ao repositório</td></tr>
+<tr><td>Google Authenticator</td><td>Códigos de 6 números do login em 2 etapas</td><td>No seu celular</td></tr>
+</table>
+<div class="caixa atencao"><b>Guarde em lugar seguro (gerenciador de senhas)</b>
+Senha da Hostinger · senha do Supabase · <b>senha do banco</b> (Database password, gerada ao criar o projeto) · senha do painel · e não perca o celular com o autenticador.</div>
+<p><b>Dados do projeto Supabase do site oficial</b></p>
+<ul>
+  <li>Projeto: <b>site-oficial</b> (região São Paulo, plano gratuito)</li>
+  <li>Project URL: <code>https://wiykwrnviqyrywelpawf.supabase.co</code></li>
+  <li>Chave usada no site: <b>anon public</b> (aba “Legacy anon, service_role API keys”). Ela é pública e já está no <code>assets/config.js</code>.</li>
+  <li>Administrador do painel: <b>adilsonrutes@gmail.com</b></li>
+</ul>
+<div class="caixa atencao"><b>Chave secreta</b>Nunca coloque a chave <b>service_role</b> ou <b>sb_secret</b> em nenhum arquivo do site, mensagem ou print. Ela dá acesso total ao banco.</div>
+
+<!-- ======================================================= -->
+<h2 class="pagina">4. Site oficial e painel de leads</h2>
+<h3>4.1 O site (<code>index.html</code>)</h3>
+<ul>
+  <li>Logo Bistrô Connect no topo, celulares com 4 modelos de cardápio que funcionam, painel ao vivo de demonstração, calculadora de economia, comparação com app de delivery, planos, perguntas frequentes.</li>
+  <li><b>Formulário de contato</b> e <b>assistente Bia</b>: cada contato vira lead no painel e abre o seu WhatsApp com a mensagem pronta.</li>
+  <li>Proteções: campo-armadilha e tempo mínimo contra robôs, limite de envios no banco, aviso de cookies antes de ligar o Meta Pixel (LGPD).</li>
+  <li>Link discreto “Acesso restrito” no rodapé leva ao painel.</li>
+</ul>
+<h3>4.2 O arquivo de configuração (<code>assets/config.js</code>)</h3>
+<table>
+<tr><th>Campo</th><th>Para que serve</th></tr>
+<tr><td><code>whatsapp</code></td><td>Número que recebe os contatos (55 + DDD + número, só dígitos)</td></tr>
+<tr><td><code>pixelId</code></td><td>ID do Meta Pixel (opcional). Vazio = desligado</td></tr>
+<tr><td><code>supabaseUrl</code> / <code>supabaseKey</code></td><td>Liga o site e o painel ao banco (URL e chave anon)</td></tr>
+<tr><td><code>aiUrl</code></td><td>Função de IA para a Bia (opcional). Vazio = respostas automáticas</td></tr>
+</table>
+<div class="caixa dica"><b>Como editar</b>Hostinger › Gerenciador de Arquivos › <code>public_html/assets/config.js</code> › botão direito › Editar. Mude só o que está entre aspas e salve. Ou gere um novo pela tela “Conectar o painel”.</div>
+<h3>4.3 O painel (<code>seusite/admin/</code>)</h3>
+<table>
+<tr><th>Aba</th><th>O que faz</th></tr>
+<tr><td>Hoje</td><td>Resumo do dia: retornos, cobranças, orçamentos vencendo, rotina e funil</td></tr>
+<tr><td>Leads</td><td>Funil (Lead › Contatado › Respondeu › Demonstração › Proposta › Fechado › Cliente ativo / Perdido), quadro arrastável, filtros, exportar CSV, próximo retorno</td></tr>
+<tr><td>Orçamentos</td><td>Orçamento timbrado em PDF (BT-ANO-NNN), envio por WhatsApp, duplicar</td></tr>
+<tr><td>Entregas</td><td>Andamento da implantação de cada cliente</td></tr>
+<tr><td>Clientes</td><td>Clientes ativos, mensalidade, vencimento, pagamento, relatório mensal</td></tr>
+<tr><td>Plano de negócio e metas</td><td>Metas × números reais, funil do mês, receita recorrente, plano de 90 dias, rotina, tabela de planos</td></tr>
+<tr><td>Scripts de venda</td><td>Mensagens prontas, preenchidas com os dados do lead</td></tr>
+<tr><td>Ajuda</td><td>Explicação de cada parte do sistema</td></tr>
+<tr><td>Ajustes</td><td>Dados da empresa, metas, trocar senha, sair de todos os aparelhos, tema</td></tr>
+</table>
+<p><b>Atalhos:</b> <code>Ctrl+K</code> abre a busca de comandos. Saída automática após 30 minutos parado. Botão “Ver demonstração” mostra o painel com dados fictícios, sem gravar nada.</p>
+<h3>4.4 Como entrar</h3>
+<ol>
+  <li>Abra <code>seusite/admin/</code>.</li>
+  <li>E-mail e senha.</li>
+  <li>Código de 6 números do Google Authenticator.</li>
+</ol>
+
+<!-- ======================================================= -->
+<h2>5. Supabase do site oficial: o que já foi feito</h2>
+<ul class="check feito">
+  <li>Conta e organização <b>Bistrô Connect</b> criadas (plano gratuito)</li>
+  <li>Projeto <b>site-oficial</b> em São Paulo, com “Automatically expose new tables” desligado e RLS automático ligado</li>
+  <li>SQL rodado: tabelas <code>admins</code>, <code>leads</code>, <code>orcamentos</code>, <code>config</code> com regras de acesso</li>
+  <li>Usuário <b>adilsonrutes@gmail.com</b> criado e liberado como administrador</li>
+  <li>Cadastro de novos usuários desligado (“Allow new users to sign up”)</li>
+  <li>Chave anon copiada e painel conectado pela tela “Conectar o painel”</li>
+  <li>Novo <code>config.js</code> enviado para <code>public_html/assets/</code></li>
+  <li>Login em 2 etapas ativado no Google Authenticator</li>
+</ul>
+<p><b>Ainda falta neste projeto:</b></p>
+<ul class="check">
+  <li>Authentication › URL Configuration › <b>Site URL</b>: trocar <code>http://localhost:3000</code> pelo endereço do site (ex.: <code>https://seudominio.com.br</code>) e salvar. Isso corrige o nome no autenticador e os links de “esqueci a senha”.</li>
+  <li>Testar o formulário do site: mandar um contato de teste e ver se aparece em Leads.</li>
+</ul>
+
+<!-- ======================================================= -->
+<h2 class="pagina">6. Plataforma Bistrô Connect</h2>
+<h3>6.1 Páginas</h3>
+<table>
+<tr><th>Endereço</th><th>Página</th></tr>
+<tr><td><code>/</code></td><td>Página inicial com planos, modelos, calculadora e Bia</td></tr>
+<tr><td><code>/entrar.html</code></td><td>Criar conta, entrar, esqueci a senha, criar a loja, aceitar convite de equipe</td></tr>
+<tr><td><code>/l/nome-da-loja</code></td><td>Vitrine de cada loja: cardápio, carrinho, entrega ou retirada, pagamento, pedido no WhatsApp</td></tr>
+<tr><td><code>/pedido.html#codigo</code></td><td>Rastreio do pedido para o cliente final (link secreto)</td></tr>
+<tr><td><code>/painel/</code></td><td>Painel da loja: pedidos ao vivo, financeiro, clientes, cardápio com fotos, dados da loja (logo, capa, cor), equipe, link para divulgar, plano do mês</td></tr>
+<tr><td><code>/admin/</code></td><td>Seu painel de dono: todas as lojas, vendas do mês, plano, suspender/cancelar, exportar</td></tr>
+</table>
+<h3>6.2 Funções da equipe de cada loja</h3>
+<table>
+<tr><th>Função</th><th>Pode</th></tr>
+<tr><td>Dono</td><td>Tudo, inclusive equipe e dados da loja</td></tr>
+<tr><td>Gerente</td><td>Pedidos, financeiro, cardápio e dados da loja; convida atendente e cozinha</td></tr>
+<tr><td>Atendente</td><td>Pedidos, pagamentos e clientes; pode pausar pedidos</td></tr>
+<tr><td>Cozinha</td><td>Só vê e avança pedidos (sem pagamento)</td></tr>
+</table>
+<h3>6.3 Planos (preço pela faixa de vendas)</h3>
+<table>
+<tr><th>Plano</th><th>Vendas no mês pela plataforma</th><th>Mensalidade</th></tr>
+<tr><td>Começo</td><td>até R$ 3.000</td><td>Grátis</td></tr>
+<tr><td>Crescendo</td><td>até R$ 10.000</td><td>R$ 49</td></tr>
+<tr><td>Forte</td><td>até R$ 30.000</td><td>R$ 99</td></tr>
+<tr><td>Sem limites</td><td>acima de R$ 30.000</td><td>R$ 199</td></tr>
+</table>
+<p>Todos os planos têm todos os recursos e não há comissão. Para mudar valores: Supabase da plataforma › Table Editor › tabela <code>planos</code>.</p>
+<h3>6.4 Como colocar no ar (ainda não feito)</h3>
+<ol>
+  <li>Hostinger: criar o subdomínio (ex.: <code>app.seudominio.com.br</code>), subir e extrair <code>6-bistro-connect-plataforma.zip</code> na pasta dele, ativar SSL.</li>
+  <li>Supabase: criar um <b>projeto novo</b>, separado do site oficial (ex.: <code>plataforma</code>). Rodar <code>plataforma/supabase/01-plataforma.sql</code> no SQL Editor.</li>
+  <li>Authentication: aqui o cadastro fica <b>ligado</b> (os empreendedores se cadastram), com “Confirm email” ligado. Em URL Configuration: Site URL = endereço da plataforma; Redirect URLs = <code>https://app.seudominio.com.br/entrar.html*</code>.</li>
+  <li>Preencher <code>assets/config.js</code> da plataforma (<code>window.BC</code>): <code>supabaseUrl</code>, <code>supabaseKey</code> (anon), <code>suporteWhatsapp</code>, <code>site</code>.</li>
+  <li>Criar a sua conta pelo <code>/entrar.html</code> e tornar-se administrador da plataforma no SQL Editor:
+<pre>insert into public.plataforma_admins (user_id)
+select id from auth.users where email = 'adilsonrutes@gmail.com';</pre></li>
+  <li>Testar com 3 a 5 lojas reais antes de divulgar.</li>
+</ol>
+
+<!-- ======================================================= -->
+<h2 class="pagina">7. Sites dos clientes (lojas)</h2>
+<table>
+<tr><th>Site</th><th>Pedidos</th><th>SQL no Supabase do cliente (nesta ordem)</th></tr>
+<tr><td>Hamburgueria Bruto</td><td>Sim, com rastreio</td><td><code>01-admins.sql</code> › <code>05-loja-tabelas.sql</code> › <code>03-loja-pedidos.sql</code> › <code>seed-hamburgueria.sql</code></td></tr>
+<tr><td>Âmbar (restaurante)</td><td>Não (reserva pelo WhatsApp)</td><td><code>01-admins.sql</code> › <code>05-loja-tabelas.sql</code> › <code>03-loja-pedidos.sql</code> › <code>seed-ambar.sql</code></td></tr>
+<tr><td>Padaria &amp; Café</td><td>Sim (encomendas), com rastreio</td><td><code>01-admins.sql</code> › <code>06-padaria.sql</code> › <code>seed-padaria.sql</code></td></tr>
+</table>
+<ul>
+  <li>Cada cliente tem <b>um projeto Supabase próprio</b>. Nunca misture clientes no mesmo projeto.</li>
+  <li><code>assets/config.js</code> de cada site (<code>window.LOJA</code>): nome, WhatsApp, Supabase (URL e anon), cor.</li>
+  <li>Painel da loja em <code>siteDoCliente/admin/</code> (na padaria, o painel é o próprio site em <code>#admin</code>).</li>
+  <li>Sem Supabase, os sites funcionam como vitrine: o pedido vai só pelo WhatsApp.</li>
+  <li>Antes de entregar: trocar dados de exemplo (endereço, telefone, depoimentos, nota).</li>
+</ul>
+
+<!-- ======================================================= -->
+<h2>8. Segurança: o que protege o sistema</h2>
+<ul>
+  <li><b>Login em 2 etapas</b> obrigatório nos painéis; saída automática após 30 minutos; sessão só na aba aberta.</li>
+  <li><b>Regras no banco (RLS)</b>: visitante só cria lead ou pedido; não lê nada. Só administradores leem leads. Na plataforma, uma loja nunca vê dados de outra.</li>
+  <li><b>Preço conferido no banco</b>: o total de cada pedido é recalculado com os preços cadastrados. Mudar o preço pelo navegador não adianta.</li>
+  <li><b>Limites contra robôs</b>: leads por WhatsApp/dia e por 10 minutos; pedidos por telefone.</li>
+  <li><b>.htaccess</b>: HTTPS obrigatório, bloqueio de arquivos internos (.sql, .md, ferramentas), cabeçalhos de proteção, painel sem indexação no Google.</li>
+  <li><b>CSP</b>: o navegador só roda os scripts aprovados; script injetado por invasor é bloqueado.</li>
+</ul>
+<h3>Regras de ouro</h3>
+<ol>
+  <li>Nunca compartilhe a chave service_role/secret, a senha do banco ou print do QR Code do autenticador.</li>
+  <li>Senha forte (12+ caracteres) e única para cada serviço. Use um gerenciador de senhas.</li>
+  <li>Ligue o login em 2 etapas também na Hostinger, no Supabase, no GitHub, no e-mail e no Meta Business.</li>
+  <li>A cada 3 meses: revise quem está em <code>admins</code> e exporte os leads em CSV como cópia.</li>
+</ol>
+
+<!-- ======================================================= -->
+<h2 class="pagina">9. Como fazer atualizações</h2>
+<p>Existem quatro tipos de atualização. Comece sempre pelo mais simples.</p>
+
+<h3>9.1 Conteúdo do dia a dia (sem mexer em arquivos)</h3>
+<p>Leads, orçamentos, metas, dados da empresa (site oficial) e cardápio, preços, fotos, horários, taxa de entrega, equipe (lojas e plataforma) são mudados <b>pelo painel</b>. A mudança aparece na hora e não precisa de Hostinger.</p>
+
+<h3>9.2 Configuração (WhatsApp, Pixel, Supabase)</h3>
+<ol>
+  <li>Hostinger › Gerenciador de Arquivos › <code>public_html/assets/config.js</code> › Editar.</li>
+  <li>Mude só o valor entre aspas. Não apague vírgulas nem chaves <code>{ }</code>.</li>
+  <li>Salve e abra o site com <b>Ctrl+F5</b>.</li>
+</ol>
+
+<h3>9.3 Nova versão do site ou do sistema (arquivos)</h3>
+<p>Quando houver melhorias (feitas pelo Claude ou por um desenvolvedor), você recebe um zip novo. Siga sempre esta ordem:</p>
+<ol>
+  <li><b>Backup antes de tudo:</b> no Gerenciador de Arquivos, selecione o conteúdo de <code>public_html</code> › Compactar › baixe o zip para o seu computador. (Confira também se a Hostinger tem backup automático no seu plano, em hPanel › Backups.)</li>
+  <li><b>Guarde o seu <code>config.js</code></b>: baixe <code>public_html/assets/config.js</code>. Ele tem as suas chaves e o seu WhatsApp, e o zip novo vem com um <code>config.js</code> vazio.</li>
+  <li>Envie o zip novo para <code>public_html</code> e <b>Extraia</b>, aceitando substituir os arquivos.</li>
+  <li><b>Devolva o seu <code>config.js</code></b> para <code>public_html/assets/</code> (substituindo o vazio). Se aparecer <code>config1.js</code>, apague o <code>config.js</code> vazio e renomeie o <code>config1.js</code> para <code>config.js</code>.</li>
+  <li>Apague o zip do servidor.</li>
+  <li>Abra o site com <b>Ctrl+F5</b> e faça o teste rápido (seção 9.6).</li>
+</ol>
+<div class="caixa atencao"><b>Cuidado</b>Nunca apague a pasta <code>assets/</code> inteira, o <code>.htaccess</code> ou a pasta <code>admin/</code> sem ter o backup. Se algo der errado, extraia o zip de backup e tudo volta como estava.</div>
+
+<h3>9.4 Mudanças no banco de dados (SQL)</h3>
+<ul>
+  <li>Atualizações de banco vêm em arquivos <code>.sql</code>. Rode no Supabase › SQL Editor › New query › colar › Run.</li>
+  <li>Todos os arquivos deste projeto podem ser rodados mais de uma vez sem perder dados.</li>
+  <li>O aviso “destructive operations” é normal quando o arquivo ajusta permissões; leia o que o arquivo diz no topo antes de confirmar.</li>
+  <li><b>Nunca</b> rode comandos que comecem com <code>drop table</code> ou <code>delete from</code> sem ter certeza e sem exportar os dados antes.</li>
+  <li>Plano gratuito do Supabase não oferece backup para baixar: exporte os leads em CSV pelo painel com frequência. No plano pago, os backups diários ficam em Database › Backups.</li>
+</ul>
+
+<h3>9.5 Pedindo uma atualização ao Claude ou a um desenvolvedor</h3>
+<p>Para a pessoa (ou o Claude) entender o projeto sem começar do zero, informe:</p>
+<pre>Repositório: customersucess26-cell/Command-AI
+Ramo: claude/compassionate-mendel-mh86av
+Leia antes: manual/manual.html, SEGURANCA.md e plataforma/LEIA-ME.md
+O que eu quero: (descreva a mudança)
+Onde aparece: (site oficial / painel de leads / plataforma / site do cliente X)</pre>
+<p>Informações técnicas importantes para quem for mexer no código:</p>
+<ul>
+  <li><b>Proteção CSP:</b> depois de editar qualquer <code>&lt;script&gt;</code> dentro de um HTML, rode <code>python3 ferramentas/csp.py arquivo.html</code>; senão o script deixa de funcionar.</li>
+  <li><b>Painel das lojas:</b> o original fica em <code>paineis/loja/</code>. Depois de mudar, rode <code>sh ferramentas/montar-paineis.sh</code> (copia para os sites) e <code>python3 ferramentas/montar-painel-plataforma.py</code> (gera o painel da plataforma).</li>
+  <li><b>Padaria &amp; Café:</b> o código é compilado; as mudanças são feitas pelo <code>ferramentas/padaria-ligar-banco.py</code> a partir de <code>historico/padaria-v17-app-original.js</code>.</li>
+  <li>Cada mudança deve virar um commit com descrição clara no GitHub.</li>
+</ul>
+
+<h3>9.6 Teste rápido depois de qualquer atualização</h3>
+<ul class="check">
+  <li>Site abre no computador e no celular, com imagens e sem rolar para o lado</li>
+  <li>Botões de WhatsApp abrem com o número certo</li>
+  <li>Formulário de contato: enviar um teste e ver o lead no painel</li>
+  <li>Painel: entrar com e-mail, senha e código; abrir Leads, Orçamentos e gerar um PDF</li>
+  <li>Lojas: fazer um pedido de teste, ver no painel e abrir o link de rastreio</li>
+</ul>
+
+<!-- ======================================================= -->
+<h2 class="pagina">10. Problemas comuns e como resolver</h2>
+<table>
+<tr><th>Problema</th><th>Causa provável</th><th>O que fazer</th></tr>
+<tr><td>Painel mostra “Conectar o painel”</td><td><code>config.js</code> sem as chaves, ou aparelho novo</td><td>Conferir <code>assets/config.js</code> (deve ter <code>supabaseUrl</code>). Ou conectar pela tela e baixar o config.js.</td></tr>
+<tr><td>Leads do site não chegam ao painel</td><td><code>config.js</code> sem Supabase, ou nome errado (<code>config1.js</code>)</td><td>Deixar só <code>assets/config.js</code> com URL e chave; Ctrl+F5.</td></tr>
+<tr><td>“Sua conta não tem acesso”</td><td>Usuário não está na tabela <code>admins</code></td><td>Rodar o <code>insert into public.admins ...</code> com o seu e-mail.</td></tr>
+<tr><td>Perdi o celular do autenticador</td><td>Sem o app não há código</td><td>No SQL Editor, rodar o comando abaixo e entrar de novo (o painel mostra um QR novo):
+<pre>delete from auth.mfa_factors where user_id =
+ (select id from auth.users where email = 'adilsonrutes@gmail.com');</pre></td></tr>
+<tr><td>Esqueci a senha do painel</td><td>—</td><td>Supabase › Authentication › Users › clique no usuário › “Send password recovery” (precisa do Site URL configurado). Ou exclua e recrie o usuário e rode de novo o insert em <code>admins</code>.</td></tr>
+<tr><td>Página branca ou “carregando” no iPhone</td><td>Arquivo aberto pela pré-visualização (sem JavaScript)</td><td>Abrir pelo endereço do site no Safari/Chrome.</td></tr>
+<tr><td>Erro 403 ao abrir um arquivo</td><td><code>.htaccess</code> bloqueando arquivo interno (correto)</td><td>Normal para .sql, .md e pastas internas.</td></tr>
+<tr><td>Imagens não aparecem</td><td>Pasta <code>img/</code> ou <code>assets/</code> não foi enviada/extraída</td><td>Extrair o zip inteiro dentro da pasta certa, sem subpasta extra.</td></tr>
+<tr><td>Supabase pausado</td><td>Plano gratuito pausa após ~1 semana sem uso</td><td>Entrar no Supabase e clicar em “Restore/Resume”. Para uso com clientes, considerar o plano pago.</td></tr>
+<tr><td>Autenticador mostra “localhost”</td><td>Site URL padrão do Supabase</td><td>Renomear a conta no app; configurar o Site URL (seção 5).</td></tr>
+</table>
+
+<!-- ======================================================= -->
+<h2>11. O que ainda falta fazer</h2>
+<h3>Site oficial</h3>
+<ul class="check">
+  <li>Configurar o Site URL no Supabase (seção 5)</li>
+  <li>Testar um lead real pelo formulário e pela Bia</li>
+  <li>Preencher o Pixel (se for usar Meta Ads)</li>
+  <li>Revisar textos de planos e oferta (site vende o serviço com implantação; a plataforma vende o cadastro sozinho)</li>
+</ul>
+<h3>Plataforma</h3>
+<ul class="check">
+  <li>Colocar no ar (seção 6.4)</li>
+  <li>Termos de uso e Política de Privacidade (os links já existem; texto revisado por advogado)</li>
+  <li>Fase 2: cobrança automática pelo Asaas (precisa de conta com CNPJ)</li>
+  <li>Fase 3: Pix no pedido, cupons, fidelidade, tela da cozinha, taxa por bairro</li>
+  <li>Piloto com 3 a 5 lojas reais</li>
+</ul>
+<h3>Geral</h3>
+<ul class="check">
+  <li>Logo em alta resolução (a atual tem 302×170 px)</li>
+  <li>Testar em iPhone de verdade (os testes foram em simulação)</li>
+  <li>Domínio próprio da marca (ex.: bistroconnect.com.br)</li>
+  <li>Trocar dados de exemplo nos sites dos clientes antes de entregar</li>
+</ul>
+
+<!-- ======================================================= -->
+<h2 class="pagina">12. Histórico do que foi feito</h2>
+<table>
+<tr><th>Etapa</th><th>Resumo</th></tr>
+<tr><td>Auditoria</td><td>Arquivos originais importados sem alteração; correções em pedidos, painel e formulários; site e modelos blindados para Hostinger e Supabase (HTTPS, CSP, RLS, limites contra robôs, LGPD no Pixel).</td></tr>
+<tr><td>Painel de leads</td><td>Painel “Acesso restrito” recriado a partir do original Bistrô Connection e modernizado: funil, orçamentos em PDF, entregas, clientes, metas, plano de negócio, scripts, ajuda, login em 2 etapas.</td></tr>
+<tr><td>Sites de clientes</td><td>Painel da loja (pedidos ao vivo, financeiro, cardápio com fotos, comanda) para Hamburgueria e Âmbar; melhorias de celular com foco no iPhone; sites funcionam mesmo sem JavaScript.</td></tr>
+<tr><td>Padaria &amp; Café</td><td>Versão 17 adotada; ligada ao banco de verdade com SQL próprio (preço conferido, pagamentos, estornos, histórico).</td></tr>
+<tr><td>Rastreio</td><td>Página de acompanhamento do pedido por link secreto para hamburgueria, padaria e plataforma.</td></tr>
+<tr><td>Plataforma</td><td>Bistrô Connect multi-loja: banco com separação por loja e por função, cadastro, vitrine, painel com equipe, painel do dono, planos por faixa de vendas; testes de ponta a ponta.</td></tr>
+<tr><td>Marca</td><td>Página inicial da plataforma no visual do site oficial; logo Bistrô Connect (corrigida para “Connect”) no site oficial, painel e orçamento; versão clara da logo para fundos escuros.</td></tr>
+<tr><td>Conexão</td><td>Tela “Conectar o painel” (testa a chave, gera o config.js); Supabase do site oficial configurado com você, passo a passo.</td></tr>
+</table>
+
+<!-- ======================================================= -->
+<h2>13. Glossário</h2>
+<table>
+<tr><th>Termo</th><th>Significado</th></tr>
+<tr><td>Hostinger</td><td>Onde ficam as páginas do site</td></tr>
+<tr><td>Supabase</td><td>Banco de dados + sistema de login</td></tr>
+<tr><td>SQL Editor</td><td>Tela do Supabase onde se colam os arquivos .sql</td></tr>
+<tr><td>Chave anon</td><td>Chave pública que o site usa para falar com o banco, sempre limitada pelas regras de segurança</td></tr>
+<tr><td>service_role / secret</td><td>Chave mestra do banco. Nunca usar em site</td></tr>
+<tr><td>RLS</td><td>Regras do banco que dizem quem pode ler ou alterar cada dado</td></tr>
+<tr><td>Login em 2 etapas</td><td>Senha + código de 6 números do app autenticador</td></tr>
+<tr><td>CSP</td><td>Lista de scripts que o navegador pode rodar; bloqueia código injetado</td></tr>
+<tr><td>.htaccess</td><td>Arquivo de regras de segurança do servidor da Hostinger</td></tr>
+<tr><td>Lead</td><td>Contato interessado que veio do site</td></tr>
+<tr><td>Commit</td><td>Registro de uma mudança no GitHub, com data e descrição</td></tr>
+<tr><td>Ctrl+F5</td><td>Recarregar a página ignorando a versão guardada no navegador</td></tr>
+</table>
+<p class="muted" style="margin-top:24px">Este manual fica também no GitHub em <code>manual/manual.html</code>. Peça para atualizá-lo sempre que o sistema mudar.</p>
+</body>
+</html>
