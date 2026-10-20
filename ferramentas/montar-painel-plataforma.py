@@ -35,12 +35,12 @@ h = troca(h, '<script src="vendor/supabase-2.45.4.js"></script>', '<script src="
 h = troca(h, '<small>Painel da loja</small>', '<small>Bistrô Connect</small>')
 h = troca(h, '''      <button class="btn primary big" type="submit">Entrar</button>
     </form>''', '''      <button class="btn primary big" type="submit">Entrar</button>
-      <p class="muted fino centro">Ainda não tem loja? <a href="../entrar.html">Crie grátis</a></p>
+      <p class="muted fino centro">Ainda não tem loja? <a href="../index.html#contato">Peça sua vaga</a></p>
     </form>''')
 h = troca(h, '''    <div id="semConfig" hidden>''', '''    <div id="semLoja" hidden>
       <h1>Você ainda não tem loja</h1>
       <p class="muted">Sua conta entrou, mas não faz parte da equipe de nenhuma loja. Crie a sua ou peça um convite para o dono da loja.</p>
-      <a class="btn primary big" href="../entrar.html">Criar minha loja</a>
+      <a class="btn primary big" href="../index.html#contato">Pedir minha vaga</a>
       <a class="btn link" href="../admin/">Sou administrador da plataforma</a>
       <button class="btn link" type="button" data-sair>Sair</button>
     </div>
