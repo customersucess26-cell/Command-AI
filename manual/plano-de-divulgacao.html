@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Plano de divulgação · Bistrô Connect</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+@page{size:A4;margin:16mm 17mm 18mm}
+@page :first{margin:0}
+:root{--navy:#0E1526;--navy2:#16213A;--ouro:#C9A24A;--ouro2:#F3E3B8;--azul:#2BA8FF;--tinta:#1C2433;--suave:#5E6878;--linha:#E6E8EC;--creme:#FAF7F0;--verde:#2F8A55;--verde2:#E8F5EC;--verm:#C0392B;--verm2:#FCEDEB;--azul2:#EAF5FF}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+html,body{margin:0}
+body{font:11pt/1.6 'DM Sans',Arial,sans-serif;color:var(--tinta)}
+.pg{break-before:page}
+.pg.capa{break-before:auto;width:210mm;height:297mm;overflow:hidden}
+.rodape{display:none!important}
+h1,h2,h3{font-family:'Poppins',Arial,sans-serif;color:var(--navy);margin:0;line-height:1.2}
+h3{font-size:13.5pt;margin:20px 0 8px}
+p{margin:0 0 8px}
+b{color:var(--navy)}
+code{font:9.5pt 'DM Mono',monospace;background:#EEF1F5;color:#1D3557;padding:1px 6px;border-radius:5px;white-space:nowrap}
+pre{font:9.5pt/1.5 'DM Mono',monospace;background:var(--navy);color:#E9EEF5;padding:12px 16px;border-radius:12px;white-space:pre-wrap;word-break:break-all;margin:8px 0 12px}
+ul{margin:4px 0 10px;padding-left:20px}li{margin:3px 0}
+
+/* capa */
+.capa{background:radial-gradient(120% 80% at 80% 0%,#1C3A63 0%,var(--navy) 55%,#080C17 100%);color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:26mm 22mm}
+.capa .topo{font:600 9pt 'Poppins';letter-spacing:.3em;color:var(--ouro);text-transform:uppercase}
+.capa .meio{text-align:center}
+.capa img{width:105mm;margin:0 auto 14mm;display:block}
+.capa h1{color:#fff;font-size:34pt;letter-spacing:-.01em}
+.capa .linha{width:60mm;height:3px;background:linear-gradient(90deg,transparent,var(--ouro),transparent);margin:9mm auto}
+.capa .sub{font-size:13pt;color:#C9D3E3;max-width:130mm;margin:0 auto}
+.capa .rod{display:flex;justify-content:space-between;color:#8E9AB0;font-size:9.5pt;border-top:1px solid rgba(255,255,255,.12);padding-top:6mm}
+
+/* abertura de capítulo */
+.cap{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.cap .n{width:46px;height:46px;border-radius:14px;background:var(--navy);color:var(--ouro);font:700 18pt 'Poppins';display:grid;place-items:center;flex:none}
+.cap h2{font-size:21pt}
+.intro{color:var(--suave);font-size:11.5pt;margin:0 0 14px;padding-bottom:12px;border-bottom:2px solid var(--ouro2)}
+
+/* cartões */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0}
+.grid3 .card{padding:12px}.grid3 .check li{font-size:10pt}
+.card{border:1px solid var(--linha);border-radius:14px;padding:14px 16px;background:#fff;break-inside:avoid}
+.card .tag{display:inline-block;font:600 8pt 'Poppins';letter-spacing:.12em;text-transform:uppercase;color:var(--ouro);margin-bottom:4px}
+.card h4{font:600 12.5pt 'Poppins';color:var(--navy);margin:0 0 4px}
+.card p{font-size:10pt;color:var(--suave);margin:0}
+.card.escuro{background:var(--navy);border-color:var(--navy)}
+.card.escuro h4{color:#fff}.card.escuro p{color:#C9D3E3}
+
+/* passos */
+.passos{counter-reset:p;margin:8px 0 12px}
+.passo{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:10px 0;border-bottom:1px dashed var(--linha);break-inside:avoid}
+.passo:last-child{border-bottom:0}
+.passo::before{counter-increment:p;content:counter(p);width:30px;height:30px;border-radius:50%;background:var(--ouro);color:var(--navy);font:700 11pt 'Poppins';display:grid;place-items:center}
+.passo b.t{display:block;font:600 11.5pt 'Poppins';color:var(--navy);margin-bottom:2px}
+.passo p{margin:0;color:var(--tinta)}
+
+/* avisos */
+.av{display:grid;grid-template-columns:28px 1fr;gap:10px;border-radius:12px;padding:12px 14px;margin:10px 0;break-inside:avoid}
+.av .i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font:700 12pt 'Poppins';color:#fff}
+.av b.t{display:block;font:600 11pt 'Poppins';margin-bottom:2px}
+.av.dica{background:var(--azul2)}.av.dica .i{background:var(--azul)}.av.dica b.t{color:#0B5B9E}
+.av.cuidado{background:var(--verm2)}.av.cuidado .i{background:var(--verm)}.av.cuidado b.t{color:var(--verm)}
+.av.ok{background:var(--verde2)}.av.ok .i{background:var(--verde)}.av.ok b.t{color:var(--verde)}
+
+/* tabelas */
+table{width:100%;border-collapse:separate;border-spacing:0;margin:8px 0 12px;font-size:10pt;border:1px solid var(--linha);border-radius:12px;overflow:hidden}
+th{background:var(--navy);color:#fff;font:600 9.5pt 'Poppins';text-align:left;padding:9px 12px}
+td{padding:9px 12px;border-top:1px solid var(--linha);vertical-align:top}
+tr:nth-child(even) td{background:#FAFBFC}
+tr{break-inside:avoid}
+
+/* listas de checagem */
+.check{list-style:none;padding:0;margin:6px 0 12px}
+.check li{display:grid;grid-template-columns:22px 1fr;gap:8px;margin:6px 0;break-inside:avoid}
+.check li::before{content:"";width:16px;height:16px;border:2px solid var(--ouro);border-radius:5px;margin-top:3px}
+.check.feito li::before{background:var(--verde);border-color:var(--verde);content:"✓";color:#fff;font:700 10pt/16px Arial;text-align:center}
+
+.rodape{position:absolute;left:18mm;right:18mm;bottom:10mm;display:flex;justify-content:space-between;font-size:8.5pt;color:#9AA3B2;border-top:1px solid var(--linha);padding-top:4mm}
+.sumario{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin-top:10px}
+.sumario div{display:flex;gap:12px;align-items:baseline;border-bottom:1px solid var(--linha);padding:8px 0}
+.sumario span{font:700 13pt 'Poppins';color:var(--ouro);min-width:26px}
+.sumario b{font:500 11pt 'Poppins'}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font:600 8.5pt 'Poppins';background:var(--ouro2);color:#7A5A12}
+
+h3.sec{font-size:12pt;margin:16px 0 6px;color:var(--navy);border-left:4px solid var(--ouro);padding-left:10px}
+.msg{background:#F3F6FA;border-left:4px solid var(--azul);border-radius:0 10px 10px 0;padding:10px 14px;font-size:10pt;margin:8px 0 12px;break-inside:avoid;white-space:pre-line}
+.msg b.t{display:block;font:600 8pt 'Poppins';letter-spacing:.12em;text-transform:uppercase;color:#0B5B9E;margin-bottom:3px}
+.fl{break-before:auto}
+td small,li small{color:var(--suave)}
+.kit{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:8px 0 12px;break-inside:avoid}
+.kit img{width:100%;border-radius:6px;border:1px solid var(--linha)}
+.kit2{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin:6px 0 12px;break-inside:avoid}
+.kit2 img{width:100%;border-radius:8px;border:1px solid var(--linha)}
+.kit2.l img{aspect-ratio:9/16;object-fit:cover}
+table.c td{font-size:9.5pt}
+.mono{font:9pt 'DM Mono',monospace}
+</style>
+</head>
+<body>
+<section class="pg capa">
+  <div class="topo">Documento interno · Marketing</div>
+  <div class="meio">
+    <img src="logo-clara.png" alt="Bistrô Connect">
+    <h1>Plano de divulgação</h1>
+    <div class="linha"></div>
+    <p class="sub">Instagram, Meta Ads e Google Ads, com orçamento, metas e regras de parada para o dinheiro não ser jogado fora.</p>
+  </div>
+  <div class="rod"><span>bistroconnect.com.br</span><span>Outubro de 2026</span></div>
+</section>
+<section class="pg">
+  <div class="cap"><div class="n">≡</div><h2>Sumário</h2></div>
+  <p class="intro">Faça o capítulo 01 antes de gastar qualquer real. Os demais seguem a ordem em que você vai executar.</p>
+  <div class="sumario">
+    <div><span>01</span><b>O que falta antes de divulgar</b></div>
+    <div><span>02</span><b>A estratégia em uma página</b></div>
+    <div><span>03</span><b>A mensagem: dor, conta e saída</b></div>
+    <div><span>04</span><b>Perfil do Instagram, passo a passo</b></div>
+    <div><span>05</span><b>Conteúdo: 30 dias de postagens</b></div>
+    <div><span>06</span><b>Meta Ads (Instagram e Facebook)</b></div>
+    <div><span>07</span><b>Google Ads (Pesquisa)</b></div>
+    <div><span>08</span><b>Divulgação sem gastar</b></div>
+    <div><span>09</span><b>Scripts de venda e respostas</b></div>
+    <div><span>10</span><b>Orçamento, metas e regras de decisão</b></div>
+    <div><span>11</span><b>Roteiro de 90 dias e rotina semanal</b></div>
+    <div><span>12</span><b>Lista de lançamento</b></div>
+  </div>
+  <div class="av cuidado"><div class="i">!</div><div><b class="t">Sobre a palavra “infalível”</b><p>Nenhum plano de marketing é infalível, e quem promete isso está vendendo ilusão. O que este plano faz é <b>reduzir o risco</b>: testa pouco, mede cada etapa, define de antemão quando parar, quando corrigir e quando investir mais. Os números de exemplo são <b>hipóteses para você testar</b>, não promessas de resultado.</p></div></div>
+  <div class="kit2" style="margin-top:14px"><img src="kit-instagram/post-1-dor.png"><img src="kit-instagram/post-2-conta.png"><img src="kit-instagram/post-3-solucao.png"><img src="kit-instagram/post-4-antes-depois.png"><img src="kit-instagram/post-5-como-funciona.png"><img src="kit-instagram/post-6-chamada.png"></div>
+  <p style="font-size:9pt;color:var(--suave)">Os 6 primeiros posts já estão prontos na pasta <code>kit-instagram</code>, na identidade da marca.</p>
+</section>
+<section class="pg"><div class="cap"><div class="n">01</div><h2>O que falta antes de divulgar</h2></div><p class="intro">Anúncio em página incompleta desperdiça dinheiro. Os itens “bloqueiam” até estarem feitos.</p>
+  <h3 class="sec">Bloqueadores (sem isto, não ligue anúncio)</h3><ul class="check"><li><span><b>Subir o pacote de atualização na Hostinger</b> (<code>bistroconnect-ATUALIZACAO.zip</code>), com os temas das lojas, as fotos menores, a imagem de prévia do link e o <code>robots.txt</code>.</span></li><li><span><b>Rodar <code>plataforma-02-admin-por-mes.sql</code></b> no SQL Editor do Supabase da plataforma.</span></li><li><span><b>Configurar o SMTP</b> (e-mail de confirmação com o seu domínio). Sem isso, o cadastro em rajada trava justamente quando o anúncio dá certo.</span></li><li><span><b>Preencher o <code>config.js</code></b>: WhatsApp de suporte (sem ele o botão de WhatsApp da página não funciona), dados da empresa (Termos e Privacidade), e a URL e a chave do site oficial para o CRM.</span></li><li><span><b>Criar as contas de anúncio</b> (detalhes abaixo) e colocar os IDs no <code>config.js</code>.</span></li><li><span><b>Fazer o roteiro de teste</b> do Guia da venda, capítulo 06, inteiro, pelo menos uma vez, e conferir que o Pixel e a tag do Google registram os eventos.</span></li><li><span><b>Conferir o percentual do app de delivery</b> (12% e 23%) numa fonte atual e anotar a data. É o argumento central e precisa ser verdadeiro quando o anúncio rodar.</span></li></ul>
+  <h3 class="sec">Contas que você precisa criar (nesta ordem)</h3>
+  <table class="c"><tr><th>Conta</th><th>Para quê</th><th>Dica</th></tr>
+  <tr><td><b>Instagram profissional</b> (empresa) e <b>Página do Facebook</b></td><td>Perfil e base dos anúncios da Meta</td><td>Crie a Página primeiro e ligue o Instagram a ela</td></tr>
+  <tr><td><b>Gerenciador de Negócios da Meta</b></td><td>Pixel, domínio e contas de anúncio</td><td>Use o e-mail da empresa</td></tr>
+  <tr><td><b>Pixel da Meta</b> e <b>verificação do domínio</b></td><td>Medir cadastros e lojas criadas</td><td>Copie o ID (só números) para <code>pixelId</code>. Verifique o domínio <code>bistroconnect.com.br</code> no Gerenciador de Negócios.</td></tr>
+  <tr><td><b>Google Ads</b></td><td>Campanhas de Pesquisa</td><td>Crie a conta no modo “completo”, não “campanha inteligente”</td></tr>
+  <tr><td><b>Conversões do Google Ads</b></td><td>Medir o que importa</td><td>Crie duas: <b>Loja criada</b> (principal) e <b>Pedido de ajuda</b> (secundária). Cada uma gera um rótulo para <code>googleAdsRotuloLoja</code> e <code>googleAdsRotuloLead</code>.</td></tr>
+  <tr><td><b>Google Analytics 4</b></td><td>Ver de onde vem o tráfego</td><td>ID que começa com G-, em <code>googleAnalyticsId</code></td></tr>
+  <tr><td><b>Perfil da Empresa no Google</b></td><td>Aparecer no Google e no Maps</td><td>Grátis. Veja o capítulo 08.</td></tr>
+  <tr><td><b>WhatsApp Business</b></td><td>Atender os leads</td><td>Mensagem de saudação, de ausência e etiquetas de funil</td></tr></table>
+  <div class="av dica"><div class="i">i</div><div><b class="t">Como conferir que a medição funciona</b><p>Instale as extensões gratuitas <b>Meta Pixel Helper</b> e <b>Tag Assistant</b> no Chrome. Abra o site, aceite os cookies, crie uma conta de teste e veja os eventos aparecerem (cadastro, loja criada). Se não aparecerem, não ligue o anúncio.</p></div></div></section>
+<section class="fl">
+  <h3 class="sec">Recomendados (faça na primeira semana)</h3><ul class="check"><li><span><b>Revisão jurídica</b> dos Termos de uso e da Política de privacidade, antes de escalar o gasto.</span></li><li><span><b>Supabase Pro</b> assim que o primeiro cliente pagar (ou antes, se a plataforma passar de 15 a 20 lojas).</span></li><li><span><b>Domínio de e-mail profissional</b> (<code>contato@bistroconnect.com.br</code>), usado no SMTP, nos Termos e nos anúncios.</span></li><li><span><b>Três lojas de demonstração</b> publicadas (padaria, hamburgueria e restaurante), para mostrar em qualquer conversa.</span></li><li><span><b>Vídeo curto de 40 segundos</b> mostrando o celular do cliente fazendo o pedido e o painel recebendo. É o melhor criativo que você pode ter.</span></li></ul>
+  <div class="av ok"><div class="i">✓</div><div><b class="t">Diagnóstico honesto do que já está pronto</b><p>A página de vendas, o cadastro, as lojas nos três temas, o painel, o rastreio, o CRM, os Termos e a Privacidade, a medição de Meta e Google e a página por nicho (<code>?para=padaria</code>) <b>já existem e foram testados</b>. O que falta é configuração e conta, não construção.</p></div></div>
+</section>
+<section class="pg"><div class="cap"><div class="n">02</div><h2>A estratégia em uma página</h2></div><p class="intro">Quem, o quê, por que ele compra e como o dinheiro entra.</p>
+  <div class="grid2">
+    <div class="card escuro"><span class="tag">Quem</span><h4>Dono de comida pequena</h4><p>Padaria, cafeteria, hamburgueria, restaurante, pizzaria, doceria e marmitaria, com 1 a 3 lojas, que já vende por WhatsApp e Instagram e/ou paga comissão a app de delivery.</p></div>
+    <div class="card"><span class="tag">Dor</span><h4>Margem e bagunça</h4><p>Comissão de até 23% por pedido, WhatsApp lotado de áudio, pedido errado e cliente perguntando “já saiu?”.</p></div>
+    <div class="card"><span class="tag">Oferta</span><h4>Venda direta, sem comissão</h4><p>Loja online em 5 minutos, grátis até R$ 3 mil em vendas por mês, sem cartão de crédito, com cardápio de exemplo já com fotos.</p></div>
+    <div class="card escuro"><span class="tag">Prova</span><h4>Mostrar, não prometer</h4><p>Vitrines reais nos 3 temas, antes e depois do WhatsApp, a conta do ano e o vídeo do pedido chegando no painel.</p></div>
+  </div>
+  <h3 class="sec">O funil, com cada etapa medida</h3>
+  <table class="c"><tr><th>Etapa</th><th>O que acontece</th><th>Onde você mede</th></tr>
+  <tr><td><b>1. Atenção</b></td><td>Vê o anúncio, o Reels ou o post</td><td>Alcance e visualizações (Instagram e Meta)</td></tr>
+  <tr><td><b>2. Clique</b></td><td>Abre a página de vendas do nicho dele</td><td>Cliques e custo por clique (Meta e Google)</td></tr>
+  <tr><td><b>3. Cadastro</b></td><td>Cria a conta</td><td>Evento “cadastro” (Meta e Google)</td></tr>
+  <tr><td><b>4. Loja criada</b></td><td>Termina o cadastro da loja. <b>É a conversão principal.</b></td><td>Evento “loja criada” e coluna Origem no <code>/admin/</code></td></tr>
+  <tr><td><b>5. Ativação</b></td><td>Cadastra produtos e divulga o link</td><td>Primeiros passos no painel e vitrine com pedidos</td></tr>
+  <tr><td><b>6. Receita</b></td><td>Compra a ajuda, o site completo ou passa de R$ 3 mil e paga a mensalidade</td><td>Seu controle de cobrança</td></tr></table>
+  <div class="av cuidado"><div class="i">!</div><div><b class="t">A verdade sobre o dinheiro</b><p>Quem se cadastra no plano grátis <b>não gera receita</b> até vender mais de R$ 3 mil por mês. A receita do começo vem do <b>serviço de ajuda para montar</b> e dos <b>sites completos</b>. Por isso, o anúncio precisa trazer lojas e o seu WhatsApp precisa converter parte delas em serviço. A conta de equilíbrio está no capítulo 10.</p></div></div></section>
+<section class="pg"><div class="cap"><div class="n">03</div><h2>A mensagem: dor, conta e saída</h2></div><p class="intro">Toda peça segue a mesma sequência. Mostre o problema, faça o dono ver a conta e só então apresente a saída.</p>
+  <h3 class="sec">Os 5 ângulos de comunicação</h3>
+  <table class="c"><tr><th>Ângulo</th><th>Frase-base</th><th>Melhor para</th></tr>
+  <tr><td><b>A. A comissão</b></td><td>“O app de delivery fica com até 23% do seu pedido.”</td><td>Quem já vende por app</td></tr>
+  <tr><td><b>B. A conta do ano</b></td><td>“Quem vende R$ 10 mil por mês pelo app deixa até R$ 27.600 por ano em comissão.”</td><td>Todos. Convence pelo número.</td></tr>
+  <tr><td><b>C. O caos do WhatsApp</b></td><td>“Áudio, ‘quanto fica?’ e pedido anotado errado.”</td><td>Quem vende só por WhatsApp e Instagram</td></tr>
+  <tr><td><b>D. O cliente é seu</b></td><td>“No app, o cliente é deles. Na sua loja, o contato fica com você.”</td><td>Quem quer fidelizar</td></tr>
+  <tr><td><b>E. Sem risco</b></td><td>“Grátis até R$ 3 mil em vendas por mês. Sem cartão de crédito.”</td><td>Quem tem medo de gastar</td></tr></table>
+  <h3 class="sec">Regras de ouro da comunicação</h3><ul class="check"><li><span><b>Nunca escreva “iFood” ou outra marca de concorrente</b> no texto do anúncio. Use “app de delivery”. Isso evita reprovação por marca registrada na Meta e no Google. Na página de vendas pode continuar.</span></li><li><span><b>Todo número precisa ser verdadeiro e verificável.</b> “Até 23%” é o teto do plano de entrega do app; confira e anote a fonte e a data.</span></li><li><span><b>Fale de pedido “organizado no painel e no WhatsApp”</b>, e não que “o pedido sempre chega no seu WhatsApp”: o pedido sempre fica salvo no painel, mas o WhatsApp só recebe a mensagem se o cliente tocar em enviar.</span></li><li><span><b>Não prometa faturamento</b> (“venda o dobro”, “fature R$ 10 mil”). Prometa o que o produto faz: organizar, tirar a comissão, dar o link.</span></li><li><span><b>Mostre o produto.</b> A vitrine nos três temas é o seu melhor visual; use fotos de comida de verdade, não banco de imagem genérico.</span></li></ul></section>
+<section class="pg"><div class="cap"><div class="n">04</div><h2>Perfil do Instagram, passo a passo</h2></div><p class="intro">O perfil é a sua vitrine para quem clica no anúncio ou ouve falar. Em 5 segundos ele precisa entender o que você faz e para quem.</p>
+  <h3 class="sec">Os campos do perfil</h3>
+  <table class="c"><tr><th>Campo</th><th>O que colocar</th></tr>
+  <tr><td><b>Tipo de conta</b></td><td>Profissional, categoria <i>Serviço de internet</i> ou <i>Software</i></td></tr>
+  <tr><td><b>Nome</b> (até 64)</td><td>Bistrô Connect | Cardápio Digital <small>(o nome é pesquisável, então leva a palavra-chave)</small></td></tr>
+  <tr><td><b>@ de usuário</b></td><td>Tente <code>@bistroconnect</code>. Se estiver ocupado: <code>@bistroconnect.br</code> ou <code>@usebistroconnect</code>.</td></tr>
+  <tr><td><b>Foto</b></td><td><code>kit-instagram/avatar.png</code> (o “B” dourado)</td></tr>
+  <tr><td><b>Link</b></td><td><code>https://bistroconnect.com.br/?utm_source=instagram&amp;utm_medium=bio</code></td></tr>
+  <tr><td><b>Botão de contato</b></td><td>WhatsApp (o do suporte)</td></tr>
+  <tr><td><b>Destaques</b></td><td>Como funciona · Planos · Lojas · Dúvidas · Comece (capas em <code>kit-instagram/destaque-*.png</code>)</td></tr></table>
+  <h3 class="sec">Três opções de bio (até 150 caracteres)</h3><div class="msg"><b class="t">Opção 1 · 110 caracteres</b>Cardápio online e pedido no WhatsApp p/ padaria, café e restaurante 🍞☕
+Sem comissão. Grátis até R$ 3 mil/mês 👇</div><div class="msg"><b class="t">Opção 2 · 107 caracteres</b>Pare de pagar comissão ao app 💸
+Sua loja online em 5 min, com pedido no WhatsApp.
+Grátis até R$ 3 mil/mês 👇</div><div class="msg"><b class="t">Opção 3 · 103 caracteres</b>Vendas diretas para quem vive de comida 🍔🥐
+Cardápio digital + rastreio + painel.
+Crie sua loja grátis 👇</div>
+  <h3 class="sec">Primeiros 9 posts (a grade que convence)</h3>
+  <p>Publique nesta ordem para o perfil já nascer com cara de negócio sério: <b>1</b> dor, <b>2</b> conta do ano, <b>3</b> solução com o celular, <b>4</b> antes e depois, <b>5</b> como funciona, <b>6</b> chamada. Depois, 1 Reels mostrando a vitrine, 1 Reels do pedido chegando no painel e 1 depoimento (quando tiver).</p>
+  <div class="av dica"><div class="i">i</div><div><b class="t">Destaques</b><p>Crie cada destaque com 3 a 5 stories: <b>Como funciona</b> (3 passos), <b>Planos</b> (a tabela), <b>Lojas</b> (as 3 vitrines), <b>Dúvidas</b> (sem cartão, sem fidelidade, o cliente paga direto a você) e <b>Comece</b> (o link).</p></div></div></section>
+<section class="fl"><h3 class="sec" style="margin-top:0">Legendas prontas dos 6 posts do kit</h3><div class="msg"><b class="t">Post 1 · A dor</b>O app de delivery fica com até 23% do seu pedido. 💸
+
+Você faz a comida, a entrega e o atendimento. Ele leva uma fatia de cada venda.
+
+Existe outro jeito: vender direto, no seu cardápio online, sem comissão.
+
+👉 Link na bio. Crie sua loja grátis.
+
+#cardapiodigital #padaria #hamburgueria #restaurante #delivery #empreendedorismo #vendasonline</div><div class="msg"><b class="t">Post 2 · A conta do ano</b>Faça a conta. 🧮
+
+Quem vende R$ 10 mil por mês pelo app, no plano de entrega de 23%, deixa até R$ 27.600 por ano em comissão.
+
+É reforma, é moto, é funcionário a mais.
+
+(Confira as taxas do plano do seu app.)
+
+👉 Link na bio: venda direto, sem comissão.
+
+#cardapiodigital #comissao #delivery #donodenegocio</div><div class="msg"><b class="t">Post 3 · A solução</b>Sua loja online em 5 minutos. 📱
+
+Cardápio com fotos, pedido pronto e rastreio para o cliente. Sem comissão. Grátis até R$ 3 mil em vendas por mês.
+
+👉 Link na bio.
+
+#lojaonline #cardapiodigital #padaria #cafeteria</div><div class="msg"><b class="t">Post 4 · Antes e depois</b>Pedido no WhatsApp: caos ou organizado? 💬
+
+À esquerda, o que acontece hoje. À direita, o pedido que chega pronto, com itens, endereço, forma de pagamento e total.
+
+Menos áudio. Menos erro. Mais venda.
+
+👉 Crie sua loja grátis. Link na bio.</div><div class="msg"><b class="t">Post 5 · Como funciona</b>3 passos. Sem programador. ✅
+
+1) Crie a conta e a loja
+2) Use o cardápio de exemplo (já vem com fotos)
+3) Divulgue o seu link
+
+Salve este post e mande para quem tem um negócio de comida. 🍞
+
+👉 Link na bio.</div><div class="msg"><b class="t">Post 6 · Chamada</b>Venda direto. Sem comissão. 🚀
+
+Grátis até R$ 3 mil em vendas por mês. Sem cartão de crédito.
+
+Toque no link da bio e crie sua loja agora.
+
+Quer ajuda para montar? Chame no direct ou no WhatsApp.</div></section>
+<section class="pg"><div class="cap"><div class="n">05</div><h2>Conteúdo: 30 dias de postagens</h2></div><p class="intro">Cinco pilares, cinco publicações por semana. Constância vale mais que perfeição.</p>
+  <h3 class="sec">Os 5 pilares</h3>
+  <table class="c"><tr><th>Pilar</th><th>Objetivo</th><th>Formato</th></tr>
+  <tr><td><b>1. A conta e a dor</b></td><td>Fazer o dono se enxergar</td><td>Imagem e Reels curto</td></tr>
+  <tr><td><b>2. Como fazer</b></td><td>Mostrar que é fácil</td><td>Reels de tela e carrossel</td></tr>
+  <tr><td><b>3. Vitrines e antes e depois</b></td><td>Mostrar o resultado</td><td>Reels e stories</td></tr>
+  <tr><td><b>4. Gestão para dono de comida</b></td><td>Gerar autoridade e salvamentos</td><td>Carrossel</td></tr>
+  <tr><td><b>5. Oferta e prova</b></td><td>Levar ao cadastro</td><td>Imagem, stories e depoimentos</td></tr></table>
+  <h3 class="sec">Calendário das 4 semanas</h3><table class="c"><tr><th>Dia</th><th>Formato</th><th>Tema</th><th>Chamada</th></tr><tr><td>S1 seg</td><td>Imagem</td><td>Post 1 do kit: a dor dos 23%</td><td>Link na bio</td></tr><tr><td>S1 ter</td><td>Reels</td><td>Roteiro 1: “Quanto você paga ao app?”</td><td>Comente “CONTA”</td></tr><tr><td>S1 qua</td><td>Imagem</td><td>Post 2 do kit: a conta do ano</td><td>Salve o post</td></tr><tr><td>S1 qui</td><td>Carrossel</td><td>5 erros do cardápio no WhatsApp</td><td>Compartilhe</td></tr><tr><td>S1 sex</td><td>Imagem</td><td>Post 3 do kit: sua loja em 5 minutos</td><td>Link na bio</td></tr><tr><td>S2 seg</td><td>Reels</td><td>Roteiro 2: o pedido chegando no painel</td><td>Link na bio</td></tr><tr><td>S2 ter</td><td>Imagem</td><td>Post 4 do kit: antes e depois</td><td>Link na bio</td></tr><tr><td>S2 qua</td><td>Carrossel</td><td>Como montar um cardápio que vende (fotos, nomes, preço)</td><td>Salve</td></tr><tr><td>S2 qui</td><td>Reels</td><td>Roteiro 3: tour pelo painel</td><td>Comente “PAINEL”</td></tr><tr><td>S2 sex</td><td>Stories</td><td>Enquete: “Você vende por app, WhatsApp ou os dois?”</td><td>Direct</td></tr><tr><td>S3 seg</td><td>Reels</td><td>Roteiro 4: loja de padaria, hamburgueria e restaurante lado a lado</td><td>Link na bio</td></tr><tr><td>S3 ter</td><td>Imagem</td><td>Post 5 do kit: 3 passos</td><td>Link na bio</td></tr><tr><td>S3 qua</td><td>Carrossel</td><td>Como precificar sem perder margem</td><td>Salve</td></tr><tr><td>S3 qui</td><td>Reels</td><td>Roteiro 5: por que o cliente é seu e não do app</td><td>Compartilhe</td></tr><tr><td>S3 sex</td><td>Stories</td><td>Perguntas e respostas (caixinha)</td><td>Direct</td></tr><tr><td>S4 seg</td><td>Reels</td><td>Bastidores: criando uma loja ao vivo em 5 minutos</td><td>Link na bio</td></tr><tr><td>S4 ter</td><td>Imagem</td><td>Depoimento ou caso de uma loja de teste (com autorização)</td><td>Link na bio</td></tr><tr><td>S4 qua</td><td>Carrossel</td><td>Checklist do primeiro dia da loja online</td><td>Salve</td></tr><tr><td>S4 qui</td><td>Reels</td><td>Resposta a uma dúvida real recebida</td><td>Direct</td></tr><tr><td>S4 sex</td><td>Imagem</td><td>Post 6 do kit: venda direto, sem comissão</td><td>Link na bio</td></tr></table></section>
+<section class="fl"><h3 class="sec" style="margin-top:0">5 roteiros de Reels (15 a 30 segundos)</h3><div class="msg"><b class="t">Roteiro 1 · Quanto você paga ao app?</b>0–3s (texto na tela): “Você sabe quanto o app leva de cada pedido?”
+3–10s: mostre um pedido de R$ 80 e a conta: até R$ 18,40 de comissão.
+10–20s: “Em 12 meses, quem vende R$ 10 mil por mês deixa até R$ 27.600.”
+20–28s: “Existe outro jeito. Link na bio.”</div><div class="msg"><b class="t">Roteiro 2 · O pedido chegando no painel</b>0–3s: “Assim chega um pedido de verdade.”
+3–12s: tela dividida: o celular do cliente escolhendo e enviando, e o painel tocando o alerta de pedido novo.
+12–22s: mostre o cliente acompanhando pelo link de rastreio.
+22–28s: “Sem comissão. Link na bio.”</div><div class="msg"><b class="t">Roteiro 3 · Tour pelo painel</b>0–3s: “O painel de uma loja de padaria, em 30 segundos.”
+3–25s: Início (link e plano do mês), Pedidos, Cardápio com fotos, Equipe.
+25–30s: “Crie o seu grátis. Link na bio.”</div><div class="msg"><b class="t">Roteiro 4 · Três lojas, três estilos</b>0–3s: “A mesma plataforma, três jeitos de vender.”
+3–25s: mostre a vitrine de padaria (café e dourado), hamburgueria (preto e vermelho) e restaurante (carvão e âmbar), uma em cada 7 segundos.
+25–30s: “O visual combina com o seu negócio. Link na bio.”</div><div class="msg"><b class="t">Roteiro 5 · O cliente é seu</b>0–4s: “No app, o cliente é deles. E na sua loja?”
+4–20s: explique: o contato do cliente fica com você, no seu WhatsApp, e ele pode voltar a comprar direto.
+20–28s: “Venda direto. Link na bio.”</div>
+  <div class="av dica"><div class="i">i</div><div><b class="t">Como gravar sem estúdio</b><p>Grave a tela do celular com o gravador nativo, fale por cima (ou use legenda), e mostre o rosto no primeiro e no último segundo. Legenda sempre, porque muita gente assiste sem som. Fonte grande, 1 ideia por vídeo.</p></div></div>
+  <h3 class="sec">Rotina diária de 20 minutos</h3><ul class="check"><li><span>Responder todos os comentários e directs.</span></li><li><span>Comentar em 10 perfis de padarias, cafés e restaurantes da sua região (comentário de valor, sem propaganda).</span></li><li><span>Postar 3 a 5 stories com enquete, bastidor ou um resultado.</span></li><li><span>Anotar no <code>/crm/</code> quem demonstrou interesse.</span></li></ul></section>
+<section class="pg"><div class="cap"><div class="n">06</div><h2>Meta Ads (Instagram e Facebook)</h2></div><p class="intro">Duas campanhas simples, três ângulos e muita paciência na fase de aprendizado.</p>
+  <h3 class="sec">Estrutura recomendada</h3>
+  <table class="c"><tr><th></th><th>Campanha 1 · Cadastro no site</th><th>Campanha 2 · Conversa no WhatsApp</th></tr>
+  <tr><td><b>Objetivo</b></td><td>Leads ou Vendas, com conversão no site</td><td>Mensagens, com destino WhatsApp</td></tr>
+  <tr><td><b>Evento a otimizar</b></td><td>No começo: <b>Cadastro completo</b>. Quando tiver cerca de 50 eventos por semana: <b>Loja criada</b>.</td><td>Conversas iniciadas</td></tr>
+  <tr><td><b>Para quem</b></td><td>Donos de comida que querem vender direto</td><td>Quem quer ajuda para montar</td></tr>
+  <tr><td><b>Destino</b></td><td><code>bistroconnect.com.br/?para=padaria&amp;utm_source=meta&amp;utm_medium=pago&amp;utm_campaign=...</code></td><td>WhatsApp do suporte, com mensagem pronta</td></tr>
+  <tr><td><b>Orçamento inicial</b></td><td>R$ 20 a R$ 30 por dia</td><td>R$ 15 a R$ 20 por dia</td></tr></table>
+  <h3 class="sec">Público</h3><ul class="check"><li><span><b>Local:</b> comece por 2 a 3 cidades ou regiões onde você consiga atender bem. O serviço de ajuda é pelo WhatsApp e videochamada, mas comece concentrado para medir.</span></li><li><span><b>Idade:</b> 25 a 55 anos. <b>Idioma:</b> português.</span></li><li><span><b>Segmentação:</b> comece com público amplo (Advantage+) e deixe os criativos fortes fazerem a seleção, porque a Meta aprende com o seu Pixel. Teste um segundo conjunto com interesses (donos de restaurante, padaria, delivery, empreendedorismo gastronômico).</span></li><li><span><b>Remarketing</b> (depois de 2 semanas): quem visitou o site e não criou a loja, e quem interagiu com o Instagram. Orçamento de R$ 5 a R$ 10 por dia.</span></li><li><span><b>Não use</b> segmentação por dados sensíveis nem alegações pessoais (“você está endividado?”), porque a Meta reprova.</span></li></ul>
+  </section>
+<section class="fl"><h3 class="sec" style="margin-top:0">Textos dos anúncios (copiar e colar)</h3><div class="msg"><b class="t">Texto principal A · 176 caracteres</b>Você faz a comida, a entrega e o atendimento. O app de delivery fica com até 23% de cada pedido. Crie seu cardápio online e venda direto, sem comissão. Grátis até R$ 3 mil/mês.</div><div class="msg"><b class="t">Texto principal B · 178 caracteres</b>Áudio, “quanto fica?” e pedido anotado errado. Com o cardápio online, o cliente monta o pedido sozinho e ele chega organizado no painel e no WhatsApp. Crie sua loja em 5 minutos.</div><div class="msg"><b class="t">Texto principal C · 125 caracteres</b>Vende R$ 10 mil por mês pelo app? Até R$ 2.300 vão embora em comissão. Faça a conta do seu negócio e veja como vender direto.</div><div class="msg"><b class="t">Títulos (até 40 caracteres cada)</b>Venda direto. Sem comissão.  (27)
+Sua loja online em 5 minutos  (28)
+Cardápio digital grátis  (23)
+Pare de pagar comissão ao app  (29)</div><div class="msg"><b class="t">Botão</b>Cadastre-se (Campanha 1) · Enviar mensagem (Campanha 2)</div><h3 class="sec">Criativos: o que testar</h3>
+  <table class="c"><tr><th>Criativo</th><th>Formato</th><th>Ângulo</th></tr>
+  <tr><td>Post 1 e Post 2 do kit</td><td>Imagem 4:5</td><td>A e B (comissão e conta do ano)</td></tr>
+  <tr><td>Post 4 do kit</td><td>Imagem 4:5</td><td>C (caos do WhatsApp)</td></tr>
+  <tr><td>Reels do pedido chegando no painel</td><td>Vídeo 9:16, 20 a 30 s</td><td>Produto e prova</td></tr>
+  <tr><td>Reels com as três vitrines</td><td>Vídeo 9:16</td><td>Visual e identidade</td></tr></table>
+  <h3 class="sec">Regras de operação (hipóteses de partida, ajuste com os seus dados)</h3><ul class="check"><li><span><b>Não mexa por 3 a 4 dias</b> depois de publicar. Mudar toda hora reinicia o aprendizado.</span></li><li><span><b>Só julgue um anúncio depois de gastar</b> pelo menos R$ 100 a R$ 150 nele, ou 1.000 impressões.</span></li><li><span><b>Desligue</b> o criativo cuja taxa de clique no link fique bem abaixo da dos outros e que não gere nenhum cadastro depois desse gasto.</span></li><li><span><b>Aumente o orçamento em no máximo 20%</b> a cada 3 dias, e só nos conjuntos que geram lojas criadas por um custo aceitável (capítulo 10).</span></li><li><span><b>Renove os criativos</b> a cada 3 a 4 semanas, para a audiência não cansar.</span></li><li><span><b>Confira as políticas</b> de anúncios da Meta no momento da publicação, porque elas mudam.</span></li></ul></section>
+<section class="pg"><div class="cap"><div class="n">07</div><h2>Google Ads (Pesquisa)</h2></div><p class="intro">Pega quem já está procurando a solução. É o canal de maior intenção, e o mais fácil de jogar dinheiro fora sem negativas e sem medição.</p>
+  <h3 class="sec">Configuração da campanha</h3>
+  <table class="c"><tr><th>Item</th><th>O que fazer</th></tr>
+  <tr><td><b>Tipo</b></td><td>Pesquisa (Search). Desligue a Rede de Display e a “expansão de pesquisa” no começo.</td></tr>
+  <tr><td><b>Conversão</b></td><td>Principal: <b>Loja criada</b>. Secundária: <b>Pedido de ajuda</b>. Já estão ligadas na página; falta criar no Google Ads e colocar os rótulos no <code>config.js</code>.</td></tr>
+  <tr><td><b>Lances</b></td><td>Comece em <b>Maximizar cliques</b> com teto de CPC. Quando tiver de 15 a 30 conversões, mude para <b>Maximizar conversões</b>.</td></tr>
+  <tr><td><b>Orçamento</b></td><td>R$ 20 a R$ 30 por dia</td></tr>
+  <tr><td><b>Local</b></td><td>As mesmas regiões da Meta. Opção: “presença” (pessoas na região), não “interesse”.</td></tr>
+  <tr><td><b>Horário</b></td><td>Das 7h às 22h no começo; ajuste pelos relatórios.</td></tr>
+  <tr><td><b>Página de destino</b></td><td><code>/?para=padaria&amp;utm_source=google&amp;utm_medium=cpc&amp;utm_campaign=...</code>, uma por grupo de anúncios. O título muda para falar da mesma coisa que a pessoa pesquisou, o que melhora a nota do anúncio.</td></tr></table>
+  <h3 class="sec">Grupos de anúncios e palavras-chave</h3>
+  <p>Comece com correspondência <b>de frase</b> e <b>exata</b>. Use a lista como ponto de partida e confirme volumes no Planejador de Palavras-chave.</p>
+  <table class="c"><tr><th>Grupo</th><th>Palavras-chave (frase ou exata)</th><th>Destino</th></tr>
+  <tr><td><b>1. Cardápio digital</b></td><td class="mono">"cardápio digital", "cardápio digital grátis", "cardápio online para restaurante", "cardápio digital para padaria", "cardápio digital para hamburgueria"</td><td><code>?para=restaurante</code> e as páginas do nicho</td></tr>
+  <tr><td><b>2. Pedidos no WhatsApp</b></td><td class="mono">"sistema de pedidos pelo whatsapp", "cardápio com pedido no whatsapp", "receber pedidos pelo whatsapp", "loja online para delivery próprio"</td><td><code>?para=padaria</code></td></tr>
+  <tr><td><b>3. Sem comissão</b></td><td class="mono">"delivery sem comissão", "como vender sem pagar comissão de app", "alternativa ao app de delivery", "delivery próprio"</td><td>Página principal</td></tr>
+  <tr><td><b>4. Cardápio QR code</b></td><td class="mono">"cardápio qr code", "cardápio digital qr code grátis"</td><td>Página principal</td></tr></table>
+  <div class="av cuidado"><div class="i">!</div><div><b class="t">Palavras-chave com marca de concorrente</b><p>Anunciar quando alguém pesquisa o nome de outra marca é permitido pelo Google em geral, mas <b>escrever essa marca no texto do anúncio</b> não é, e a resposta do cliente costuma ser ruim. Comece sem isso e só teste depois, com orçamento separado.</p></div></div></section>
+<section class="fl"><h3 class="sec" style="margin-top:0">Palavras negativas (comece com estas)</h3><div class="msg"><b class="t">Cole na lista de palavras-chave negativas da campanha</b>emprego, vaga, vagas, curso, aula, pdf, template, modelo, canva, word, excel, download, gratuito para baixar, wordpress, plugin, programação, código, apk, concurso, receita, cardápio de festa, cardápio semanal, cardápio da semana, cardápio do dia, atendente, motoboy, entregador, trabalhar, salário</div>
+  <p>Toda semana, abra <b>Palavras-chave › Termos de pesquisa</b> e adicione como negativa tudo que não tenha a ver. É o hábito que mais economiza dinheiro.</p>
+  <h3 class="sec">Anúncio responsivo de pesquisa (copiar e colar)</h3>
+  <p>O Google combina os títulos e as descrições. Cadastre os 15 títulos (até 30 caracteres) e as 4 descrições (até 90).</p><div class="msg"><b class="t">Títulos (15)</b>Cardápio Digital Sem Comissão  (29)
+Loja Online Grátis p/ Comida  (28)
+Pedidos Direto no WhatsApp  (26)
+Crie Sua Loja em 5 Minutos  (26)
+Cardápio Online com Fotos  (25)
+Grátis até R$ 3 Mil em Vendas  (29)
+Pare de Pagar Comissão  (22)
+Rastreio do Pedido p/ Cliente  (29)
+Para Padaria, Café e Burger  (27)
+Sem Taxa por Pedido  (19)
+Painel de Pedidos ao Vivo  (25)
+Venda Direto, Sem Comissão  (26)
+Comece Grátis Hoje  (18)
+Sem Cartão de Crédito  (21)
+Cardápio no Link da Bio  (23)</div><div class="msg"><b class="t">Descrições (4)</b>Cardápio online com fotos e pedido organizado no painel e no WhatsApp. Sem comissão.  (84)
+Crie sua loja em minutos. Grátis até R$ 3 mil em vendas por mês. Sem cartão de crédito.  (87)
+Painel de pedidos, rastreio para o cliente e equipe com funções. Tudo em um só lugar.  (85)
+Para padarias, cafés, hamburguerias e restaurantes. Comece hoje e venda direto.  (79)</div>
+  <h3 class="sec">Extensões (grátis, mais cliques)</h3>
+  <table class="c"><tr><th>Extensão</th><th>Texto sugerido</th></tr>
+  <tr><td><b>Sitelinks</b></td><td>Como funciona · Planos · Calculadora de comissão · Fale conosco</td></tr>
+  <tr><td><b>Frases de destaque</b></td><td>Sem comissão · Grátis até R$ 3 mil · Sem cartão de crédito · Pedido no WhatsApp</td></tr>
+  <tr><td><b>Snippets estruturados</b></td><td>Tipos: Padaria, Cafeteria, Hamburgueria, Restaurante, Pizzaria, Doceria</td></tr>
+  <tr><td><b>Mensagem / ligação</b></td><td>WhatsApp do suporte</td></tr></table>
+  <h3 class="sec">Regras de operação</h3><ul class="check"><li><span><b>Primeiras 2 semanas:</b> só observe e corte termos ruins. Não otimize com poucas conversões.</span></li><li><span><b>Palavra-chave com gasto igual ao dobro do valor que você aceita pagar por loja criada e nenhuma conversão:</b> pause.</span></li><li><span><b>Nota de qualidade baixa (menos de 5)</b> numa palavra: melhore o anúncio e a página, ou pause.</span></li><li><span><b>Confira as políticas</b> do Google Ads (marcas, comparações e promessas) na hora de publicar.</span></li></ul></section>
+<section class="pg"><div class="cap"><div class="n">08</div><h2>Divulgação sem gastar</h2></div><p class="intro">No começo, estes canais trazem as primeiras lojas e os primeiros depoimentos, enquanto os anúncios aprendem.</p><table class="c"><tr><th>Canal</th><th>O que fazer</th><th>Meta</th></tr><tr><td><b>Perfil da Empresa no Google</b></td><td>Cadastre a Bistrô Connect como serviço online. Fotos, descrição, link com UTM e pedido de avaliação.</td><td>Aparecer em buscas de marca</td></tr><tr><td><b>Seu WhatsApp (status e contatos)</b></td><td>Poste o post 1 e o 3 no status. Avise contatos que têm negócio de comida.</td><td>5 conversas por semana</td></tr><tr><td><b>Prospecção ativa no Instagram</b></td><td>Siga e interaja com 10 a 15 negócios de comida da região por dia e envie 5 a 10 directs manuais personalizados (script no capítulo 09).</td><td>3 conversas por semana</td></tr><tr><td><b>Lojas de demonstração</b></td><td>Monte uma prévia com o nome e o tipo do negócio do lead, e mande o link. Sem usar fotos dele sem autorização.</td><td>Converter conversa em loja criada</td></tr><tr><td><b>Contadores e consultores</b></td><td>Ofereça comissão ou reciprocidade a contadores, designers e fornecedores que atendem donos de comida.</td><td>2 parceiros no mês</td></tr><tr><td><b>Associações e grupos</b></td><td>Associação comercial, sindicato de bares e restaurantes, grupos de donos de comida no WhatsApp e Facebook. Participe e ajude antes de oferecer.</td><td>1 palestra ou live curta</td></tr><tr><td><b>As 3 primeiras lojas “fundadoras”</b></td><td>Ofereça ajuda grátis na montagem em troca de uma foto da loja e um depoimento autorizado.</td><td>3 depoimentos reais</td></tr><tr><td><b>Indicação</b></td><td>Quem indicar uma loja que ficar ativa ganha, por exemplo, um mês da sua ajuda. Defina a regra por escrito.</td><td>20% das lojas por indicação</td></tr></table><div class="av cuidado"><div class="i">!</div><div><b class="t">Cuidado com mensagem em massa</b><p>Não use programas que disparam mensagens em massa no WhatsApp ou no Instagram: o número é banido e a LGPD exige que o contato tenha como pedir para parar. Envie poucas mensagens, <b>manualmente e personalizadas</b>, e se a pessoa disser “não quero”, anote e não procure mais.</p></div></div><div class="av dica"><div class="i">i</div><div><b class="t">Depoimentos</b><p>Só publique depoimento real, com nome e autorização por escrito (uma mensagem de WhatsApp serve). Nunca invente prova social: além de antiético, pode violar o Código de Defesa do Consumidor.</p></div></div></section>
+<section class="pg"><div class="cap"><div class="n">09</div><h2>Scripts de venda e respostas</h2></div><p class="intro">O anúncio traz o contato. Quem converte é a sua conversa.</p><div class="msg"><b class="t">Primeira resposta a quem pediu ajuda (em até 5 minutos)</b>Oi, {nome}! Aqui é o Adilson, da Bistrô Connect. Recebi o seu pedido para montar a loja da {estabelecimento}. 🙂
+Posso te ajudar agora? Em cerca de 20 minutos deixamos o cardápio no ar, com pedido pelo celular.
+Me conta: hoje você vende mais por Instagram, WhatsApp ou app?</div><div class="msg"><b class="t">Primeira mensagem de prospecção (Instagram, manual)</b>Oi, {nome}! Vi a {loja} no Instagram, os {produto} estão lindos. 😍
+Pergunta rápida: hoje os pedidos chegam todos por aqui, no WhatsApp? Trabalho com cardápio online que organiza o pedido e sem comissão. Se fizer sentido, te mostro em 2 minutos. Se não, sem problema, e sigo torcendo pela {loja}!</div><div class="msg"><b class="t">Follow-up (2 dias depois, 1 vez só)</b>Oi, {nome}! Só passando para ver se você viu a minha mensagem. Montei uma prévia de como ficaria o cardápio da {loja}: {link}. Dá uma olhada quando puder. 🙂</div>
+  <h3 class="sec">Respostas às objeções mais comuns</h3><table class="c"><tr><th>Objeção</th><th>Resposta</th></tr><tr><td>“Já uso o app de delivery”</td><td>Continue no app: ele traz cliente novo. A loja é para o cliente que já conhece você pedir direto, sem comissão. Cada pedido que migra é margem de volta.</td></tr><tr><td>“Meu cliente não vai saber usar”</td><td>Ele já chama você no WhatsApp. A diferença é que vê o cardápio com fotos e manda o pedido pronto em poucos toques. Posso te mostrar numa loja de exemplo agora.</td></tr><tr><td>“Não tenho tempo de montar”</td><td>A gente monta junto em 20 minutos pelo WhatsApp, com o cardápio de exemplo que já vem com fotos.</td></tr><tr><td>“É caro?”</td><td>Começa grátis, sem cartão. Você só paga quando a loja vende mais de R$ 3 mil por mês, e a mensalidade tem teto de R$ 199. Sem comissão por pedido.</td></tr><tr><td>“E se eu não gostar?”</td><td>Sem fidelidade, sem multa. Você cancela quando quiser.</td></tr><tr><td>“Quem recebe o dinheiro?”</td><td>Você, direto do seu cliente (Pix, cartão na entrega ou dinheiro). A Bistrô Connect não fica com nada das suas vendas.</td></tr></table><div class="msg"><b class="t">Mensagem de boas-vindas depois que a loja for criada</b>Parabéns, {nome}! A {loja} está no ar: {link}. 🎉
+Próximos passos para vender já hoje: 1) Coloque o logo. 2) Ajuste os 3 produtos mais vendidos. 3) Coloque o link na bio do Instagram e no status do WhatsApp. Qualquer dúvida, me chama aqui!</div></section>
+<section class="pg"><div class="cap"><div class="n">10</div><h2>Orçamento, metas e regras de decisão</h2></div><p class="intro">A conta que decide se vale gastar mais ou parar. Os percentuais são hipóteses a validar nos seus primeiros 30 dias.</p>
+  <h3 class="sec">A conta de equilíbrio</h3>
+  <p>Gastar em anúncio compensa quando:</p>
+  <p style="text-align:center;font:600 12pt 'Poppins';color:var(--navy);margin:10px 0">custo por loja criada ÷ percentual de lojas que compram serviço &le; ticket do serviço</p>
+  <p><b>Exemplo ilustrativo (os números são hipóteses suas para testar):</b> se cada loja criada custa R$ 40 em anúncio e 15% das lojas compram uma implantação de R$ 300, cada loja gera, em média, R$ 45 de receita de serviço. Resultado: R$ 5 de margem por loja, ou seja, o anúncio quase se paga, e o ganho real vem das mensalidades futuras, das indicações e dos sites completos. Se o custo por loja criada for R$ 120, o anúncio perde dinheiro nesse formato.</p>
+  <h3 class="sec">Três cenários de orçamento por mês</h3><table class="c"><tr><th>Cenário</th><th>Gasto em anúncio</th><th>O que fazer</th><th>O que esperar</th></tr><tr><td><b>Zero</b></td><td>R$ 0</td><td>Só o capítulo 08, Instagram e Google Business</td><td>As primeiras 3 a 10 lojas e os depoimentos. Mais lento, e quase sem risco.</td></tr><tr><td><b>Teste</b></td><td>R$ 600 (R$ 20/dia)</td><td>Metade em Meta (cadastro) e metade em Google (Pesquisa), mais Instagram orgânico</td><td>Dados reais para decidir. Não espere lucro nos primeiros 30 dias.</td></tr><tr><td><b>Aceleração</b></td><td>R$ 1.500 (R$ 50/dia)</td><td>Só depois de saber o custo por loja criada e a taxa de compra de serviço</td><td>Volume maior, se os números do teste fecharem a conta.</td></tr></table>
+  <h3 class="sec">Metas dos primeiros 30 dias</h3><table class="c"><tr><th>Métrica</th><th>Meta de partida</th><th>Como medir</th></tr><tr><td>Lojas criadas (orgânico + pago)</td><td>10 a 20</td><td><code>/admin/</code>, coluna Origem</td></tr><tr><td>Pedidos de ajuda</td><td>5 a 10</td><td><code>/crm/</code> e WhatsApp</td></tr><tr><td>Implantações vendidas</td><td>2 a 3</td><td>Seu controle financeiro</td></tr><tr><td>Depoimentos reais autorizados</td><td>3</td><td>WhatsApp</td></tr><tr><td>Custo por loja criada (pago)</td><td>Descobrir o número real</td><td>Gasto ÷ lojas da origem paga</td></tr></table>
+  <h3 class="sec">Painel semanal (preencha toda segunda-feira)</h3><table class="c"><tr><th>Semana</th><th>Gasto</th><th>Cliques</th><th>Cadastros</th><th>Lojas criadas</th><th>Custo por loja</th><th>Ajudas pedidas</th><th>Vendas</th></tr><tr><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>
+  <h3 class="sec">Regras de decisão</h3><ul class="check"><li><span><b>Depois de 14 dias e R$ 300 de gasto sem nenhuma loja criada:</b> pare, revise a página, a mensagem e o público antes de gastar mais.</span></li><li><span><b>Custo por loja criada acima do limite que você definiu:</b> não aumente o orçamento. Troque o criativo, a página ou o público.</span></li><li><span><b>Custo dentro do limite por 2 semanas seguidas:</b> aumente o orçamento em 20%, e repita a cada 3 dias.</span></li><li><span><b>Lojas criadas, mas poucas ativas:</b> o problema é a ativação (primeiros passos), não o anúncio. Melhore o acompanhamento no WhatsApp.</span></li><li><span><b>Muitos pedidos de ajuda e pouca venda:</b> ajuste o preço, o script ou a oferta do serviço.</span></li></ul></section>
+<section class="pg"><div class="cap"><div class="n">11</div><h2>Roteiro de 90 dias e rotina semanal</h2></div><p class="intro">O que fazer em cada fase, sem pular etapas.</p><table class="c"><tr><th>Fase</th><th>Semanas</th><th>O que fazer</th><th>Saída da fase</th></tr><tr><td><b>0 · Preparar</b></td><td>Semana 0</td><td>Capítulo 01 inteiro: contas, medição, config.js, SMTP e teste completo</td><td>Tudo medindo e funcionando</td></tr><tr><td><b>1 · Base orgânica</b></td><td>1 a 2</td><td>Perfil do Instagram, 6 posts do kit, destaques, Google Business, WhatsApp. 10 conversas de prospecção por semana.</td><td>Perfil com 9 posts e 5 conversas</td></tr><tr><td><b>2 · Primeiros clientes</b></td><td>3 a 4</td><td>Convidar 3 lojas fundadoras, atender os leads, coletar depoimentos e fazer 2 Reels de produto</td><td>3 lojas ativas e 3 depoimentos</td></tr><tr><td><b>3 · Teste pago</b></td><td>5 a 6</td><td>Ligar Meta (cadastro) e Google (Pesquisa) com R$ 20 por dia cada, sem mexer por 4 dias</td><td>Custo por cadastro e por loja criada conhecido</td></tr><tr><td><b>4 · Otimizar</b></td><td>7 a 8</td><td>Cortar o que não converte, acrescentar negativas, trocar criativos, ligar o remarketing</td><td>Custo por loja criada em queda</td></tr><tr><td><b>5 · Decidir</b></td><td>9 a 10</td><td>Aplicar a conta de equilíbrio. Se fechar, aumentar 20% por vez. Se não, voltar à base orgânica e ao serviço.</td><td>Decisão de investir ou não</td></tr><tr><td><b>6 · Escalar com controle</b></td><td>11 a 13</td><td>Novos nichos e cidades, nova rodada de criativos, programa de indicação, Supabase Pro e cobrança organizada</td><td>Rotina estável e previsível</td></tr></table>
+  <h3 class="sec">Sua semana de trabalho</h3><table class="c"><tr><th>Dia</th><th>O que fazer</th><th>Tempo</th></tr><tr><td><b>Segunda</b></td><td>Preencher o painel semanal, rever anúncios, responder o que sobrou do fim de semana</td><td>45 min</td></tr><tr><td><b>Terça a quinta</b></td><td>Postar, responder comentários e directs, prospectar 5 a 10 negócios, atender leads</td><td>40 min por dia</td></tr><tr><td><b>Sexta</b></td><td>Termos de pesquisa do Google (negativas), enviar cobranças do mês, planejar a semana seguinte</td><td>45 min</td></tr><tr><td><b>Todo dia</b></td><td>Responder lead em até 5 minutos, em horário comercial</td><td>—</td></tr></table><div class="av ok"><div class="i">✓</div><div><b class="t">O que decide o resultado</b><p>Três coisas: <b>a oferta</b> (sem comissão, grátis até R$ 3 mil), <b>a velocidade de resposta</b> ao lead e <b>a prova</b> (lojas reais e depoimentos). O anúncio só amplifica o que já funciona.</p></div></div></section>
+<section class="pg"><div class="cap"><div class="n">12</div><h2>Lista de lançamento</h2></div><p class="intro">Marque tudo antes de ligar o primeiro anúncio.</p><ul class="check"><li><span>Pacote de atualização no ar, com a imagem de prévia do link funcionando (teste colando o link no WhatsApp).</span></li><li><span>SQL <code>02-admin-por-mes</code> rodado e SMTP funcionando.</span></li><li><span><code>config.js</code> com WhatsApp, empresa, Pixel, Google Ads (ID e 2 rótulos), Analytics e CRM.</span></li><li><span>Instagram profissional criado: nome, foto, bio, link com UTM e destaques.</span></li><li><span>6 posts do kit publicados e 2 Reels no ar.</span></li><li><span>Pixel da Meta e domínio verificados, e eventos conferidos no Pixel Helper.</span></li><li><span>Conversões “Loja criada” e “Pedido de ajuda” criadas no Google Ads e conferidas no Tag Assistant.</span></li><li><span>Campanha Meta de cadastro e campanha de Mensagens criadas, com 3 textos e 4 criativos.</span></li><li><span>Campanha de Pesquisa no Google com 4 grupos, negativas e anúncio responsivo.</span></li><li><span>Percentual do app de delivery conferido, com fonte e data anotadas.</span></li><li><span>Roteiro de teste do guia feito até o fim.</span></li><li><span>Perfil da Empresa no Google criado.</span></li><li><span>Planilha ou painel semanal pronto, com o limite de custo por loja criada definido.</span></li><li><span>WhatsApp Business com saudação, ausência e etiquetas.</span></li><li><span>Scripts de atendimento do capítulo 09 salvos como respostas rápidas.</span></li></ul><div class="av ok"><div class="i">✓</div><div><b class="t">Pronto para ligar</b><p>Com a lista toda marcada, ligue as campanhas com o orçamento do cenário <b>Teste</b>, não mexa por 4 dias e siga a rotina semanal. Me mande os números da primeira semana que eu te ajudo a ler.</p></div></div></section>
+</body>
+</html>

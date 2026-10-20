@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /painel/
+Disallow: /admin/
+Disallow: /crm/
+Disallow: /entrar.html
+Disallow: /pedido.html
+
+Sitemap: https://bistroconnect.com.br/sitemap.xml

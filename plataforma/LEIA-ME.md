@@ -19,6 +19,7 @@ Uma plataforma só, com várias lojas. O empreendedor se cadastra, cria a loja e
 | `assets/exemplo.js` e `assets/img/exemplo/` | Cardápio de exemplo com fotos para cada tipo de loja (botão "Usar exemplo com fotos" no painel). Gerado por `ferramentas/montar-exemplos.py` |
 | `termos.html` e `privacidade.html` | Termos de uso e Política de privacidade. Os dados da empresa vêm de `empresa` no `assets/config.js` |
 | `assets/medicao.js` | Meta Pixel, Google Ads e Google Analytics, com aviso de cookies (LGPD) |
+| `robots.txt` e `sitemap.xml` | Orientam o Google. A imagem de prévia do link (WhatsApp, Instagram) é `assets/img/og-bistro-connect.jpg`, gerada por `ferramentas/montar-kit-divulgacao.py` |
 | `assets/nicho.js` | Página de vendas por nicho: `/?para=padaria`, `cafeteria`, `hamburgueria`, `restaurante`, `pizzaria`, `confeitaria`, `marmitaria` |
 | `.htaccess` | Segurança e o endereço curto `/l/nome-da-loja` |
 | `supabase/01-plataforma.sql` | Banco: tabelas, regras de acesso e funções |
