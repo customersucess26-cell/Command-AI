@@ -620,7 +620,8 @@ end $$;
 
 -- painel da plataforma (só você): lojas, vendas do mês e plano
 drop function if exists public.admin_lojas();
-create or replace function public.admin_lojas()
+drop function if exists public.admin_lojas(date);
+create or replace function public.admin_lojas(p_mes date default (now() at time zone 'America/Sao_Paulo')::date)
 returns table (id uuid, slug text, store_name text, modelo text, status text, criada timestamptz,
                dono text, pedidos_mes bigint, vendido_mes numeric, plano text, mensalidade numeric, origem jsonb)
 language plpgsql stable security definer set search_path = '' as $$
@@ -630,7 +631,8 @@ begin
   with mes as (
     select o.loja_id, count(*) n, sum(o.total) v from public.orders o
      where o.status <> 'cancelado'
-       and o.created_at >= (date_trunc('month', now() at time zone 'America/Sao_Paulo') at time zone 'America/Sao_Paulo')
+       and o.created_at >= (date_trunc('month', p_mes::timestamp) at time zone 'America/Sao_Paulo')
+       and o.created_at <  ((date_trunc('month', p_mes::timestamp) + interval '1 month') at time zone 'America/Sao_Paulo')
      group by o.loja_id)
   select l.id, l.slug, l.store_name, l.modelo, l.status, l.created_at,
          (select m.email from public.membros m where m.loja_id = l.id and m.papel = 'dono' order by m.criado_em limit 1),
@@ -656,7 +658,7 @@ declare f text;
 begin
   foreach f in array array['criar_loja(text, text, text, text, jsonb)', 'minhas_lojas()', 'convidar_membro(uuid, text, text)',
                            'aceitar_convite(text)', 'mudar_membro(uuid, uuid, text)', 'faturamento_loja(uuid, date)',
-                           'admin_lojas()', 'admin_status_loja(uuid, text)'] loop
+                           'admin_lojas(date)', 'admin_status_loja(uuid, text)'] loop
     execute 'revoke all on function public.' || f || ' from public';
     execute 'grant execute on function public.' || f || ' to authenticated';
   end loop;
