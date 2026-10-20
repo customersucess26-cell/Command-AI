@@ -254,7 +254,7 @@ add('''<section class="pg">
     <tr><td><b>Serve para</b></td><td>Testes e as primeiras lojas</td><td>Dezenas a centenas de lojas pequenas (estimativa)</td></tr>
   </table>
   <p><small>Valores aproximados. Confirme os números atuais em supabase.com/pricing antes de decidir.</small></p>
-  <p>Pedidos são só texto e ocupam pouco. O que pesa é <b>foto</b> e a quantidade de visitas à vitrine. O painel já reduz as fotos antes de enviar, o que ajuda.</p>
+  <p>Pedidos são só texto e ocupam pouco. O que pesa é <b>foto</b> e a quantidade de visitas à vitrine. O painel reduz as fotos de produto para no máximo 900 px antes de enviar (cerca de 60 a 100 KB cada), e o navegador guarda a foto por 1 ano, então quem volta à vitrine quase não gasta tráfego.</p>
   ''' + av("cuidado", "Quando passar para o Pro", "<p><b>No dia em que o primeiro cliente começar a pagar.</b> O plano gratuito pausa o projeto após uma semana sem uso e não tem backup diário. Com clientes pagando, isso não é aceitável. Três lojas no plano de R$ 49 já cobrem a mensalidade do Pro, dependendo do câmbio.</p>") + '''
   <h3 class="sec">E o futuro?</h3>
   <p>Se um dia a plataforma tiver centenas de lojas e você quiser controlar tudo, existe a opção de instalar o próprio Supabase num servidor virtual (VPS) da Hostinger. Dá certo, mas você assume atualizações, backups e segurança. Só faz sentido com escala grande.</p>

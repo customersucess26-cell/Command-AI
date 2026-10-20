@@ -286,8 +286,8 @@ function mostraFoto(u){const el=$('#prFotoPrev');el.style.backgroundImage=u?`url
 $('#prSemFoto').addEventListener('click',()=>{fotoNova=null;fotoRemovida=true;mostraFoto('')});
 $('#prFoto').addEventListener('change',async function(){const f=this.files[0];this.value='';if(!f)return;
   if(!/^image\/(jpeg|png|webp)$/.test(f.type))return toast('Envie JPG, PNG ou WebP');if(f.size>5*1024*1024)return toast('Foto maior que 5 MB');
-  try{fotoNova=await reduz(f,1400);fotoRemovida=false;mostraFoto(URL.createObjectURL(fotoNova))}catch(e){toast('Não consegui ler essa foto')}});
-function reduz(file,max){return new Promise((ok,erro)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?ok(b):erro(),'image/jpeg',.85)};img.onerror=erro;img.src=u})}
+  try{fotoNova=await reduz(f,900);fotoRemovida=false;mostraFoto(URL.createObjectURL(fotoNova))}catch(e){toast('Não consegui ler essa foto')}});
+function reduz(file,max){return new Promise((ok,erro)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,max/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?ok(b):erro(),'image/jpeg',.8)};img.onerror=erro;img.src=u})}
 async function sobeFoto(blob){if(demo)return URL.createObjectURL(blob);const nome='produtos/'+(crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random().toString(36).slice(2))+'.jpg';
   const {error}=await db.storage.from('site').upload(nome,blob,{contentType:'image/jpeg',cacheControl:'31536000',upsert:false});if(error)throw error;return db.storage.from('site').getPublicUrl(nome).data.publicUrl}
 $('#prForm').addEventListener('submit',async e=>{e.preventDefault();const nome=$('#prNome').value.trim();if(!nome){$('#prMsg').textContent='Informe o nome do produto.';return}
