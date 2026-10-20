@@ -243,7 +243,50 @@ window.BC_EXEMPLO = {
    "destaque": true,
    "selo": "Mais pedido",
    "pos": 5,
-   "foto": "/assets/img/exemplo/cafe-item-cappuccino.jpg"
+   "foto": "/assets/img/exemplo/cafe-item-cappuccino.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Com leite",
@@ -254,7 +297,50 @@ window.BC_EXEMPLO = {
    "destaque": false,
    "selo": "",
    "pos": 6,
-   "foto": "/assets/img/exemplo/cafe-menu-latte.jpg"
+   "foto": "/assets/img/exemplo/cafe-menu-latte.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Com leite",
@@ -265,7 +351,50 @@ window.BC_EXEMPLO = {
    "destaque": false,
    "selo": "",
    "pos": 7,
-   "foto": "/assets/img/exemplo/cafe-menu-latte-macchiato.jpg"
+   "foto": "/assets/img/exemplo/cafe-menu-latte-macchiato.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Com leite",
@@ -276,7 +405,50 @@ window.BC_EXEMPLO = {
    "destaque": false,
    "selo": "",
    "pos": 8,
-   "foto": "/assets/img/exemplo/cafe-menu-mocha-canela.jpg"
+   "foto": "/assets/img/exemplo/cafe-menu-mocha-canela.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Com leite",
@@ -287,7 +459,50 @@ window.BC_EXEMPLO = {
    "destaque": false,
    "selo": "Da estação",
    "pos": 9,
-   "foto": "/assets/img/exemplo/cafe-menu-latte-especiarias.jpg"
+   "foto": "/assets/img/exemplo/cafe-menu-latte-especiarias.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Gelados",
@@ -588,7 +803,60 @@ window.BC_EXEMPLO = {
    "destaque": true,
    "selo": "Mais pedido",
    "pos": 1,
-   "foto": "/assets/img/exemplo/classico.jpg"
+   "foto": "/assets/img/exemplo/classico.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Burgers",
@@ -599,7 +867,60 @@ window.BC_EXEMPLO = {
    "destaque": true,
    "selo": "",
    "pos": 2,
-   "foto": "/assets/img/exemplo/barbecue.jpg"
+   "foto": "/assets/img/exemplo/barbecue.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Burgers",
@@ -610,7 +931,60 @@ window.BC_EXEMPLO = {
    "destaque": false,
    "selo": "Picante",
    "pos": 3,
-   "foto": "/assets/img/exemplo/mexicano.jpg"
+   "foto": "/assets/img/exemplo/mexicano.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Burgers",
@@ -621,7 +995,60 @@ window.BC_EXEMPLO = {
    "destaque": false,
    "selo": "Novo",
    "pos": 4,
-   "foto": "/assets/img/exemplo/trufado.jpg"
+   "foto": "/assets/img/exemplo/trufado.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Burgers",
@@ -632,7 +1059,60 @@ window.BC_EXEMPLO = {
    "destaque": false,
    "selo": "",
    "pos": 5,
-   "foto": "/assets/img/exemplo/crispy.jpg"
+   "foto": "/assets/img/exemplo/crispy.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Burgers",
@@ -643,7 +1123,60 @@ window.BC_EXEMPLO = {
    "destaque": false,
    "selo": "",
    "pos": 6,
-   "foto": "/assets/img/exemplo/salmao.jpg"
+   "foto": "/assets/img/exemplo/salmao.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Burgers",
@@ -654,7 +1187,60 @@ window.BC_EXEMPLO = {
    "destaque": false,
    "selo": "Veggie",
    "pos": 7,
-   "foto": "/assets/img/exemplo/halloumi.jpg"
+   "foto": "/assets/img/exemplo/halloumi.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Combos",
@@ -721,7 +1307,55 @@ window.BC_EXEMPLO = {
    "unid": "Grande",
    "destaque": true,
    "selo": "Clássica",
-   "pos": 1
+   "pos": 1,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Pizzas salgadas",
@@ -731,7 +1365,55 @@ window.BC_EXEMPLO = {
    "unid": "Grande",
    "destaque": false,
    "selo": "",
-   "pos": 2
+   "pos": 2,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Pizzas salgadas",
@@ -741,7 +1423,55 @@ window.BC_EXEMPLO = {
    "unid": "Grande",
    "destaque": false,
    "selo": "",
-   "pos": 3
+   "pos": 3,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Pizzas salgadas",
@@ -751,7 +1481,55 @@ window.BC_EXEMPLO = {
    "unid": "Grande",
    "destaque": false,
    "selo": "",
-   "pos": 4
+   "pos": 4,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Pizzas doces",
@@ -761,7 +1539,55 @@ window.BC_EXEMPLO = {
    "unid": "Grande",
    "destaque": false,
    "selo": "",
-   "pos": 5
+   "pos": 5,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
   },
   {
    "cat": "Bebidas",

@@ -480,3 +480,18 @@ details.hp .hb li{margin:5px 0}
 .pp-acoes{display:flex;gap:8px;flex-wrap:wrap}
 @property --p{syntax:'<number>';inherits:false;initial-value:0}
 @media (max-width:640px){.pp-topo{grid-template-columns:auto 1fr}.pp-fecha{grid-column:1/-1;justify-self:start}.pp-lista li{grid-template-columns:auto 1fr}.pp-lista li .btn,.pp-ok{grid-column:2;justify-self:start}}
+
+/* opcionais do produto */
+.opc-box{border:1px dashed var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:10px}
+.opc-cab{display:grid;gap:2px}.opc-cab small{font-size:12.5px}
+.opc-g{border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:8px;background:var(--surface)}
+.opc-gl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.opc-gl .opc-gn{flex:1 1 180px;min-width:0}
+.opc-gl select{min-height:40px}
+.opc-ate{display:flex;align-items:center;gap:6px;font-size:13px}
+.opc-ate input{width:64px}
+.opc-i{display:flex;gap:8px;align-items:center}
+.opc-i>input{flex:1;min-width:0}
+.opc-p{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);white-space:nowrap}
+.opc-p input{width:84px}
+.opc-i .x{width:34px;height:34px;border:0;background:transparent;font-size:22px;cursor:pointer;color:var(--muted);border-radius:8px}

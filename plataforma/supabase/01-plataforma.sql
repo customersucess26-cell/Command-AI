@@ -125,6 +125,42 @@ create table if not exists public.products (
 );
 create index if not exists products_loja_idx on public.products (loja_id, position);
 
+-- ================= opcionais dos produtos (ponto da carne, adicionais, tamanho) =================
+-- products.opcoes: [{"id","nome","min","max","itens":[{"id","nome","preco"}]}]
+create or replace function public.opcoes_ok(j jsonb)
+returns boolean language plpgsql immutable set search_path = '' as $$
+declare g jsonb; o jsonb; usados text[] := '{}';
+begin
+  if j is null or jsonb_typeof(j) <> 'array' or jsonb_array_length(j) > 8 then return false; end if;
+  for g in select * from jsonb_array_elements(j) loop
+    if coalesce(jsonb_typeof(g) <> 'object'
+       or jsonb_typeof(g -> 'id') <> 'string' or (g ->> 'id') !~ '^[A-Za-z0-9_-]{1,30}$'
+       or jsonb_typeof(g -> 'nome') <> 'string' or length(btrim(g ->> 'nome')) not between 1 and 60
+       or jsonb_typeof(g -> 'min') <> 'number' or (g ->> 'min') !~ '^[0-9]{1,2}$'
+       or jsonb_typeof(g -> 'max') <> 'number' or (g ->> 'max') !~ '^[0-9]{1,2}$'
+       or (g ->> 'min')::int > (g ->> 'max')::int or (g ->> 'max')::int < 1
+       or jsonb_typeof(g -> 'itens') <> 'array' or jsonb_array_length(g -> 'itens') not between 1 and 30
+       or (g ->> 'id') = any (usados), true) then
+      return false;
+    end if;
+    usados := usados || (g ->> 'id');
+    if (g ->> 'min')::int > jsonb_array_length(g -> 'itens') then return false; end if;
+    for o in select * from jsonb_array_elements(g -> 'itens') loop
+      if coalesce(jsonb_typeof(o) <> 'object'
+         or jsonb_typeof(o -> 'id') <> 'string' or (o ->> 'id') !~ '^[A-Za-z0-9_-]{1,30}$'
+         or jsonb_typeof(o -> 'nome') <> 'string' or length(btrim(o ->> 'nome')) not between 1 and 60
+         or jsonb_typeof(o -> 'preco') <> 'number' or (o ->> 'preco')::numeric not between 0 and 9999, true) then
+        return false;
+      end if;
+    end loop;
+  end loop;
+  return true;
+end $$;
+
+alter table public.products add column if not exists opcoes jsonb not null default '[]'::jsonb;
+alter table public.products drop constraint if exists products_opcoes_ok;
+alter table public.products add constraint products_opcoes_ok check (public.opcoes_ok(opcoes));
+
 create table if not exists public.orders (
   id             uuid primary key default gen_random_uuid(),
   loja_id        uuid not null references public.lojas (id) on delete cascade,
@@ -484,9 +520,19 @@ declare
   quando  text := btrim(coalesce(p_order ->> 'scheduled_for', ''));
   forma   text := coalesce(p_order ->> 'payment_method', '');
   it      jsonb;
-  qtds    jsonb := '{}'::jsonb;
   pid     text;
   qtd     int;
+  sel     jsonb;
+  op      jsonb;
+  grp     jsonb;
+  itm     jsonb;
+  cont    jsonb;
+  ops     jsonb;
+  vistos  text[];
+  gid     text;
+  oid     text;
+  c       int;
+  unit    numeric;
   prod    public.products;
   itens   jsonb := '[]'::jsonb;
   soma    numeric := 0;
@@ -535,18 +581,44 @@ begin
       perform public.recusa('Quantidade inválida: de 1 a 99 por item.');
     end if;
     pid := it ->> 'product_id';
-    qtds := jsonb_set(qtds, array[pid], to_jsonb(coalesce((qtds ->> pid)::int, 0) + (it ->> 'qty')::int));
-  end loop;
-
-  for pid, qtd in select key, value::int from jsonb_each_text(qtds) loop
+    qtd := (it ->> 'qty')::int;
     select * into prod from public.products p where p.id = pid and p.loja_id = loja.id;
     if not found or not prod.active then
       perform public.recusa('Um dos produtos saiu do cardápio. Atualize a página.', 'PRICE_CHANGED');
     end if;
-    if qtd > 99 then perform public.recusa('Quantidade inválida: de 1 a 99 por item.'); end if;
-    soma := soma + prod.price * qtd;
+    sel := case when jsonb_typeof(it -> 'options') = 'array' then it -> 'options' else '[]'::jsonb end;
+    if jsonb_array_length(sel) > 30 then perform public.recusa('Opções demais em um item.'); end if;
+    unit := prod.price; ops := '[]'::jsonb; cont := '{}'::jsonb; vistos := '{}';
+    for op in select * from jsonb_array_elements(sel) loop
+      if jsonb_typeof(op) <> 'object' or jsonb_typeof(op -> 'g') <> 'string' or jsonb_typeof(op -> 'o') <> 'string' then
+        perform public.recusa('Opção inválida. Atualize a página.', 'PRICE_CHANGED');
+      end if;
+      gid := op ->> 'g'; oid := op ->> 'o'; grp := null; itm := null;
+      select x into grp from jsonb_array_elements(prod.opcoes) x where x ->> 'id' = gid limit 1;
+      if grp is not null then
+        select y into itm from jsonb_array_elements(grp -> 'itens') y where y ->> 'id' = oid limit 1;
+      end if;
+      if itm is null or (gid || ':' || oid) = any (vistos) then
+        perform public.recusa('Uma opção do cardápio mudou. Atualize a página.', 'PRICE_CHANGED');
+      end if;
+      vistos := vistos || (gid || ':' || oid);
+      cont := jsonb_set(cont, array[gid], to_jsonb(coalesce((cont ->> gid)::int, 0) + 1));
+      unit := unit + (itm ->> 'preco')::numeric;
+      ops := ops || jsonb_build_object('group', grp ->> 'nome', 'name', itm ->> 'nome', 'price', (itm ->> 'preco')::numeric);
+    end loop;
+    for grp in select * from jsonb_array_elements(prod.opcoes) loop
+      c := coalesce((cont ->> (grp ->> 'id'))::int, 0);
+      if c < (grp ->> 'min')::int then
+        perform public.recusa(format('Escolha %s em "%s" (%s).', case when (grp ->> 'min')::int = 1 then 'uma opção' else (grp ->> 'min') || ' opções' end,
+                                     grp ->> 'nome', prod.name));
+      end if;
+      if c > (grp ->> 'max')::int then
+        perform public.recusa(format('Você escolheu opções demais em "%s" (%s).', grp ->> 'nome', prod.name));
+      end if;
+    end loop;
+    soma := soma + unit * qtd;
     itens := itens || jsonb_build_object('product_id', prod.id, 'name', prod.name, 'unit', prod.unit,
-                                         'price', prod.price, 'qty', qtd);
+                                         'price', unit, 'qty', qtd, 'options', ops);
   end loop;
 
   soma  := round(soma, 2);
@@ -593,7 +665,9 @@ begin
     'code', o.code, 'status', o.status, 'delivery_type', o.delivery_type, 'scheduled_for', o.scheduled_for,
     'created_at', o.created_at, 'updated_at', o.updated_at, 'first_name', split_part(o.customer_name, ' ', 1),
     'items', (select coalesce(jsonb_agg(jsonb_build_object('name', i ->> 'name', 'unit', coalesce(i ->> 'unit', ''),
-                                         'qty', (i ->> 'qty')::int, 'price', (i ->> 'price')::numeric)), '[]'::jsonb)
+                                         'qty', (i ->> 'qty')::int, 'price', (i ->> 'price')::numeric,
+                                         'options', (select coalesce(jsonb_agg(x ->> 'name'), '[]'::jsonb)
+                                                       from jsonb_array_elements(coalesce(i -> 'options', '[]'::jsonb)) x))), '[]'::jsonb)
                 from jsonb_array_elements(o.items) i),
     'subtotal', o.subtotal, 'delivery_fee', o.delivery_fee, 'total', o.total,
     'payment_method', o.payment_method, 'payment_status', o.payment_status,

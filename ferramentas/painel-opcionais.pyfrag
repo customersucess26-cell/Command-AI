@@ -1,0 +1,75 @@
+# Trecho do montar-painel-plataforma.py (carregado por exec): opcionais por produto (ponto da carne, adicionais, tamanho).
+# Usa as variáveis h (html), j (js), css e a função troca() do montador.
+
+h = troca(h, r'''        <label class="full inline"><input type="checkbox" id="prAtivo"> Disponível no site</label>''',
+          r'''        <div class="full opc-box">
+          <div class="opc-cab"><b>Opcionais</b><small class="muted">Ponto da carne, adicionais, tamanho. O cliente escolhe ao adicionar o produto.</small></div>
+          <div id="prOpc"></div>
+          <button type="button" class="btn small" id="prOpcAdd">+ Grupo de opções</button>
+        </div>
+        <label class="full inline"><input type="checkbox" id="prAtivo"> Disponível no site</label>''')
+
+j = troca(j, "function resumoItens(o){return (o.items||[]).map(i=>i.qty+'× '+i.name).join(', ')}",
+          "function optTxt(i){const a=(i.options||[]).map(x=>x.name);return a.length?' ('+a.join(', ')+')':''}\n"
+          "function optHtml(i){const a=(i.options||[]).map(x=>x.name);return a.length?`<br><small class=\"muted\">${esc(a.join(', '))}</small>`:''}\n"
+          "function resumoItens(o){return (o.items||[]).map(i=>i.qty+'× '+i.name+optTxt(i)).join(', ')}")
+j = troca(j, "${esc(i.qty)}× ${esc(i.name)}${i.unit?` <span class=\"muted\">(${esc(i.unit)})</span>`:''}</td>",
+          "${esc(i.qty)}× ${esc(i.name)}${i.unit?` <span class=\"muted\">(${esc(i.unit)})</span>`:''}${optHtml(i)}</td>")
+j = troca(j, "<tr><td>${esc(i.qty)}x ${esc(i.name)}</td>", "<tr><td>${esc(i.qty)}x ${esc(i.name)}${esc(optTxt(i))}</td>")
+j = troca(j, "$('#prOrigem').value=(p.extra||{}).origem||'';mostraOrigem();",
+          "$('#prOrigem').value=(p.extra||{}).origem||'';mostraOrigem();opcAtual=JSON.parse(JSON.stringify(p.opcoes||[]));desenhaOpc();")
+j = troca(j, "  const b=$('#prSalvar');b.disabled=true;$('#prMsg').textContent='';",
+          "  const op=lerOpc();if(!op)return;\n  const b=$('#prSalvar');b.disabled=true;$('#prMsg').textContent='';")
+j = troca(j, "featured:$('#prDestaque').checked,extra:Object.assign({},(prodAtual||{}).extra||{})};",
+          "featured:$('#prDestaque').checked,opcoes:op,extra:Object.assign({},(prodAtual||{}).extra||{})};")
+j = troca(j, "let prodAtual=null,fotoNova=null,fotoRemovida=false;", "let prodAtual=null,fotoNova=null,fotoRemovida=false,opcAtual=[];")
+
+OPC_JS = r"""
+/* ================= opcionais do produto ================= */
+const novoId=p=>p+Math.random().toString(36).slice(2,8);
+function tipoGrupo(g){return +g.max===1?(+g.min>=1?'unica':'unica_opc'):'varias'}
+function desenhaOpc(){const box=$('#prOpc');if(!box)return;
+  box.innerHTML=opcAtual.map((g,gi)=>`<div class="opc-g" data-gi="${gi}">
+    <div class="opc-gl"><input class="opc-gn" data-f="nome" placeholder="Nome do grupo (ex.: Ponto da carne)" maxlength="60" value="${esc(g.nome||'')}">
+      <select data-f="tipo"><option value="unica"${tipoGrupo(g)==='unica'?' selected':''}>Escolher 1 (obrigatório)</option><option value="unica_opc"${tipoGrupo(g)==='unica_opc'?' selected':''}>Escolher 1 (opcional)</option><option value="varias"${tipoGrupo(g)==='varias'?' selected':''}>Escolher vários (opcional)</option></select>
+      ${tipoGrupo(g)==='varias'?`<label class="opc-ate">até <input type="number" min="2" max="30" data-f="max" value="${+g.max||2}"></label>`:''}
+      <button type="button" class="btn small perigo" data-opc-rm-g="${gi}" aria-label="Remover grupo">Remover</button></div>
+    ${(g.itens||[]).map((it,ii)=>`<div class="opc-i" data-ii="${ii}"><input data-f="inome" placeholder="Opção (ex.: Bacon)" maxlength="60" value="${esc(it.nome||'')}"><label class="opc-p">+ R$<input data-f="ipreco" inputmode="decimal" maxlength="7" placeholder="0" value="${+it.preco?String(it.preco).replace('.',','):''}"></label><button type="button" class="x" data-opc-rm-i="${gi}:${ii}" aria-label="Remover opção">×</button></div>`).join('')}
+    <button type="button" class="btn small" data-opc-add-i="${gi}">+ Opção</button></div>`).join('');
+  const add=$('#prOpcAdd');if(add)add.hidden=opcAtual.length>=8}
+function sincOpc(){document.querySelectorAll('#prOpc .opc-g').forEach(el=>{const g=opcAtual[+el.dataset.gi];if(!g)return;
+  g.nome=el.querySelector('[data-f=nome]').value;const t=el.querySelector('[data-f=tipo]').value;
+  if(t==='unica'){g.min=1;g.max=1}else if(t==='unica_opc'){g.min=0;g.max=1}else{g.min=0;const m=el.querySelector('[data-f=max]');g.max=Math.max(2,Math.min(30,+(m&&m.value)||+g.max||2))}
+  el.querySelectorAll('.opc-i').forEach(ie=>{const it=g.itens[+ie.dataset.ii];if(!it)return;it.nome=ie.querySelector('[data-f=inome]').value;it.preco=num(ie.querySelector('[data-f=ipreco]').value)})})}
+function lerOpc(){sincOpc();const out=[];
+  for(const g of opcAtual){const nome=(g.nome||'').trim();const itens=(g.itens||[]).map(i=>({id:i.id,nome:(i.nome||'').trim().slice(0,60),preco:Math.max(0,Math.min(9999,Math.round(num(i.preco)*100)/100))})).filter(i=>i.nome);
+    if(!nome&&!itens.length)continue;
+    if(!nome){$('#prMsg').textContent='Dê um nome a cada grupo de opções (ex.: Ponto da carne).';return null}
+    if(!itens.length){$('#prMsg').textContent='O grupo "'+nome+'" precisa de pelo menos uma opção.';return null}
+    const max=Math.min(+g.max||1,itens.length),min=Math.min(+g.min||0,max);out.push({id:g.id,nome:nome.slice(0,60),min,max:Math.max(1,max),itens})}
+  return out}
+document.addEventListener('click',e=>{const t=e.target;if(!t.closest||!t.closest('#prOpc,#prOpcAdd'))return;
+  if(t.id==='prOpcAdd'){sincOpc();if(opcAtual.length<8)opcAtual.push({id:novoId('g'),nome:'',min:1,max:1,itens:[{id:novoId('o'),nome:'',preco:0},{id:novoId('o'),nome:'',preco:0}]});desenhaOpc();return}
+  if(t.dataset.opcRmG!=null){sincOpc();opcAtual.splice(+t.dataset.opcRmG,1);desenhaOpc()}
+  else if(t.dataset.opcAddI!=null){sincOpc();const g=opcAtual[+t.dataset.opcAddI];if(g&&g.itens.length<30)g.itens.push({id:novoId('o'),nome:'',preco:0});desenhaOpc()}
+  else if(t.dataset.opcRmI!=null){sincOpc();const [gi,ii]=t.dataset.opcRmI.split(':').map(Number);const g=opcAtual[gi];if(g){g.itens.splice(ii,1);if(!g.itens.length)opcAtual.splice(gi,1)}desenhaOpc()}});
+document.addEventListener('change',e=>{if(e.target.matches&&e.target.matches('#prOpc [data-f=tipo]')){sincOpc();desenhaOpc()}});
+"""
+j = troca(j, "/* ================= início ================= */", OPC_JS + "\n/* ================= início ================= */")
+
+css += """
+/* opcionais do produto */
+.opc-box{border:1px dashed var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:10px}
+.opc-cab{display:grid;gap:2px}.opc-cab small{font-size:12.5px}
+.opc-g{border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:8px;background:var(--surface)}
+.opc-gl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.opc-gl .opc-gn{flex:1 1 180px;min-width:0}
+.opc-gl select{min-height:40px}
+.opc-ate{display:flex;align-items:center;gap:6px;font-size:13px}
+.opc-ate input{width:64px}
+.opc-i{display:flex;gap:8px;align-items:center}
+.opc-i>input{flex:1;min-width:0}
+.opc-p{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);white-space:nowrap}
+.opc-p input{width:84px}
+.opc-i .x{width:34px;height:34px;border:0;background:transparent;font-size:22px;cursor:pointer;color:var(--muted);border-radius:8px}
+"""

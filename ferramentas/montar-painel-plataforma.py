@@ -240,7 +240,7 @@ async function carregaExemplo(){
     nomes.forEach(n=>{const c=cats.find(x=>norm(x.name)===norm(n));if(c)ids[n]=c.id;else faltam.push({loja_id:lojaId,name:n,position:++pos})});
     if(faltam.length){const r=await db.from('categories').insert(faltam).select();if(r.error)throw r.error;r.data.forEach(c=>{ids[c.name]=c.id})}
     let base=prods.reduce((m,p)=>Math.max(m,p.position||0),0);
-    const linhas=lista.map((i,k)=>({loja_id:lojaId,category_id:ids[i.cat],name:i.nome,description:i.desc,price:i.preco,unit:i.unid||'',image_url:i.foto||'',active:true,featured:!!i.destaque,badge:i.selo||'',position:base+k+1,extra:i.contem?{ajuste:'contain'}:{}}));
+    const linhas=lista.map((i,k)=>({loja_id:lojaId,category_id:ids[i.cat],name:i.nome,description:i.desc,price:i.preco,unit:i.unid||'',image_url:i.foto||'',active:true,featured:!!i.destaque,badge:i.selo||'',position:base+k+1,extra:i.contem?{ajuste:'contain'}:{},opcoes:i.opcoes||[]}));
     const r2=await db.from('products').insert(linhas);if(r2.error)throw r2.error;
     await Promise.all([carregar('categories'),carregar('products')]);render();
   },'Cardápio de exemplo carregado. Agora é só trocar pelos seus produtos.')}
@@ -359,6 +359,10 @@ css = """
 @property --p{syntax:'<number>';inherits:false;initial-value:0}
 @media (max-width:640px){.pp-topo{grid-template-columns:auto 1fr}.pp-fecha{grid-column:1/-1;justify-self:start}.pp-lista li{grid-template-columns:auto 1fr}.pp-lista li .btn,.pp-ok{grid-column:2;justify-self:start}}
 """
+# opcionais por produto (ponto da carne, adicionais, tamanho): mexe em h, j e css e regrava os arquivos
+exec(open("ferramentas/painel-opcionais.pyfrag", encoding="utf-8").read())
+open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
+open(f"{DEST}/painel.js", "w", encoding="utf-8").write(j)
 open(f"{DEST}/painel.css", "a", encoding="utf-8").write(css)
 subprocess.run(["python3", "ferramentas/csp.py", f"{DEST}/index.html"], check=True)
 print("painel da plataforma montado em", DEST)

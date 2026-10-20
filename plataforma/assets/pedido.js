@@ -66,7 +66,8 @@
     var it = $("itens"); it.textContent = "";
     (p.items || []).forEach(function (i) {
       var preco = Number(i.price) > 0 ? brl(i.price * i.qty) : "sob consulta";
-      it.appendChild(linha(i.qty + "× " + i.name + (i.unit ? " (" + i.unit + ")" : ""), preco));
+      var ops = Array.isArray(i.options) && i.options.length ? " · " + i.options.join(", ") : "";
+      it.appendChild(linha(i.qty + "× " + i.name + (i.unit ? " (" + i.unit + ")" : "") + ops, preco));
     });
     if (Number(p.delivery_fee) > 0) it.appendChild(linha("Entrega", brl(p.delivery_fee)));
     if (Number(p.quoted_amount) > 0) it.appendChild(linha("Itens sob consulta", brl(p.quoted_amount)));
