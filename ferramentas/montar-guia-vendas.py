@@ -168,7 +168,7 @@ add('<section class="pg">' + cap("04", "O que você enxerga", "Você tem três l
   <table>
     <tr><th>Onde</th><th>Para quê</th></tr>
     <tr><td><code>/admin/</code></td><td><b>Suas lojas.</b> Todas as lojas, dono, data de criação, <b>origem (qual anúncio trouxe)</b>, pedidos e vendas do mês, plano, mensalidade e situação. Tem seletor de mês e botão Exportar (planilha).</td></tr>
-    <tr><td><code>/crm/</code></td><td><b>Seus leads.</b> Pedidos de ajuda do formulário e da Bia, orçamentos, funil de vendas e metas.</td></tr>
+    <tr><td><code>/crm/</code></td><td><b>Seus leads.</b> Pedidos de ajuda do formulário e da Bia, orçamentos, funil de vendas e metas. Usa o mesmo banco e o mesmo login da plataforma.</td></tr>
     <tr><td>Supabase › Authentication › Users</td><td><b>Contas.</b> Quem se cadastrou, se confirmou o e-mail, e as ações de suporte (confirmar usuário, remover).</td></tr>
   </table>
   ''' + tela("17-admin-lojas", "Seu painel /admin/: lojas, origem, vendas e plano") + tela("18-crm-demo", "Seu painel /crm/ (aqui em demonstração)")
@@ -268,7 +268,7 @@ add('<section class="pg">' + cap("09", "Lista final antes de abrir as vendas", "
     "<b>Revisão jurídica</b> dos Termos de uso e da Política de privacidade por um advogado.",
     "<b>Definir a cobrança:</b> chave Pix (de preferência da empresa), dia de vencimento e quem emite nota.",
     "<b>Supabase Pro</b> assim que houver o primeiro cliente pagando.",
-    "<b>Conectar o CRM</b> ao banco do site oficial (bloco <code>window.BISTRO</code> do <code>config.js</code>), para o formulário gravar os leads.",
+    "<b>Rodar <code>03-crm.sql</code></b> no SQL Editor do Supabase da plataforma: cria as tabelas do <code>/crm/</code> (leads, orçamentos e metas) no mesmo banco e com o mesmo login. Depois disso o formulário da página de vendas grava os leads ali.",
     "<b>Criar as conversões</b> no Google Ads (“Loja criada” e “Pedido de ajuda”) e preencher os IDs do Pixel e do Google no <code>config.js</code>.",
     "<b>Revisar os anúncios:</b> use “app de delivery”, nunca a marca do concorrente, e prefira “pedido organizado no painel e no WhatsApp”.",
     "<b>Subir o pacote de atualização</b> (temas das lojas e painel) na Hostinger.",

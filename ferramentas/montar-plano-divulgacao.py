@@ -99,7 +99,7 @@ add('<section class="pg">' + cap("01", "O que falta antes de divulgar", "Anúnci
     "<b>Subir o pacote de atualização na Hostinger</b> (<code>bistroconnect-ATUALIZACAO.zip</code>), com os temas das lojas, as fotos menores, a imagem de prévia do link e o <code>robots.txt</code>.",
     "<b>Rodar <code>plataforma-02-admin-por-mes.sql</code></b> no SQL Editor do Supabase da plataforma.",
     "<b>Configurar o SMTP</b> (e-mail de confirmação com o seu domínio). Sem isso, o cadastro em rajada trava justamente quando o anúncio dá certo.",
-    "<b>Preencher o <code>config.js</code></b>: WhatsApp de suporte (sem ele o botão de WhatsApp da página não funciona), dados da empresa (Termos e Privacidade), e a URL e a chave do site oficial para o CRM.",
+    "<b>Preencher o <code>config.js</code></b>: WhatsApp de suporte (sem ele o botão de WhatsApp da página não funciona), dados da empresa (Termos e Privacidade). Rode também o <code>03-crm.sql</code> no Supabase, para o CRM e o formulário de leads funcionarem.",
     "<b>Criar as contas de anúncio</b> (detalhes abaixo) e colocar os IDs no <code>config.js</code>.",
     "<b>Fazer o roteiro de teste</b> do Guia da venda, capítulo 06, inteiro, pelo menos uma vez, e conferir que o Pixel e a tag do Google registram os eventos.",
     "<b>Conferir o percentual do app de delivery</b> (12% e 23%) numa fonte atual e anotar a data. É o argumento central e precisa ser verdadeiro quando o anúncio rodar.") + '''

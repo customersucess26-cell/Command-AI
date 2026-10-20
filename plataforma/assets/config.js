@@ -31,10 +31,10 @@ window.BC = {
   }
 };
 
-/* Seu painel de leads (CRM, em /crm/) e o formulário "Quero ajuda para montar" da página de vendas.
-   Use o Supabase do SITE OFICIAL (projeto "site-oficial", onde ficam os leads), NÃO o da plataforma. */
+/* Seu painel de leads (CRM, em /crm/) e o formulário "Quero ajuda para montar" da página de vendas usam o MESMO
+   banco da plataforma (rode supabase/03-crm.sql uma vez). Não precisa preencher nada aqui. */
 window.BISTRO = {
   whatsapp: window.BC.suporteWhatsapp,
-  supabaseUrl: "",
-  supabaseKey: ""
+  supabaseUrl: window.BC.supabaseUrl,
+  supabaseKey: window.BC.supabaseKey
 };
