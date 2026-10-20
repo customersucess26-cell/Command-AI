@@ -477,5 +477,6 @@ details.hp .hb li{margin:5px 0}
 .pp-lista li.feito .pp-n{background:#1F9D63;color:#fff}
 .pp-lista li.feito b{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--muted) 60%,transparent);color:var(--muted)}
 .pp-ok{font-size:12px;font-weight:800;color:#1F9D63}
+.pp-acoes{display:flex;gap:8px;flex-wrap:wrap}
 @property --p{syntax:'<number>';inherits:false;initial-value:0}
 @media (max-width:640px){.pp-topo{grid-template-columns:auto 1fr}.pp-fecha{grid-column:1/-1;justify-self:start}.pp-lista li{grid-template-columns:auto 1fr}.pp-lista li .btn,.pp-ok{grid-column:2;justify-self:start}}

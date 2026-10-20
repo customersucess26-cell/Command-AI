@@ -255,7 +255,7 @@ function desenhaCardapio(){
   const f=lc.querySelector('form input');if(f)f.focus();
   const q=($('#buscaProd').value||'').trim().toLowerCase();
   const L=prods.filter(p=>(!catSel||p.category_id===catSel)&&(!q||String(p.name).toLowerCase().includes(q)||String(p.description).toLowerCase().includes(q))).sort((a,b)=>(cats.findIndex(c=>c.id===a.category_id)-cats.findIndex(c=>c.id===b.category_id))||(a.position-b.position));
-  $('#resumoProds').textContent=L.length+' produto(s) · '+L.filter(p=>!p.active).length+' pausado(s)';
+  $('#resumoProds').textContent=L.length+' produto(s) · '+L.filter(p=>!p.active).length+' pausado(s)';$('#btnExemplo').hidden=!!prods.length;
   $('#gradeProds').innerHTML=L.map(p=>{const img=imgUrl(p.image_url),irmaos=prods.filter(x=>x.category_id===p.category_id).sort((a,b)=>a.position-b.position),i=irmaos.indexOf(p);
     return `<article class="prod${p.active?'':' off'}"><div class="ft" data-prod="${esc(p.id)}" style="${img?`background-image:url('${esc(img)}')`:''}">${img?'':'<span class="sem-ft"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Adicionar foto</span>'}${p.badge?`<span class="selo">${esc(p.badge)}</span>`:''}<button class="estrela" type="button" data-destaque="${esc(p.id)}" aria-pressed="${!!p.featured}" aria-label="Destaque">★</button></div><div class="ct"><b data-prod="${esc(p.id)}">${esc(p.name)}</b><small>${esc(p.description||((p.extra||{}).origem)||C(p.category_id)?.name||'')}</small></div><div class="rod"><span class="preco">${num(p.price)>0?brl(p.price):'Sob consulta'}</span><span class="ord"><button type="button" data-prod-sobe="${esc(p.id)}" aria-label="Mover para cima" ${i<=0?'disabled':''}>↑</button><button type="button" data-prod-desce="${esc(p.id)}" aria-label="Mover para baixo" ${i>=irmaos.length-1?'disabled':''}>↓</button></span><label class="switch" title="${p.active?'Disponível':'Pausado'}"><input type="checkbox" data-ativo="${esc(p.id)}" ${p.active?'checked':''} aria-label="${esc(p.name)} disponível"><span></span></label></div></article>`}).join('')||'<div class="empty">Nenhum produto aqui. Use “+ Produto”.</div>'}
 $('#buscaProd').addEventListener('input',desenhaCardapio);
@@ -365,6 +365,24 @@ function desenhaLink(){const u=linkDaLoja();$('#linkLoja').textContent=u.replace
   if(['dono','gerente'].includes(papel)){desenhaPlano();desenhaPassos()}}
 $('#btnCopiaLink').addEventListener('click',()=>copia(linkDaLoja(),'Link copiado'));
 async function copia(t,ok){try{await navigator.clipboard.writeText(t);toast(ok)}catch(e){prompt('Copie:',t)}}
+/* cardápio de exemplo: cria as categorias que faltam e os produtos com fotos, para a loja já nascer bonita */
+async function carregaExemplo(){
+  const lista=(window.BC_EXEMPLO||{})[settings.modelo]||(window.BC_EXEMPLO||{}).outro||[];
+  if(!lista.length)return toast('Cardápio de exemplo indisponível');
+  if(demo)return toast('Na demonstração o exemplo não é criado');
+  if(prods.length&&!confirm('A loja já tem produtos. Adicionar o cardápio de exemplo mesmo assim?'))return;
+  await tenta(async()=>{
+    const nomes=[...new Set(lista.map(i=>i.cat))],norm=t=>String(t||'').trim().toLowerCase(),ids={};
+    let pos=cats.reduce((m,c)=>Math.max(m,c.position||0),0);
+    const faltam=[];
+    nomes.forEach(n=>{const c=cats.find(x=>norm(x.name)===norm(n));if(c)ids[n]=c.id;else faltam.push({loja_id:lojaId,name:n,position:++pos})});
+    if(faltam.length){const r=await db.from('categories').insert(faltam).select();if(r.error)throw r.error;r.data.forEach(c=>{ids[c.name]=c.id})}
+    let base=prods.reduce((m,p)=>Math.max(m,p.position||0),0);
+    const linhas=lista.map((i,k)=>({loja_id:lojaId,category_id:ids[i.cat],name:i.nome,description:i.desc,price:i.preco,unit:i.unid||'',image_url:i.foto||'',active:true,featured:!!i.destaque,badge:i.selo||'',position:base+k+1,extra:i.contem?{ajuste:'contain'}:{}}));
+    const r2=await db.from('products').insert(linhas);if(r2.error)throw r2.error;
+    await Promise.all([carregar('categories'),carregar('products')]);render();
+  },'Cardápio de exemplo carregado. Agora é só trocar pelos seus produtos.')}
+document.addEventListener('click',e=>{if(e.target.closest('[data-exemplo]'))carregaExemplo()});
 let planoEm=0;
 /* plano do mês: quanto vendeu, em que faixa está e quanto falta para a próxima */
 function planoHtml(f){const v=num(f.vendido),ate=num(f.ate_valor),pct=ate?Math.min(100,v/ate*100):100,mens=num(f.mensalidade);
@@ -384,7 +402,7 @@ function desenhaPassos(){const box=$('#primeirosPassos');if(!box||!['dono','gere
   const feitos=PASSOS_LOJA.map(p=>{try{return !!p[4]()}catch(e){return false}}),n=feitos.filter(Boolean).length;
   box.hidden=fechado||n===PASSOS_LOJA.length;if(box.hidden)return;
   const pct=Math.round(n/PASSOS_LOJA.length*100);$('#ppAnel').style.setProperty('--p',pct);$('#ppPct').textContent=pct+'%';
-  $('#ppLista').innerHTML=PASSOS_LOJA.map((p,i)=>`<li class="${feitos[i]?'feito':''}"><span class="pp-n" aria-hidden="true">${feitos[i]?'✓':i+1}</span><div><b>${esc(p[1])}</b><small>${esc(p[2])}</small></div>${feitos[i]?'<span class="pp-ok">Feito</span>':p[3]?`<button class="btn small primary" type="button" data-ir="${p[3]}">Fazer agora</button>`:'<button class="btn small primary" type="button" data-pp-divulga>Copiar link</button>'}</li>`).join('')}
+  $('#ppLista').innerHTML=PASSOS_LOJA.map((p,i)=>`<li class="${feitos[i]?'feito':''}"><span class="pp-n" aria-hidden="true">${feitos[i]?'✓':i+1}</span><div><b>${esc(p[1])}</b><small>${esc(p[2])}</small></div>${feitos[i]?'<span class="pp-ok">Feito</span>':p[3]?`<span class="pp-acoes"><button class="btn small primary" type="button" data-ir="${p[3]}">Fazer agora</button>${p[0]==='produtos'&&!prods.length?'<button class="btn small" type="button" data-exemplo>Usar exemplo com fotos</button>':''}</span>`:'<button class="btn small primary" type="button" data-pp-divulga>Copiar link</button>'}</li>`).join('')}
 function marcaDivulgou(){try{localStorage.setItem('bc-divulgou-'+lojaId,'1')}catch(e){}desenhaPassos()}
 document.addEventListener('click',e=>{if(e.target.closest('[data-pp-divulga]')){copia(linkDaLoja(),'Link copiado. Agora é só colar no Instagram e no WhatsApp');marcaDivulgou()}
   if(e.target.closest('#btnCopiaLink,#btnZapLink'))marcaDivulgou();

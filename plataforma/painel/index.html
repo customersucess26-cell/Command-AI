@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="painel.css">
 <script src="../assets/config.js"></script>
 <script src="../assets/vendor/supabase-2.45.4.js"></script>
+<script src="../assets/exemplo.js" defer></script>
 <script src="painel.js" defer></script>
 </head>
 <body>
@@ -179,7 +180,7 @@
           <div id="listaCats" class="list"></div>
         </div>
         <div class="prods">
-          <div class="toolbar"><input id="buscaProd" type="search" placeholder="Buscar produto" maxlength="60" aria-label="Buscar produto"><span class="grow"></span><span class="muted fino" id="resumoProds"></span></div>
+          <div class="toolbar"><input id="buscaProd" type="search" placeholder="Buscar produto" maxlength="60" aria-label="Buscar produto"><span class="grow"></span><span class="muted fino" id="resumoProds"></span><button class="btn small primary" type="button" id="btnExemplo" data-exemplo hidden>Usar cardápio de exemplo com fotos</button></div>
           <div id="gradeProds" class="grade-prods"></div>
         </div>
       </div>

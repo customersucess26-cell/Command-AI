@@ -106,6 +106,8 @@ h = troca(h, '''          <label class="full inline" data-recurso="pedidos"><inp
             <div class="foto-campo"><div class="foto-prev" id="sLogoPrev"><span>Logo</span></div><div class="foto-acoes"><label class="btn small">Enviar logo<input type="file" id="sLogo" accept="image/jpeg,image/png,image/webp" hidden></label><button type="button" class="btn small" data-tira="logo_url">Tirar</button></div></div>
             <div class="foto-campo"><div class="foto-prev larga" id="sCapaPrev"><span>Capa</span></div><div class="foto-acoes"><label class="btn small">Enviar capa<input type="file" id="sCapa" accept="image/jpeg,image/png,image/webp" hidden></label><button type="button" class="btn small" data-tira="capa_url">Tirar</button><p class="muted fino">Foto larga do ambiente ou dos produtos (fica no topo da loja).</p></div></div>
           </div>''')
+h = troca(h, '<script src="painel.js" defer></script>', '<script src="../assets/exemplo.js" defer></script>\n<script src="painel.js" defer></script>')
+h = troca(h, '<span class="muted fino" id="resumoProds"></span></div>', '<span class="muted fino" id="resumoProds"></span><button class="btn small primary" type="button" id="btnExemplo" data-exemplo hidden>Usar cardápio de exemplo com fotos</button></div>')
 # aba equipe
 h = troca(h, '''    <!-- AJUSTES -->''', '''    <!-- EQUIPE -->
     <section class="panel" data-panel="equipe" hidden>
@@ -192,6 +194,8 @@ j = troca(j, "  const w=digitos($('#sWhats').value);if(w&&(w.length<10||w.length
 j = troca(j, "instagram:$('#sInsta').value.trim().slice(0,60),address:$('#sEnd').value.trim().slice(0,160),hours:$('#sHoras').value.trim().slice(0,160),",
           "instagram:$('#sInsta').value.trim().slice(0,60),address:$('#sEnd').value.trim().slice(0,160),hours:$('#sHoras').value.trim().slice(0,160),")
 
+j = troca(j, "$('#resumoProds').textContent=L.length+' produto(s) · '+L.filter(p=>!p.active).length+' pausado(s)';",
+          "$('#resumoProds').textContent=L.length+' produto(s) · '+L.filter(p=>!p.active).length+' pausado(s)';$('#btnExemplo').hidden=!!prods.length;")
 # render: link, plano, equipe e permissões por função
 j = troca(j, "if(aba==='cardapio')desenhaCardapio();if(aba==='loja')preencheLoja()}",
           "if(aba==='cardapio')desenhaCardapio();if(aba==='loja')preencheLoja();if(aba==='equipe')desenhaEquipe();if(aba==='inicio')desenhaLink()}")
@@ -223,6 +227,24 @@ function desenhaLink(){const u=linkDaLoja();$('#linkLoja').textContent=u.replace
   if(['dono','gerente'].includes(papel)){desenhaPlano();desenhaPassos()}}
 $('#btnCopiaLink').addEventListener('click',()=>copia(linkDaLoja(),'Link copiado'));
 async function copia(t,ok){try{await navigator.clipboard.writeText(t);toast(ok)}catch(e){prompt('Copie:',t)}}
+/* cardápio de exemplo: cria as categorias que faltam e os produtos com fotos, para a loja já nascer bonita */
+async function carregaExemplo(){
+  const lista=(window.BC_EXEMPLO||{})[settings.modelo]||(window.BC_EXEMPLO||{}).outro||[];
+  if(!lista.length)return toast('Cardápio de exemplo indisponível');
+  if(demo)return toast('Na demonstração o exemplo não é criado');
+  if(prods.length&&!confirm('A loja já tem produtos. Adicionar o cardápio de exemplo mesmo assim?'))return;
+  await tenta(async()=>{
+    const nomes=[...new Set(lista.map(i=>i.cat))],norm=t=>String(t||'').trim().toLowerCase(),ids={};
+    let pos=cats.reduce((m,c)=>Math.max(m,c.position||0),0);
+    const faltam=[];
+    nomes.forEach(n=>{const c=cats.find(x=>norm(x.name)===norm(n));if(c)ids[n]=c.id;else faltam.push({loja_id:lojaId,name:n,position:++pos})});
+    if(faltam.length){const r=await db.from('categories').insert(faltam).select();if(r.error)throw r.error;r.data.forEach(c=>{ids[c.name]=c.id})}
+    let base=prods.reduce((m,p)=>Math.max(m,p.position||0),0);
+    const linhas=lista.map((i,k)=>({loja_id:lojaId,category_id:ids[i.cat],name:i.nome,description:i.desc,price:i.preco,unit:i.unid||'',image_url:i.foto||'',active:true,featured:!!i.destaque,badge:i.selo||'',position:base+k+1,extra:i.contem?{ajuste:'contain'}:{}}));
+    const r2=await db.from('products').insert(linhas);if(r2.error)throw r2.error;
+    await Promise.all([carregar('categories'),carregar('products')]);render();
+  },'Cardápio de exemplo carregado. Agora é só trocar pelos seus produtos.')}
+document.addEventListener('click',e=>{if(e.target.closest('[data-exemplo]'))carregaExemplo()});
 let planoEm=0;
 /* plano do mês: quanto vendeu, em que faixa está e quanto falta para a próxima */
 function planoHtml(f){const v=num(f.vendido),ate=num(f.ate_valor),pct=ate?Math.min(100,v/ate*100):100,mens=num(f.mensalidade);
@@ -242,7 +264,7 @@ function desenhaPassos(){const box=$('#primeirosPassos');if(!box||!['dono','gere
   const feitos=PASSOS_LOJA.map(p=>{try{return !!p[4]()}catch(e){return false}}),n=feitos.filter(Boolean).length;
   box.hidden=fechado||n===PASSOS_LOJA.length;if(box.hidden)return;
   const pct=Math.round(n/PASSOS_LOJA.length*100);$('#ppAnel').style.setProperty('--p',pct);$('#ppPct').textContent=pct+'%';
-  $('#ppLista').innerHTML=PASSOS_LOJA.map((p,i)=>`<li class="${feitos[i]?'feito':''}"><span class="pp-n" aria-hidden="true">${feitos[i]?'✓':i+1}</span><div><b>${esc(p[1])}</b><small>${esc(p[2])}</small></div>${feitos[i]?'<span class="pp-ok">Feito</span>':p[3]?`<button class="btn small primary" type="button" data-ir="${p[3]}">Fazer agora</button>`:'<button class="btn small primary" type="button" data-pp-divulga>Copiar link</button>'}</li>`).join('')}
+  $('#ppLista').innerHTML=PASSOS_LOJA.map((p,i)=>`<li class="${feitos[i]?'feito':''}"><span class="pp-n" aria-hidden="true">${feitos[i]?'✓':i+1}</span><div><b>${esc(p[1])}</b><small>${esc(p[2])}</small></div>${feitos[i]?'<span class="pp-ok">Feito</span>':p[3]?`<span class="pp-acoes"><button class="btn small primary" type="button" data-ir="${p[3]}">Fazer agora</button>${p[0]==='produtos'&&!prods.length?'<button class="btn small" type="button" data-exemplo>Usar exemplo com fotos</button>':''}</span>`:'<button class="btn small primary" type="button" data-pp-divulga>Copiar link</button>'}</li>`).join('')}
 function marcaDivulgou(){try{localStorage.setItem('bc-divulgou-'+lojaId,'1')}catch(e){}desenhaPassos()}
 document.addEventListener('click',e=>{if(e.target.closest('[data-pp-divulga]')){copia(linkDaLoja(),'Link copiado. Agora é só colar no Instagram e no WhatsApp');marcaDivulgou()}
   if(e.target.closest('#btnCopiaLink,#btnZapLink'))marcaDivulgou();
@@ -333,6 +355,7 @@ css = """
 .pp-lista li.feito .pp-n{background:#1F9D63;color:#fff}
 .pp-lista li.feito b{text-decoration:line-through;text-decoration-color:color-mix(in srgb,var(--muted) 60%,transparent);color:var(--muted)}
 .pp-ok{font-size:12px;font-weight:800;color:#1F9D63}
+.pp-acoes{display:flex;gap:8px;flex-wrap:wrap}
 @property --p{syntax:'<number>';inherits:false;initial-value:0}
 @media (max-width:640px){.pp-topo{grid-template-columns:auto 1fr}.pp-fecha{grid-column:1/-1;justify-self:start}.pp-lista li{grid-template-columns:auto 1fr}.pp-lista li .btn,.pp-ok{grid-column:2;justify-self:start}}
 """

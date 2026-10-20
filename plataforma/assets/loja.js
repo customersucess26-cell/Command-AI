@@ -85,10 +85,28 @@
     var n = parseInt(m[1], 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
     return (0.299 * r + 0.587 * g + 0.114 * b) > 170 ? "#1b1410" : "#fff";
   }
+  /* cada tipo de loja usa um tema, inspirado nos sites de referência: artesanal (padaria, café, doceria),
+     brasa (hamburgueria, pizzaria) e autoral (restaurante e outros) */
+  var TEMAS = { padaria: "artesanal", cafeteria: "artesanal", doceria: "artesanal", hamburgueria: "brasa", pizzaria: "brasa", restaurante: "autoral", outro: "autoral" };
+  var ETIQUETAS = { padaria: "padaria e confeitaria artesanal", cafeteria: "café especial e confeitaria", doceria: "doces feitos com carinho",
+    hamburgueria: "Hamburgueria artesanal · feita na hora", pizzaria: "Pizzaria · forno quente", restaurante: "Cozinha autoral", outro: "Cardápio" };
+  /* cor da marca sempre legível no fundo escuro dos temas: se a cor for muito escura, clareia misturando com branco */
+  function luz(hex) { var n = parseInt(hex.slice(1), 16); return (0.299 * (n >> 16 & 255) + 0.587 * (n >> 8 & 255) + 0.114 * (n & 255)) / 255; }
+  function clareia(hex) {
+    var n = parseInt(hex.slice(1), 16), m = [n >> 16 & 255, n >> 8 & 255, n & 255], t = luz(hex) < 0.38 ? Math.min(0.75, (0.38 - luz(hex)) * 2.2 + 0.25) : 0;
+    return t ? "#" + m.map(function (v) { return ("0" + Math.round(v + (255 - v) * t).toString(16)).slice(-2); }).join("") : hex;
+  }
   function montaLoja() {
-    document.body.className = "m-" + (loja.modelo || "outro");
+    var modelo = TEMAS[loja.modelo] ? loja.modelo : "outro";
+    document.body.className = "m-" + modelo + " t-" + TEMAS[modelo];
     var raiz = document.documentElement.style;
-    if (/^#[0-9a-f]{6}$/i.test(loja.cor || "")) { raiz.setProperty("--cor", loja.cor); raiz.setProperty("--cor-txt", corTexto(loja.cor)); }
+    /* loja que ainda usa a cor padrão da plataforma ganha o destaque do tema (dourado, vermelho ou âmbar) */
+    var COR_TEMA = { artesanal: "#D4A65A", brasa: "#E0301E", autoral: "#C98A3E" };
+    var corLoja = /^#b0703f$/i.test(loja.cor || "") ? COR_TEMA[TEMAS[modelo]] : loja.cor;
+    if (/^#[0-9a-f]{6}$/i.test(corLoja || "")) { var viva = clareia(corLoja); raiz.setProperty("--cor", viva); raiz.setProperty("--cor-txt", corTexto(viva)); }
+    var eb = $("eyebrow"); eb.textContent = ETIQUETAS[modelo]; eb.hidden = false;
+    var tr = $("faixaTrilho"); tr.textContent = "";
+    for (var k = 0; k < 8; k++) { tr.appendChild(el("span", "", loja.store_name)); tr.appendChild(el("i", "", "★")); }
     var meta = document.querySelector('meta[name="theme-color"]'); if (meta && loja.cor) meta.setAttribute("content", loja.cor);
     document.title = loja.store_name + " · Cardápio";
 
@@ -103,13 +121,15 @@
     var fundo = $("capaFundo"); fundo.textContent = "";
     var capa = urlSegura(loja.capa_url);
     /* sem capa própria: foto padrão pelo tipo do negócio, até a loja enviar a dela */
-    var CAPAS = { padaria: "/assets/img/croissant.jpg", cafeteria: "/assets/img/inicio/19cca48161.jpg", hamburgueria: "/assets/img/burger.jpg",
-      doceria: "/assets/img/inicio/e2ae4d8fc3.jpg", restaurante: "/assets/img/inicio/6d12c20478.jpg" };
-    var padrao = !capa && CAPAS[loja.modelo];
+    var padrao = !capa && ((window.BC_CAPAS || {})[loja.modelo] || "");
     if (capa || padrao) {
       var ic = el("img", padrao ? "padrao" : ""); ic.alt = ""; ic.src = capa || padrao;
       ic.addEventListener("load", function () { fundo.classList.add("carregou"); });
-      ic.addEventListener("error", function () { ic.remove(); }); fundo.appendChild(ic);
+      ic.addEventListener("error", function () {
+        /* capa da loja não abriu: usa a capa padrão do tipo, se houver */
+        var reserva = (window.BC_CAPAS || {})[loja.modelo];
+        if (!padrao && reserva && ic.getAttribute("src") !== reserva) { ic.className = "padrao"; ic.src = reserva; } else ic.remove();
+      }); fundo.appendChild(ic);
     }
     var logo = $("logo"); logo.textContent = "";
     var lu = urlSegura(loja.logo_url);
@@ -167,7 +187,7 @@
   function foto(p, cls) {
     var f = el("div", cls || "foto"), u = urlSegura(p.image_url);
     if (u) {
-      f.classList.add("brilhando");
+      f.classList.add("brilhando"); if (p.extra && p.extra.ajuste === "contain") f.classList.add("contem");
       var i = el("img"); i.alt = p.name; i.loading = "lazy"; i.decoding = "async"; i.src = u;
       i.addEventListener("load", function () { f.classList.remove("brilhando"); f.classList.add("carregou"); });
       i.addEventListener("error", function () { f.classList.remove("brilhando"); i.remove(); f.textContent = (p.name || "?")[0].toUpperCase(); });

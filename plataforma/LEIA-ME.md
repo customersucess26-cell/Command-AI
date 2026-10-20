@@ -15,6 +15,8 @@ Uma plataforma só, com várias lojas. O empreendedor se cadastra, cria a loja e
 | `assets/config.js` | Endereço e chave pública do Supabase da plataforma |
 | `assets/efeitos.js` e `assets/efeitos.css` | Efeitos visuais (blocos que surgem, contadores, confete, cabeçalho de vidro, máscara de WhatsApp). Quem pede "reduzir movimento" no celular vê tudo parado |
 | `crm/` | Seu painel de leads, orçamentos e plano de negócio (o mesmo do site oficial). Usa o Supabase do site oficial, configurado em `window.BISTRO` no `assets/config.js`. Gerado por `ferramentas/montar-crm-plataforma.py` |
+| `assets/vitrine-temas.css` | Os 3 temas da vitrine, inspirados nos sites de referência: **artesanal** (padaria, cafeteria, doceria), **brasa** (hamburgueria, pizzaria) e **autoral** (restaurante e outros). O tema vem do tipo escolhido ao criar a loja |
+| `assets/exemplo.js` e `assets/img/exemplo/` | Cardápio de exemplo com fotos para cada tipo de loja (botão "Usar exemplo com fotos" no painel). Gerado por `ferramentas/montar-exemplos.py` |
 | `termos.html` e `privacidade.html` | Termos de uso e Política de privacidade. Os dados da empresa vêm de `empresa` no `assets/config.js` |
 | `assets/medicao.js` | Meta Pixel, Google Ads e Google Analytics, com aviso de cookies (LGPD) |
 | `assets/nicho.js` | Página de vendas por nicho: `/?para=padaria`, `cafeteria`, `hamburgueria`, `restaurante`, `pizzaria`, `confeitaria`, `marmitaria` |

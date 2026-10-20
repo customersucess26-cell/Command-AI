@@ -1,0 +1,173 @@
+/* Bistrô Connect · temas da vitrine. Três jeitos de apresentar a loja, inspirados nos sites de referência:
+   .t-artesanal (padaria, cafeteria, doceria)   café escuro e dourado, serifa Gloock, caligrafia
+   .t-brasa     (hamburgueria, pizzaria)        preto, vermelho e brasa, Anton, cantos cortados
+   .t-autoral   (restaurante e outros)          carvão e âmbar, Cormorant, molduras finas
+   O tema é escolhido por assets/loja.js a partir do tipo da loja. A cor da marca (--cor) vem da loja. */
+
+/* ---------- peças comuns ---------- */
+.eyebrow{margin:0 0 6px;line-height:1.2}
+.faixa-marca{display:none}
+.infos>:first-child{margin-left:auto}.infos>:last-child{margin-right:auto}
+.prod,.dest{overflow:hidden}
+.foto.contem img{object-fit:contain;padding:10px}
+.menu{padding-bottom:40px}
+@media (min-width:760px){.menu,.infos,.abas-trilho{max-width:1040px}}
+
+/* =====================================================================
+   ARTESANAL · café escuro e dourado (Padaria & Café)
+   ===================================================================== */
+body.t-artesanal{
+  --fundo:#1B120C;--cartao:#2A1B12;--tinta:#F2E8DA;--suave:#CDB9A5;--linha:rgba(212,166,90,.24);
+  --ouro:#D4A65A;--ouro-claro:#EBCB8E;--espresso:#22160F;
+  --f-titulo:Gloock,"Bodoni 72",Didot,Georgia,serif;--f-corpo:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --titulo-peso:400;--titulo-esp:0;--titulo-caixa:none;--raio:22px;--sombra:0 22px 46px -28px rgba(0,0,0,.95);
+  background:radial-gradient(900px 520px at 50% -8%,rgba(212,166,90,.13),transparent 62%),var(--fundo);
+}
+.t-artesanal .capa{min-height:420px;align-items:center;justify-content:center;text-align:center;padding-bottom:34px}
+.t-artesanal .capa-fundo::after{background:radial-gradient(110% 80% at 50% 42%,rgba(27,18,12,.5),rgba(27,18,12,.86) 90%),linear-gradient(180deg,rgba(27,18,12,.1),rgba(27,18,12,.97))}
+.t-artesanal .capa-fundo img.padrao{filter:saturate(1.1) brightness(.95)}
+.t-artesanal .capa-conteudo{flex-direction:column;align-items:center;gap:14px}
+.t-artesanal .logo{width:92px;height:92px;border-radius:50%;background:#F2E8DA;color:var(--espresso);border:3px solid var(--ouro);font:400 32px/1 var(--f-titulo);box-shadow:0 0 0 6px rgba(212,166,90,.14),0 16px 40px -14px #000}
+.t-artesanal .capa-txt{display:flex;flex-direction:column;align-items:center}
+.t-artesanal .eyebrow{font:400 clamp(26px,7.5vw,38px)/1.1 "Pinyon Script","Snell Roundhand","Brush Script MT",cursive;color:var(--ouro-claro);text-transform:none;letter-spacing:0}
+.t-artesanal .capa h1{font-size:clamp(38px,11vw,64px);line-height:1.04;color:#FFF7EA;text-shadow:0 4px 30px rgba(0,0,0,.5)}
+.t-artesanal .capa h1::after{content:"—— ◆ ——";display:block;font:400 13px/1 var(--f-corpo);letter-spacing:.2em;color:var(--ouro);margin:16px auto 6px;text-shadow:none}
+.t-artesanal .descricao{color:rgba(255,247,234,.88);text-align:center;margin-inline:auto;max-width:34ch}
+.t-artesanal .selo{background:rgba(27,18,12,.55);border:1px solid var(--linha);color:var(--ouro-claro);letter-spacing:.06em;margin:4px 0 0}
+.t-artesanal .infos{padding-top:18px}
+.t-artesanal .chip{background:rgba(255,255,255,.04);border-color:var(--linha);color:var(--tinta)}
+.t-artesanal .chip i{color:var(--ouro)}
+.t-artesanal .abas{background:rgba(27,18,12,.9);border-bottom:1px solid var(--linha)}
+.t-artesanal .aba{font:700 12.5px/1 var(--f-corpo);letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--linha);color:var(--ouro-claro);padding:0 16px}
+.t-artesanal .aba.ativa{background:linear-gradient(180deg,var(--ouro-claro),var(--ouro));color:var(--espresso);border-color:transparent}
+.t-artesanal .secao{padding-top:34px}
+.t-artesanal .secao h2{text-align:center;font-size:clamp(28px,7.5vw,36px);color:#FFF7EA}
+.t-artesanal .secao h2::after{content:"—— ◆ ——";display:block;font:400 12px/1 var(--f-corpo);letter-spacing:.2em;color:var(--ouro);margin:12px auto 20px}
+.t-artesanal .lista{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (min-width:760px){.t-artesanal .lista{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
+.t-artesanal .prod{display:flex;flex-direction:column;padding:0;text-align:center;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01)),var(--cartao);border:1px solid var(--linha);border-radius:22px}
+.t-artesanal .prod .foto{order:-1;width:100%;height:auto;aspect-ratio:1/1;border-radius:0;background:#120b07;color:var(--ouro)}
+.t-artesanal .prod>div:first-child{display:flex;flex-direction:column;flex:1;padding:12px 12px 14px}
+.t-artesanal .prod h3{font:400 18px/1.15 var(--f-titulo);color:#FFF7EA}
+.t-artesanal .prod p{font-size:13px;-webkit-line-clamp:2;margin-top:6px}
+.t-artesanal .prod .meta{flex-direction:column;align-items:stretch;gap:10px;margin-top:auto;padding-top:12px}
+.t-artesanal .prod.sem-foto{grid-column:1/-1}
+.t-artesanal .badge{color:var(--ouro);letter-spacing:.14em;order:-1}
+.t-artesanal .preco{font:400 20px var(--f-titulo);color:var(--ouro-claro)}
+.t-artesanal .preco small{display:block;font:600 11px var(--f-corpo);letter-spacing:.16em;text-transform:uppercase;color:var(--suave);margin:2px 0 0}
+.t-artesanal .add{width:100%;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(180deg,var(--cor),color-mix(in srgb,var(--cor) 78%,#000));box-shadow:0 10px 22px -12px var(--cor)}
+.t-artesanal .passo{width:100%;justify-content:space-between;background:rgba(212,166,90,.12);border-color:var(--linha)}
+.t-artesanal .passo button{color:var(--ouro-claro)}
+.t-artesanal .dest{border-radius:22px;text-align:center;width:min(66vw,230px)}
+.t-artesanal .dest .foto{height:auto;aspect-ratio:1/1}
+.t-artesanal .dest h3{font:400 18px/1.15 var(--f-titulo);color:#FFF7EA}
+.t-artesanal .dest .meta{flex-direction:column;align-items:stretch}
+.t-artesanal .barra{border-radius:999px;background:linear-gradient(180deg,var(--cor),color-mix(in srgb,var(--cor) 76%,#000));letter-spacing:.04em;box-shadow:0 18px 40px -14px var(--cor)}
+
+/* =====================================================================
+   BRASA · preto, vermelho e brasa (Bruto Burger Co.)
+   ===================================================================== */
+body.t-brasa{
+  --fundo:#0D0C0B;--cartao:#151311;--tinta:#F3E9D8;--suave:#A69D8F;--linha:#2B2723;
+  --vermelho:#E0301E;--brasa:#FF6A1A;--mostarda:#F4B63A;
+  --f-titulo:Anton,Impact,"Arial Narrow",sans-serif;--f-corpo:Barlow,"Helvetica Neue",Arial,sans-serif;--f-marca:"Permanent Marker","Marker Felt",cursive;
+  --titulo-peso:400;--titulo-esp:.01em;--titulo-caixa:uppercase;--raio:4px;--sombra:0 18px 40px -26px #000;
+}
+.t-brasa .capa{min-height:460px;padding-bottom:30px}
+.t-brasa .capa-fundo::after{background:linear-gradient(90deg,rgba(13,12,11,.92),rgba(13,12,11,.35) 70%),linear-gradient(180deg,rgba(13,12,11,.1),rgba(13,12,11,.96))}
+.t-brasa .capa-fundo img.padrao{filter:saturate(1.1) contrast(1.05)}
+.t-brasa .capa::before{content:"";position:absolute;inset:-40% 0 0;z-index:1;pointer-events:none;opacity:.8;
+  background-image:radial-gradient(2.2px 2.2px at 12% 80%,#ff6a1a,transparent),radial-gradient(1.8px 1.8px at 28% 60%,#f4b63a,transparent),radial-gradient(2px 2px at 46% 90%,#ff6a1a,transparent),
+    radial-gradient(1.6px 1.6px at 63% 70%,#f4b63a,transparent),radial-gradient(2.4px 2.4px at 78% 85%,#ff6a1a,transparent),radial-gradient(1.8px 1.8px at 90% 55%,#f4b63a,transparent);
+  background-size:100% 70%;background-repeat:repeat-y;animation:brasas 9s linear infinite}
+@keyframes brasas{to{background-position:0 -70%}}
+.t-brasa .capa-conteudo{flex-direction:column;align-items:flex-start;gap:16px}
+.t-brasa .logo{width:64px;height:64px;border-radius:0;clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%);border:0;background:var(--cor);font:400 26px/1 var(--f-titulo);box-shadow:none}
+.t-brasa .eyebrow{font:400 16px/1.2 var(--f-corpo);letter-spacing:.2em;text-transform:uppercase;color:var(--mostarda)}
+.t-brasa .capa h1{font-size:clamp(52px,16vw,92px);line-height:.94;color:#FFF3E0}
+.t-brasa .descricao{font-size:17px;color:rgba(243,233,216,.85);max-width:36ch}
+.t-brasa .selo{border-radius:0;background:var(--vermelho);color:#fff;letter-spacing:.12em;text-transform:uppercase;font-size:12px;padding:6px 12px;clip-path:polygon(0 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%)}
+.t-brasa .selo::before{background:#fff}
+.t-brasa .faixa-marca{display:block;position:relative;z-index:2;overflow:hidden;background:var(--brasa);color:#0D0C0B;transform:rotate(-1.4deg);margin:-6px -12px 10px;padding:10px 0;box-shadow:0 10px 30px -10px rgba(255,106,26,.55)}
+.t-brasa .faixa-trilho{display:flex;gap:22px;width:max-content;white-space:nowrap;font:400 22px/1 var(--f-titulo);text-transform:uppercase;letter-spacing:.04em;animation:faixa 26s linear infinite}
+.t-brasa .faixa-trilho span,.t-brasa .faixa-trilho i{flex:none}
+.t-brasa .faixa-trilho i{font-style:normal}
+@keyframes faixa{to{transform:translateX(-50%)}}
+.t-brasa .chip{border-radius:0;background:transparent;border:1px solid var(--linha);font-weight:600;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
+.t-brasa .chip i{color:var(--brasa)}
+.t-brasa .abas{background:rgba(13,12,11,.92);border-bottom:1px solid var(--linha)}
+.t-brasa .aba{border-radius:0;font:400 16px/1 var(--f-titulo);letter-spacing:.08em;text-transform:uppercase;color:var(--suave);padding:0 16px}
+.t-brasa .aba.ativa{background:var(--cor);color:var(--cor-txt);clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%)}
+.t-brasa .secao h2{font-size:clamp(30px,8vw,40px);border-left:6px solid var(--cor);padding-left:12px}
+.t-brasa .lista{gap:12px}
+.t-brasa .prod{grid-template-columns:128px 1fr;gap:14px;padding:10px 12px 10px 10px;border-radius:2px;border:1px solid var(--linha);border-left:4px solid var(--cor);background:var(--cartao)}
+.t-brasa .prod .foto{order:-1;width:128px;height:100%;min-height:128px;border-radius:2px;background:#0a0908;color:var(--brasa)}
+.t-brasa .prod.sem-foto{grid-template-columns:1fr;padding:14px}
+.t-brasa .prod h3{font:400 22px/1.05 var(--f-titulo);text-transform:uppercase;letter-spacing:.01em;color:#FFF3E0}
+.t-brasa .prod p{font-size:14px;-webkit-line-clamp:2}
+.t-brasa .badge{font:400 15px/1 var(--f-marca);color:var(--mostarda);letter-spacing:0;text-transform:none;transform:rotate(-2deg);margin-bottom:6px}
+.t-brasa .preco{font:400 26px/1 var(--f-titulo);color:var(--mostarda);letter-spacing:.02em}
+.t-brasa .preco small{font:600 12px var(--f-corpo);color:var(--suave);text-transform:uppercase;letter-spacing:.1em}
+.t-brasa .add{border-radius:0;font:400 16px/1 var(--f-titulo);letter-spacing:.08em;text-transform:uppercase;min-height:42px;padding:0 20px;clip-path:polygon(0 0,100% 0,100% calc(100% - 9px),calc(100% - 9px) 100%,0 100%)}
+.t-brasa .passo{border-radius:0;background:transparent;border:1px solid var(--cor)}
+.t-brasa .passo button{border-radius:0;color:var(--cor)}
+.t-brasa .dest{border-radius:2px;border-top:4px solid var(--cor)}
+.t-brasa .dest h3{font:400 22px/1.05 var(--f-titulo);color:#FFF3E0}
+.t-brasa .barra{border-radius:0;letter-spacing:.06em;text-transform:uppercase;font-family:var(--f-titulo);font-weight:400;font-size:19px;clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%);box-shadow:none}
+
+/* =====================================================================
+   AUTORAL · carvão e âmbar (Âmbar Cozinha & Vinhos)
+   ===================================================================== */
+body.t-autoral{
+  --fundo:#110F0D;--cartao:#1A1713;--tinta:#F1E8DA;--suave:#B3A693;--linha:rgba(232,191,122,.24);
+  --ambar:#C98A3E;--ambar2:#E8BF7A;--cobre:#9C5A2B;
+  --f-titulo:Cormorant,"Cormorant Garamond",Georgia,serif;--f-corpo:Jost,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --titulo-peso:500;--titulo-esp:0;--titulo-caixa:none;--raio:2px;--sombra:0 24px 50px -30px #000;
+  background:radial-gradient(800px 480px at 80% -6%,rgba(201,138,62,.12),transparent 60%),var(--fundo);
+}
+.t-autoral .capa{min-height:470px;padding-bottom:36px}
+.t-autoral .capa-fundo::after{background:linear-gradient(180deg,rgba(17,15,13,.45),rgba(17,15,13,.7) 55%,rgba(17,15,13,.98))}
+.t-autoral .capa-fundo img.padrao{filter:saturate(.9) brightness(.85)}
+.t-autoral .capa-conteudo{flex-direction:column;align-items:flex-start;gap:20px}
+.t-autoral .logo{width:62px;height:62px;border-radius:0;background:transparent;color:var(--ambar2);border:1px solid var(--ambar2);font:italic 500 28px/1 var(--f-titulo);box-shadow:none;outline:1px solid rgba(232,191,122,.25);outline-offset:4px}
+.t-autoral .eyebrow{display:flex;align-items:center;gap:12px;font:italic 400 22px/1.2 var(--f-titulo);color:var(--ambar2);letter-spacing:.02em;text-transform:none}
+.t-autoral .eyebrow::before{content:"";width:38px;height:1px;background:var(--ambar2)}
+.t-autoral .capa h1{font-size:clamp(54px,16vw,96px);font-weight:400;line-height:.98;background:linear-gradient(180deg,#F4D9A4,#C98A3E 62%,#9C5A2B);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.t-autoral .descricao{font:300 17px/1.6 var(--f-corpo);color:rgba(241,232,218,.82);max-width:38ch}
+.t-autoral .selo{border-radius:0;background:transparent;border:1px solid var(--linha);color:var(--ambar2);font:500 11.5px/1 var(--f-corpo);letter-spacing:.2em;text-transform:uppercase;padding:8px 12px;margin:2px 0 0}
+.t-autoral .chip{border-radius:0;background:transparent;border:1px solid var(--linha);font:400 13.5px/1 var(--f-corpo);letter-spacing:.04em}
+.t-autoral .chip i{color:var(--ambar2)}
+.t-autoral .abas{background:rgba(17,15,13,.92);border-bottom:1px solid var(--linha)}
+.t-autoral .aba{border-radius:0;font:500 12.5px/1 var(--f-corpo);letter-spacing:.2em;text-transform:uppercase;color:var(--suave);padding:0 12px;border-bottom:2px solid transparent}
+.t-autoral .aba.ativa{background:none;color:var(--ambar2);border-bottom-color:var(--ambar2)}
+.t-autoral .secao{padding-top:36px}
+.t-autoral .secao h2{text-align:center;font:italic 500 clamp(34px,9vw,46px)/1.05 var(--f-titulo);color:var(--ambar2)}
+.t-autoral .secao h2::after{content:"";display:block;width:64px;height:1px;background:var(--ambar2);margin:14px auto 22px;opacity:.7}
+.t-autoral .lista{gap:18px}
+@media (min-width:760px){.t-autoral .lista{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}}
+.t-autoral .prod{display:flex;flex-direction:column;align-items:stretch;gap:16px;padding:22px 20px 24px;text-align:center;border-radius:2px;background:var(--cartao);border:1px solid var(--linha);outline:1px solid rgba(232,191,122,.1);outline-offset:-9px}
+.t-autoral .prod .foto{order:-1;width:100%;height:auto;aspect-ratio:16/10;border-radius:0;background:#0b0a08;color:var(--ambar2)}
+.t-autoral .prod>div:first-child{display:flex;flex-direction:column;flex:1}
+.t-autoral .prod h3{font:italic 500 28px/1.05 var(--f-titulo);color:#F8EEDC;text-transform:none;letter-spacing:0}
+.t-autoral .prod p{font:300 14.5px/1.55 var(--f-corpo);margin-top:8px;-webkit-line-clamp:3}
+.t-autoral .prod .meta{flex-direction:column;align-items:center;gap:14px;margin-top:auto;padding-top:14px}
+.t-autoral .badge{font:500 11px/1 var(--f-corpo);letter-spacing:.22em;color:var(--ambar2);margin-bottom:8px}
+.t-autoral .preco{font:500 28px/1 var(--f-titulo);color:var(--ambar2)}
+.t-autoral .preco small{display:block;font:400 11px var(--f-corpo);letter-spacing:.2em;text-transform:uppercase;color:var(--suave);margin:4px 0 0}
+.t-autoral .add{border-radius:0;background:transparent;color:var(--ambar2);border:1px solid var(--ambar2);font:500 12.5px/1 var(--f-corpo);letter-spacing:.2em;text-transform:uppercase;min-width:180px;transition:background .2s,color .2s}
+.t-autoral .add:hover,.t-autoral .add:active{background:var(--ambar2);color:#1a1208}
+.t-autoral .passo{border-radius:0;background:transparent;border:1px solid var(--ambar2);min-width:180px;justify-content:space-between}
+.t-autoral .passo button{border-radius:0;color:var(--ambar2)}
+.t-autoral .dest{border-radius:2px;width:min(74vw,270px);text-align:center;outline:1px solid rgba(232,191,122,.1);outline-offset:-7px}
+.t-autoral .dest .foto{height:auto;aspect-ratio:4/3}
+.t-autoral .dest h3{font:italic 500 24px/1.05 var(--f-titulo);color:#F8EEDC;text-transform:none}
+.t-autoral .dest .meta{flex-direction:column;align-items:center}
+.t-autoral .barra{border-radius:2px;background:linear-gradient(135deg,#E8BF7A,#C98A3E);color:#1a1208;font-family:var(--f-corpo);font-weight:500;letter-spacing:.12em;text-transform:uppercase;font-size:13.5px}
+.t-autoral .barra-qtd{background:rgba(26,18,8,.18)}
+
+/* rodapé nos três temas */
+.t-artesanal .rodape,.t-brasa .rodape,.t-autoral .rodape{border-top:1px solid var(--linha);margin-top:20px}
+.t-artesanal .rodape a b,.t-autoral .rodape a b{color:var(--ouro-claro,var(--ambar2))}
+
+@media (prefers-reduced-motion:reduce){.t-brasa .capa::before,.t-brasa .faixa-trilho{animation:none}}
