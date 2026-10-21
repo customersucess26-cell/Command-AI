@@ -9,7 +9,7 @@
   /* link curto /p/<código> (reescrito pelo .htaccess), ?c=<código> ou, nos links antigos, #<código longo> */
   var token = ((location.pathname.match(/^\/p\/([a-f0-9]{16})\/?$/) || [])[1] || new URLSearchParams(location.search).get("c") || (location.hash || "").replace(/^#(t=)?/, "")).trim();
   var demo = token === "demo";
-  var timer = null, ultimo = null, demoInicio = Date.now();
+  var timer = null, ultimo = null, demoInicio = Date.now(), demoPasso = null;
 
   var TEMAS = { padaria: "grid", doceria: "grid", cafeteria: "cafe", hamburgueria: "burger", pizzaria: "burger", restaurante: "plates", outro: "plates" };
   var brl = function (v) { return (Number(v) || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); };
@@ -141,14 +141,14 @@
   }
 
   function exemplo() {
-    var passo = Math.min(4, Math.floor((Date.now() - demoInicio) / 8000));
+    var passo = demoPasso != null ? demoPasso : Math.min(4, Math.floor((Date.now() - demoInicio) / 8000));
     var st = ["novo", "confirmado", "em_preparo", "pronto", "entregue"][passo], agora = Date.now(), h = [];
     for (var i = 0; i <= passo; i++) h.push({ status: ["novo", "confirmado", "em_preparo", "pronto", "entregue"][i], at: new Date(agora - (passo - i) * 6 * 60000).toISOString() });
     return {
       code: "#42", status: st, delivery_type: "entrega", scheduled_for: "Hoje, o quanto antes", created_at: h[0].at, modelo: "padaria",
-      first_name: "Maria", store_name: "Padaria Exemplo", whatsapp: "5542999990000", address: "Rua das Flores, 120 · Centro",
-      items: [{ name: "Croissant de manteiga", unit: "Unidade", qty: 2, price: 12.9, image_url: "/assets/img/exemplo/croissant-tradicional.jpg" }, { name: "Cappuccino", unit: "300 ml", qty: 2, price: 14.5 }],
-      subtotal: 54.8, delivery_fee: 6, total: 60.8, payment_method: "pix", payment_status: passo >= 1 ? "pago" : "pendente", history: h
+      first_name: "Juliana", store_name: "Padaria da Ana", whatsapp: "5542999990000", address: "Rua das Flores, 120 · Centro",
+      items: [{ name: "Pão doce com creme", unit: "Unidade", qty: 2, price: 8, image_url: "/assets/img/exemplo/pao-doce-com-creme.jpg" }, { name: "Cappuccino cremoso", unit: "Xícara", qty: 1, price: 12, image_url: "/assets/img/exemplo/cafe-menu-cappuccino-cacau.jpg" }],
+      subtotal: 28, delivery_fee: 5, total: 33, payment_method: "pix", payment_status: passo >= 1 ? "pago" : "pendente", history: h
     };
   }
 
@@ -178,6 +178,7 @@
       });
   }
 
+  if (demo) window.addEventListener("message", function (e) { if (e.origin === location.origin && e.data && typeof e.data.bcDemo === "number") { demoPasso = Math.max(0, Math.min(4, e.data.bcDemo)); busca(); } });
   busca();
   timer = setInterval(function () { if (!document.hidden) busca(); }, demo ? 4000 : 6000);
   document.addEventListener("visibilitychange", function () { if (!document.hidden && timer) busca(); });

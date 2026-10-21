@@ -60,6 +60,8 @@ def politica(html, hashes):
     if usa("youtube.com/embed") or usa("instagram.com/reel"):  # vídeos do modelo padaria
         frame = ["https://www.youtube.com", "https://www.youtube-nocookie.com",
                  "https://www.instagram.com", "https://www.facebook.com"]
+    if usa('data-demo-frame'):  # telefone do rastreio mostra a própria página pedido.html em moldura
+        frame = [f for f in frame if f != "'none'"] + ["'self'"]
     regras = {
         "default-src": ["'self'"],
         "script-src": script,
