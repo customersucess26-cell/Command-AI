@@ -10,6 +10,23 @@
   var COLUNAS_LOJA = "id,slug,store_name,modelo,descricao,whatsapp,address,hours,instagram,cor,logo_url,capa_url," +
     "delivery_fee,min_order,accept_orders,faz_entrega,faz_retirada,pagamentos,extra,status";
 
+  /* se o loja.html no ar for de uma versão antiga, monta aqui o cabeçalho novo e troca o estilo, em vez de travar */
+  (function garanteCasca() {
+    var app = document.getElementById("app"); if (!app || document.getElementById("topo")) return;
+    var topo = document.createElement("header"); topo.id = "topo"; topo.className = "topo";
+    var faixa = document.createElement("div"); faixa.id = "capaFaixa"; faixa.className = "capa-faixa"; faixa.hidden = true;
+    var capa = app.querySelector(".capa");
+    if (capa) capa.parentNode.insertBefore(topo, capa); else app.insertBefore(topo, app.firstChild);
+    topo.parentNode.insertBefore(faixa, topo.nextSibling);
+    if (capa) capa.parentNode.removeChild(capa);
+    var fm = app.querySelector(".faixa-marca"); if (fm) fm.parentNode.removeChild(fm);
+    Array.prototype.forEach.call(document.querySelectorAll('link[href*="vitrine-temas.css"]'), function (l) { l.parentNode.removeChild(l); });
+    function css(href) { var l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l); }
+    if (!document.querySelector('link[href*="loja-modelos.css"]')) css("/assets/loja-modelos.css");
+    css("https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=Yellowtail&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap");
+    var bt = document.querySelector(".barra-txt"); if (bt) bt.textContent = "Finalizar pedido";
+  })();
+
   var slug = (new URLSearchParams(location.search).get("l") || (location.pathname.match(/^\/l\/([a-z0-9-]{3,40})\/?$/) || [])[1] || "").toLowerCase();
   var loja = null, cats = [], prods = [], porId = {}, carrinho = {}, passo = "carrinho";
   var idem = { sig: "", chave: "" }, enviando = false, ultimoPedido = null;
