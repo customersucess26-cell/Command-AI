@@ -72,6 +72,8 @@ j = j.replace(_g.group(0), """    const sem=dias.map(d=>validos(orders).filter(o
 
 j = troca(j, "const TITULOS={inicio:'Início',", "const TITULOS={inicio:'Visão geral',")
 
+j = troca(j, "esc(mens?brl(mens):'Grátis')", "esc(mens?brl(mens):'Convite')")
+
 # ---- CSS: paleta quente igual à da página de vendas
 css += r"""
 /* ===== visual igual ao da página de vendas: claro quente, menu marrom, títulos Fraunces ===== */

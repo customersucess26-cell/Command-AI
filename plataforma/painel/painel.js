@@ -412,7 +412,7 @@ let planoEm=0;
 function planoHtml(f){const v=num(f.vendido),ate=num(f.ate_valor),pct=ate?Math.min(100,v/ate*100):100,mens=num(f.mensalidade);
   const txt=ate?(v<ate?'Faltam '+brl(ate-v)+' em vendas para mudar de faixa.':'Você passou desta faixa. Parabéns pelas vendas!'):'Faixa sem limite: pode vender à vontade.';
   return `<div class="pm-linha"><div><span class="lbl">Vendido no mês</span><b>${esc(brl(v))}</b><small>pedidos não cancelados</small></div>`+
-    `<div class="pm-plano"><span class="lbl">Plano ${esc(f.plano_nome||'')}</span><b>${esc(mens?brl(mens):'Grátis')}${mens?'<small>/mês</small>':''}</b><small>${esc(ate?'faixa até '+brl0(ate):'sem limite')}</small></div></div>`+
+    `<div class="pm-plano"><span class="lbl">Plano ${esc(f.plano_nome||'')}</span><b>${esc(mens?brl(mens):'Convite')}${mens?'<small>/mês</small>':''}</b><small>${esc(ate?'faixa até '+brl0(ate):'sem limite')}</small></div></div>`+
     `<div class="pm-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(pct)}"><i style="width:${pct.toFixed(1)}%"></i></div><p class="pm-nota">${esc(txt)}</p>`}
 /* primeiros passos: guia para quem acabou de criar a loja */
 const PASSOS_LOJA=[
