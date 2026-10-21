@@ -399,7 +399,7 @@
     }
     if (fotos.length) {
       var ga = secaoEl("s-galeria", auto ? "Uma volta pelo cardápio" : "Galeria", "galeria"), gr = el("div", "galeria-grade n" + Math.min(fotos.length, 6));
-      fotos.forEach(function (u, i) { var d = el("div", "gfoto"), im2 = el("img"); im2.alt = nome + " · foto " + (i + 1); im2.loading = "lazy"; im2.decoding = "async"; im2.src = u; d.appendChild(im2); gr.appendChild(d); });
+      fotos.forEach(function (u, i) { var d = el("div", "gfoto"), im2 = el("img"); im2.alt = nome + " · foto " + (i + 1); im2.loading = "lazy"; im2.decoding = "async"; im2.src = u; d.style.setProperty("--gbg", "url(\"" + u.replace(/["\\()\s]/g, encodeURIComponent) + "\")"); d.appendChild(im2); gr.appendChild(d); });
       ga.appendChild(gr); box.appendChild(ga);
     }
 

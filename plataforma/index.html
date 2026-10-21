@@ -1000,7 +1000,9 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
 @media (prefers-reduced-motion:reduce){.js-efeitos .ad2-lado .wa-b{opacity:1;transform:none;animation:none!important}.js-efeitos .ad2-lado .cel-notif{display:none}}
 
 /* ===== cartão do pedido (imagem real) ===== */
-.wa-im{padding:3px!important;background:#fff}.wa-im img{display:block;width:100%;border-radius:7px}.cartao-chat{overflow:hidden}
+.wa-im{padding:3px!important;background:#fff}.wa-im img{display:block;width:100%;border-radius:7px}.nt-some{animation:ntsome 6s ease forwards}@keyframes ntsome{0%,55%{opacity:1;transform:none}75%,100%{opacity:0;transform:translateY(-14px);pointer-events:none}}
+.cartao-chat{overflow:hidden;padding:6px 5px!important;justify-content:flex-start}.cartao-chat .wa-b{max-width:98%!important;width:98%}.cartao-chat .wa-dia{display:none}
+.cel-wa .cartao-chat .wa-im img{max-height:100%;object-fit:cover;object-position:top}
 /* ===== v7b: cartão do pedido ===== */
 .pc-topo{display:flex;align-items:center;gap:10px;padding:8px 14px 10px 14px;background:#fff;border-bottom:1px solid #E6E1D9;color:#111}
 .pc-topo b{display:block;font-size:15.5px;font-weight:600}.pc-topo small{font-size:12px;color:#667781}
@@ -1161,7 +1163,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
             <div class="cel-ilha" aria-hidden="true"></div>
             <div class="cel-tela">
               <div class="cel-status" aria-hidden="true"><b>21:43</b><span class="cel-ic"><i></i><i></i><i></i><i></i><u></u></span></div>
-              <div class="cel-notif" aria-hidden="true"><span class="cel-notif-ic"></span><div><b>WhatsApp · agora</b><span>Juliana enviou uma foto</span></div></div>
+              <div class="cel-notif nt-some" aria-hidden="true"><span class="cel-notif-ic"></span><div><b>WhatsApp · agora</b><span>Juliana enviou uma foto</span></div></div>
               <div class="wa-topo"><span class="wa-volta" aria-hidden="true">‹</span><span class="wa-av">JU</span><div><b>Juliana</b><small>online</small></div></div>
               <div class="wa-chat cartao-chat">
                 <span class="wa-dia">HOJE</span>
