@@ -699,18 +699,32 @@
       return new Promise(function (ok) { c.toBlob(ok, "image/png"); });
     });
   }
-  function compartilhaCartao(codigo, num) {
-    var b = $("okCartao"); b.disabled = true; b.textContent = "Gerando cartão…";
-    api("rpc/cartao_pedido", { method: "POST", body: JSON.stringify({ p_code: codigo }) })
+  var cartaoBlob = null, cartaoNome = "pedido.png", cartaoTexto = "";
+  function preparaCartao(o) {
+    cartaoBlob = null; cartaoNome = "pedido-" + String(o.code).replace("#", "") + ".png";
+    var img = $("okImg"); img.hidden = true; img.removeAttribute("src");
+    $("okSalvar").hidden = true;
+    if (!o.track_code) return;
+    api("rpc/cartao_pedido", { method: "POST", body: JSON.stringify({ p_code: o.track_code }) })
       .then(desenhaCartao)
       .then(function (blob) {
-        if (!blob) throw 0;
-        var f = new File([blob], "pedido-" + String(num).replace("#", "") + ".png", { type: "image/png" });
-        if (navigator.canShare && navigator.canShare({ files: [f] })) return navigator.share({ files: [f], title: "Pedido " + num });
-        var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = f.name; document.body.appendChild(a); a.click(); a.remove();
-      })
-      .catch(function (e) { if (e && e.name === "AbortError") return; b.textContent = "Não consegui gerar o cartão"; return new Promise(function (r) { setTimeout(r, 2500); }); })
-      .then(function () { b.disabled = false; b.textContent = "Compartilhar cartão do pedido"; });
+        if (!blob) return;
+        cartaoBlob = blob; img.src = URL.createObjectURL(blob); img.hidden = false; $("okSalvar").hidden = false;
+      }).catch(function () {});
+  }
+  function enviaZap(ev) {
+    if (!cartaoBlob || !navigator.canShare) return;                 // sem cartão ou sem compartilhar: abre o WhatsApp com o texto
+    var f = new File([cartaoBlob], cartaoNome, { type: "image/png" });
+    if (!navigator.canShare({ files: [f] })) return;
+    ev.preventDefault();
+    navigator.share({ files: [f], text: cartaoTexto, title: "Pedido" }).catch(function (e) {
+      if (e && e.name !== "AbortError") window.open($("okZap").href, "_blank", "noopener");
+    });
+  }
+  function salvaCartao() {
+    if (!cartaoBlob) return;
+    var a = document.createElement("a"); a.href = URL.createObjectURL(cartaoBlob); a.download = cartaoNome;
+    document.body.appendChild(a); a.click(); a.remove();
   }
 
   function mensagemZap(o, d) {
@@ -759,7 +773,6 @@
 
     var zap = zapNumero(loja.whatsapp);
     var w = null;
-    if (zap) { try { w = window.open("about:blank", "_blank"); } catch (e) { w = null; } }
     enviando = true;
     var btn = $("btnAvancar"); btn.disabled = true; btn.textContent = "Enviando…";
     $("erroDados").textContent = "";
@@ -775,13 +788,13 @@
         $("okCodigo").textContent = "Pedido " + o.code;
         $("okTxt").textContent = "Total " + brl(o.total) + ". " + (zap ? "Envie o resumo no WhatsApp para a loja confirmar mais rápido." : "A loja já recebeu o seu pedido.");
         $("okRastreio").href = rastreio;
-        $("okCartao").hidden = !o.track_code; $("okCartao").textContent = "Compartilhar cartão do pedido";
-        $("okCartao").onclick = function () { compartilhaCartao(o.track_code, o.code); };
+        cartaoTexto = mensagemZap(o, d);
+        preparaCartao(o);
+        $("okZap").onclick = enviaZap; $("okSalvar").onclick = salvaCartao;
         var link = zap ? "https://wa.me/" + zap + "?text=" + encodeURIComponent(mensagemZap(o, d)) : "";
         $("okZap").hidden = !zap; if (zap) $("okZap").href = link;
         vaiPara("pronto");
         atualizaBarra();
-        if (w) abreJanela(w, link);
       })
       .catch(function (err) {
         if (w) try { w.close(); } catch (e) {}

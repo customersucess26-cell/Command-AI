@@ -274,3 +274,5 @@ h1,h2,h3{font-family:var(--f-titulo);font-weight:var(--titulo-peso);letter-spaci
 .add.grande{min-height:52px;padding:0 34px;font-size:17px}
 
 .bloco.final h2{border-left:0!important;padding-left:0!important}
+
+.ok-img{width:100%;max-width:260px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.18);margin:4px 0 6px}
