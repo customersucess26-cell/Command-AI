@@ -682,7 +682,7 @@
         carrinho = {}; salvaCarrinho();
         repintaControles();
         $("fObs").value = ""; $("fQuando").value = "";
-        var rastreio = siteBase() + "/pedido.html#" + o.track_token;
+        var rastreio = siteBase() + (o.track_code ? "/p/" + o.track_code : "/pedido.html#" + o.track_token);
         $("okCodigo").textContent = "Pedido " + o.code;
         $("okTxt").textContent = "Total " + brl(o.total) + ". " + (zap ? "Envie o resumo no WhatsApp para a loja confirmar mais rápido." : "A loja já recebeu o seu pedido.");
         $("okRastreio").href = rastreio;

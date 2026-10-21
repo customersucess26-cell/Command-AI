@@ -193,6 +193,10 @@ create table if not exists public.orders (
   unique (loja_id, idem_key)
 );
 create index if not exists orders_loja_created_idx on public.orders (loja_id, created_at desc);
+-- código curto do link de acompanhamento (bistroconnect.com.br/p/<código>): 12 letras e números, sem dados pessoais
+alter table public.orders add column if not exists track_code text;
+update public.orders set track_code = substr(track_token, 1, 12) where track_code is null;
+create unique index if not exists orders_track_code_idx on public.orders (track_code);
 
 create table if not exists public.order_events (
   id         bigint generated always as identity primary key,
@@ -543,6 +547,7 @@ declare
   taxa    numeric := 0;
   total   numeric;
   proximo int;
+  codigo  text;
 begin
   select * into loja from public.lojas l where l.slug = lower(coalesce(p_slug, ''));
   if not found or loja.status <> 'ativa' then perform public.recusa('Loja não encontrada.'); end if;
@@ -550,7 +555,7 @@ begin
 
   select * into ja from public.orders o where o.loja_id = loja.id and o.idem_key = p_idem;
   if found then
-    return jsonb_build_object('code', ja.code, 'track_token', ja.track_token, 'total', ja.total,
+    return jsonb_build_object('code', ja.code, 'track_token', ja.track_token, 'track_code', ja.track_code, 'total', ja.total,
                               'subtotal', ja.subtotal, 'delivery_fee', ja.delivery_fee, 'items', ja.items);
   end if;
 
@@ -644,15 +649,19 @@ begin
   perform pg_advisory_xact_lock(hashtext('pedido:' || loja.id::text));
   select coalesce(max(o.seq), 0) + 1 into proximo from public.orders o where o.loja_id = loja.id;
 
-  insert into public.orders (loja_id, seq, code, idem_key, track_token, customer_name, customer_phone, delivery_type,
+  loop
+    codigo := substr(replace(gen_random_uuid()::text, '-', ''), 1, 12);
+    exit when not exists (select 1 from public.orders o where o.track_code = codigo);
+  end loop;
+  insert into public.orders (loja_id, seq, code, idem_key, track_token, track_code, customer_name, customer_phone, delivery_type,
                              address, scheduled_for, notes, items, subtotal, delivery_fee, total, payment_method)
   values (loja.id, proximo, '#' || proximo::text, p_idem,
-          replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', ''),
+          replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', ''), codigo,
           nome, fone, tipo, ender, quando, obs, itens, soma, taxa, total, forma)
   returning * into novo;
   insert into public.order_events (order_id, loja_id, actor, campo, para) values (novo.id, loja.id, 'cliente', 'status', 'novo');
 
-  return jsonb_build_object('code', novo.code, 'track_token', novo.track_token, 'total', novo.total,
+  return jsonb_build_object('code', novo.code, 'track_token', novo.track_token, 'track_code', novo.track_code, 'total', novo.total,
                             'subtotal', novo.subtotal, 'delivery_fee', novo.delivery_fee, 'items', novo.items);
 end $$;
 
@@ -661,8 +670,8 @@ create or replace function public.rastrear_pedido(p_token text)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 declare o public.orders; l public.lojas;
 begin
-  if coalesce(p_token, '') !~ '^[a-f0-9]{32,64}$' then return null; end if;
-  select * into o from public.orders where track_token = p_token;
+  if coalesce(p_token, '') !~ '^([a-f0-9]{12}|[a-f0-9]{32,64})$' then return null; end if;
+  select * into o from public.orders where track_token = p_token or track_code = p_token;
   if not found then return null; end if;
   select * into l from public.lojas where id = o.loja_id;
   return jsonb_build_object(
