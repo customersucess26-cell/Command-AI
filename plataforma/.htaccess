@@ -23,7 +23,7 @@ RewriteRule \.(md|py|sql|sh|bak|old|orig|log|env|ini|conf|zip|tar|gz|rar|7z)$ - 
 RewriteRule ^l/([a-z0-9-]{3,40})/?$ loja.html?l=$1 [L,QSA]
 
 # 3b) Link curto de acompanhamento do pedido: /p/<código> abre pedido.html
-RewriteRule ^p/([a-f0-9]{12})/?$ pedido.html?c=$1 [L,QSA]
+RewriteRule ^p/([a-f0-9]{12})/?$ pedido.php?c=$1 [L,QSA]
 
 # 4) Só métodos que um site estático usa
 RewriteCond %{REQUEST_METHOD} !^(GET|HEAD|POST|OPTIONS)$

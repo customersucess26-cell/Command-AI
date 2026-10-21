@@ -624,7 +624,7 @@
 
   /* ---------- envio ---------- */
   /* mensagem do pedido para o WhatsApp da loja. Só texto e símbolos comuns (sem emoji): alguns celulares trocam emoji por "�".
-     O link de acompanhamento não vai aqui: o cliente vê na tela "Pedido recebido" e a loja manda pelo painel. */
+     O link curto no fim faz o WhatsApp mostrar o cartão do pedido (imagem gerada por og.php). */
   function mensagemZap(o, d) {
     var m = ["Olá, " + loja.store_name + "!", "Fiz o pedido *" + o.code + "* pelo site.", "", "*ITENS DO PEDIDO*"];
     (o.items || []).forEach(function (i) {
@@ -640,6 +640,7 @@
     m.push("*Pagamento:* " + d.pag);
     m.push("*Cliente:* " + d.nome + " · " + d.fone);
     if (d.obs) m.push("*Obs.:* " + d.obs);
+    if (o.track_code) m.push("", "*Acompanhe:* " + siteBase() + "/p/" + o.track_code);
     return m.join("\n");
   }
   function abreJanela(w, url) {
