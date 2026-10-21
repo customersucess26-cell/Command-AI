@@ -623,22 +623,23 @@
   }
 
   /* ---------- envio ---------- */
+  /* mensagem do pedido para o WhatsApp da loja. Só texto e símbolos comuns (sem emoji): alguns celulares trocam emoji por "�".
+     O link de acompanhamento não vai aqui: o cliente vê na tela "Pedido recebido" e a loja manda pelo painel. */
   function mensagemZap(o, d) {
-    var m = ["Olá, " + loja.store_name + "! 👋", "Fiz o pedido *" + o.code + "* pelo site.", "", "🛒 *Itens do pedido*"];
+    var m = ["Olá, " + loja.store_name + "!", "Fiz o pedido *" + o.code + "* pelo site.", "", "*ITENS DO PEDIDO*"];
     (o.items || []).forEach(function (i) {
       m.push("• " + i.qty + "× " + i.name + " — " + brl(i.price * i.qty));
       var ops = (i.options || []).map(function (x) { return x.name; });
       if (ops.length) m.push("   ↳ " + ops.join(", "));
     });
     m.push("");
-    if (Number(o.delivery_fee) > 0) m.push("🛵 Entrega: " + brl(o.delivery_fee));
-    m.push("💰 *Total: " + brl(o.total) + "*", "");
-    m.push(d.tipo === "entrega" ? "📍 Entregar em: " + d.end : "🏪 Vou retirar na loja");
-    if (d.quando) m.push("🕒 Para: " + d.quando);
-    m.push("💳 Pagamento: " + d.pag);
-    m.push("👤 " + d.nome + " · " + d.fone);
-    if (d.obs) m.push("📝 Obs.: " + d.obs);
-    m.push("", "🔗 Acompanhe seu pedido:", siteBase() + "/pedido.html#" + o.track_token);
+    if (Number(o.delivery_fee) > 0) m.push("Entrega: " + brl(o.delivery_fee));
+    m.push("*TOTAL: " + brl(o.total) + "*", "");
+    m.push(d.tipo === "entrega" ? "*Entregar em:* " + d.end : "*Retirada* na loja");
+    if (d.quando) m.push("*Para:* " + d.quando);
+    m.push("*Pagamento:* " + d.pag);
+    m.push("*Cliente:* " + d.nome + " · " + d.fone);
+    if (d.obs) m.push("*Obs.:* " + d.obs);
     return m.join("\n");
   }
   function abreJanela(w, url) {
