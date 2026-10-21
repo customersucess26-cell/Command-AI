@@ -545,3 +545,8 @@ details.mais[open]>summary{margin-bottom:14px}
 :root[data-theme="dark"] .kcol{background:#2E2018}
 #grafDias{margin-top:4px}
 @media (max-width:640px){.ult-l{grid-template-columns:auto 1fr auto}.ult-l .st{grid-column:1/-1;justify-self:start}}
+
+.seg-tema{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.seg-tema button{border:0;background:none;padding:8px 12px;font-weight:600;font-size:13px;cursor:pointer;color:var(--muted)}
+.seg-tema button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:640px){.seg-tema button{padding:8px 9px}}

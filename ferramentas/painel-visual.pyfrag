@@ -41,6 +41,11 @@ assert _n == 1
 h = troca(h, '<h1 id="titulo">Início</h1>', '<h1 id="titulo">Visão geral</h1>')
 open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
 
+
+# escolha de tema (claro / escuro) sempre à vista, no topo
+h = troca(h, '<span class="ao-vivo" id="aoVivo"', '<span class="seg-tema" role="group" aria-label="Tema"><button type="button" data-tema="light" title="Tema claro">☀ Claro</button><button type="button" data-tema="dark" title="Tema escuro">☾ Escuro</button></span>\n        <span class="ao-vivo" id="aoVivo"')
+open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
+
 # ---- JS
 # abre sempre na Visão geral; tema claro por padrão
 j = troca(j, "aplicaTema(lsGet('lj-tema','auto'));", "aplicaTema(lsGet('lj-tema','light'));")
@@ -111,3 +116,10 @@ details.mais[open]>summary{margin-bottom:14px}
 @media (max-width:640px){.ult-l{grid-template-columns:auto 1fr auto}.ult-l .st{grid-column:1/-1;justify-self:start}}
 """
 open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
+
+css += """
+.seg-tema{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.seg-tema button{border:0;background:none;padding:8px 12px;font-weight:600;font-size:13px;cursor:pointer;color:var(--muted)}
+.seg-tema button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:640px){.seg-tema button{padding:8px 9px}}
+"""
