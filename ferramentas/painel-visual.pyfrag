@@ -1,0 +1,113 @@
+# Trecho do montar-painel-plataforma.py (carregado por exec): visual do painel igual ao da página de vendas.
+# Tema claro quente por padrão, menu marrom, "Visão geral" ao abrir (4 números, gráfico de 7 dias, últimos pedidos, mais vendidos).
+import re as _re
+
+# fonte dos títulos (a mesma da página de vendas)
+h = troca(h, 'family=Poppins:wght@500;600;700&family=DM+Sans', 'family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans')
+
+# ---- Início = Visão geral
+INICIO_NOVO = '''<section class="panel" data-panel="inicio">
+      <div class="kpis k4" id="kpisInicio"></div>
+      <div class="box passos-box" id="primeirosPassos" data-papel="dono gerente" hidden>
+        <div class="pp-topo"><div class="pp-anel" id="ppAnel" style="--p:0"><b id="ppPct">0%</b></div>
+          <div><h2>Primeiros passos</h2><p class="muted fino">Complete estes passos e a sua loja fica pronta para vender.</p></div>
+          <button class="btn small pp-fecha" type="button" id="ppFecha" aria-label="Esconder os primeiros passos">Esconder</button></div>
+        <ol class="pp-lista" id="ppLista"></ol>
+      </div>
+      <div class="box" data-recurso="pedidos"><div class="box-head"><h2>Pedidos nos últimos 7 dias</h2><span class="muted fino" id="semTotal"></span></div><div class="grafico" id="grafDias"></div></div>
+      <div class="grid2" data-recurso="pedidos">
+        <div class="box"><div class="box-head"><h2>Últimos pedidos</h2><button class="btn small" type="button" data-ir="pedidos">Ver todos</button></div><div class="ult" id="ultimosPedidos"></div></div>
+        <div class="box"><div class="box-head"><h2>Mais vendidos</h2><span class="muted fino">últimos 30 dias</span></div><div id="maisVendidos" class="ranking"></div></div>
+      </div>
+      <div class="grid2">
+        <div class="box"><div class="box-head"><h2>Link da sua loja</h2><span class="muted fino">mande para os clientes</span></div>
+          <p class="link-loja"><a id="linkLoja" href="#" target="_blank" rel="noopener"></a></p>
+          <div class="acoes-linha"><button class="btn small" type="button" id="btnCopiaLink">Copiar link</button><a class="btn zap small" id="btnZapLink" href="#" target="_blank" rel="noopener noreferrer">Divulgar no WhatsApp</a></div></div>
+        <div class="box" data-papel="dono gerente"><div class="box-head"><h2>Plano do mês</h2><span class="muted fino" id="planoFaixa"></span></div>
+          <div class="plano-mes" id="kpisPlano"></div>
+          <p class="muted fino">Você paga pelo que vende na plataforma, com teto. Sem comissão por pedido.</p></div>
+      </div>
+      <details class="box mais" data-recurso="pedidos"><summary>Mais análises</summary>
+        <div class="grid2">
+          <div><div class="box-head"><h2>Horário de pico</h2><span class="muted fino">últimos 30 dias</span></div><div class="grafico horas" id="grafHoras"></div></div>
+          <div><div class="box-head"><h2>Cardápio</h2><button class="btn link small" type="button" data-ir="cardapio">Gerenciar</button></div><div id="resumoCardapio" class="ranking"></div></div>
+        </div>
+      </details>
+    </section>
+
+    <!-- PEDIDOS -->'''
+h, _n = _re.subn(r'<section class="panel" data-panel="inicio">.*?</section>\s*<!-- PEDIDOS -->', lambda m: INICIO_NOVO, h, count=1, flags=_re.S)
+assert _n == 1
+h = troca(h, '<h1 id="titulo">Início</h1>', '<h1 id="titulo">Visão geral</h1>')
+open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
+
+# ---- JS
+# abre sempre na Visão geral; tema claro por padrão
+j = troca(j, "aplicaTema(lsGet('lj-tema','auto'));", "aplicaTema(lsGet('lj-tema','light'));")
+j = troca(j, "abrirAba(lsGet('lj-aba','inicio'))}", "abrirAba('inicio')}")
+
+# quatro números do topo
+_k = _re.search(r"    k\.className='kpis k4';k\.innerHTML=kpi\('Pedidos hoje'.*\n", j)
+assert _k
+j = j.replace(_k.group(0), """    const novos=orders.filter(o=>o.status==='novo').length,agora=new Date(),mes=validos(orders.filter(o=>{const d=new Date(o.created_at);return d.getFullYear()===agora.getFullYear()&&d.getMonth()===agora.getMonth()})).reduce((s,o)=>s+num(o.total),0);
+    k.className='kpis k4';k.innerHTML=kpi('Pedidos novos',novos,novos?'esperando você confirmar':'nenhum esperando',novos?'alert':'')+kpi('Pedidos hoje',hj.length,hj.length?'último às '+horaBR(hj[0].created_at):'nenhum ainda','',ultimos7(l=>l.length))+kpi('Vendas no mês',brl(mes),'pedidos não cancelados','',ultimos7(l=>l.reduce((s,o)=>s+num(o.total),0)))+kpi('Produtos no site',prods.filter(p=>p.active).length,prods.length+' cadastrados');
+""", 1)
+
+# gráfico: pedidos por dia, 7 dias, hoje em destaque
+j = troca(j, "const dias=[];for(let i=13;i>=0;i--){", "const dias=[];for(let i=6;i>=0;i--){")
+_g = _re.search(r"    barras\(\$\('#grafDias'\),dias\.map.*\n", j)
+assert _g
+j = j.replace(_g.group(0), """    const sem=dias.map(d=>validos(orders).filter(o=>diaLocal(o.created_at)===d).length);
+    barras($('#grafDias'),sem,dias.map(d=>new Date(d+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')),null,'dias7');
+    $('#semTotal').textContent=sem.reduce((a,b)=>a+b,0)+' pedidos na semana';
+    const ST_ROT={novo:'Novo',confirmado:'Confirmado',em_preparo:'Em preparo',pronto:'Pronto',entregue:'Entregue',cancelado:'Cancelado'};
+    const ult=orders.slice().sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,6);
+    $('#ultimosPedidos').innerHTML=ult.length?ult.map(o=>{const n=(o.items||[]).reduce((s,i)=>s+(+i.qty||0),0);return `<button type="button" class="ult-l" data-ir="pedidos"><b>${esc(o.code)}</b><span>${esc(primeiroNome(o.customer_name))} · ${n} ${n===1?'item':'itens'}</span><em>${brl(o.total)}</em><i class="st st-${esc(o.status)}">${esc(ST_ROT[o.status]||o.status)}</i></button>`}).join(''):'<div class="empty">Os pedidos aparecem aqui assim que chegarem.</div>';
+""", 1)
+
+j = troca(j, "const TITULOS={inicio:'Início',", "const TITULOS={inicio:'Visão geral',")
+
+# ---- CSS: paleta quente igual à da página de vendas
+css += r"""
+/* ===== visual igual ao da página de vendas: claro quente, menu marrom, títulos Fraunces ===== */
+:root{--bg:#F4EFE8;--surface:#FFFFFF;--surface-2:#EFE7DC;--line:#E7DED3;--hover:#FAF6F0;--fg:#2B1D14;--muted:#7A6A5C;
+  --accent:#B8743F;--accent-ink:#FFFFFF;--accent-soft:#F3E2D0;--warn:#9A5B00;--warn-soft:#FFF0D6;
+  --side:#211510;--side-2:#2C1D15;--side-3:#3A2A20;--side-fg:#F7EEE2;--side-muted:#B89D82;
+  --f-display:'Fraunces',Georgia,'Times New Roman',serif;--shadow:0 1px 0 #EDE5DB,0 10px 24px -18px rgba(60,35,15,.35)}
+body{background:linear-gradient(135deg,#F5F2EE,#F7EFE6) fixed}
+:root[data-theme="dark"]{--bg:#17100C;--surface:#241812;--surface-2:#2E2018;--line:#3A2A20;--hover:#2A1D15;--fg:#F3E6D6;--muted:#BFA98C;
+  --accent:#D9955C;--accent-ink:#1D120C;--accent-soft:#3D2A1C;--side:#120C09;--side-2:#241812;--side-3:#3A2A20}
+:root[data-theme="dark"] body{background:var(--bg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="dark"]){--bg:#17100C;--surface:#241812;--surface-2:#2E2018;--line:#3A2A20;--hover:#2A1D15;--fg:#F3E6D6;--muted:#BFA98C;--accent:#D9955C;--accent-ink:#1D120C;--accent-soft:#3D2A1C;--side:#120C09;--side-2:#241812}}
+h1{font-weight:600;font-size:clamp(26px,2.6vw,34px)}
+h2{font-weight:600;font-size:18px}
+.side-nav button[aria-current="page"]{background:linear-gradient(90deg,#4A3324,#2C1D15);color:#fff}
+.side-nav button[aria-current="page"]::before{background:#C98B5A}
+.side-nav button[aria-current="page"] svg{color:#E3A878}
+.side-nav button em{background:#C98B5A;color:#211510}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.kpi::after{background:linear-gradient(90deg,var(--accent),transparent)}
+.kpi .val{font-weight:600;font-size:30px}
+h1,h2,.kpi .val,.ped-top b,.ult-l b,.kcol>header b{font-variant-numeric:lining-nums}
+.kpi.alert{border-color:#E2B9A0}.kpi.alert::after{background:#C2573A}.kpi.alert .val{color:#C2573A}
+.gb i{background:linear-gradient(180deg,#D9A06C,#B8743F)}
+.grafico.dias7{grid-template-columns:repeat(7,1fr);gap:18px;height:190px}
+.grafico.dias7 .gb i{max-width:56px}
+.grafico.dias7 .gb:last-child i{background:linear-gradient(180deg,#5CC8FF,#2BA8FF)}
+.grafico.dias7 .gb b{font-size:13px;font-weight:700}
+.grafico.dias7 .gb span{text-transform:capitalize}
+.ult{display:flex;flex-direction:column}
+.ult-l{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;background:none;border:0;border-bottom:1px solid var(--line);padding:10px 2px;cursor:pointer;text-align:left;color:var(--fg)}
+.ult-l:last-child{border-bottom:0}.ult-l:hover{background:var(--hover)}
+.ult-l b{font-family:var(--f-display);font-weight:600}.ult-l span{color:var(--muted);font-size:14px}.ult-l em{font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
+.st{font-style:normal;font-size:12px;font-weight:700;border-radius:99px;padding:3px 10px;background:var(--surface-2);color:var(--muted)}
+.st-novo{background:#DDEBFF;color:#0A5CB8}.st-confirmado{background:#EADDFB;color:#6A3DB0}.st-em_preparo{background:#FFEBC7;color:#9A5B00}.st-pronto{background:#DCF5EA;color:#0F7A55}.st-entregue{background:#DCF5EA;color:#0F7A55}.st-cancelado{background:#FBE3E1;color:#B23B2E}
+details.mais>summary{cursor:pointer;font-family:var(--f-display);font-weight:600;font-size:16px;list-style:none}
+details.mais>summary::after{content:" ▾";color:var(--muted)}
+details.mais[open]>summary{margin-bottom:14px}
+.kcol{background:#EFE7DC}
+:root[data-theme="dark"] .kcol{background:#2E2018}
+#grafDias{margin-top:4px}
+@media (max-width:640px){.ult-l{grid-template-columns:auto 1fr auto}.ult-l .st{grid-column:1/-1;justify-self:start}}
+"""
+open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)

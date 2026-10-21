@@ -55,7 +55,7 @@ marca();
 
 /* ================= tema ================= */
 function aplicaTema(t){if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme;document.querySelectorAll('[data-tema]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tema===(t||'auto')))}
-aplicaTema(lsGet('lj-tema','auto'));
+aplicaTema(lsGet('lj-tema','light'));
 document.querySelectorAll('[data-tema]').forEach(b=>b.addEventListener('click',()=>{lsSet('lj-tema',b.dataset.tema);aplicaTema(b.dataset.tema)}));
 $('#btnTema').addEventListener('click',()=>{const t=getComputedStyle(document.documentElement).colorScheme.includes('dark')?'light':'dark';lsSet('lj-tema',t);aplicaTema(t)});
 
@@ -130,7 +130,7 @@ $('#btnNotif').addEventListener('click',async()=>{if(!('Notification' in window)
 setInterval(()=>{if(aba==='pedidos')desenhaPedidos()},30000);
 
 /* ================= navegação ================= */
-const TITULOS={inicio:'Início',pedidos:'Pedidos',financeiro:'Financeiro',clientes:'Clientes',cardapio:'Cardápio',loja:'Dados da loja',equipe:'Equipe',ajustes:'Conta e ajustes'};
+const TITULOS={inicio:'Visão geral',pedidos:'Pedidos',financeiro:'Financeiro',clientes:'Clientes',cardapio:'Cardápio',loja:'Dados da loja',equipe:'Equipe',ajustes:'Conta e ajustes'};
 const ABAS_PAPEL={dono:Object.keys(TITULOS),gerente:Object.keys(TITULOS),atendente:['inicio','pedidos','clientes','ajustes'],cozinha:['pedidos','ajustes']};
 function aplicaPapel(){document.querySelectorAll('[data-papel]').forEach(el=>{el.hidden=!el.dataset.papel.split(' ').includes(papel)})}
 function abrirAba(t){if(!TITULOS[t]||(!RECURSOS.pedidos&&['pedidos','financeiro','clientes'].includes(t)))t='inicio';if(!(ABAS_PAPEL[papel]||[]).includes(t))t=(ABAS_PAPEL[papel]||['pedidos'])[0];aba=t;
@@ -157,9 +157,15 @@ const validos=lista=>lista.filter(o=>o.status!=='cancelado');
 function desenhaInicio(){
   const k=$('#kpisInicio');
   if(RECURSOS.pedidos){const t=hoje(),hj=validos(orders.filter(o=>diaLocal(o.created_at)===t)),abertos=orders.filter(o=>['novo','confirmado','em_preparo','pronto'].includes(o.status)),d30=validos(orders.filter(o=>Date.now()-new Date(o.created_at)<30*864e5)),soma=d30.reduce((s,o)=>s+num(o.total),0);
-    k.className='kpis k4';k.innerHTML=kpi('Pedidos hoje',hj.length,hj.length?'último às '+horaBR(hj[0].created_at):'nenhum ainda','',ultimos7(l=>l.length))+kpi('Vendido hoje',brl(hj.reduce((s,o)=>s+num(o.total),0)),'pedidos não cancelados','',ultimos7(l=>l.reduce((s,o)=>s+num(o.total),0)))+kpi('Em aberto agora',abertos.length,pendentes()?pendentes()+' esperando confirmação':'tudo encaminhado',pendentes()?'alert':'')+kpi('Ticket médio',brl(d30.length?soma/d30.length:0),'últimos 30 dias');
-    const dias=[];for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);dias.push(iso(d))}
-    barras($('#grafDias'),dias.map(d=>validos(orders).filter(o=>diaLocal(o.created_at)===d).reduce((s,o)=>s+num(o.total),0)),dias.map(d=>d.slice(8,10)+'/'+d.slice(5,7)),brl0,'dias14');
+    const novos=orders.filter(o=>o.status==='novo').length,agora=new Date(),mes=validos(orders.filter(o=>{const d=new Date(o.created_at);return d.getFullYear()===agora.getFullYear()&&d.getMonth()===agora.getMonth()})).reduce((s,o)=>s+num(o.total),0);
+    k.className='kpis k4';k.innerHTML=kpi('Pedidos novos',novos,novos?'esperando você confirmar':'nenhum esperando',novos?'alert':'')+kpi('Pedidos hoje',hj.length,hj.length?'último às '+horaBR(hj[0].created_at):'nenhum ainda','',ultimos7(l=>l.length))+kpi('Vendas no mês',brl(mes),'pedidos não cancelados','',ultimos7(l=>l.reduce((s,o)=>s+num(o.total),0)))+kpi('Produtos no site',prods.filter(p=>p.active).length,prods.length+' cadastrados');
+    const dias=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);dias.push(iso(d))}
+    const sem=dias.map(d=>validos(orders).filter(o=>diaLocal(o.created_at)===d).length);
+    barras($('#grafDias'),sem,dias.map(d=>new Date(d+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','')),null,'dias7');
+    $('#semTotal').textContent=sem.reduce((a,b)=>a+b,0)+' pedidos na semana';
+    const ST_ROT={novo:'Novo',confirmado:'Confirmado',em_preparo:'Em preparo',pronto:'Pronto',entregue:'Entregue',cancelado:'Cancelado'};
+    const ult=orders.slice().sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).slice(0,6);
+    $('#ultimosPedidos').innerHTML=ult.length?ult.map(o=>{const n=(o.items||[]).reduce((s,i)=>s+(+i.qty||0),0);return `<button type="button" class="ult-l" data-ir="pedidos"><b>${esc(o.code)}</b><span>${esc(primeiroNome(o.customer_name))} · ${n} ${n===1?'item':'itens'}</span><em>${brl(o.total)}</em><i class="st st-${esc(o.status)}">${esc(ST_ROT[o.status]||o.status)}</i></button>`}).join(''):'<div class="empty">Os pedidos aparecem aqui assim que chegarem.</div>';
     const hs=Array(24).fill(0);d30.forEach(o=>hs[new Date(o.created_at).getHours()]++);barras($('#grafHoras'),hs,hs.map((_,i)=>i%3===0?i+'h':''),null,'horas');
     const qt={};d30.forEach(o=>(o.items||[]).forEach(i=>{qt[i.name]=(qt[i.name]||0)+(+i.qty||0)}));const top=Object.entries(qt).sort((a,b)=>b[1]-a[1]).slice(0,8),mx=top.length?top[0][1]:1;
     $('#maisVendidos').innerHTML=top.length?top.map(([n,q],i)=>`<div class="rk"><span>${i+1}</span><div><div>${esc(n)}</div><div class="barra"><i style="width:${q/mx*100}%"></i></div></div><b>${q}</b></div>`).join(''):'<div class="empty">Os mais vendidos aparecem aqui quando chegarem pedidos.</div>'}
@@ -522,7 +528,7 @@ async function start(){if(started)return;started=true;
     setInterval(()=>{if(!document.hidden)carregar('orders')},60000)}
   else{orders.forEach(o=>vistos.add(String(o.id)));primeiraCarga=false;$('#aoVivo').classList.add('on');$('#contaEmail').textContent='Demonstração'}
   if(!demo)db.rpc('eh_admin_plataforma').then(r=>{if(r.data===true)$('#btnPlataforma').hidden=false});
-  abrirAba(lsGet('lj-aba','inicio'))}
+  abrirAba('inicio')}
 (async()=>{
   let msg='';try{msg=sessionStorage.getItem('lj-msg')||'';sessionStorage.removeItem('lj-msg')}catch(e){}
   const url=String(CFG.supabaseUrl||''),chave=String(CFG.supabaseKey||'');

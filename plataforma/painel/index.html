@@ -11,12 +11,12 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230B111E'/%3E%3Cpath d='M9 22V10h7a4 4 0 0 1 0 8H9' fill='none' stroke='%232BA8FF' stroke-width='3'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
-<link rel="stylesheet" href="painel.css?v=20261021c">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<link rel="stylesheet" href="painel.css?v=20261021d">
 <script src="../assets/config.js"></script>
 <script src="../assets/vendor/supabase-2.45.4.js"></script>
-<script src="../assets/exemplo.js?v=20261021c" defer></script>
-<script src="painel.js?v=20261021c" defer></script>
+<script src="../assets/exemplo.js?v=20261021d" defer></script>
+<script src="painel.js?v=20261021d" defer></script>
 </head>
 <body>
 
@@ -102,7 +102,7 @@
     <div class="faixa-demo" id="faixaDemo" hidden>Demonstração com dados fictícios: nada aqui é salvo. Pedidos novos chegam sozinhos a cada 40 s para você ver o alerta.</div>
     <div class="faixa-aviso" id="notice" role="alert" hidden></div>
     <header class="topo">
-      <div><h1 id="titulo">Início</h1><p class="muted" id="subtitulo"></p></div>
+      <div><h1 id="titulo">Visão geral</h1><p class="muted" id="subtitulo"></p></div>
       <div class="topo-acoes">
         <span class="ao-vivo" id="aoVivo" title="Atualização em tempo real"><i></i>ao vivo</span>
         <button class="btn" type="button" id="btnSom" data-recurso="pedidos" aria-pressed="true">🔔 Som ligado</button>
@@ -112,11 +112,17 @@
 
     <!-- INÍCIO -->
     <section class="panel" data-panel="inicio">
+      <div class="kpis k4" id="kpisInicio"></div>
       <div class="box passos-box" id="primeirosPassos" data-papel="dono gerente" hidden>
         <div class="pp-topo"><div class="pp-anel" id="ppAnel" style="--p:0"><b id="ppPct">0%</b></div>
           <div><h2>Primeiros passos</h2><p class="muted fino">Complete estes passos e a sua loja fica pronta para vender.</p></div>
           <button class="btn small pp-fecha" type="button" id="ppFecha" aria-label="Esconder os primeiros passos">Esconder</button></div>
         <ol class="pp-lista" id="ppLista"></ol>
+      </div>
+      <div class="box" data-recurso="pedidos"><div class="box-head"><h2>Pedidos nos últimos 7 dias</h2><span class="muted fino" id="semTotal"></span></div><div class="grafico" id="grafDias"></div></div>
+      <div class="grid2" data-recurso="pedidos">
+        <div class="box"><div class="box-head"><h2>Últimos pedidos</h2><button class="btn small" type="button" data-ir="pedidos">Ver todos</button></div><div class="ult" id="ultimosPedidos"></div></div>
+        <div class="box"><div class="box-head"><h2>Mais vendidos</h2><span class="muted fino">últimos 30 dias</span></div><div id="maisVendidos" class="ranking"></div></div>
       </div>
       <div class="grid2">
         <div class="box"><div class="box-head"><h2>Link da sua loja</h2><span class="muted fino">mande para os clientes</span></div>
@@ -126,15 +132,12 @@
           <div class="plano-mes" id="kpisPlano"></div>
           <p class="muted fino">Você paga pelo que vende na plataforma, com teto. Sem comissão por pedido.</p></div>
       </div>
-      <div class="kpis" id="kpisInicio"></div>
-      <div class="grid2" data-recurso="pedidos">
-        <div class="box"><div class="box-head"><h2>Pedidos dos últimos 14 dias</h2><span class="muted fino">valor dos pedidos não cancelados</span></div><div class="grafico" id="grafDias"></div></div>
-        <div class="box"><div class="box-head"><h2>Horário de pico</h2><span class="muted fino">últimos 30 dias</span></div><div class="grafico horas" id="grafHoras"></div></div>
-      </div>
-      <div class="grid2">
-        <div class="box" data-recurso="pedidos"><div class="box-head"><h2>Mais vendidos</h2><span class="muted fino">últimos 30 dias</span></div><div id="maisVendidos" class="ranking"></div></div>
-        <div class="box"><div class="box-head"><h2>Cardápio</h2><button class="btn link small" type="button" data-ir="cardapio">Gerenciar</button></div><div id="resumoCardapio" class="ranking"></div></div>
-      </div>
+      <details class="box mais" data-recurso="pedidos"><summary>Mais análises</summary>
+        <div class="grid2">
+          <div><div class="box-head"><h2>Horário de pico</h2><span class="muted fino">últimos 30 dias</span></div><div class="grafico horas" id="grafHoras"></div></div>
+          <div><div class="box-head"><h2>Cardápio</h2><button class="btn link small" type="button" data-ir="cardapio">Gerenciar</button></div><div id="resumoCardapio" class="ranking"></div></div>
+        </div>
+      </details>
     </section>
 
     <!-- PEDIDOS -->
