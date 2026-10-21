@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-OwOBGyNjSExeBPG8qkkFP44/A/wcDRmwy446WUS2TYk=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-xoLbJKyN2IX2KoFR9n4pcMJZLgTFv8xRTtmUaCicRRk=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Cardápio digital e pedidos no WhatsApp, sem comissão</title>
 <meta name="description" content="Loja online para a sua padaria, café, hamburgueria ou restaurante: cardápio com fotos, pedido pronto no WhatsApp, rastreio para o cliente e painel completo. Sem comissão por pedido.">
@@ -663,14 +663,19 @@ header.nav .in{height:76px;gap:32px}
 /* cartão do pedido com rastreio */
 .notif{width:252px;right:-30px}
 .notif .nf-trk{margin-top:8px;padding-top:8px;border-top:1px dashed #E3E7EE;gap:6px}
-.notif .nf-bar{height:5px;border-radius:99px;background:#E8ECF2;overflow:hidden}
-.notif .nf-bar i{display:block;height:100%;width:25%;border-radius:99px;background:linear-gradient(90deg,#2BA8FF,#28C840);transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.notif .nf-tl{list-style:none;margin:0;padding:0;display:flex}
+.notif .nf-tl li{flex:1;display:grid;place-items:center;position:relative}
+.notif .nf-tl li::before{content:"";position:absolute;top:10px;left:-50%;width:100%;height:3px;border-radius:3px;background:#E8ECF2}
+.notif .nf-tl li:first-child::before{display:none}
+.notif .nf-tl li.ok::before,.notif .nf-tl li.at::before{background:#B8743F}
+.notif .nf-tl li i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#fff;border:2px solid #E3E7EE;color:#9AA6B6;position:relative;z-index:1;box-sizing:border-box;transition:all .4s}
+.notif .nf-tl li i svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.notif .nf-tl li.ok i{background:#F6E6D5;border-color:#B8743F;color:#B8743F}
+.notif .nf-tl li.at i{background:#B8743F;border-color:#B8743F;color:#fff;box-shadow:0 0 0 3px #F6E6D5}
 .notif .nf-st{display:flex;flex-direction:row;align-items:center;gap:8px}
-.notif .nf-st u{text-decoration:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#E3F2FF;font-size:12px;flex:none;transition:background .4s}
 .notif .nf-st p{margin:0;font-size:12px;font-weight:700;color:#0E1526;flex:1;transition:opacity .25s}
-.notif .nf-st s{text-decoration:none;font-size:10.5px;font-weight:700;color:#0A6FD6;background:#E3F2FF;border-radius:99px;padding:3px 8px;white-space:nowrap}
+.notif .nf-st s{text-decoration:none;font-size:10.5px;font-weight:700;color:#8A5A2B;background:#F6E6D5;border-radius:99px;padding:3px 8px;white-space:nowrap}
 .notif.done .nf-st s{color:#0F8A5F;background:#DCF5EA}
-.notif.done .nf-st u{background:#DCF5EA}
 @media (max-width:920px){.notif{width:214px;right:-6px}.notif .nf-trk{margin-top:6px;padding-top:6px}}
 
 /* checkout + WhatsApp do cliente */
@@ -1086,7 +1091,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
           <div class="phone" id="heroPhone" role="region" aria-label="Demonstração de cardápio digital"></div>
           <div class="notif" aria-hidden="true">
             <span class="wa"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg></span>
-            <div><b id="nfLabel">WhatsApp · agora</b><strong id="nfTitle">Novo pedido · Fermento</strong><span id="nfItems"></span><em id="nfTotal"></em><div class="nf-trk"><div class="nf-bar"><i id="nfBar"></i></div><div class="nf-st"><u id="nfIc">✓</u><p id="nfTx">Pedido recebido</p><s id="nfEta">~25 min</s></div></div></div>
+            <div><b id="nfLabel">WhatsApp · agora</b><strong id="nfTitle">Novo pedido · Fermento</strong><span id="nfItems"></span><em id="nfTotal"></em><div class="nf-trk"><ol class="nf-tl" id="nfTl"><li><i><svg viewBox="0 0 24 24"><path d="M3 13l2.2-7h13.6L21 13v6H3z"/><path d="M3 13h5l1 2h6l1-2h5"/></svg></i></li><li><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg></i></li><li><i><svg viewBox="0 0 24 24"><path d="M7.5 14.5A4 4 0 1 1 9 6.7 4 4 0 0 1 15 6.7a4 4 0 1 1 1.5 7.8V19h-9z"/><path d="M7.5 17h9"/></svg></i></li><li><i><svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="2.6"/><circle cx="18" cy="17" r="2.6"/><path d="M8.6 17H14l-2.5-6H8M12 11h3.5l2.2 6"/></svg></i></li><li><i><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H5z"/><path d="M9.5 14.5l2 2 3.5-3.5"/></svg></i></li></ol><div class="nf-st"><p id="nfTx">Pedido recebido</p><s id="nfEta">~25 min</s></div></div></div>
           </div>
           <div class="pill-card" aria-hidden="true"><b>0%</b><span>de comissão<br>por pedido</span></div>
         </div>
@@ -1771,10 +1776,10 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
     f.addEventListener('load',function(){setTimeout(function(){setInterval(function(){if(document.hidden)return;i=(i+1)%seq.length;var s=seq[i];if(s[1])send({bcVista:s[1]});send({bcAba:s[0]})},7500)},6000)})})();
   /* ===== cartão do hero: pedido + rastreio ===== */
   (function(){var n=document.querySelector('.notif');if(!n)return;
-    var ST=[['✓','Pedido recebido','~25 min','WhatsApp · agora'],['🍳','Em preparo','~18 min','Rastreio ao vivo'],['🛵','Saiu para entrega','~7 min','Rastreio ao vivo'],['🏠','Entregue · bom apetite!','Entregue','Rastreio ao vivo']];
-    var i=0,tx=document.getElementById('nfTx');
-    function set(k){var s=ST[k];document.getElementById('nfIc').textContent=s[0];tx.textContent=s[1];document.getElementById('nfEta').textContent=s[2];document.getElementById('nfLabel').textContent=s[3];document.getElementById('nfBar').style.width=((k+1)/4*100)+'%';n.classList.toggle('done',k===3)}
-    set(0);setInterval(function(){if(document.hidden)return;i=(i+1)%4;tx.style.opacity=0;setTimeout(function(){set(i);tx.style.opacity=1},180)},2600)})();
+    var ST=[['Pedido recebido','~25 min','WhatsApp · agora'],['Confirmado','~22 min','Rastreio ao vivo'],['Em preparo','~18 min','Rastreio ao vivo'],['Saiu para entrega','~7 min','Rastreio ao vivo'],['Entregue · bom apetite!','Entregue','Rastreio ao vivo']];
+    var i=0,tx=document.getElementById('nfTx'),lis=document.querySelectorAll('#nfTl li');
+    function set(k){var s=ST[k];tx.textContent=s[0];document.getElementById('nfEta').textContent=s[1];document.getElementById('nfLabel').textContent=s[2];lis.forEach(function(li,x){li.className=x<k?'ok':(x===k?'at':'')});n.classList.toggle('done',k===4)}
+    set(0);setInterval(function(){if(document.hidden)return;i=(i+1)%5;tx.style.opacity=0;setTimeout(function(){set(i);tx.style.opacity=1},180)},2600)})();
 
   /* ===== troca de templates (vitrine de sites) ===== */
   (function(){var sw=document.querySelector('.tpl-sw');if(!sw)return;var btns=sw.querySelectorAll('button'),stage=document.querySelector('.site-stage'),url=document.querySelector('.tpl-url');
