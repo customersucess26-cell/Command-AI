@@ -802,6 +802,12 @@
         $("okZap").onclick = enviaZap; $("okSalvar").onclick = salvaCartao;
         var link = zap ? "https://wa.me/" + zap + "?text=" + encodeURIComponent(mensagemZap(o, d)) : "";
         $("okZap").hidden = !zap; if (zap) $("okZap").href = link;
+        $("okZapTxt").hidden = true; $("okDica").hidden = true;
+        if (zap && o.track_code) {
+          var nz = zap.replace(/^55/, ""), fz = nz.length >= 10 ? "(" + nz.slice(0, 2) + ") " + nz.slice(2, nz.length - 4) + "-" + nz.slice(-4) : zap;
+          $("okDica").innerHTML = "No compartilhar, escolha o WhatsApp da loja: <b>" + fz + "</b>"; $("okDica").hidden = false;
+          $("okZapTxt").href = link; $("okZapTxt").hidden = false;
+        }
         vaiPara("pronto");
         atualizaBarra();
       })
