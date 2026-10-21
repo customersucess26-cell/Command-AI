@@ -123,3 +123,62 @@ css += """
 .seg-tema button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 @media (max-width:640px){.seg-tema button{padding:8px 9px}}
 """
+
+# ================= Pedidos: esteira de etapas, botões claros e três jeitos de ver (quadro, lista, grade) =================
+h = troca(h, '<span class="grow"></span>\n        <label class="inline-lbl fino"><input type="checkbox" id="mostrarFechados">',
+          '<span class="seg-tema seg-vista" role="group" aria-label="Jeito de ver os pedidos"><button type="button" data-vista="quadro">▦ Quadro</button><button type="button" data-vista="lista">☰ Lista</button><button type="button" data-vista="grade">▥ Grade</button></span>\n        <span class="grow"></span>\n        <label class="inline-lbl fino"><input type="checkbox" id="mostrarFechados">')
+open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
+
+_a = j.index("  $('#kanban').innerHTML=STATUS.slice(0,4)")
+_b = j.index("}).join('');\n", _a) + len("}).join('');\n")
+_orig = j[_a:_b]
+j = j[:_a] + "  $('#kanban').className='kanban v-'+vistaPed;$('#kanban').innerHTML=htmlVista(lista);\n  document.querySelectorAll('[data-vista]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.vista===vistaPed));\n" + j[_b:]
+_quadro = _orig.replace("  $('#kanban').innerHTML=", "return ", 1).rstrip('\n')
+VISTAS = r"""
+/* ===== jeitos de ver os pedidos ===== */
+let vistaPed=lsGet('lj-vista','quadro');if(!['quadro','lista','grade'].includes(vistaPed))vistaPed='quadro';
+const ORDEM_ST=['novo','confirmado','em_preparo','pronto','entregue'];
+function proxRot(o,px){const e=o.delivery_type==='entrega';return ({novo:'Confirmar pedido',confirmado:'Iniciar preparo',em_preparo:e?'Saiu para entrega':'Pronto p/ retirar',pronto:e?'Marcar entregue':'Marcar retirado'})[o.status]||px[1]}
+function esteira(o){const i=ORDEM_ST.indexOf(o.status);if(i<0)return '';const e=o.delivery_type==='entrega',nomes=['Recebido','Confirmado','Preparo',e?'A caminho':'Pronto','Entregue'];
+  return `<ol class="esteira" aria-label="Etapa do pedido">${nomes.map((n,k)=>`<li class="${k<i?'ok':k===i?'at':''}"><i></i><span>${n}</span></li>`).join('')}</ol>`}
+function htmlVista(lista){
+  const abertos=lista.filter(o=>['novo','confirmado','em_preparo','pronto'].includes(o.status)).sort((a,b)=>new Date(a.created_at)-new Date(b.created_at));
+  if(vistaPed==='lista')return abertos.length?`<div class="pl">${abertos.map(o=>{const px=PROXIMO[o.status];return `<div class="pl-row s-${esc(o.status)}" data-pedido="${esc(o.id)}" tabindex="0" role="button"><b>${esc(o.code)}</b><div class="pl-meio"><span class="cli">${esc(o.customer_name||'Cliente')}</span><span class="itens">${esc(resumoItens(o))}</span></div>${esteira(o)}<span class="tempo">${esc(tempo(o))}</span><b class="tot">${brl(o.total)}</b>${px?`<button class="btn small primary" type="button" data-avanca="${esc(o.id)}">${esc(proxRot(o,px))}</button>`:''}</div>`}).join('')}</div>`:'<div class="empty">Nenhum pedido em andamento.</div>';
+  if(vistaPed==='grade')return abertos.length?`<div class="pgrid">${abertos.map(cardPedido).join('')}</div>`:'<div class="empty">Nenhum pedido em andamento.</div>';
+  QUADRO_AQUI
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-vista]');if(!b)return;vistaPed=b.dataset.vista;lsSet('lj-vista',vistaPed);desenhaPedidos()});
+"""
+VISTAS = VISTAS.replace("QUADRO_AQUI", _quadro.strip())
+j = troca(j, "function filtraPedido(o){", VISTAS + "function filtraPedido(o){")
+# botão com texto claro e esteira no cartão
+j = troca(j, "${esc(px[1])}</button>`:''}${z?`<a class=\"ic-zap\"", "${esc(proxRot(o,px))}</button>`:''}${z?`<a class=\"ic-zap\"")
+j = troca(j, '<span class="cli">${esc(o.customer_name||\'Cliente\')}</span><span class="itens">${esc(resumoItens(o))}</span><div class="ped-pe">',
+          '${esteira(o)}<span class="cli">${esc(o.customer_name||\'Cliente\')}</span><span class="itens">${esc(resumoItens(o))}</span><div class="ped-pe">')
+
+css += r"""
+/* esteira de etapas */
+.esteira{display:flex;list-style:none;margin:2px 0 4px;padding:0;gap:0}
+.esteira li{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;font-size:10.5px;color:var(--muted);text-align:center;line-height:1.1}
+.esteira li::before{content:"";position:absolute;top:6px;left:-50%;width:100%;height:2px;background:var(--line);z-index:0}
+.esteira li:first-child::before{display:none}
+.esteira li.ok::before,.esteira li.at::before{background:var(--accent)}
+.esteira li i{width:14px;height:14px;border-radius:50%;background:var(--surface);border:2px solid var(--line);z-index:1;box-sizing:border-box}
+.esteira li.ok i{background:var(--accent);border-color:var(--accent)}
+.esteira li.at i{background:var(--surface);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.esteira li.at span{color:var(--fg);font-weight:700}
+.ped .acts .btn.primary{font-weight:700}
+.ped{min-width:0}.kcol .esteira li:not(.at) span{display:none}.kcol .esteira li.at span{white-space:nowrap}
+/* lista e grade */
+.kanban.v-lista,.kanban.v-grade{display:block;overflow:visible}
+.pl{display:flex;flex-direction:column;gap:8px}
+.pl-row{display:grid;grid-template-columns:auto minmax(150px,1.4fr) minmax(230px,1.2fr) auto auto auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--cor,var(--accent));border-radius:12px;padding:10px 14px;cursor:pointer;box-shadow:var(--shadow)}
+.pl-row:hover{border-color:var(--accent)}
+.pl-row b:first-child{font-family:var(--f-display);font-size:16px}
+.pl-meio{display:flex;flex-direction:column;min-width:0}.pl-meio .cli{font-weight:700}.pl-meio .itens{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pl-row .tempo{font-size:12.5px;color:var(--muted);white-space:nowrap}.pl-row .tot{font-variant-numeric:lining-nums;white-space:nowrap}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;align-items:start}
+.seg-vista{margin-right:6px}
+@media (max-width:900px){.pl-row{grid-template-columns:auto 1fr auto;}.pl-row .esteira{grid-column:1/-1;order:5}.pl-row .tempo{display:none}}
+"""
+open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)

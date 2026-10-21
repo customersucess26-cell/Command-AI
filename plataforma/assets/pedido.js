@@ -132,7 +132,7 @@
   }
 
   busca();
-  timer = setInterval(function () { if (!document.hidden) busca(); }, demo ? 4000 : 20000);
+  timer = setInterval(function () { if (!document.hidden) busca(); }, demo ? 4000 : 6000);
   document.addEventListener("visibilitychange", function () { if (!document.hidden && timer) busca(); });
   $("erro").addEventListener("click", function () { if (!ultimo && !demo) { $("carregando").hidden = false; $("erro").hidden = true; busca(); } });
   window.addEventListener("hashchange", function () { location.reload(); });
