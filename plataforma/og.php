@@ -1,6 +1,23 @@
 <?php
 /* Bistrô Connect · cartão do pedido (imagem 1200x630) que o WhatsApp mostra abaixo do link /p/<código>.
-   Mostra loja, número do pedido, itens, entrega, total e status. Nunca telefone nem endereço. */
+   Mostra loja, número do pedido, itens, entrega, total e status. Nunca telefone nem endereço.
+   Se algo falhar (sem GD, sem memória, fonte ruim), entrega a imagem fixa da marca em vez de erro 500.
+   Para ver o motivo de um erro: /og.php?c=<código>&debug=1 */
+$DEBUG = isset($_GET['debug']);
+if ($DEBUG) { ini_set('display_errors', '1'); error_reporting(E_ALL); header('Content-Type: text/plain; charset=utf-8'); }
+else {
+    ini_set('display_errors', '0');
+    ob_start();
+    register_shutdown_function(function () {
+        $e = error_get_last();
+        if ($e && in_array($e['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR], true)) {
+            while (ob_get_level()) ob_end_clean();
+            header_remove(); http_response_code(200);
+            header('Content-Type: image/jpeg'); header('Cache-Control: public, max-age=300');
+            @readfile(__DIR__ . '/assets/img/og-bistro-connect.jpg');
+        } else { while (ob_get_level()) ob_end_flush(); }
+    });
+}
 require __DIR__ . '/pedido-lib.php';
 if (!function_exists('imagecreatetruecolor') || !function_exists('imagettftext')) {      // sem GD/FreeType: usa a imagem fixa da marca
     header('Content-Type: image/jpeg'); header('Cache-Control: public, max-age=300');
