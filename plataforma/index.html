@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-3kFg5l9l4/bI1s+1O1Na/uz8ewHa98FFme6UMAa+7yg=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-qy7d3EtoZ6HAKRDCRlucALtNqfSWmTYgBm+OM5GNNkI=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Cardápio digital e pedidos no WhatsApp, sem comissão</title>
 <meta name="description" content="Loja online para a sua padaria, café, hamburgueria ou restaurante: cardápio com fotos, pedido pronto no WhatsApp, rastreio para o cliente e painel completo. Sem comissão por pedido.">
@@ -618,31 +618,37 @@ footer .in{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;al
 .admin-stage .tpl-tag{left:24px;top:18px}
 .track-phone{position:absolute;right:40px;top:88px;width:240px;aspect-ratio:9/19;background:#05080F;border-radius:42px;padding:10px;box-shadow:0 40px 80px -20px rgba(0,0,0,.95),0 0 0 1px #34405E inset,0 0 0 6px rgba(255,255,255,.03),0 0 60px -10px rgba(43,168,255,.35);animation:fl 7s ease-in-out infinite;z-index:2}
 .track-phone .notch{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:80px;height:22px;background:#05080F;border-radius:99px;z-index:2}
-.tscr{width:100%;height:100%;border-radius:33px;overflow:hidden;background:linear-gradient(180deg,#F7F3EE,#FFFFFF);padding:42px 12px 12px;display:flex;flex-direction:column;gap:8px;font-family:'DM Sans',Arial,sans-serif;color:#2B1D14}
-.t-head small{display:block;font-size:10px;color:#9A8B7E}
-.t-head b{font:700 17px 'Fraunces',Georgia,serif}
-.t-card{background:#fff;border-radius:18px;padding:12px;box-shadow:0 14px 30px -18px rgba(43,29,20,.45);border:1px solid #F0E8DF}
-.t-top{display:flex;justify-content:space-between;align-items:flex-start}
-.t-top small{font-size:9px;letter-spacing:.12em;color:#9A8B7E;font-weight:700}
-.t-top b{display:block;font-size:20px}
-.t-eta{font-size:11px;font-weight:700;background:#E3F2FF;color:#0A6FD6;padding:5px 9px;border-radius:99px}
+.tscr{width:100%;height:100%;border-radius:33px;overflow:hidden;background:#F3ECE2;padding:38px 9px 9px;display:flex;flex-direction:column;gap:6px;font-family:'DM Sans',Arial,sans-serif;color:#2B1D14}
+.t-band{display:flex;align-items:center;justify-content:center;gap:6px;background:#231710;color:#F7EEE2;border-radius:12px;padding:5px 8px}
+.t-band img{height:20px}.t-band span{border:1px solid rgba(247,238,226,.5);border-radius:99px;padding:2px 6px;font:600 7px 'DM Sans',Arial,sans-serif}
+.t-hello{background:#FBF7F1;border:1px solid #E8DED1;border-radius:12px;padding:8px 9px}
+.t-hello>b{display:block;font:700 15px 'Fraunces',Georgia,serif}
+.t-msg{font-size:9.5px;margin:2px 0 6px;color:#6E5E50;min-height:2.3em;line-height:1.25}
+.t-pill{display:flex;align-items:center;justify-content:space-between;background:#EFE3D3;border-radius:9px;padding:4px 7px;font-size:9.5px;font-weight:700}
+.t-pill b{font-size:10.5px}
+.t-eta{font-style:normal;font-size:8.5px;font-weight:700;background:#fff;color:#A8693D;padding:3px 7px;border-radius:99px}
 .t-eta.done{background:#DCF5EA;color:#0F8A5F}
-.t-msg{font-size:12px;margin:6px 0 8px;color:#5A4A3E;min-height:2.4em;line-height:1.25}
-.t-bar{height:6px;border-radius:99px;background:#F0E8DF;overflow:hidden}
-.t-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#2BA8FF,#28C840);transition:width .9s cubic-bezier(.2,.8,.2,1)}
-.t-steps{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:2px;position:relative}
-.t-steps li{display:flex;gap:9px;align-items:center;padding:4px;border-radius:12px;opacity:.42;transition:opacity .5s,background .5s}
-.t-steps li span{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#F0E8DF;font-size:13px;flex:none;transition:background .5s,transform .5s}
-.t-steps li b{display:block;font-size:12.5px}
-.t-steps li small{display:block;font-size:10.5px;color:#9A8B7E}
-.t-steps li.done{opacity:1}
-.t-steps li.done span{background:#DCF5EA}
-.t-steps li.cur{opacity:1;background:#F2F8FF}
-.t-steps li.cur span{background:#2BA8FF;color:#fff;transform:scale(1.08);box-shadow:0 0 0 0 rgba(43,168,255,.6);animation:livep 1.6s infinite}
-.t-items{font-size:11.5px;color:#5A4A3E;background:#fff;border:1px dashed #E5D9CC;border-radius:12px;padding:9px 11px}
-.t-wa{margin-top:auto;text-align:center;font-size:12px;font-weight:700;color:#fff;background:#25D366;border-radius:12px;padding:10px}
-.track-phone.ping .t-card{animation:tping .6s ease}
-@keyframes tping{40%{transform:scale(1.03);box-shadow:0 18px 36px -14px rgba(43,168,255,.55)}}
+.t-est{background:#FBF7F1;border:1px solid #E8DED1;border-radius:12px;overflow:hidden}
+.t-est header{background:#231710;color:#F7EEE2;font:600 10.5px 'Fraunces',Georgia,serif;padding:7px 9px}
+.t-bar{height:3px;background:#E8DED1;overflow:hidden}
+.t-bar i{display:block;height:100%;width:0;background:#A8693D;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.t-steps{list-style:none;margin:0;padding:0}
+.t-steps li{display:grid;grid-template-columns:22px 1fr auto;gap:7px;align-items:center;padding:5px 8px;border-bottom:1px solid #EDE3D6}
+.t-steps li:last-child{border-bottom:0}
+.t-steps li span{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#E4DCD1;color:#8A7B6E;font-size:11px;transition:background .5s,transform .5s}
+.t-steps li b{display:block;font-size:9.5px;color:#9A8B7E}
+.t-steps li small{display:block;font-size:8px;color:#9A8B7E}
+.t-steps li::after{content:"Pendente";font-size:7px;font-weight:700;padding:2px 6px;border-radius:99px;background:#E9E2D8;color:#8A7B6E;white-space:nowrap}
+.t-steps li.done span{background:#2B1A10;color:#fff;font-size:0}
+.t-steps li.done span::before{content:"✓";font-size:11px}
+.t-steps li.done b{color:#2B1D14}.t-steps li.done::after{content:"Concluído";background:#DCF5EA;color:#2F7D4F}
+.t-steps li.cur span{background:#A8693D;color:#fff;transform:scale(1.08);animation:livep 1.6s infinite}
+.t-steps li.cur b{color:#2B1D14}.t-steps li.cur::after{content:"Em andamento";background:#F1DEC8;color:#8A5A2B}
+.t-items{font-size:9px;color:#5A4A3E;background:#EFE7DC;border-radius:10px;padding:6px 9px}
+.t-wa{margin-top:auto;display:flex;align-items:center;gap:7px;background:#2B1A10;color:#F7EEE2;border-radius:12px;padding:7px 9px}
+.t-wa i{width:20px;height:20px;border-radius:50%;background:#25D366;flex:none}.t-wa small{display:block;font-size:7px;opacity:.8}.t-wa b{font-size:10px}
+.track-phone.ping .t-hello{animation:tping .6s ease}
+@keyframes tping{40%{transform:scale(1.03);box-shadow:0 12px 24px -12px rgba(168,105,61,.55)}}
 .fa1{right:24px;top:14px;animation-delay:-2s;z-index:3}
 .fa2{left:38%;top:14px;animation-delay:-4s;z-index:3}
 @media (max-width:1100px){.admin-stage{min-height:0}.admin-stage .admin-browser{width:100%}.track-phone{position:relative;right:auto;top:auto;margin:28px auto 0}.fa2{display:none}}
@@ -722,6 +728,18 @@ header.nav .in{height:76px;gap:32px}
 .wa-time{position:absolute;right:8px;bottom:3px;font-size:9px;color:#6B7A6C}
 .bubble.o .wa-time{color:#4A8FB8}
 .wa-link{display:flex;gap:8px;align-items:center;background:#F0F4F8;border-left:3px solid #2BA8FF;border-radius:6px;padding:6px 8px;margin-top:6px;white-space:normal}
+.wa-link img{width:38px;height:38px;border-radius:6px;object-fit:cover;flex:none}.wa-link small{display:block;font-size:9.5px;color:#4A5A6A;line-height:1.3}.wa-link small.dm{color:#8A98A8;font-size:9px}
+.bubble.card{padding:3px;width:200px;max-width:200px}.bubble.card .wa-time{display:none}
+.wc{border-radius:8px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:'DM Sans',Arial,sans-serif;white-space:normal;text-align:left}
+.wc-h{background:var(--bar);padding:6px;text-align:center;border-bottom:2px solid var(--cor)}.wc-h img{height:26px;display:inline-block}
+.wc-ph{height:62px;margin:5px;border-radius:8px;background:#222 center/cover no-repeat}
+.wc-t{text-align:center;padding:2px 6px 5px}.wc-t b{display:block;font:700 13px 'DM Sans',Arial,sans-serif;color:var(--cor)}.wc-t small{font-size:8.5px}
+.wc-it{background:var(--on);color:var(--oi);border-radius:10px;margin:0 5px 5px;padding:6px 7px}.wc-it>b{display:block;font-size:9px;margin-bottom:3px}
+.wc-r{display:grid;grid-template-columns:20px 1fr auto;gap:5px;align-items:center;padding:2px 0;font-size:8.5px}.wc-r i{width:20px;height:20px;border-radius:5px;background:#555 center/cover no-repeat}.wc-r span small{display:block;opacity:.75;font-size:7.5px}.wc-r em{font-style:normal;font-weight:700}
+.wc-pl{display:flex;gap:4px;margin:0 5px 5px}.wc-pl span{flex:1;text-align:center;border-radius:99px;padding:5px 3px;font-size:8.5px;font-weight:700;background:color-mix(in srgb,var(--cor) 22%,var(--bg));color:var(--cor)}.wc-pl span.t{background:var(--on);color:var(--oi)}
+.wc-inf{background:var(--cd);border:1px solid color-mix(in srgb,var(--ink) 14%,transparent);border-radius:9px;margin:0 5px 5px;padding:4px 7px;font-size:8.5px}.wc-inf div{padding:2px 0}.wc-inf small{display:block;opacity:.65;font-size:7.5px}.wc-inf b{font-size:8.5px}
+.wc-z{display:flex;gap:6px;align-items:center;background:var(--on);color:var(--oi);border-radius:99px;margin:0 5px 5px;padding:5px 8px}.wc-z i{width:14px;height:14px;border-radius:50%;background:#25D366;flex:none}.wc-z b{display:block;font-size:8.5px}.wc-z small{font-size:7.5px;opacity:.85}
+.wc-f{text-align:center;font-size:7px;opacity:.7;padding:1px 4px 5px}
 .wa-link i{font-style:normal;font-size:16px}.wa-link b{display:block;font-size:11px;color:#0A5FB0}.wa-link small{display:block;font-size:9.5px;color:#5E6B80;word-break:break-all}
 
 .notif #nfItems,.notif #nfTotal{display:none}
@@ -1005,6 +1023,8 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
 @media (max-width:400px){.cel-tela{height:600px}.wa-b{font-size:13.5px}.wa-b.pedido{font-size:12.8px}}
 @media (prefers-reduced-motion:reduce){.js-efeitos .ad2-lado .wa-b{opacity:1;transform:none;animation:none!important}.js-efeitos .ad2-lado .cel-notif{display:none}}
 
+/* ===== cartão do pedido (imagem real) ===== */
+.wa-im{padding:3px!important;background:#fff}.wa-im img{display:block;width:100%;border-radius:7px}.cartao-chat{overflow:hidden}
 /* ===== v7b: cartão do pedido ===== */
 .pc-topo{display:flex;align-items:center;gap:10px;padding:8px 14px 10px 14px;background:#fff;border-bottom:1px solid #E6E1D9;color:#111}
 .pc-topo b{display:block;font-size:15.5px;font-weight:600}.pc-topo small{font-size:12px;color:#667781}
@@ -1057,7 +1077,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
       <div>
         <p class="eyebrow">Para <span class="typed" id="typed">padarias</span> de todo o Brasil</p>
         <h1 style="margin-top:14px">Você cozinha, atende e entrega. O app fica com <em class="risca">até 23%</em> de cada pedido.</h1>
-        <p class="lead">Comissão comendo a margem, WhatsApp lotado de áudio, pedido anotado errado e cliente ligando para saber se já saiu. Com a Bistrô Connect, o cliente monta o pedido sozinho no <b>seu</b> cardápio online e ele chega pronto no seu WhatsApp, com o total e o link de rastreio. <b>Sem comissão. Nunca.</b></p>
+        <p class="lead">Comissão comendo a margem, WhatsApp lotado de áudio, pedido anotado errado e cliente ligando para saber se já saiu. Com a Bistrô Connect, o cliente monta o pedido sozinho no <b>seu</b> cardápio online e ele chega no seu WhatsApp como um cartão organizado, com itens, total e endereço, e o cliente acompanha pelo link de rastreio. <b>Sem comissão. Nunca.</b></p>
         <div class="ctas">
           <a class="btn btn-mint" href="#contato" data-track="cta-hero">Quero vender sem comissão</a>
           <a class="btn btn-ghost" href="#dor">Ver quanto eu perco hoje</a>
@@ -1132,7 +1152,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
       <div class="head centro revela">
         <p class="eyebrow">Antes e depois</p>
         <h2>A mesma cliente, no mesmo horário. Só muda onde ela faz o pedido.</h2>
-        <p>À esquerda, o que acontece hoje no seu WhatsApp. À direita, a mensagem que chega quando ela pede pelo seu cardápio.</p>
+        <p>À esquerda, o que acontece hoje no seu WhatsApp. À direita, o cartão que chega quando ela pede pelo seu cardápio.</p>
       </div>
       <div class="ad2">
         <div class="ad2-lado revela esq">
@@ -1145,9 +1165,9 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
               <div class="wa-chat">
                 <span class="wa-dia">HOJE</span>
                 <div class="wa-b entra" style="--i:0"><div class="wa-txt">Boa noite! Vcs ainda tão aceitando pedido?</div><span class="wa-h">21:42</span></div>
-                <div class="wa-b entra" style="--i:1"><div class="wa-txt">Tem pão de queijo?</div><span class="wa-h">21:42</span></div>
+                <div class="wa-b entra" style="--i:1"><div class="wa-txt">Tem pão doce com creme?</div><span class="wa-h">21:42</span></div>
                 <div class="wa-b entra" style="--i:2"><div class="wa-txt"><span class="wa-audio"><span class="wa-play" aria-hidden="true"></span><span class="wa-onda" aria-hidden="true"><i style="height:6px"></i><i style="height:12px"></i><i style="height:18px"></i><i style="height:9px"></i><i style="height:14px"></i><i style="height:20px"></i><i style="height:11px"></i><i style="height:7px"></i><i style="height:16px"></i><i style="height:22px"></i><i style="height:13px"></i><i style="height:8px"></i><i style="height:17px"></i><i style="height:10px"></i><i style="height:6px"></i><i style="height:12px"></i><i style="height:19px"></i><i style="height:9px"></i><i style="height:14px"></i><i style="height:7px"></i></span><span class="wa-dur">1:48</span></span></div><span class="wa-h">21:44</span></div>
-                <div class="wa-b entra" style="--i:3"><div class="wa-txt">Quanto fica 2 pão de queijo e 1 cappuccino? E a entrega?</div><span class="wa-h">21:47</span></div>
+                <div class="wa-b entra" style="--i:3"><div class="wa-txt">Quanto fica 2 pão doce com creme e 1 cappuccino? E a entrega?</div><span class="wa-h">21:47</span></div>
                 <div class="wa-b entra" style="--i:4"><div class="wa-txt">Oi??</div><span class="wa-h">21:55</span></div>
                 <div class="wa-b sai" style="--i:5"><div class="wa-txt">Oi, Ju! Desculpa, tava no forno 🙏 Ainda quer?</div><span class="wa-h">21:58<svg class="wa-ticks" viewBox="0 0 18 11" aria-hidden="true"><path d="M1 6l3 3 6-7M7 9l1 1 6-8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
                 <div class="wa-b entra" style="--i:6"><div class="wa-txt">Já pedi pelo app, obrigada</div><span class="wa-h">21:59</span></div>
@@ -1165,25 +1185,15 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
             <div class="cel-ilha" aria-hidden="true"></div>
             <div class="cel-tela">
               <div class="cel-status" aria-hidden="true"><b>21:43</b><span class="cel-ic"><i></i><i></i><i></i><i></i><u></u></span></div>
-              <div class="cel-notif" aria-hidden="true"><span class="cel-notif-ic"></span><div><b>WhatsApp · agora</b><span>Juliana: Fiz o pedido #128 pelo site…</span></div></div>
-              <div class="pc-topo"><span class="pc-loja" aria-hidden="true">P</span><div><b>Pedidos</b><small>Padaria da Ana · ao vivo</small></div><span class="pc-novo">1 novo</span></div>
-              <div class="pc-chat">
-                <div class="pc-card">
-                  <div class="pc-cab"><span class="pc-ico grande" aria-hidden="true">🥐</span><div><small>PEDIDO #128</small><b>Padaria da Ana</b></div></div>
-                  <div class="pc-sec"><span class="pc-ico" aria-hidden="true">🛒</span><div class="pc-corpo"><b>Itens do pedido</b>
-                    <p><span>2× Pão de queijo</span><i>R$ 12,00</i></p><p><span>1× Cappuccino</span><i>R$ 14,90</i></p></div></div>
-                  <div class="pc-soma"><p><span>Subtotal</span><i>R$ 26,90</i></p><p><span>Entrega</span><i>R$ 5,00</i></p></div>
-                  <div class="pc-total"><span>Total</span><b>R$ 31,90</b></div>
-                  <div class="pc-sec"><span class="pc-ico" aria-hidden="true">📍</span><div class="pc-corpo"><small>Entrega</small><span>Rua das Flores, 120 · Centro</span></div></div>
-                  <div class="pc-sec"><span class="pc-ico" aria-hidden="true">💳</span><div class="pc-corpo"><small>Pagamento</small><span>Pix</span></div></div>
-                  <div class="pc-sec"><span class="pc-ico" aria-hidden="true">👤</span><div class="pc-corpo"><small>Cliente</small><span>Juliana · (42) 99876-5432</span></div></div>
-                  <div class="pc-sec ult"><span class="pc-ico" aria-hidden="true">🔗</span><div class="pc-corpo"><small>Rastreio para o cliente</small><span class="pc-link">bistroconnect.com.br/pedido…</span></div></div>
-                </div>
+              <div class="cel-notif" aria-hidden="true"><span class="cel-notif-ic"></span><div><b>WhatsApp · agora</b><span>Juliana enviou uma foto</span></div></div>
+              <div class="wa-topo"><span class="wa-volta" aria-hidden="true">‹</span><span class="wa-av">JU</span><div><b>Juliana</b><small>online</small></div></div>
+              <div class="wa-chat cartao-chat">
+                <span class="wa-dia">HOJE</span>
+                <div class="wa-b entra" style="--i:0"><div class="wa-txt wa-im"><img src="assets/img/cartao-pedido.jpg" alt="Cartão do pedido que chega no WhatsApp da loja: itens, total, endereço e telefone da cliente"></div><span class="wa-h">21:43</span></div>
               </div>
-              <div class="pc-acao" aria-hidden="true"><span class="pc-btn">Confirmar e avisar a Juliana</span></div>
             </div>
           </div>
-          <figcaption class="cel-leg bom"><span class="pino bom"></span><span><b>Com a Bistrô Connect:</b> o pedido chega pronto, com a conta feita e o link de rastreio. Sem comissão.</span></figcaption>
+          <figcaption class="cel-leg bom"><span class="pino bom"></span><span><b>Com a Bistrô Connect:</b> o pedido chega como um cartão organizado, com itens, total, endereço e telefone. Sem comissão.</span></figcaption>
         </figure>
         </div>
       </div>
@@ -1256,11 +1266,9 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
           <div class="track-phone" aria-label="Tela do cliente acompanhando o pedido">
             <div class="notch"></div>
             <div class="tscr">
-              <div class="t-head"><small>bistroconnect.com.br/pedido</small><b>Acompanhe seu pedido</b></div>
-              <div class="t-card">
-                <div class="t-top"><div><small>PEDIDO</small><b id="tNum">#125</b></div><span class="t-eta" id="tEta">~ 25 min</span></div>
-                <p class="t-msg" id="tMsg">Recebemos seu pedido!</p>
-                <div class="t-bar"><i id="tBar"></i></div>
+              <div class="t-band"><img src="assets/img/logo-bistro-connect-clara.png" alt=""><span>bistroconnect.com.br</span></div>
+              <div class="t-hello"><b>Olá, Juliana!</b><p class="t-msg" id="tMsg">Recebemos seu pedido!</p><div class="t-pill"><span>Pedido <b id="tNum">#125</b></span><em class="t-eta" id="tEta">~ 25 min</em></div></div>
+              <div class="t-est"><header>Acompanhe seu pedido</header><div class="t-bar"><i id="tBar"></i></div>
                 <ol class="t-steps" id="tSteps">
                   <li><span>✓</span><div><b>Pedido recebido</b><small>A loja confirmou</small></div></li>
                   <li><span>🍳</span><div><b>Em preparo</b><small>Feito na hora</small></div></li>
@@ -1269,7 +1277,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
                 </ol>
               </div>
               <div class="t-items" id="tItems">2x Croissant · 1x Cappuccino</div>
-              <div class="t-wa">Dúvidas? Falar no WhatsApp</div>
+              <div class="t-wa"><i></i><div><small>Dúvidas sobre seu pedido?</small><b>Padaria da Ana</b></div></div>
             </div>
           </div>
           <div class="fcard fa1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><div><b>Tudo em tempo real</b><small>Um toque muda o status</small></div></div>
@@ -1337,7 +1345,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
       <div class="feats">
         <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5h16M4 12h16M4 19h10"/></svg><h3>Cardápio com fotos</h3><p>Categorias, preços e descrições fáceis de ler no celular.</p></div>
         <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><h3>Pedido no WhatsApp</h3><p>Chega pronto no número que você já usa, com o total calculado.</p></div>
-        <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 20h1M17 20h1M20 17h1"/></svg><h3>Rastreio do pedido</h3><p>O cliente acompanha pelo link: recebido, em preparo, saiu para entrega, entregue.</p></div>
+        <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 20h1M17 20h1M20 17h1"/></svg><h3>Rastreio do pedido</h3><p>O cliente acompanha pelo link, em uma página com o visual da sua loja: recebido, em preparo, saiu para entrega, entregue.</p></div>
         <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><h3>Você edita quando quiser</h3><p>Muda preço, pausa um item que acabou e ajusta horários pelo painel.</p></div>
         <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><h3>Entrega ou retirada</h3><p>Taxa de entrega, pedido mínimo e as formas de pagamento que você aceita.</p></div>
         <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg><h3>Equipe com funções</h3><p>Convide quem trabalha com você. A cozinha vê os pedidos; o caixa, os pagamentos.</p></div>
@@ -1589,18 +1597,15 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
     function doSend(){var L=lines();if(!L.out.length)return;var f=mode==='entrega'?FEE:0,my=++seq,nome=(ck.querySelector('.ck-nome').value||'Cliente').trim(),fone=(ck.querySelector('.ck-fone').value||'').trim(),addr=(ck.querySelector('.ck-addr').value||'').trim(),num=orderNo++;
       var slug=M.brand.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g,'')+'.com.br';
       ck.hidden=true;chat.innerHTML='';
-      var o=bub('o');o.appendChild(el('b','wa-tt','Novo pedido #'+num+' · '+M.brand));
-      L.out.forEach(function(x){var r=el('div','wa-it');r.appendChild(el('span',null,x.q+'x '+x.n));r.appendChild(el('span',null,brl2(x.q*x.p)));o.appendChild(r)});
-      o.appendChild(document.createElement('hr'));
-      var r1=el('div','wa-it sm');r1.append(el('span',null,'Subtotal'),el('span',null,brl2(L.t)));o.appendChild(r1);
-      if(f){var r2=el('div','wa-it sm');r2.append(el('span',null,'Taxa de entrega'),el('span',null,brl2(f)));o.appendChild(r2)}
-      var r3=el('div','wa-it tot');r3.append(el('span',null,'Total'),el('span',null,brl2(L.t+f)));o.appendChild(r3);
-      o.appendChild(el('div','wa-meta',(mode==='entrega'?'🛵 Entrega · '+(addr||'endereço informado'):'🏪 Retirada no balcão')));
-      o.appendChild(el('div','wa-meta','💳 '+(pay==='Cartão'?'Cartão na entrega':pay)));
-      o.appendChild(el('div','wa-meta','👤 '+nome+(fone?' · '+fone:'')));
-      o.appendChild(el('span','wa-time',hhmm()+' ✓✓'));
+      var PAL={padaria:['#231710','#F3ECE2','#FBF7F1','#2B1D14','#A8693D','#2B1A10','#F7EEE2'],cafe:['#1B100A','#2A1A12','#3A261B','#F3E3CC','#D9A85B','#D9A85B','#2A1A12'],burger:['#0A0A0A','#121212','#1C1C1C','#F2F2F2','#F2B640','#D83A2E','#FFFFFF'],rest:['#6B3F2A','#FBF8F3','#FFFFFF','#2B211A','#6B3F2A','#6B3F2A','#FFF7EE']}[key]||['#231710','#F3ECE2','#FBF7F1','#2B1D14','#A8693D','#2B1A10','#F7EEE2'];
+      function hx(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+      function imgOf(nm){var r='';all().forEach(function(it){if(it.n===nm)r=IMG[it.img]||''});return r}
+      var o=bub('o card');var wc=el('div','wc');wc.style.cssText='--bar:'+PAL[0]+';--bg:'+PAL[1]+';--cd:'+PAL[2]+';--ink:'+PAL[3]+';--cor:'+PAL[4]+';--on:'+PAL[5]+';--oi:'+PAL[6];
+      var rowsH=L.out.map(function(x){return '<div class="wc-r"><i style="background-image:url('+imgOf(x.n)+')"></i><span>'+hx(x.n)+'<small>'+x.q+' x '+brl2(x.p)+'</small></span><em>'+brl2(x.q*x.p)+'</em></div>'}).join('');
+      wc.innerHTML='<div class="wc-h"><img src="assets/img/logo-bistro-connect-clara.png" alt=""></div><div class="wc-ph" style="background-image:url('+imgOf(L.out[0].n)+')"></div><div class="wc-t"><b>Olá, '+hx(M.brand)+'!</b><small>Fiz o pedido #'+num+' pelo site.</small></div><div class="wc-it"><b>Itens do pedido</b>'+rowsH+'</div><div class="wc-pl"><span>'+(mode==='entrega'?'Entrega: '+brl2(f):'Retirada na loja')+'</span><span class="t">Total: '+brl2(L.t+f)+'</span></div><div class="wc-inf"><div><small>'+(mode==='entrega'?'Entrega em':'Retirada')+'</small><b>'+hx(mode==='entrega'?(addr||'Endereço informado'):'Na loja')+'</b></div><div><small>Para</small><b>'+hx(nome)+'</b></div><div><small>Pagamento</small><b>'+hx(pay==='Cartão'?'Cartão na entrega':pay)+'</b></div></div><div class="wc-z"><i></i><div><b>'+hx(nome)+'</b><small>'+hx(fone||'(42) 99999-0000')+'</small></div></div><div class="wc-f">Pedido feito pelo site, direto no seu WhatsApp.</div>';
+      o.appendChild(wc);o.appendChild(el('span','wa-time',hhmm()+' ✓✓'));
       function later(ms,fn){setTimeout(function(){if(my===seq&&!wa.hidden)fn()},ms)}
-      later(1300,function(){var b=bub('wain');b.appendChild(document.createTextNode('Oi, '+nome.split(' ')[0]+'! Recebemos o seu pedido #'+num+' 🙌\nPrevisão: '+(mode==='entrega'?'35 a 45':'20 a 25')+' min.'));var lk=el('div','wa-link');lk.innerHTML='<i>📍</i><div><b>Acompanhe seu pedido ao vivo</b><small>'+slug+'/pedido/'+num+'</small></div>';b.appendChild(lk);b.appendChild(el('span','wa-time',hhmm(1)))});
+      later(1300,function(){var b=bub('wain');b.appendChild(document.createTextNode('Oi, '+nome.split(' ')[0]+'! Recebemos o seu pedido #'+num+'. Previsão: '+(mode==='entrega'?'35 a 45':'20 a 25')+' min. Acompanhe pelo link:'));var nIt=L.out.reduce(function(s,x){return s+x.q},0),lk=el('div','wa-link');lk.innerHTML='<img src="'+imgOf(L.out[0].n)+'" alt=""><div><b>Pedido #'+num+' · '+hx(M.brand)+'</b><small>'+nIt+(nIt>1?' itens':' item')+' · Total '+brl2(L.t+f)+' · Pedido recebido</small><small class="dm">bistroconnect.com.br</small></div>';b.appendChild(lk);b.appendChild(el('span','wa-time',hhmm(1)))});
       later(3000,function(){var b=bub('sys');b.textContent='👩‍🍳 Pedido #'+num+' em preparo'});
       later(4600,function(){var b=bub('sys');b.textContent=mode==='entrega'?'🛵 Saiu para entrega · chega em ~10 min':'✅ Pronto! Pode retirar no balcão'});
       wa.hidden=false}
@@ -1670,7 +1675,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
     var norm=function(t){return (t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')};
     var QR=['Como funciona?','Quanto custa?','Ver os modelos','Quero criar minha loja'];
     var A={
-      como:'É simples: o seu cliente abre o cardápio pelo link da bio, pelo Google ou pelo status do WhatsApp, escolhe os itens e toca em enviar.\n\nO pedido chega pronto no seu WhatsApp, com itens, total e endereço. Você só confere e prepara. E funciona até com a loja fechada: às 22h alguém já pode deixar o pedido do café da manhã.',
+      como:'É simples: o seu cliente abre o cardápio pelo link da bio, pelo Google ou pelo status do WhatsApp, escolhe os itens e toca em enviar.\n\nO pedido chega no seu WhatsApp como um cartão em imagem, com itens, total e endereço. Você só confere e prepara. E funciona até com a loja fechada: às 22h alguém já pode deixar o pedido do café da manhã.',
       preco:'Você paga pelo que vende na plataforma, com teto:\n\n• Até R$ 3 mil/mês: faixa de entrada (fale com a gente sobre as condições de lançamento)\n• Até R$ 10 mil: R$ 49/mês\n• Até R$ 30 mil: R$ 99/mês\n• Acima disso: R$ 199/mês\n\nSem taxa de implantação e sem comissão por pedido. Todos os planos têm todos os recursos.',
       comissao:'Zero comissão. A mensalidade tem teto de R$ 199, e você vende quanto quiser. No app de delivery a comissão fica entre 12% e 23% de cada pedido.\n\nVocê não precisa sair do app: ele traz cliente novo, e o seu cardápio traz esse cliente de volta, sem taxa.',
       prazo:'A loja fica pronta em minutos: você cria a conta, escolhe o tipo do negócio e já recebe o link. Depois é só cadastrar os produtos e as fotos pelo painel.',
