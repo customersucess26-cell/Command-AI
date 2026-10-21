@@ -31,6 +31,11 @@ $NEGRITO = __DIR__ . '/assets/fonts/Inter-Bold.otf';
 $c = $_GET['c'] ?? '';
 $p = codigo_valido($c) ? busca_pedido($c) : null;
 
+function reduz($src, $w, $h) {      // reduz com suavização (imagecopyresampled funciona em qualquer GD; imagescale falha em alguns servidores)
+    $dst = imagecreatetruecolor($w, $h);
+    imagecopyresampled($dst, $src, 0, 0, 0, 0, $w, $h, imagesx($src), imagesy($src));
+    return $dst;
+}
 function saida($im) {
     global $DEBUG;
     if ($DEBUG) {      // ?debug=1: se algo foi impresso antes da imagem, mostra em texto
@@ -71,7 +76,7 @@ function corta($fonte, $tam, $t, $max) {
 
 if (!is_file($FONTE) || !is_file($NEGRITO) || !@imagettfbbox(10, 0, $NEGRITO, 'A')) {      // sem fonte: cartão simples, sem texto
     imagefill($big, 0, 0, $AZUL);
-    $im = imagescale($big, 1200, 630); saida($im);
+    $im = reduz($big, 1200, 630); saida($im);
 }
 
 imagefill($big, 0, 0, $FUNDO);
@@ -83,7 +88,7 @@ if (!$p) {
     txt($big, $NEGRITO, 46, 60, 100, $BRANCO, 'Bistrô Connect');
     txt($big, $NEGRITO, 40, 60, 330, $TINTA, 'Pedido não encontrado');
     txt($big, $FONTE, 26, 60, 380, $SUAVE, 'Confira o link que a loja enviou.');
-    $im = imagescale($big, 1200, 630, IMG_BICUBIC); saida($im);
+    $im = reduz($big, 1200, 630); saida($im);
 }
 
 // topo: loja, número do pedido e status
@@ -128,5 +133,5 @@ txt($big, $NEGRITO, 44, 1124 - larg($NEGRITO, 44, $tot), 560, $BRANCO, $tot);
 
 txt($big, $FONTE, 19, 460, 614, $SUAVE, 'Bistrô Connect  ·  bistroconnect.com.br');
 
-$im = imagescale($big, 1200, 630, IMG_BICUBIC);
+$im = reduz($big, 1200, 630);
 saida($im);

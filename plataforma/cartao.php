@@ -14,6 +14,11 @@ $W = 1024;
 $c = $_GET['c'] ?? '';
 $p = preg_match('/^[a-f0-9]{16}$/', $c) ? busca_cartao($c) : null;
 
+function reduz($src, $w, $h) {      // reduz com suavização (imagecopyresampled funciona em qualquer GD; imagescale falha em alguns servidores)
+    $dst = imagecreatetruecolor($w, $h);
+    imagecopyresampled($dst, $src, 0, 0, 0, 0, $w, $h, imagesx($src), imagesy($src));
+    return $dst;
+}
 function saida($im) {
     header('Content-Type: image/png');
     header('Cache-Control: private, no-store');
@@ -230,5 +235,5 @@ txt($im, $F, 24, ($W - larg($F, 24, $sl)) / 2, $y + 40, $SUAVE, $sl);
 $sl2 = 'Bistrô Connect';
 txt($im, $B, 26, ($W - larg($B, 26, $sl2)) / 2, $y + 80, $AZUL2, $sl2);
 
-$out = imagescale($im, $W, $H, IMG_BICUBIC);
+$out = reduz($im, $W, $H);
 saida($out);
