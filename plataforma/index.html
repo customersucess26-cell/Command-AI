@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-6QEbq17PsuGmKqNKygXhUGbLu+TG9NeUqyjphX7WXz0=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-3kFg5l9l4/bI1s+1O1Na/uz8ewHa98FFme6UMAa+7yg=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Cardápio digital e pedidos no WhatsApp, sem comissão</title>
 <meta name="description" content="Loja online para a sua padaria, café, hamburgueria ou restaurante: cardápio com fotos, pedido pronto no WhatsApp, rastreio para o cliente e painel completo. Sem comissão por pedido.">
@@ -1030,11 +1030,6 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
 .js-efeitos .ad2-lado.visto .pc-card{animation:waEntra .55s cubic-bezier(.2,.7,.2,1) 1s forwards}
 @media (max-width:400px){.pc-sec{font-size:12px}.pc-card{padding:10px 12px 2px}}
 @media (prefers-reduced-motion:reduce){.js-efeitos .ad2-lado .pc-card{opacity:1;transform:none;animation:none!important}}
-
-/* ===== v8: lojas reais nos celulares ===== */
-.screen.real{overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none;background:#120d09;display:block;border-radius:inherit;outline:none}
-.screen.real::-webkit-scrollbar{display:none}
-.screen.real img{display:block;width:100%;height:auto;max-width:none}
 .sites-cta{text-align:center;margin:30px 0 0}
 </style>
 </head>
@@ -1091,11 +1086,11 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
           <div class="phone" id="heroPhone" role="region" aria-label="Demonstração de cardápio digital"></div>
           <div class="notif" aria-hidden="true">
             <span class="wa"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2z"/></svg></span>
-            <div><b id="nfLabel">WhatsApp · agora</b><strong id="nfTitle">Novo pedido · Padaria da Ana</strong><span id="nfItems"></span><em id="nfTotal"></em><div class="nf-trk"><div class="nf-bar"><i id="nfBar"></i></div><div class="nf-st"><u id="nfIc">✓</u><p id="nfTx">Pedido recebido</p><s id="nfEta">~25 min</s></div></div></div>
+            <div><b id="nfLabel">WhatsApp · agora</b><strong id="nfTitle">Novo pedido · Fermento</strong><span id="nfItems"></span><em id="nfTotal"></em><div class="nf-trk"><div class="nf-bar"><i id="nfBar"></i></div><div class="nf-st"><u id="nfIc">✓</u><p id="nfTx">Pedido recebido</p><s id="nfEta">~25 min</s></div></div></div>
           </div>
           <div class="pill-card" aria-hidden="true"><b>0%</b><span>de comissão<br>por pedido</span></div>
         </div>
-        <p class="phone-note">Loja real da plataforma. Escolha o modelo e role para ver o cardápio.</p>
+        <p class="phone-note">Escolha o modelo, toque em adicionar e envie o pedido.</p>
       </div>
     </div>
   </section>
@@ -1200,13 +1195,13 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
       <div class="head">
         <p class="eyebrow">Modelos</p>
         <h2>Comida se compra com os olhos. Agora, com um toque.</h2>
-        <p>São lojas reais da plataforma, do jeito que o seu cliente vai ver no celular. Role dentro do celular para ver o cardápio, as fotos e as seções. A cor da marca, a logo, a capa e os textos você troca pelo painel.</p>
+        <p>Quatro estilos para começar, todos funcionando de verdade. Toque, escolha e envie um pedido de teste. Cores, fontes e fotos mudam para a cara da sua casa.</p>
       </div>
       <div class="models">
-        <div class="model"><div class="phone" data-mount="padaria" role="region" aria-label="Modelo padaria"></div><b>Padaria</b><span>Café escuro e dourado, artesanal</span></div>
-        <div class="model"><div class="phone" data-mount="cafe" role="region" aria-label="Modelo café"></div><b>Café e confeitaria</b><span>O mesmo estilo artesanal, com vitrine</span></div>
-        <div class="model"><div class="phone" data-mount="burger" role="region" aria-label="Modelo hamburgueria"></div><b>Hamburgueria</b><span>Preto e vermelho, foto em destaque</span></div>
-        <div class="model"><div class="phone" data-mount="rest" role="region" aria-label="Modelo restaurante"></div><b>Restaurante</b><span>Carvão e âmbar, elegante</span></div>
+        <div class="model"><div class="phone" data-mount="padaria" role="region" aria-label="Modelo padaria"></div><b>Padaria</b><span>Claro e artesanal, em grade</span></div>
+        <div class="model"><div class="phone" data-mount="cafe" role="region" aria-label="Modelo café"></div><b>Café</b><span>Escuro e aconchegante, com vitrine</span></div>
+        <div class="model"><div class="phone" data-mount="burger" role="region" aria-label="Modelo hamburgueria"></div><b>Hamburgueria</b><span>Preto e marcante, foto em destaque</span></div>
+        <div class="model"><div class="phone" data-mount="rest" role="region" aria-label="Modelo restaurante"></div><b>Restaurante</b><span>Claro e elegante, prato em destaque</span></div>
       </div>
     </div>
   </section>
@@ -1536,20 +1531,20 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
   /* ===== cardápios de demonstração: 4 modelos (marcas fictícias) ===== */
   var IMG={"burg_black": "/assets/img/inicio/6c476f7c90.jpg", "burg_camarao": "/assets/img/inicio/6d12c20478.jpg", "burg_classico": "/assets/img/inicio/1d6d44960b.jpg", "burg_frango": "/assets/img/inicio/8ba79c8059.jpg", "burg_peixe": "/assets/img/inicio/2a292bcbec.jpg", "cafe_capu": "/assets/img/inicio/8514534908.jpg", "cafe_caramel": "/assets/img/inicio/59767cb6f1.jpg", "cafe_espresso": "/assets/img/inicio/7330b3cb22.jpg", "cafe_graos": "/assets/img/inicio/ee2c1a3bc4.jpg", "cafe_maquina": "/assets/img/inicio/0353de7e98.jpg", "cafe_mocha": "/assets/img/inicio/7167abca2d.jpg", "pad_bolo": "/assets/img/inicio/e2ae4d8fc3.jpg", "pad_capu": "/assets/img/inicio/19cca48161.jpg", "pad_cheesecake": "/assets/img/inicio/d444d0460e.jpg", "pad_cookie": "/assets/img/inicio/c5d1441fa1.jpg", "pad_croissant": "/assets/img/inicio/8548fa9c7d.jpg", "pad_danish": "/assets/img/inicio/f713bf262e.jpg", "pad_icelatte": "/assets/img/inicio/3ed8a9d786.jpg", "pad_latte2": "/assets/img/inicio/4daeedcfe2.jpg", "pad_latteart": "/assets/img/inicio/fb500c9eb9.jpg", "pad_sanduiche": "/assets/img/inicio/9cce6f7bcb.jpg", "rest_arroz": "/assets/img/inicio/715537abe1.jpg", "rest_carne": "/assets/img/inicio/e7c60264df.jpg", "rest_curry": "/assets/img/inicio/7c9eccc1f5.jpg", "rest_karaage": "/assets/img/inicio/7b18bbb374.jpg", "rest_milanesa": "/assets/img/inicio/1e10c7212d.jpg", "w_ita": "/assets/img/inicio/d8cef8c5f7.jpg", "w_jap": "/assets/img/inicio/a04de960c8.jpg", "w_mex": "/assets/img/inicio/82f3db9a96.jpg", "w_usa": "/assets/img/inicio/e28af22804.jpg"};
   var MODELS={
-    padaria:{brand:'Padaria da Ana',layout:'grid',hero:{imgs:['pad_croissant','pad_latteart','pad_cookie'],items:'2x Croissant de manteiga\n1x Cappuccino',total:37.8},cats:[
+    padaria:{brand:'Fermento',layout:'grid',hero:{imgs:['pad_croissant','pad_latteart','pad_cookie'],items:'2x Croissant de manteiga\n1x Cappuccino',total:37.8},cats:[
       {n:'Pães e salgados',items:[{n:'Croissant de manteiga',d:'Folhado, assado toda manhã.',p:12.9,u:'Unidade',img:'pad_croissant',tag:'Mais pedido'},{n:'Folhado de frutas',d:'Massa folhada e geleia da casa.',p:13.9,u:'Unidade',img:'pad_danish'},{n:'Sanduíche de fermentação natural',d:'Peito de peru, queijo e salada.',p:24.9,u:'Unidade',img:'pad_sanduiche'},{n:'Muffin de gotas de chocolate',d:'Fofinho, com casquinha crocante.',p:11.9,u:'Unidade',img:'pad_cookie'}]},
       {n:'Doces',items:[{n:'Cheesecake de frutas vermelhas',d:'Base crocante e calda da casa.',p:18.9,u:'Fatia',img:'pad_cheesecake',tag:'Novo'},{n:'Brownie com mirtilos',d:'Chocolate meio amargo.',p:14.9,u:'Pedaço',img:'pad_bolo'},{n:'Croissant duplo',d:'Para dividir, com manteiga e geleia.',p:22.9,u:'2 unidades',img:'pad_croissant'},{n:'Folhado de frutas',d:'Massa folhada e geleia da casa.',p:13.9,u:'Unidade',img:'pad_danish'}]},
       {n:'Cafés',items:[{n:'Cappuccino',d:'Espresso, leite vaporizado e canela.',p:12,u:'300 ml',img:'pad_capu'},{n:'Latte com arte',d:'Leite cremoso e espresso duplo.',p:13.9,u:'300 ml',img:'pad_latteart'},{n:'Latte gelado',d:'Espresso duplo, leite e gelo.',p:15.9,u:'400 ml',img:'pad_icelatte'},{n:'Flat white',d:'Mais café, menos espuma.',p:12.9,u:'240 ml',img:'pad_latte2'}]}]},
-    cafe:{brand:'Café da Joana',layout:'cafe',hero:{imgs:['cafe_caramel','cafe_graos','cafe_capu'],items:'2x Latte de caramelo\n1x Croissant',total:46.7},cats:[
+    cafe:{brand:'Torra',layout:'cafe',hero:{imgs:['cafe_caramel','cafe_graos','cafe_capu'],items:'2x Latte de caramelo\n1x Croissant',total:46.7},cats:[
       {n:'Cafés',shelf:true,items:[{n:'Espresso',p:7,u:'60 ml',img:'cafe_espresso'},{n:'Latte de caramelo',p:16.9,u:'300 ml',img:'cafe_caramel'},{n:'Cappuccino cremoso',p:14.9,u:'300 ml',img:'cafe_capu'}],
        more:[{n:'Mocha com calda',d:'Espresso, chocolate e calda quente.',p:15.9,img:'cafe_mocha'},{n:'Coado na hora',d:'Método V60, grão do dia.',p:9,img:'cafe_maquina'},{n:'Latte com arte',d:'Leite cremoso e espresso duplo.',p:13.9,img:'pad_latteart'},{n:'Latte gelado',d:'Espresso duplo, leite e gelo.',p:15.9,img:'pad_icelatte'}]},
       {n:'Para acompanhar',items:[{n:'Croissant de manteiga',d:'Folhado, assado toda manhã.',p:12.9,img:'pad_croissant'},{n:'Cheesecake',d:'Frutas vermelhas e base crocante.',p:18.9,img:'pad_cheesecake'},{n:'Brownie com mirtilos',d:'Chocolate meio amargo.',p:14.9,img:'pad_bolo'},{n:'Muffin de chocolate',d:'Com gotas de chocolate.',p:11.9,img:'pad_cookie'}]},
       {n:'Para levar',items:[{n:'Grãos especiais 250 g',d:'Torra média, notas de caramelo.',p:49.9,img:'cafe_graos'},{n:'Latte de caramelo',d:'Para viagem, 400 ml.',p:18.9,img:'cafe_caramel'}]}]},
-    burger:{brand:'Burger do Beto',layout:'rows',hero:{imgs:['burg_black','w_ita','burg_classico'],items:'1x Black Brasa\n1x Combo Clássico',total:86.8},cats:[
+    burger:{brand:'Brasa',layout:'rows',hero:{imgs:['burg_black','w_ita','burg_classico'],items:'1x Black Brasa\n1x Combo Clássico',total:86.8},cats:[
       {n:'Artesanais',items:[{n:'Black Brasa',d:'Blend de 180 g, bacon, cheddar e molho de cereja',w:'360 g',p:39.9,img:'burg_black'},{n:'Clássico',d:'Blend de 150 g, queijo, salada e maionese da casa',w:'300 g',p:32.9,img:'burg_classico'},{n:'Black de salmão',d:'Salmão grelhado, cream cheese e pepino',w:'280 g',p:42.9,img:'burg_peixe'},{n:'Black de camarão',d:'Camarão empanado, rúcula e molho cítrico',w:'290 g',p:44.9,img:'burg_camarao'},{n:'Crispy de frango',d:'Frango empanado, alface e maionese de ervas',w:'300 g',p:29.9,img:'burg_frango'}]},
       {n:'Da volta ao mundo',items:[{n:'Cheddar bacon',d:'Blend de 180 g, cheddar, bacon e picles',w:'340 g',p:38.9,img:'w_usa'},{n:'Caprese',d:'Muçarela, tomate, rúcula e pesto',w:'320 g',p:37.9,img:'w_ita'},{n:'Teriyaki',d:'Molho teriyaki, cebola roxa e jalapeño',w:'320 g',p:39.9,img:'w_jap'},{n:'Jalapeño',d:'Pimenta jalapeño, guacamole e cheddar',w:'330 g',p:39.9,img:'w_mex'}]},
       {n:'Combos',items:[{n:'Combo Clássico',d:'Clássico, batata média e refrigerante',w:'combo',p:46.9,img:'burg_classico'},{n:'Combo Black',d:'Black Brasa, batata média e refrigerante',w:'combo',p:53.9,img:'burg_black'}]}]},
-    rest:{brand:'Âmbar Cozinha',layout:'plates',hero:{imgs:['rest_carne','rest_milanesa','pad_cheesecake'],items:'1x Carne de sol com mandioca\n1x Cheesecake',total:73.8},cats:[
+    rest:{brand:'Alecrim',layout:'plates',hero:{imgs:['rest_carne','rest_milanesa','pad_cheesecake'],items:'1x Carne de sol com mandioca\n1x Cheesecake',total:73.8},cats:[
       {n:'Pratos',items:[{n:'Carne de sol com mandioca',d:'Na manteiga, com cebola dourada.',p:54.9,img:'rest_carne',tag:'Mais pedido'},{n:'Filé à milanesa',d:'Empanado na hora, fritas e limão.',p:48.9,img:'rest_milanesa'},{n:'Arroz de frango temperado',d:'Especiarias, frango e ervas.',p:42.9,img:'rest_arroz'},{n:'Frango crocante oriental',d:'Marinado no shoyu, com legumes.',p:39.9,img:'rest_karaage'},{n:'Frango ao curry',d:'Molho cremoso de tomate e especiarias.',p:44.9,img:'rest_curry'},{n:'Sanduíche da casa',d:'Pão de fermentação, frango e salada.',p:29.9,img:'pad_sanduiche'}]},
       {n:'Sobremesas',items:[{n:'Cheesecake',d:'Frutas vermelhas e base crocante.',p:18.9,img:'pad_cheesecake',tag:'Novo'},{n:'Brownie com mirtilos',d:'Chocolate meio amargo.',p:16.9,img:'pad_bolo'}]},
       {n:'Bebidas',items:[{n:'Latte gelado',d:'Espresso duplo, leite e gelo.',p:15.9,img:'pad_icelatte'},{n:'Cappuccino',d:'Espresso, leite vaporizado e canela.',p:12,img:'pad_capu'}]}]}
@@ -1558,11 +1553,61 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
   var HAM='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
   function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
   function mountMenu(phone,key){
-    var M=MODELS[key];phone.innerHTML='';
-    var sc=el('div','screen real');sc.tabIndex=0;sc.setAttribute('aria-label','Loja de exemplo: '+M.brand+'. Role para ver o cardápio.');
-    var im=el('img');im.src='/assets/img/lojas/'+key+'.jpg';im.alt='Cardápio da loja de exemplo '+M.brand;im.width=780;im.height=6800;im.decoding='async';
-    if(phone.id!=='heroPhone')im.loading='lazy';
-    sc.appendChild(im);phone.appendChild(sc)}
+    var M=MODELS[key],cart={},cur=0;
+    phone.innerHTML='';var sc=el('div','screen m-'+key);phone.appendChild(sc);
+    var head,badge=null;
+    if(key==='padaria'){head=el('div','m-bar');var b1=el('button','m-ico');b1.type='button';b1.setAttribute('aria-label','Menu');b1.innerHTML=HAM;var lg=el('div','m-logo','F');var b2=el('button','m-ico round');b2.type='button';b2.setAttribute('aria-label','Sacola');b2.innerHTML=BAG;badge=el('span','m-badge','0');badge.hidden=true;b2.appendChild(badge);b2.onclick=function(){send()};head.append(b1,lg,b2)}
+    else if(key==='cafe'){head=el('div','m-head');head.innerHTML='<span class="brand"><i>T</i><b>TORRA</b></span><h4>Seu momento de café</h4><span class="sub">Preparado na hora, do grão à xícara</span>'}
+    else if(key==='burger'){head=el('div','m-head');head.innerHTML='<h4><span>★</span>BURGERS<span>★</span></h4><span class="sub">BRASA · HAMBURGUERIA</span>'}
+    else {head=el('div','m-head');head.innerHTML='<span class="brandline">ALECRIM · COZINHA DA CASA</span><svg class="leaf" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21c0-6 3-10 9-12-1 6-4 10-9 12zm0 0C12 15 9 11 3 9c1 6 4 10 9 12z"/></svg><h4>Nosso cardápio</h4><span class="sub">Feito na hora, todos os dias</span>'}
+    sc.appendChild(head);
+    var tabs=el('div','m-tabs'),body=el('div','m-body'),cbtn=el('button','m-cart');cbtn.type='button';cbtn.hidden=true;var cq=el('span'),ct=el('span');cbtn.append(cq,ct);
+    var wa=el('div','wa-msg');wa.hidden=true;var wt=el('div','wa-top');var back=el('button',null,'‹ Voltar');back.type='button';var av=el('i','wa-av',M.brand.charAt(0));var wn=el('div','wa-nm');wn.appendChild(el('b',null,M.brand));wn.appendChild(el('small',null,'online · responde rápido'));wt.append(back,av,wn);var chat=el('div','wa-chat');wa.append(wt,chat);
+    var mode=(key==='rest'||key==='burger')?'entrega':'retirada',pay='Pix',FEE=6,seq=0,orderNo=127;
+    var ck=el('div','ck');ck.hidden=true;
+    ck.innerHTML='<div class="ck-sheet"><div class="ck-h"><b>Finalizar pedido</b><button type="button" class="ck-x" aria-label="Fechar">×</button></div><div class="ck-seg"><button type="button" data-m="entrega">Entrega</button><button type="button" data-m="retirada">Retirada</button></div><label>Seu nome<input class="ck-nome" value="Maria Souza" autocomplete="off"></label><label>WhatsApp<input class="ck-fone" value="(42) 99876-5432" inputmode="tel" autocomplete="off"></label><label class="ck-end">Endereço<input class="ck-addr" value="Rua das Flores, 120 · Centro" autocomplete="off"></label><div class="ck-pay"><button type="button" data-p="Pix">Pix</button><button type="button" data-p="Cartão">Cartão</button><button type="button" data-p="Dinheiro">Dinheiro</button></div><div class="ck-sum"><span class="ck-fee"></span><b class="ck-tot"></b></div><button type="button" class="ck-send">Enviar pelo WhatsApp</button></div>';
+    sc.append(tabs,body,cbtn,ck,wa);
+    function all(){var a=[];M.cats.forEach(function(c){a=a.concat(c.items,c.more||[])});return a}
+    function addBtn(it,label){var b=el('button','m-add',label||'Adicionar');b.type='button';b.setAttribute('aria-label','Adicionar '+it.n);b.onclick=function(){cart[it.n]=(cart[it.n]||0)+1;draw();cartDraw()};return b}
+    function pic(it,cls){var d=el('div',cls||'pic');var im=el('img','m-photo');im.src=IMG[it.img]||'';im.alt=it.n;im.loading='lazy';d.appendChild(im);if(it.tag&&M.layout!=='numbered')d.appendChild(el('span','m-tag',it.tag));if(cart[it.n])d.appendChild(el('span','m-qty',cart[it.n]));return d}
+    function drawTabs(){tabs.innerHTML='';M.cats.forEach(function(c,i){var b=el('button',null,c.n);b.type='button';b.setAttribute('aria-pressed',i===cur);b.onclick=function(){cur=i;drawTabs();draw();body.scrollTop=0};tabs.appendChild(b)})}
+    function rows(list){var w=el('div','m-rows');list.forEach(function(it){var r=el('div','m-row');r.appendChild(pic(it));var t=el('div','t');t.appendChild(el('p','m-name',it.n));if(it.d)t.appendChild(el('p','m-desc',it.d));var m=el('div','meta');var pr=el('span');if(it.w){pr.appendChild(el('span','w',it.w))}pr.appendChild(el('span','m-price',brl2(it.p)));m.append(pr,addBtn(it,'+'));t.appendChild(m);r.appendChild(t);w.appendChild(r)});return w}
+    function draw(){body.innerHTML='';var c=M.cats[cur];
+      if(M.layout==='grid'){var g=el('div','m-grid');c.items.forEach(function(it){var k=el('div','m-card');k.appendChild(pic(it));k.appendChild(el('p','m-name',it.n));k.appendChild(el('p','m-desc',it.d));k.appendChild(el('hr'));k.appendChild(el('span','unit',it.u));k.appendChild(el('span','m-price',brl2(it.p)));k.appendChild(addBtn(it));g.appendChild(k)});body.appendChild(g)}
+      else if(M.layout==='cafe'){if(c.shelf){var s=el('div','m-shelf');c.items.forEach(function(it){var x=el('div','it');x.appendChild(pic(it));x.appendChild(el('p','m-name',it.n));x.appendChild(el('span','m-price',brl2(it.p)));x.appendChild(addBtn(it,'Escolher'));s.appendChild(x)});body.appendChild(s);if(c.more){body.appendChild(el('p','m-section','Especiais da casa'));body.appendChild(rows(c.more))}}else body.appendChild(rows(c.items))}
+      else if(M.layout==='rows'){body.appendChild(rows(c.items))}
+      else {var g=el('div','m-plates');c.items.forEach(function(it){var k=el('div','m-plate');if(it.tag)k.appendChild(el('span','ptag',it.tag));var pc=pic(Object.assign({},it,{tag:''}));k.appendChild(pc);k.appendChild(el('p','m-name',it.n));k.appendChild(el('p','m-desc',it.d));k.appendChild(el('span','m-price',brl2(it.p)));k.appendChild(addBtn(it));g.appendChild(k)});body.appendChild(g)}}
+    function lines(){var out=[],t=0;all().forEach(function(it){if(cart[it.n]&&out.every(function(o){return o.n!==it.n})){out.push({n:it.n,q:cart[it.n],p:it.p});t+=cart[it.n]*it.p}});return {out:out,t:t}}
+    function cartDraw(){var L=lines(),q=L.out.reduce(function(s,x){return s+x.q},0);cbtn.hidden=!q;cq.textContent='Finalizar pedido · '+q+(q>1?' itens':' item');ct.textContent=brl2(L.t);if(badge){badge.hidden=!q;badge.textContent=q}}
+    function ckUpdate(){var L=lines(),f=mode==='entrega'?FEE:0;ck.querySelectorAll('.ck-seg button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.m===mode)});ck.querySelectorAll('.ck-pay button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===pay)});ck.querySelector('.ck-end').hidden=mode!=='entrega';ck.querySelector('.ck-fee').textContent=mode==='entrega'?'Taxa de entrega '+brl2(FEE):'Sem taxa · retirada no balcão';ck.querySelector('.ck-tot').textContent='Total '+brl2(L.t+f)}
+    ck.querySelectorAll('.ck-seg button').forEach(function(b){b.onclick=function(){mode=b.dataset.m;ckUpdate()}});
+    ck.querySelectorAll('.ck-pay button').forEach(function(b){b.onclick=function(){pay=b.dataset.p;ckUpdate()}});
+    ck.querySelector('.ck-x').onclick=function(){ck.hidden=true};
+    function send(){var L=lines();if(!L.out.length)return;ckUpdate();ck.hidden=false}
+    function bub(cls){var d=el('div','bubble '+cls);chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d}
+    function hhmm(add){var d=new Date(Date.now()+(add||0)*60000);return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
+    function doSend(){var L=lines();if(!L.out.length)return;var f=mode==='entrega'?FEE:0,my=++seq,nome=(ck.querySelector('.ck-nome').value||'Cliente').trim(),fone=(ck.querySelector('.ck-fone').value||'').trim(),addr=(ck.querySelector('.ck-addr').value||'').trim(),num=orderNo++;
+      var slug=M.brand.toLowerCase().normalize('NFD').replace(/[^a-z0-9]+/g,'')+'.com.br';
+      ck.hidden=true;chat.innerHTML='';
+      var o=bub('o');o.appendChild(el('b','wa-tt','Novo pedido #'+num+' · '+M.brand));
+      L.out.forEach(function(x){var r=el('div','wa-it');r.appendChild(el('span',null,x.q+'x '+x.n));r.appendChild(el('span',null,brl2(x.q*x.p)));o.appendChild(r)});
+      o.appendChild(document.createElement('hr'));
+      var r1=el('div','wa-it sm');r1.append(el('span',null,'Subtotal'),el('span',null,brl2(L.t)));o.appendChild(r1);
+      if(f){var r2=el('div','wa-it sm');r2.append(el('span',null,'Taxa de entrega'),el('span',null,brl2(f)));o.appendChild(r2)}
+      var r3=el('div','wa-it tot');r3.append(el('span',null,'Total'),el('span',null,brl2(L.t+f)));o.appendChild(r3);
+      o.appendChild(el('div','wa-meta',(mode==='entrega'?'🛵 Entrega · '+(addr||'endereço informado'):'🏪 Retirada no balcão')));
+      o.appendChild(el('div','wa-meta','💳 '+(pay==='Cartão'?'Cartão na entrega':pay)));
+      o.appendChild(el('div','wa-meta','👤 '+nome+(fone?' · '+fone:'')));
+      o.appendChild(el('span','wa-time',hhmm()+' ✓✓'));
+      function later(ms,fn){setTimeout(function(){if(my===seq&&!wa.hidden)fn()},ms)}
+      later(1300,function(){var b=bub('wain');b.appendChild(document.createTextNode('Oi, '+nome.split(' ')[0]+'! Recebemos o seu pedido #'+num+' 🙌\nPrevisão: '+(mode==='entrega'?'35 a 45':'20 a 25')+' min.'));var lk=el('div','wa-link');lk.innerHTML='<i>📍</i><div><b>Acompanhe seu pedido ao vivo</b><small>'+slug+'/pedido/'+num+'</small></div>';b.appendChild(lk);b.appendChild(el('span','wa-time',hhmm(1)))});
+      later(3000,function(){var b=bub('sys');b.textContent='👩‍🍳 Pedido #'+num+' em preparo'});
+      later(4600,function(){var b=bub('sys');b.textContent=mode==='entrega'?'🛵 Saiu para entrega · chega em ~10 min':'✅ Pronto! Pode retirar no balcão'});
+      wa.hidden=false}
+    ck.querySelector('.ck-send').onclick=doSend;
+    cbtn.onclick=send;back.onclick=function(){seq++;wa.hidden=true;ck.hidden=true;cart={};draw();cartDraw()};
+    drawTabs();draw();cartDraw();
+  }
   var hero=document.getElementById('heroPhone');
   function heroSet(k){mountMenu(hero,k);var H=MODELS[k].hero;['fl1','fl2','fl3'].forEach(function(id,i){document.getElementById(id).src=IMG[H.imgs[i]]});
     document.getElementById('nfTitle').textContent='Novo pedido · '+MODELS[k].brand;document.getElementById('nfItems').textContent=H.items;document.getElementById('nfTotal').textContent='Total '+brl2(H.total)}
@@ -1588,10 +1633,10 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
   var ORDER=['padaria','cafe','burger','rest'],cur=0;
   function heroPick(k){document.querySelectorAll('[data-model]').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.model===k)});heroSet(k)}
   document.querySelectorAll('[data-model]').forEach(function(b){b.addEventListener('click',function(e){if(e.isTrusted)hero.__user=true;heroPick(b.dataset.model)})});
-  document.querySelectorAll('[data-mount]').forEach(function(p){mountMenu(p,p.dataset.mount)});
+  document.querySelectorAll('[data-mount]').forEach(function(p,i){mountMenu(p,p.dataset.mount);autoLoop(p,1500+i*2200)});
   /* página por nicho (?para=...): o celular fica no modelo do anúncio, sem trocar sozinho */
   var NICHO=window.BC_NICHO;if(NICHO&&NICHO.modelo){heroPick(NICHO.modelo);cur=Math.max(0,ORDER.indexOf(NICHO.modelo))}
-  watch(hero);if(!NICHO&&!REDUCED)setInterval(function(){if(hero.__user||!hero.__vis||document.hidden)return;cur=(cur+1)%ORDER.length;heroPick(ORDER[cur])},5200);
+  autoLoop(hero,600,NICHO?null:function(){cur=(cur+1)%ORDER.length;heroPick(ORDER[cur])});
 
   /* ===== rede de partículas no topo ===== */
   (function(){var c=document.getElementById('net');if(!c)return;var x=c.getContext('2d'),W,H,P=[],m={x:-999,y:-999},dpr=Math.min(2,window.devicePixelRatio||1);
