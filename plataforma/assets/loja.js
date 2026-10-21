@@ -726,7 +726,7 @@
     var f = new File([cartaoBlob], cartaoNome, { type: "image/png" });
     if (!navigator.canShare({ files: [f] })) return;
     ev.preventDefault();
-    navigator.share({ files: [f], text: cartaoTexto, title: "Pedido" }).catch(function (e) {
+    navigator.share({ files: [f] }).catch(function (e) {
       if (e && e.name !== "AbortError") window.open($("okZap").href, "_blank", "noopener");
     });
   }
