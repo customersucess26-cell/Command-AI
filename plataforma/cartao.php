@@ -2,6 +2,9 @@
 /* Bistrô Connect · cartão do pedido em imagem (1024 px de largura) para a loja receber no WhatsApp.
    Uso: /cartao.php?c=<código de 16 caracteres>. Tem nome, telefone e endereço do cliente: só quem recebeu o código vê. */
 require __DIR__ . '/pedido-lib.php';
+if (!function_exists('imagecreatetruecolor') || !function_exists('imagettftext')) {
+    http_response_code(503); header('Content-Type: text/plain; charset=utf-8'); exit('Esta hospedagem está sem a biblioteca de imagens (GD/FreeType).');
+}
 
 const S = 2;
 $R = __DIR__ . '/assets/fonts/';

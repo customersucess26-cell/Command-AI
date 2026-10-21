@@ -2,6 +2,10 @@
 /* Bistrô Connect · cartão do pedido (imagem 1200x630) que o WhatsApp mostra abaixo do link /p/<código>.
    Mostra loja, número do pedido, itens, entrega, total e status. Nunca telefone nem endereço. */
 require __DIR__ . '/pedido-lib.php';
+if (!function_exists('imagecreatetruecolor') || !function_exists('imagettftext')) {      // sem GD/FreeType: usa a imagem fixa da marca
+    header('Content-Type: image/jpeg'); header('Cache-Control: public, max-age=300');
+    readfile(__DIR__ . '/assets/img/og-bistro-connect.jpg'); exit;
+}
 
 const S = 2;                       // desenha no dobro do tamanho e reduz no fim: bordas lisas
 $FONTE = __DIR__ . '/assets/fonts/Inter-Regular.otf';
