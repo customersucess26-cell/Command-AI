@@ -277,3 +277,5 @@ h1,h2,h3{font-family:var(--f-titulo);font-weight:var(--titulo-peso);letter-spaci
 
 .ok-img{width:100%;max-width:260px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.18);margin:4px 0 6px}
 .ok-dica{font-size:14px;color:var(--suave);margin:2px 0 0}.ok-dica b{color:var(--tinta)}
+
+.rodape .acesso{display:block;margin-top:8px;font-size:12px;opacity:.7;text-decoration:underline dotted}.rodape .acesso:hover{opacity:1}
