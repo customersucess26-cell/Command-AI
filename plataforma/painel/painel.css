@@ -551,22 +551,25 @@ details.mais[open]>summary{margin-bottom:14px}
 .seg-tema button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 @media (max-width:640px){.seg-tema button{padding:8px 9px}}
 
-/* esteira de etapas */
-.esteira{display:flex;list-style:none;margin:2px 0 4px;padding:0;gap:0}
-.esteira li{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;font-size:10.5px;color:var(--muted);text-align:center;line-height:1.1}
-.esteira li::before{content:"";position:absolute;top:6px;left:-50%;width:100%;height:2px;background:var(--line);z-index:0}
+/* esteira de etapas: ícone em cada etapa, linha preenchida até a etapa atual */
+.esteira{display:flex;list-style:none;margin:4px 0 6px;padding:0}
+.esteira li{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;position:relative;font-size:10px;color:var(--muted);text-align:center;line-height:1.1}
+.esteira li::before{content:"";position:absolute;top:14px;left:-50%;width:100%;height:3px;border-radius:3px;background:var(--line);z-index:0}
 .esteira li:first-child::before{display:none}
-.esteira li.ok::before,.esteira li.at::before{background:var(--accent)}
-.esteira li i{width:14px;height:14px;border-radius:50%;background:var(--surface);border:2px solid var(--line);z-index:1;box-sizing:border-box}
-.esteira li.ok i{background:var(--accent);border-color:var(--accent)}
-.esteira li.at i{background:var(--surface);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.esteira li.ok::before{background:var(--accent)}
+.esteira li.at::before{background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 22%,var(--line)))}
+.esteira li i{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:2px solid var(--line);color:var(--muted);z-index:1;font-style:normal;box-sizing:border-box}
+.esteira li i svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.esteira li.ok i{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.esteira li.at i{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 4px var(--accent-soft)}
 .esteira li.at span{color:var(--fg);font-weight:700}
+.esteira li span{white-space:nowrap}.pl-row .esteira li{min-width:50px;font-size:9.5px}.pl-row{gap:10px!important}
 .ped .acts .btn.primary{font-weight:700}
 .ped{min-width:0}.kcol .esteira li:not(.at) span{display:none}.kcol .esteira li.at span{white-space:nowrap}
 /* lista e grade */
 .kanban.v-lista,.kanban.v-grade{display:block;overflow:visible}
 .pl{display:flex;flex-direction:column;gap:8px}
-.pl-row{display:grid;grid-template-columns:auto minmax(150px,1.4fr) minmax(230px,1.2fr) auto auto auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--cor,var(--accent));border-radius:12px;padding:10px 14px;cursor:pointer;box-shadow:var(--shadow)}
+.pl-row{display:grid;grid-template-columns:auto minmax(110px,1fr) minmax(270px,1.3fr) auto auto auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--cor,var(--accent));border-radius:12px;padding:10px 14px;cursor:pointer;box-shadow:var(--shadow)}
 .pl-row:hover{border-color:var(--accent)}
 .pl-row b:first-child{font-family:var(--f-display);font-size:16px}
 .pl-meio{display:flex;flex-direction:column;min-width:0}.pl-meio .cli{font-weight:700}.pl-meio .itens{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}

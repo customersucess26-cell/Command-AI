@@ -30,6 +30,7 @@
     sacola: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg>',
     casa: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9H5zM10 20v-6h4v6"/></svg>'
   };
+  var IC5 = [I.recibo, I.check, I.panela, I.moto, I.casa];
   var ICONES = { novo: I.recibo, confirmado: I.check, em_preparo: I.panela, pronto: I.moto, entregue: I.casa };
 
   function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
@@ -92,6 +93,12 @@
     card.classList.toggle("sem-foto", !capa); f.hidden = !capa;
     if (capa) f.style.backgroundImage = css(capa);
 
+    var hs = $("hst"); hs.textContent = ""; hs.hidden = cancel;
+    lista.forEach(function (st, i) {
+      var est = i < idx ? "feito" : i === idx ? (i === lista.length - 1 ? "feito" : "atual") : "pendente";
+      var d = el("div", "hs " + est), ic = el("i"); ic.innerHTML = est === "feito" && i < lista.length - 1 ? I.check : (i === 3 && !entrega ? I.sacola : IC5[i]);
+      d.appendChild(ic); d.appendChild(el("b", "", i === 3 && !entrega ? "Pronto" : i === 3 ? "A caminho" : i === 4 ? (entrega ? "Entregue" : "Retirado") : i === 0 ? "Recebido" : st[1])); hs.appendChild(d);
+    });
     var ol = $("passos"); ol.textContent = "";
     lista.forEach(function (s, i) {
       var estado = cancel ? (i === 0 ? "feito" : "pendente") : i < idx ? "feito" : i === idx ? (i === lista.length - 1 ? "feito" : "atual") : "pendente";

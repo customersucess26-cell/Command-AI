@@ -369,7 +369,7 @@ exec(open("ferramentas/painel-visual.pyfrag", encoding="utf-8").read())
 open(f"{DEST}/painel.js", "w", encoding="utf-8").write(j)
 open(f"{DEST}/painel.css", "a", encoding="utf-8").write(css)
 # versão nos arquivos do painel: o navegador baixa de novo quando mudar (troque a data a cada atualização)
-VERSAO = "20261021e"
+VERSAO = "20261021f"
 _h = open(f"{DEST}/index.html", encoding="utf-8").read()
 for _f in ("painel.css", "painel.js", "../assets/exemplo.js"):
     _h = _h.replace('"%s"' % _f, '"%s?v=%s"' % (_f, VERSAO))
