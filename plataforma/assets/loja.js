@@ -652,49 +652,58 @@
       function t(txt, a, b, tam, cor, neg, al) { x.font = (neg ? "700 " : "400 ") + tam + "px " + FT; x.fillStyle = cor; x.textAlign = al || "left"; x.fillText(txt, a, b); }
       function corta(txt, tam, neg, max) { x.font = (neg ? "700 " : "400 ") + tam + "px " + FT; if (x.measureText(txt).width <= max) return txt; while (txt.length > 1 && x.measureText(txt + "…").width > max) txt = txt.slice(0, -1); return txt + "…"; }
       function cobre(img, a, b, w, h, r) { x.save(); x.beginPath(); x.roundRect ? x.roundRect(a, b, w, h, r) : x.rect(a, b, w, h); x.clip(); var k2 = Math.max(w / img.width, h / img.height), dw = img.width * k2, dh = img.height * k2; x.drawImage(img, a + (w - dw) / 2, b + (h - dh) / 2, dw, dh); x.restore(); }
-      var AZ = "#0b2f45", AZ2 = "#0e5a7a", TQ = "#2bb3d6", ESC = "#0f2a3b", CL = "#d7eef5";
-      x.fillStyle = "#eef4f8"; x.fillRect(0, 0, W, H);
-      x.fillStyle = AZ; x.fillRect(0, 0, W, 150); x.fillStyle = TQ; x.fillRect(0, 145, W, 5);
-      if (logo) { var lh = 96, lw = logo.width * lh / logo.height; x.drawImage(logo, (W - lw) / 2, 25, lw, lh); } else t("Bistrô Connect", W / 2, 90, 46, "#fff", 1, "center");
+      var cs = getComputedStyle(document.body);
+      function v(n, d) { return (cs.getPropertyValue(n) || "").trim() || d; }
+      function rgb(h) { var m = String(h).replace("#", ""); if (m.length === 3) m = m.replace(/(.)/g, "$1$1"); var n = parseInt(m.slice(0, 6), 16); return isNaN(n) ? [0, 0, 0] : [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+      function lum(h) { var r = rgb(h); return (0.299 * r[0] + 0.587 * r[1] + 0.114 * r[2]) / 255; }
+      function mix(h1, h2, k) { var A = rgb(h1), B = rgb(h2); return "rgb(" + [0, 1, 2].map(function (i) { return Math.round(A[i] * (1 - k) + B[i] * k); }).join(",") + ")"; }
+      var FUNDO = v("--fundo", "#f7f2ea"), CARTAO = v("--cartao", "#ffffff"), TINTA = v("--tinta", "#231a14"), SUAVE = v("--suave", "#6e6258"), COR = v("--cor", "#b0703f");
+      var escuro = lum(FUNDO) < 0.45;
+      var DK = escuro ? CARTAO : TINTA, LT = escuro ? TINTA : FUNDO, AC = escuro ? COR : COR, ACL = escuro ? COR : mix(COR, "#ffffff", 0.5);
+      var CL = mix(COR, FUNDO, 0.82), BORDA = escuro ? mix(FUNDO, "#ffffff", 0.16) : mix(FUNDO, TINTA, 0.12), LTS = mix(LT, DK, 0.25);
+      var AZ = DK, AZ2 = AC, TQ = ACL, ESC = DK;
+      x.fillStyle = FUNDO; x.fillRect(0, 0, W, H);
+      x.fillStyle = AZ; x.fillRect(0, 0, W, 150); x.fillStyle = AC; x.fillRect(0, 145, W, 5);
+      if (logo) { var lh = 96, lw = logo.width * lh / logo.height; x.drawImage(logo, (W - lw) / 2, 25, lw, lh); } else t("Bistrô Connect", W / 2, 90, 46, LT, 1, "center");
       var y = 150, site = siteBase().replace(/^https?:\/\//, "");
       x.font = "700 24px " + FT; var uw = x.measureText(site).width + 70;
-      rr((W - uw) / 2, y + 14, uw, 48, 24, AZ); t(site, W / 2, y + 46, 24, "#fff", 1, "center"); y += 70;
+      rr((W - uw) / 2, y + 14, uw, 48, 24, AZ); t(site, W / 2, y + 46, 24, LT, 1, "center"); y += 70;
       if (hero) { cobre(hero, 30, y, W - 60, hHero - 20, 28); y += hHero; }
       t(corta("Olá, " + (p.store_name || "Loja") + "!", 54, 1, W - 80), W / 2, y + 66, 54, AZ2, 1, "center");
-      t("Fiz o pedido #" + String(p.code).replace("#", "") + " pelo site.", W / 2, y + 116, 30, "#10212b", 0, "center"); y += 150;
-      rr(30, y, W - 60, hItens, 34, ESC); t("Itens do pedido", 70, y + 58, 30, "#fff", 1);
+      t("Fiz o pedido #" + String(p.code).replace("#", "") + " pelo site.", W / 2, y + 116, 30, TINTA, 0, "center"); y += 150;
+      rr(30, y, W - 60, hItens, 34, ESC); t("Itens do pedido", 70, y + 58, 30, LT, 1);
       var iy = y + 96;
       itens.forEach(function (i, n) {
         var q = Number(i.qty) || 1, ops = (i.options || []).filter(Boolean);
         if (th[n]) cobre(th[n], 62, iy, 70, 70, 14); else rr(62, iy, 70, 70, 14, AZ2);
-        t(corta(i.name || "", 27, 1, 520), 152, iy + 32, 27, "#fff", 1);
-        t(q + " x " + brl(i.price), 152, iy + 62, 22, "#cfe6ee", 0);
-        t(brl((Number(i.price) || 0) * q), W - 62, iy + 46, 27, "#fff", 1, "right");
+        t(corta(i.name || "", 27, 1, 520), 152, iy + 32, 27, LT, 1);
+        t(q + " x " + brl(i.price), 152, iy + 62, 22, LTS, 0);
+        t(brl((Number(i.price) || 0) * q), W - 62, iy + 46, 27, LT, 1, "right");
         iy += 80;
         if (ops.length) { t(corta("+ " + ops.join(", "), 20, 0, W - 240), 152, iy + 6, 20, TQ, 0); iy += 30; }
         iy += 8;
       });
       y += hItens + 28;
       rr(30, y, 470, 76, 38, CL); t(entrega ? (fee > 0 ? "Entrega: " + brl(fee) : "Entrega grátis") : "Retirada na loja", 265, y + 49, 27, AZ2, 1, "center");
-      rr(520, y, W - 550, 76, 38, AZ); t("Total: " + brl(p.total), 520 + (W - 550) / 2, y + 51, 30, "#fff", 1, "center"); y += 130;
+      rr(520, y, W - 550, 76, 38, AZ); t("Total: " + brl(p.total), 520 + (W - 550) / 2, y + 51, 30, LT, 1, "center"); y += 130;
       var pag = { pix: "Pix", dinheiro: "Dinheiro", cartao: "Cartão", credito: "Cartão de crédito", debito: "Cartão de débito" };
       var end = entrega ? String(p.address || "-") : "Retirada na loja";
       var linhasInfo = [[entrega ? "Entrega em" : "Retirada", end], ["Para", p.customer_name || ""], ["Pagamento", pag[p.payment_method] || p.payment_method || "-"]];
-      rr(30, y, W - 60, 40 + 3 * 86, 30, "#dce6ec"); rr(32, y + 2, W - 64, 36 + 3 * 86, 28, "#fff");
+      rr(30, y, W - 60, 40 + 3 * 86, 30, BORDA); rr(32, y + 2, W - 64, 36 + 3 * 86, 28, CARTAO);
       var ly = y + 40;
       linhasInfo.forEach(function (r) {
         x.beginPath(); x.arc(84, ly + 14, 24, 0, 7); x.fillStyle = CL; x.fill();
         x.beginPath(); x.arc(84, ly + 14, 8, 0, 7); x.fillStyle = AZ2; x.fill();
-        t(r[0], 130, ly + 8, 22, "#5b6b76", 0); t(corta(r[1], 27, 1, W - 200), 130, ly + 44, 27, "#10212b", 1); ly += 86;
+        t(r[0], 130, ly + 8, 22, SUAVE, 0); t(corta(r[1], 27, 1, W - 200), 130, ly + 44, 27, TINTA, 1); ly += 86;
       });
       y += 40 + 3 * 86 + 28;
       rr(30, y, W - 60, 100, 40, ESC);
       x.beginPath(); x.arc(96, y + 50, 26, 0, 7); x.fillStyle = "#25d366"; x.fill();
-      t(corta(p.customer_name || "", 28, 1, W - 260), 148, y + 42, 28, "#fff", 1);
+      t(corta(p.customer_name || "", 28, 1, W - 260), 148, y + 42, 28, LT, 1);
       var d = String(p.customer_phone || "").replace(/\D/g, ""); if (d.length > 11 && d.slice(0, 2) === "55") d = d.slice(2);
-      t(d.length === 11 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7) : d.length === 10 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6) : d, 148, y + 78, 26, "#cfe6ee", 0);
+      t(d.length === 11 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7) : d.length === 10 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6) : d, 148, y + 78, 26, LTS, 0);
       y += 120;
-      t("Pedido feito pelo site, direto no seu WhatsApp.", W / 2, y + 40, 24, "#5b6b76", 0, "center");
+      t("Pedido feito pelo site, direto no seu WhatsApp.", W / 2, y + 40, 24, SUAVE, 0, "center");
       t("Bistrô Connect", W / 2, y + 80, 26, AZ2, 1, "center");
       return new Promise(function (ok) { c.toBlob(ok, "image/png"); });
     });
