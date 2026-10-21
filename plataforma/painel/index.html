@@ -214,6 +214,25 @@
         </div>
         <div class="acoes-linha"><button class="btn primary" type="submit">Salvar</button><span class="muted fino">As mudanças aparecem no site na hora.</span></div>
       </form>
+
+      <form class="box form-loja" id="secForm" novalidate>
+        <div class="box-head"><h2>Páginas do site</h2></div>
+        <p class="muted fino">Sua loja já vem com as seções Como pedir, Sobre, Galeria e Visite ou peça. Preencha o que quiser para deixar com a cara do seu negócio.</p>
+        <div class="form">
+          <label class="full">Título da seção "Sobre"<input id="secSobreTit" maxlength="60" placeholder="Nossa história"></label>
+          <label class="full">Texto da seção "Sobre"<textarea id="secSobreTxt" maxlength="700" rows="5" placeholder="Conte como o negócio começou, o que vocês fazem de melhor, o que o cliente encontra aqui."></textarea></label>
+          <div class="full fotos-loja">
+            <div class="foto-campo"><div class="foto-prev larga" id="secSobreFotoPrev"><span>Foto do "Sobre"</span></div>
+              <div class="foto-acoes"><label class="btn small">Enviar foto<input type="file" id="secSobreFoto" accept="image/jpeg,image/png,image/webp" hidden></label><button type="button" class="btn small" id="secSobreTira">Tirar</button></div></div>
+          </div>
+          <div class="full"><b>Galeria</b><p class="muted fino">Até 8 fotos do espaço, da equipe, dos pratos. Sem fotos aqui, a loja mostra as fotos dos seus produtos.</p>
+            <div class="sec-galeria" id="secGaleria"></div>
+            <label class="btn small">Enviar foto<input type="file" id="secGaleriaAdd" accept="image/jpeg,image/png,image/webp" hidden></label></div>
+          <div class="full"><b>Depoimentos</b><p class="muted fino">Só aparecem na loja se você preencher. Use falas reais de clientes, com a autorização deles.</p>
+            <div id="secDeps"></div><button type="button" class="btn small" id="secDepAdd">+ Depoimento</button></div>
+        </div>
+        <div class="acoes-linha"><button class="btn primary" type="submit">Salvar páginas</button><span class="muted fino">As mudanças aparecem no site na hora.</span></div>
+      </form>
     </section>
 
     <!-- EQUIPE -->

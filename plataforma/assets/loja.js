@@ -291,7 +291,81 @@
     });
     $("abas").hidden = secoes.length < 2;
     observaSecoes();
+    desenhaSecoes();
     if (window.BCEfeitos) window.BCEfeitos.revelar(menu);
+    if (window.BCEfeitos) window.BCEfeitos.revelar($("secoes"));
+  }
+  /* ---------- seções da página: como pedir, sobre, galeria, depoimentos, visite e chamada final ----------
+     O texto e as fotos vêm do painel (Dados da loja > Páginas do site), guardados em loja.extra.secoes.
+     O que o dono não preencher usa um texto padrão neutro, ou a seção simplesmente não aparece. */
+  function secaoEl(id, titulo, classe) {
+    var s = el("section", "secao bloco " + (classe || "")); s.id = id;
+    s.appendChild(el("h2", "", titulo)); return s;
+  }
+  function desenhaSecoes() {
+    var box = $("secoes"); box.textContent = "";
+    var conf = (loja.extra && loja.extra.secoes) || {}, nome = loja.store_name;
+
+    /* como pedir */
+    var c = secaoEl("s-como", "Como pedir", "como"), g = el("ol", "como-lista");
+    [["Escolha", "Monte o pedido no cardápio, direto pelo celular."], ["Informe", "Diga como quer receber e como vai pagar."], ["Acompanhe", "O pedido chega pronto na loja e você acompanha o status."]]
+      .forEach(function (x, i) { var li = el("li"); li.appendChild(el("span", "num", String(i + 1))); li.appendChild(el("b", "", x[0])); li.appendChild(el("p", "", x[1])); g.appendChild(li); });
+    c.appendChild(g); box.appendChild(c);
+
+    /* sobre */
+    var so = conf.sobre || {};
+    var texto = String(so.texto || "").trim() || (loja.descricao ? loja.descricao : "Conheça a " + nome + ". Montamos o cardápio com carinho para você pedir pelo celular e receber em casa ou retirar na loja.");
+    var sb = secaoEl("s-sobre", String(so.titulo || "").trim() || "Sobre a " + nome, "sobre" + (urlSegura(so.foto) ? " com-foto" : ""));
+    var corpo = el("div", "sobre-corpo");
+    if (urlSegura(so.foto)) { var f = el("div", "sobre-foto"), im = el("img"); im.alt = nome; im.loading = "lazy"; im.decoding = "async"; im.src = urlSegura(so.foto); f.appendChild(im); corpo.appendChild(f); }
+    var tx = el("div", "sobre-txt"); texto.split(/\n+/).slice(0, 6).forEach(function (par) { if (par.trim()) tx.appendChild(el("p", "", par.trim())); });
+    corpo.appendChild(tx); sb.appendChild(corpo); box.appendChild(sb);
+
+    /* galeria: fotos do dono; sem fotos, as dos produtos */
+    var fotos = ((conf.galeria && conf.galeria.fotos) || []).map(urlSegura).filter(Boolean).slice(0, 8), auto = false;
+    if (!fotos.length) {
+      var vistos = {}; prods.forEach(function (p) { var u = urlSegura(p.image_url); if (u && !vistos[u] && fotos.length < 6) { vistos[u] = 1; fotos.push(u); } });
+      auto = true; if (fotos.length < 3) fotos = [];
+    }
+    if (fotos.length) {
+      var ga = secaoEl("s-galeria", auto ? "Uma volta pelo cardápio" : "Galeria", "galeria"), gr = el("div", "galeria-grade n" + Math.min(fotos.length, 6));
+      fotos.forEach(function (u, i) { var d = el("div", "gfoto"), im2 = el("img"); im2.alt = nome + " · foto " + (i + 1); im2.loading = "lazy"; im2.decoding = "async"; im2.src = u; d.appendChild(im2); gr.appendChild(d); });
+      ga.appendChild(gr); box.appendChild(ga);
+    }
+
+    /* depoimentos: só os que o dono cadastrou */
+    var deps = ((conf.depoimentos && conf.depoimentos.itens) || []).filter(function (d) { return d && String(d.texto || "").trim(); }).slice(0, 6);
+    if (deps.length) {
+      var de = secaoEl("s-depoimentos", "Quem pede, volta", "depoimentos"), lista = el("div", "depo-lista");
+      deps.forEach(function (d) { var q = el("blockquote", "depo"); q.appendChild(el("p", "", String(d.texto).trim().slice(0, 240))); if (String(d.nome || "").trim()) q.appendChild(el("footer", "", "— " + String(d.nome).trim().slice(0, 60))); lista.appendChild(q); });
+      de.appendChild(lista); box.appendChild(de);
+    }
+
+    /* visite ou peça */
+    var linhas = [], zap = zapNumero(loja.whatsapp), insta = String(loja.instagram || "").replace(/^@/, "").replace(/[^A-Za-z0-9._]/g, "").slice(0, 40);
+    if (loja.address) linhas.push(["Endereço", loja.address]);
+    if (loja.hours) linhas.push(["Horário", loja.hours]);
+    var como = [loja.faz_entrega ? "Entrega" + (loja.delivery_fee > 0 ? " (" + brl(loja.delivery_fee) + ")" : " grátis") : "", loja.faz_retirada ? "Retirada na loja" : ""].filter(Boolean).join(" · ");
+    if (como) linhas.push(["Como receber", como]);
+    linhas.push(["Pagamento", loja.pagamentos.join(" · ")]);
+    var vi = secaoEl("s-visite", "Visite ou peça", "visite"), lv = el("dl", "visite-lista");
+    linhas.forEach(function (l) { var d1 = el("div"); d1.appendChild(el("dt", "", l[0])); d1.appendChild(el("dd", "", l[1])); lv.appendChild(d1); });
+    vi.appendChild(lv);
+    var bt = el("div", "visite-botoes");
+    if (loja.address) { var m = el("a", "btn-sec", "Ver no mapa"); m.href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(loja.address); m.target = "_blank"; m.rel = "noopener noreferrer"; bt.appendChild(m); }
+    if (zap) { var w = el("a", "btn-sec zap", "Chamar no WhatsApp"); w.href = "https://wa.me/" + zap; w.target = "_blank"; w.rel = "noopener noreferrer"; bt.appendChild(w); }
+    if (insta) { var ig = el("a", "btn-sec", "@" + insta); ig.href = "https://www.instagram.com/" + insta; ig.target = "_blank"; ig.rel = "noopener noreferrer"; bt.appendChild(ig); }
+    if (bt.children.length) vi.appendChild(bt);
+    box.appendChild(vi);
+
+    /* chamada final */
+    if (prods.length) {
+      var fim = el("section", "secao bloco final"); fim.id = "s-final";
+      fim.appendChild(el("h2", "", "Bateu a fome?")); fim.appendChild(el("p", "", "Escolha no cardápio e peça em poucos toques."));
+      var bb = el("button", "add grande", "Ver o cardápio"); bb.type = "button";
+      bb.addEventListener("click", function () { var t = $("abas").hidden ? $("menu") : $("abas"); t.scrollIntoView({ behavior: "smooth", block: "start" }); });
+      fim.appendChild(bb); box.appendChild(fim);
+    }
   }
   var observador = null;
   function marcaAba(id) {

@@ -362,6 +362,8 @@ css = """
 # opcionais por produto (ponto da carne, adicionais, tamanho): mexe em h, j e css e regrava os arquivos
 exec(open("ferramentas/painel-opcionais.pyfrag", encoding="utf-8").read())
 open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
+# páginas do site (Sobre, Galeria, Depoimentos)
+exec(open("ferramentas/painel-secoes.pyfrag", encoding="utf-8").read())
 open(f"{DEST}/painel.js", "w", encoding="utf-8").write(j)
 open(f"{DEST}/painel.css", "a", encoding="utf-8").write(css)
 subprocess.run(["python3", "ferramentas/csp.py", f"{DEST}/index.html"], check=True)

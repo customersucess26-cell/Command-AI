@@ -72,6 +72,10 @@ create table if not exists public.lojas (
 );
 -- quem já rodou uma versão anterior deste arquivo ganha a coluna nova
 alter table public.lojas add column if not exists origem jsonb not null default '{}'::jsonb;
+-- conteúdo das páginas da loja (Sobre, Galeria, Depoimentos) fica em extra; limita o tamanho
+alter table public.lojas drop constraint if exists lojas_extra_tam;
+alter table public.lojas add constraint lojas_extra_tam
+  check (jsonb_typeof(extra) = 'object' and pg_column_size(extra) < 30000);
 
 create table if not exists public.membros (
   loja_id   uuid not null references public.lojas (id) on delete cascade,

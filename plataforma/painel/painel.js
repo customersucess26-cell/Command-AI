@@ -319,7 +319,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')fechaGavetas()});
 function preencheLoja(){if(document.activeElement&&document.activeElement.closest('#lojaForm'))return;
   $('#sNome').value=settings.store_name||'';$('#sWhats').value=settings.whatsapp||'';$('#sInsta').value=settings.instagram||'';$('#sEnd').value=settings.address||'';$('#sHoras').value=settings.hours||'';$('#sTaxa').value=num(settings.delivery_fee)?num(settings.delivery_fee).toFixed(2).replace('.',','):'';$('#sMin').value=num(settings.min_order)?num(settings.min_order).toFixed(2).replace('.',','):'';$('#sAceita').checked=settings.accept_orders!==false;
   $('#sDesc').value=settings.descricao||'';$('#sEntrega').checked=settings.faz_entrega!==false;$('#sRetirada').checked=settings.faz_retirada!==false;$('#sCor').value=/^#[0-9a-f]{6}$/i.test(settings.cor||'')?settings.cor:'#B0703F';
-  document.querySelectorAll('[data-pag]').forEach(c=>c.checked=(settings.pagamentos||['Pix','Cartão','Dinheiro']).includes(c.dataset.pag));mostraFotoLoja()}
+  document.querySelectorAll('[data-pag]').forEach(c=>c.checked=(settings.pagamentos||['Pix','Cartão','Dinheiro']).includes(c.dataset.pag));mostraFotoLoja();preencheSec()}
 $('#lojaForm').addEventListener('submit',e=>{e.preventDefault();const nome=$('#sNome').value.trim();if(!nome)return toast('Informe o nome da loja');
   let w=digitos($('#sWhats').value);if(w.length===10||w.length===11)w='55'+w;if(w&&(w.length<12||w.length>13))return toast('Confira o WhatsApp: DDD + número');
   const pags=[...document.querySelectorAll('[data-pag]')].filter(c=>c.checked).map(c=>c.dataset.pag);if(!pags.length)return toast('Marque pelo menos uma forma de pagamento');
@@ -478,6 +478,36 @@ document.addEventListener('click',e=>{const t=e.target;if(!t.closest||!t.closest
   else if(t.dataset.opcAddI!=null){sincOpc();const g=opcAtual[+t.dataset.opcAddI];if(g&&g.itens.length<30)g.itens.push({id:novoId('o'),nome:'',preco:0});desenhaOpc()}
   else if(t.dataset.opcRmI!=null){sincOpc();const [gi,ii]=t.dataset.opcRmI.split(':').map(Number);const g=opcAtual[gi];if(g){g.itens.splice(ii,1);if(!g.itens.length)opcAtual.splice(gi,1)}desenhaOpc()}});
 document.addEventListener('change',e=>{if(e.target.matches&&e.target.matches('#prOpc [data-f=tipo]')){sincOpc();desenhaOpc()}});
+
+
+/* ================= páginas do site (Sobre, Galeria, Depoimentos) ================= */
+let secFotos=[],secSobreFoto='';
+const secConf=()=>((settings.extra||{}).secoes)||{};
+function depLinha(d){const el=document.createElement('div');el.className='sec-dep';
+  el.innerHTML=`<input data-d="nome" maxlength="60" placeholder="Nome (ex.: Ana, cliente)" value="${esc((d&&d.nome)||'')}"><textarea data-d="texto" maxlength="240" rows="2" placeholder="O que o cliente disse">${esc((d&&d.texto)||'')}</textarea><button type="button" class="x" data-sec-dep-rm aria-label="Remover depoimento">×</button>`;return el}
+function desenhaSecGaleria(){const b=$('#secGaleria');if(!b)return;
+  b.innerHTML=secFotos.map((u,i)=>`<div class="sec-foto" style="background-image:url('${esc(imgUrl(u)).replace(/'/g,'%27')}')"><button type="button" data-sec-foto-rm="${i}" aria-label="Tirar foto">×</button></div>`).join('');
+  const add=$('#secGaleriaAdd');if(add)add.closest('label').hidden=secFotos.length>=8}
+function mostraSecSobreFoto(){const el=$('#secSobreFotoPrev');if(!el)return;const v=imgUrl(secSobreFoto);el.style.backgroundImage=v?`url('${v.replace(/'/g,'%27')}')`:'';el.classList.toggle('tem',!!v)}
+function preencheSec(){if(!$('#secForm')||(document.activeElement&&document.activeElement.closest('#secForm')))return;
+  const c=secConf(),so=c.sobre||{};$('#secSobreTit').value=so.titulo||'';$('#secSobreTxt').value=so.texto||'';secSobreFoto=so.foto||'';
+  secFotos=((c.galeria||{}).fotos||[]).slice(0,8);
+  const d=$('#secDeps');d.textContent='';((c.depoimentos||{}).itens||[]).slice(0,6).forEach(x=>d.appendChild(depLinha(x)));
+  $('#secDepAdd').hidden=d.children.length>=6;mostraSecSobreFoto();desenhaSecGaleria()}
+function lerSec(){const deps=[...document.querySelectorAll('#secDeps .sec-dep')].map(el=>({nome:el.querySelector('[data-d=nome]').value.trim().slice(0,60),texto:el.querySelector('[data-d=texto]').value.trim().slice(0,240)})).filter(x=>x.texto);
+  return {sobre:{titulo:$('#secSobreTit').value.trim().slice(0,60),texto:$('#secSobreTxt').value.trim().slice(0,700),foto:secSobreFoto},galeria:{fotos:secFotos.slice(0,8)},depoimentos:{itens:deps}}}
+function salvaSec(msg){return tenta(()=>grava('settings',{extra:Object.assign({},settings.extra||{},{secoes:lerSec()})}),msg||'Páginas salvas')}
+async function sobeFotoSec(file,max){if(!/^image\/(jpeg|png|webp)$/.test(file.type)){toast('Envie JPG, PNG ou WebP');return null}if(file.size>5*1024*1024){toast('Foto maior que 5 MB');return null}
+  try{const b=await reduz(file,max);if(demo)return URL.createObjectURL(b);const nome=lojaId+'/loja/pagina-'+Date.now()+'.jpg';const up=await db.storage.from('lojas').upload(nome,b,{contentType:'image/jpeg',cacheControl:'31536000'});if(up.error)throw up.error;return db.storage.from('lojas').getPublicUrl(nome).data.publicUrl}
+  catch(e){console.error(e);toast('Não consegui enviar essa foto');return null}}
+$('#secForm').addEventListener('submit',e=>{e.preventDefault();salvaSec()});
+$('#secSobreFoto').addEventListener('change',async function(){const f=this.files[0];this.value='';if(!f)return;const u=await sobeFotoSec(f,1400);if(u){secSobreFoto=u;mostraSecSobreFoto();salvaSec('Foto salva')}});
+$('#secSobreTira').addEventListener('click',()=>{secSobreFoto='';mostraSecSobreFoto();salvaSec('Foto retirada')});
+$('#secGaleriaAdd').addEventListener('change',async function(){const f=this.files[0];this.value='';if(!f||secFotos.length>=8)return;const u=await sobeFotoSec(f,1200);if(u){secFotos.push(u);desenhaSecGaleria();salvaSec('Foto adicionada')}});
+$('#secDepAdd').addEventListener('click',()=>{const d=$('#secDeps');if(d.children.length<6)d.appendChild(depLinha());$('#secDepAdd').hidden=d.children.length>=6;const t=d.lastElementChild&&d.lastElementChild.querySelector('input');if(t)t.focus()});
+document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
+  if(t.dataset.secFotoRm!=null){secFotos.splice(+t.dataset.secFotoRm,1);desenhaSecGaleria();salvaSec('Foto retirada')}
+  else if(t.dataset.secDepRm!=null){t.closest('.sec-dep').remove();$('#secDepAdd').hidden=false}});
 
 /* ================= início ================= */
 let started=false;
