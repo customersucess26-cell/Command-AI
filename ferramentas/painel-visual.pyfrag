@@ -184,3 +184,22 @@ css += r"""
 @media (max-width:900px){.pl-row{grid-template-columns:auto 1fr auto;}.pl-row .esteira{grid-column:1/-1;order:5}.pl-row .tempo{display:none}}
 """
 open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
+
+# ================= modo vitrine para a página de vendas: ?demo=1&embed=1 (painel de exemplo dentro de uma moldura) =================
+j = troca(j, "function mostraForm(id){", "function mostraForm(id){if(demo)return;")
+j = troca(j, "logo_url:'',capa_url:''});await dadosDemo();start()});", "logo_url:'',capa_url:''});await dadosDemo();{const nm=new URLSearchParams(location.search).get('nome');if(nm)settings.store_name=nm.slice(0,60)}start()});")
+_vit = r'''
+/* ===== modo vitrine (página de vendas): ?demo=1&embed=1&aba=pedidos&nome=Padaria da Ana ===== */
+(function(){const q=new URLSearchParams(location.search);if(!q.has('demo'))return;
+  if(q.has('embed'))document.documentElement.classList.add('embed');
+  setTimeout(()=>{$('#btnDemo').click();const a=q.get('aba');if(a)setTimeout(()=>abrirAba(a),500)},400);
+  window.addEventListener('message',e=>{if(e.origin!==location.origin||!e.data)return;const d=e.data;
+    if(d.bcVista&&['quadro','lista','grade'].includes(d.bcVista)){vistaPed=d.bcVista;if(aba==='pedidos')desenhaPedidos()}
+    if(d.bcAba&&started)abrirAba(d.bcAba)})})();
+'''
+_k = j.rstrip().rfind('})();')   # o painel inteiro está dentro de uma função: o trecho entra antes do fecho
+j = j[:_k] + _vit + j[_k:]
+css += """
+.embed .faixa-demo,.embed .side-pe,.embed #btnSom,.embed .seg-tema{display:none!important}
+.embed .main{padding-top:14px}
+"""

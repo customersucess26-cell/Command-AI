@@ -574,3 +574,6 @@ details.mais[open]>summary{margin-bottom:14px}
 .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;align-items:start}
 .seg-vista{margin-right:6px}
 @media (max-width:900px){.pl-row{grid-template-columns:auto 1fr auto;}.pl-row .esteira{grid-column:1/-1;order:5}.pl-row .tempo{display:none}}
+
+.embed .faixa-demo,.embed .side-pe,.embed #btnSom,.embed .seg-tema{display:none!important}
+.embed .main{padding-top:14px}

@@ -60,7 +60,7 @@ document.querySelectorAll('[data-tema]').forEach(b=>b.addEventListener('click',(
 $('#btnTema').addEventListener('click',()=>{const t=getComputedStyle(document.documentElement).colorScheme.includes('dark')?'light':'dark';lsSet('lj-tema',t);aplicaTema(t)});
 
 /* ================= entrada: senha + 2 etapas ================= */
-function mostraForm(id){['fLogin','fCodigo','fCadastro2fa','semConfig','semLoja','escolheLoja'].forEach(f=>$('#'+f).hidden=f!==id);$('#auth').hidden=false;$('#app').hidden=true;const i=$('#'+id).querySelector('input');if(i)i.focus()}
+function mostraForm(id){if(demo)return;['fLogin','fCodigo','fCadastro2fa','semConfig','semLoja','escolheLoja'].forEach(f=>$('#'+f).hidden=f!==id);$('#auth').hidden=false;$('#app').hidden=true;const i=$('#'+id).querySelector('input');if(i)i.focus()}
 function msgAuth(t,ok){const m=$('#authMsg');m.textContent=t||'';m.className='auth-msg'+(ok?' ok':'')}
 let tentativas=0,bloqueadoAte=0,fatorNovo=null,saindo=false;
 $('#fLogin').addEventListener('submit',async function(e){e.preventDefault();msgAuth('');
@@ -366,7 +366,7 @@ async function dadosDemo(){
   const agora=Date.now();[[95,'entregue'],[70,'pronto'],[40,'em_preparo'],[25,'confirmado'],[12,'novo'],[4,'novo']].forEach(([m,s])=>orders.push(novo(agora-m*60000,s)));
   orders.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
   setInterval(()=>{if(!demo||$('#app').hidden)return;orders.unshift(novo(Date.now(),'novo'));verificaNovos();render()},40000)}
-$('#btnDemo').addEventListener('click',async()=>{demo=true;papel='dono';lojaSlug='padaria-da-ana';settings=Object.assign(settings,{store_name:'Loja de demonstração',slug:'padaria-da-ana',descricao:'',cor:'#B0703F',faz_entrega:true,faz_retirada:true,pagamentos:['Pix','Cartão','Dinheiro'],logo_url:'',capa_url:''});await dadosDemo();start()});
+$('#btnDemo').addEventListener('click',async()=>{demo=true;papel='dono';lojaSlug='padaria-da-ana';settings=Object.assign(settings,{store_name:'Loja de demonstração',slug:'padaria-da-ana',descricao:'',cor:'#B0703F',faz_entrega:true,faz_retirada:true,pagamentos:['Pix','Cartão','Dinheiro'],logo_url:'',capa_url:''});await dadosDemo();{const nm=new URLSearchParams(location.search).get('nome');if(nm)settings.store_name=nm.slice(0,60)}start()});
 
 
 /* ================= plataforma: lojas, link, plano e equipe ================= */
@@ -554,4 +554,12 @@ async function start(){if(started)return;started=true;
   if(data&&data.session){try{await segundaEtapa();return}catch(e){}}
   mostraForm('fLogin');if(msg)msgAuth(msg,/encerradas/.test(msg));
 })();
+
+/* ===== modo vitrine (página de vendas): ?demo=1&embed=1&aba=pedidos&nome=Padaria da Ana ===== */
+(function(){const q=new URLSearchParams(location.search);if(!q.has('demo'))return;
+  if(q.has('embed'))document.documentElement.classList.add('embed');
+  setTimeout(()=>{$('#btnDemo').click();const a=q.get('aba');if(a)setTimeout(()=>abrirAba(a),500)},400);
+  window.addEventListener('message',e=>{if(e.origin!==location.origin||!e.data)return;const d=e.data;
+    if(d.bcVista&&['quadro','lista','grade'].includes(d.bcVista)){vistaPed=d.bcVista;if(aba==='pedidos')desenhaPedidos()}
+    if(d.bcAba&&started)abrirAba(d.bcAba)})})();
 })();
