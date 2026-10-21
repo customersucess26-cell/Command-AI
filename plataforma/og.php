@@ -4,7 +4,7 @@
    Se algo falhar (sem GD, sem memória, fonte ruim), entrega a imagem fixa da marca em vez de erro 500.
    Para ver o motivo de um erro: /og.php?c=<código>&debug=1 */
 $DEBUG = isset($_GET['debug']);
-if ($DEBUG) { ini_set('display_errors', '1'); error_reporting(E_ALL); header('Content-Type: text/plain; charset=utf-8'); }
+if ($DEBUG) { ini_set('display_errors', '1'); error_reporting(E_ALL); ob_start(); }
 else {
     ini_set('display_errors', '0');
     ob_start();
@@ -32,6 +32,15 @@ $c = $_GET['c'] ?? '';
 $p = codigo_valido($c) ? busca_pedido($c) : null;
 
 function saida($im) {
+    global $DEBUG;
+    if ($DEBUG) {      // ?debug=1: se algo foi impresso antes da imagem, mostra em texto
+        $avisos = ob_get_clean();
+        if ($avisos !== '' && $avisos !== false) {
+            header('Content-Type: text/plain; charset=utf-8');
+            echo "AVISOS ANTES DA IMAGEM:\n" . $avisos . "\nmemory_limit=" . ini_get('memory_limit') . " PHP=" . PHP_VERSION . "\n";
+            exit;
+        }
+    }
     header('Content-Type: image/png');
     header('Cache-Control: public, max-age=120');
     header('X-Content-Type-Options: nosniff');
@@ -46,7 +55,7 @@ $FUNDO = cor($big, 'F2F6F9'); $AZUL = cor($big, '0B2F45'); $AZUL2 = cor($big, '0
 $TINTA = cor($big, '10212B'); $SUAVE = cor($big, '5B6B76'); $LINHA = cor($big, 'E2E9EE'); $CLARO = cor($big, 'D7EEF5'); $TURQ = cor($big, '2BB3D6');
 
 function rr($im, $x1, $y1, $x2, $y2, $r, $col) {      // retângulo arredondado, coordenadas lógicas
-    $x1 *= S; $y1 *= S; $x2 *= S; $y2 *= S; $r *= S;
+    $x1 = (int)round($x1 * S); $y1 = (int)round($y1 * S); $x2 = (int)round($x2 * S); $y2 = (int)round($y2 * S); $r = (int)round($r * S);
     imagefilledrectangle($im, $x1 + $r, $y1, $x2 - $r, $y2, $col);
     imagefilledrectangle($im, $x1, $y1 + $r, $x2, $y2 - $r, $col);
     foreach ([[$x1 + $r, $y1 + $r], [$x2 - $r, $y1 + $r], [$x1 + $r, $y2 - $r], [$x2 - $r, $y2 - $r]] as $q)
