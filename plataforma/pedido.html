@@ -6,101 +6,149 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="no-referrer">
-<meta name="color-scheme" content="light dark">
 <title>Acompanhe seu pedido</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Yellowtail&family=Oswald:wght@500;600&display=swap">
 <style>
-:root{--cor:#B0703F;--fundo:#F6F1EA;--cartao:#FFFFFF;--tinta:#231A14;--suave:#6E6258;--linha:rgba(35,26,20,.12);--ok:#2F7D4F;--erro:#B23B2E;--sombra:0 18px 50px -24px rgba(35,26,20,.35)}
-@media (prefers-color-scheme:dark){:root{--fundo:#14100D;--cartao:#1F1914;--tinta:#F3EAE0;--suave:#B4A797;--linha:rgba(243,234,224,.12);--sombra:0 18px 50px -24px rgba(0,0,0,.8)}}
+:root{--ok:#2F7D4F;--erro:#B23B2E;--cor:#6B3F2A;--fundo:#FBF8F3;--cartao:#FFFFFF;--tinta:#2B211A;--suave:#7A6E64;--linha:#EDE6DC;--on:#6B3F2A;--on-ink:#FFF7EE;--bar:#6B3F2A;--bar-ink:#FFF7EE;--f-titulo:Fraunces,Georgia,serif}
+body.lm-grid{--fundo:#F3ECE2;--cartao:#FBF7F1;--tinta:#2B1D14;--suave:#7A6A5C;--linha:#E8DED1;--cor:#A8693D;--on:#2B1A10;--on-ink:#F7EEE2;--bar:#231710;--bar-ink:#F7EEE2;--f-titulo:Fraunces,Georgia,serif}
+body.lm-cafe{--hdr:#1B100A;--hdr-ink:#F3E3CC;--fundo:#2A1A12;--cartao:#3A261B;--tinta:#F3E3CC;--suave:#BFA98C;--linha:#5A3E2C;--cor:#D9A85B;--on:#D9A85B;--on-ink:#2A1A12;--bar:#D9A85B;--bar-ink:#2A1A12;--f-titulo:Fraunces,Georgia,serif}
+body.lm-burger{--hdr:#0A0A0A;--hdr-ink:#F2F2F2;--fundo:#121212;--cartao:#1C1C1C;--tinta:#F2F2F2;--suave:#9A9A9A;--linha:#2C2C2C;--cor:#F2B640;--on:#D83A2E;--on-ink:#FFFFFF;--bar:#F2B640;--bar-ink:#121212;--f-titulo:Oswald,"Arial Narrow",sans-serif}
+body.lm-plates{--fundo:#FBF8F3;--cartao:#FFFFFF;--tinta:#2B211A;--suave:#7A6E64;--linha:#EDE6DC;--cor:#6B3F2A;--on:#6B3F2A;--on-ink:#FFF7EE;--bar:#6B3F2A;--bar-ink:#FFF7EE;--f-titulo:Fraunces,Georgia,serif}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;min-height:100vh;min-height:100svh;background:var(--fundo);color:var(--tinta);font:16px/1.5 Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;padding:max(16px,env(safe-area-inset-top)) 16px max(24px,env(safe-area-inset-bottom))}
+body{margin:0;min-height:100vh;min-height:100svh;background:var(--fundo);color:var(--tinta);font:16px/1.45 "DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;padding:max(12px,env(safe-area-inset-top)) 14px max(28px,env(safe-area-inset-bottom))}
 [hidden]{display:none!important}
-.wrap{max-width:560px;margin:0 auto}
-.topo{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 18px}
-.loja{font-weight:800;font-size:18px;letter-spacing:-.01em}
-.vivo{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--suave)}
-.vivo i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(47,125,79,.5);animation:pulso 2s infinite}
-@keyframes pulso{70%{box-shadow:0 0 0 10px rgba(47,125,79,0)}100%{box-shadow:0 0 0 0 rgba(47,125,79,0)}}
-.cartao{background:var(--cartao);border:1px solid var(--linha);border-radius:22px;padding:22px;box-shadow:var(--sombra);margin-bottom:14px}
-.ola{margin:0;color:var(--suave);font-size:15px}
-h1{margin:4px 0 2px;font-size:clamp(26px,7vw,34px);line-height:1.1;letter-spacing:-.02em}
-.codigo{display:inline-block;margin-top:8px;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--cor) 14%,transparent);color:var(--cor);font-weight:700;font-size:14px;letter-spacing:.04em}
-.passos{list-style:none;margin:22px 0 4px;padding:0;position:relative}
-.passos li{position:relative;display:grid;grid-template-columns:34px 1fr;gap:12px;padding-bottom:20px}
-.passos li:last-child{padding-bottom:0}
-.passos li::before{content:"";position:absolute;left:16px;top:34px;bottom:0;width:2px;background:var(--linha)}
-.passos li:last-child::before{display:none}
-.passos li.feito::before{background:var(--cor)}
-.bola{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--linha);background:var(--cartao);font-size:15px;font-weight:800;color:var(--suave);position:relative;z-index:1}
-.feito .bola{background:var(--cor);border-color:var(--cor);color:#fff}
-.atual .bola{border-color:var(--cor);color:var(--cor);box-shadow:0 0 0 6px color-mix(in srgb,var(--cor) 18%,transparent)}
-.passos b{display:block;font-size:16px;line-height:34px}
-.passos small{display:block;color:var(--suave);font-size:13px;margin-top:-6px}
-.pendente b{color:var(--suave);font-weight:600}
-.aviso{border-radius:16px;padding:14px 16px;font-weight:600;margin-top:16px}
-.aviso.erro{background:color-mix(in srgb,var(--erro) 12%,transparent);color:var(--erro)}
-.aviso.ok{background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok)}
-h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--suave);margin:0 0 12px}
-.linha{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--linha)}
-.linha:last-child{border-bottom:0}
-.linha span:last-child{white-space:nowrap;font-variant-numeric:tabular-nums}
-.total{font-weight:800;font-size:18px;border-top:1px solid var(--linha);border-bottom:0;margin-top:4px;padding-top:12px}
-.info{display:grid;gap:10px}
-.info div{display:flex;justify-content:space-between;gap:12px}
-.info span:first-child{color:var(--suave)}
-.info span:last-child{text-align:right;font-weight:600}
-.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:52px;border-radius:16px;border:0;background:#25D366;color:#06301A;font:700 16px/1 Figtree,system-ui,sans-serif;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.btn.claro{background:transparent;color:var(--tinta);border:1px solid var(--linha);margin-top:10px}
-.btn svg{width:22px;height:22px}
-.rodape{text-align:center;color:var(--suave);font-size:13px;margin:18px 0 0}
+svg{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.faixa{display:flex;align-items:center;justify-content:center;gap:22px;background:var(--hdr,var(--bar));color:var(--hdr-ink,var(--bar-ink));border-radius:22px;padding:14px 18px}
+.faixa img{height:64px;width:auto;display:block}
+.faixa .sep{width:1px;height:46px;background:currentColor;opacity:.35}
+.faixa .dom{display:inline-flex;align-items:center;gap:8px;border:1px solid color-mix(in srgb,currentColor 55%,transparent);border-radius:999px;padding:8px 14px;font-weight:600;font-size:14px}
+.ola-card{display:grid;grid-template-columns:1.15fr 1fr;background:var(--cartao);border:1px solid var(--linha);border-radius:22px;overflow:hidden;min-height:230px}
+.ola-card.sem-foto{grid-template-columns:1fr}
+.ola-txt{padding:22px 22px 20px;display:flex;flex-direction:column;gap:8px;justify-content:center}
+.ola-ico{width:48px;height:48px;border-radius:50%;background:var(--cor);color:var(--fundo);display:grid;place-items:center;font-size:24px}
+h1{margin:6px 0 0;font:700 clamp(28px,6vw,38px)/1.08 var(--f-titulo);letter-spacing:-.01em}
+.sub{margin:0;color:var(--suave);font-size:17px}
+.ped-pill{display:flex;align-items:center;gap:12px;background:color-mix(in srgb,var(--cor) 12%,var(--cartao));border-radius:16px;padding:12px 14px;margin-top:6px}
+.ped-pill i{width:40px;height:40px;border-radius:50%;background:var(--on);color:var(--on-ink);display:grid;place-items:center;font-size:20px;font-style:normal;flex:none}
+.ped-pill b{display:block;font-size:19px;line-height:1.1}.ped-pill small{color:var(--suave);font-size:14px}
+.ola-foto{position:relative;background:#222 center/cover no-repeat;clip-path:polygon(14% 0,100% 0,100% 100%,0 100%);min-height:200px;display:flex;align-items:flex-start;justify-content:flex-end;padding:18px 20px}
+.ola-foto .script{font:400 clamp(24px,5vw,32px)/1.05 Yellowtail,"Brush Script MT",cursive;color:#fff;text-align:right;text-shadow:0 2px 10px rgba(0,0,0,.65);transform:rotate(-6deg);max-width:9em}
+.est{background:var(--cartao);border:1px solid var(--linha);border-radius:22px;overflow:hidden}
+.est>header{display:flex;align-items:center;gap:14px;background:var(--bar);color:var(--bar-ink);padding:16px 20px}
+.est>header svg{font-size:34px}.est>header b{display:block;font:600 21px/1.1 var(--f-titulo)}.est>header small{opacity:.85;font-size:14px}
+.passos{list-style:none;margin:0;padding:8px 20px 12px}
+.passos li{display:grid;grid-template-columns:52px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--linha);position:relative}
+.passos li:last-child{border-bottom:0}
+.passos li::before{content:"";position:absolute;left:25px;top:-14px;height:28px;width:2px;background:var(--linha)}
+.passos li:first-child::before{display:none}
+.passos li.feito::before,.passos li.atual::before{background:var(--on)}
+.bola{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:24px;background:color-mix(in srgb,var(--suave) 20%,var(--cartao));color:var(--suave);position:relative;z-index:1}
+.feito .bola{background:var(--on);color:var(--on-ink)}
+.atual .bola{background:var(--cor);color:var(--fundo);box-shadow:0 0 0 6px color-mix(in srgb,var(--cor) 24%,transparent);animation:pulso 2s infinite}
+@keyframes pulso{70%{box-shadow:0 0 0 12px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.passos b{display:block;font-size:18px;line-height:1.2}.passos small{color:var(--suave);font-size:14px}
+.pendente b{color:var(--suave);font-weight:500}
+.tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;white-space:nowrap}
+.tag svg{font-size:15px}
+.feito .tag{background:color-mix(in srgb,var(--ok) 20%,transparent);color:var(--ok)}
+body.lm-cafe .feito .tag,body.lm-burger .feito .tag{color:#7FD6A2}
+.atual .tag{background:color-mix(in srgb,var(--cor) 28%,transparent);color:color-mix(in srgb,var(--cor) 70%,var(--tinta))}
+.pendente .tag{background:color-mix(in srgb,var(--suave) 18%,transparent);color:var(--suave);font-weight:600}
+.aviso{margin:0 20px 16px;border-radius:14px;padding:14px 16px;font-weight:600}
+.aviso.erro{background:color-mix(in srgb,var(--erro) 14%,transparent);color:var(--erro)}
+.resumo{display:grid;grid-template-columns:1.25fr 1fr;background:var(--cartao);border:1px solid var(--linha);border-radius:22px;overflow:hidden}
+.resumo .col{padding:18px 18px 18px}
+.resumo .col+.col{border-left:1px solid var(--linha)}
+.resumo h2{display:flex;align-items:center;gap:10px;margin:0 0 12px;font:600 22px/1.1 var(--f-titulo)}
+.resumo h2 i{width:40px;height:40px;border-radius:50%;background:var(--on);color:var(--on-ink);display:grid;place-items:center;font-size:20px;font-style:normal}
+.itens{background:color-mix(in srgb,var(--suave) 10%,var(--cartao));border-radius:14px;padding:6px 12px}
+.it{display:grid;grid-template-columns:44px auto 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--linha);font-size:15.5px}
+.it:last-child{border-bottom:0}
+.it .fto{width:44px;height:44px;border-radius:10px;background:color-mix(in srgb,var(--suave) 25%,var(--cartao)) center/cover no-repeat}
+.it .q{color:var(--suave)}.it em{font-style:normal;font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+.it small{display:block;color:var(--suave);font-size:12.5px}
+.it.sem-foto{grid-template-columns:auto 1fr auto}
+.tot{display:flex;justify-content:space-between;align-items:center;background:var(--on);color:var(--on-ink);border-radius:14px;padding:14px 16px;margin-top:10px;font-weight:700;font-size:19px}
+.tot b{font-variant-numeric:tabular-nums}
+.inf{display:flex;flex-direction:column;gap:2px}
+.inf>div{display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--linha)}
+.inf>div:last-child{border-bottom:0}
+.inf .ic{width:48px;height:48px;border-radius:50%;background:color-mix(in srgb,var(--suave) 18%,var(--cartao));display:grid;place-items:center;font-size:22px}
+.inf small{display:block;color:var(--suave);font-size:13.5px}.inf b{font-size:16.5px;line-height:1.25}
+.contato{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;background:var(--on);color:var(--on-ink);border-radius:22px;padding:16px 22px;text-decoration:none}
+.contato .zp{width:58px;height:58px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;font-size:32px}
+.contato small{display:block;opacity:.85;font-size:14px}.contato b{display:block;font-size:19px;line-height:1.2}.contato span.fn{font-size:17px;opacity:.95}
+.contato .script{font:400 24px/1 Yellowtail,"Brush Script MT",cursive;text-align:right;transform:rotate(-4deg);max-width:7em}
+.btn{display:flex;align-items:center;justify-content:center;min-height:50px;border-radius:16px;border:1px solid var(--linha);background:transparent;color:var(--tinta);font:700 16px/1 "DM Sans",system-ui,sans-serif;text-decoration:none}
+.rod{text-align:center;color:var(--suave);font-size:13.5px;margin:4px 0 0}
+.rod b{display:block;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--tinta)}
 .carregando{display:grid;place-items:center;min-height:50vh;color:var(--suave)}
 .giro{width:36px;height:36px;border-radius:50%;border:3px solid var(--linha);border-top-color:var(--cor);animation:giro .9s linear infinite;margin:0 auto 12px}
 @keyframes giro{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.vivo i,.giro{animation:none}}
+.erro-card{background:var(--cartao);border:1px solid var(--linha);border-radius:22px;padding:22px}
+.erro-card h1{margin:0 0 6px}
+@media (max-width:640px){
+  .ola-card{grid-template-columns:1fr}.ola-foto{clip-path:none;min-height:190px;order:-1}.ola-foto .script{font-size:26px}
+  .resumo{grid-template-columns:1fr}.resumo .col+.col{border-left:0;border-top:1px solid var(--linha)}
+  .passos li{grid-template-columns:46px 1fr;gap:4px 12px}.passos li .tag{grid-column:2;justify-self:start;margin-top:2px}.bola{width:46px;height:46px;font-size:21px}.passos li::before{left:22px}
+  .faixa img{height:52px}.faixa .dom{font-size:12.5px;padding:6px 10px}.faixa{gap:14px}
+  .contato{grid-template-columns:auto 1fr;padding:14px 16px}.contato .script{grid-column:1/-1;text-align:center;transform:none;max-width:none;font-size:22px}
+  .tag{font-size:12.5px;padding:5px 9px}
+}
+@media (prefers-reduced-motion:reduce){.atual .bola,.giro{animation:none}}
 </style>
 </head>
-<body>
+<body class="lm-plates">
 <main class="wrap">
-  <div class="topo"><span class="loja" id="loja"></span><span class="vivo" id="vivo" hidden><i></i><span>Ao vivo</span></span></div>
+  <header class="faixa"><img src="/assets/img/logo-bistro-connect-clara.png" alt="Bistrô Connect"><span class="sep"></span><span class="dom"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span id="dominio">bistroconnect.com.br</span></span></header>
 
   <div class="carregando" id="carregando"><div><div class="giro"></div>Buscando o seu pedido…</div></div>
 
-  <section id="erro" class="cartao" hidden>
+  <section id="erro" class="erro-card" hidden>
     <h1>Pedido não encontrado</h1>
-    <p class="ola" id="erroTxt">Confira se o link está completo. Ele chega na mensagem do WhatsApp logo depois do pedido.</p>
+    <p class="sub" id="erroTxt">Confira se o link está completo. Ele chega na mensagem do WhatsApp logo depois do pedido.</p>
   </section>
 
-  <div id="pedido" hidden>
-    <section class="cartao">
-      <p class="ola" id="ola"></p>
-      <h1 id="titulo"></h1>
-      <span class="codigo" id="codigo"></span>
+  <div id="pedido" hidden style="display:contents">
+    <section class="ola-card" id="olaCard">
+      <div class="ola-txt">
+        <div class="ola-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V6a1.5 1.5 0 0 1 3 0v4M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10V5.5a1.5 1.5 0 0 1 3 0V12M16 9a1.5 1.5 0 0 1 3 0v5a7 7 0 0 1-7 7h-1a6 6 0 0 1-5-3l-2.5-4a1.5 1.5 0 0 1 2.4-1.7L7 14"/></svg></div>
+        <h1 id="titulo"></h1>
+        <p class="sub" id="subtitulo"></p>
+        <div class="ped-pill"><i>✓</i><div><b id="codigo"></b><small id="dataPed"></small></div></div>
+      </div>
+      <div class="ola-foto" id="foto"><span class="script">Obrigado pela sua confiança!</span></div>
+    </section>
+
+    <section class="est">
+      <header><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 6h11v10H2zM13 9h4l3 3v4h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="16.5" cy="17.5" r="1.8"/></svg><div><b>Acompanhe seu pedido</b><small id="estSub"></small></div></header>
       <ol class="passos" id="passos"></ol>
       <div class="aviso erro" id="cancelado" hidden>Este pedido foi cancelado. Fale com a loja se tiver alguma dúvida.</div>
     </section>
 
-    <section class="cartao">
-      <h2>Seu pedido</h2>
-      <div id="itens"></div>
+    <section class="resumo">
+      <div class="col">
+        <h2><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/></svg></i>Resumo do pedido</h2>
+        <div class="itens" id="itens"></div>
+        <div class="tot"><span>Total</span><b id="total"></b></div>
+      </div>
+      <div class="col inf" id="info"></div>
     </section>
 
-    <section class="cartao">
-      <h2>Detalhes</h2>
-      <div class="info" id="info"></div>
-    </section>
-
-    <a class="btn" id="zap" target="_blank" rel="noopener noreferrer" hidden>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.6-.3z"/></svg>
-      Falar com a loja
+    <a class="contato" id="zap" target="_blank" rel="noopener noreferrer" hidden>
+      <span class="zp"><svg viewBox="0 0 24 24" aria-hidden="true" style="fill:currentColor;stroke:none"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.6 13.9c-.2.6-1.2 1.1-1.7 1.2-.4.1-1 .1-1.6-.1-.4-.1-.8-.3-1.4-.5-2.5-1.1-4.1-3.6-4.2-3.7-.1-.2-1-1.3-1-2.5s.6-1.8.9-2.1c.2-.2.5-.3.6-.3h.5c.1 0 .3 0 .5.4l.7 1.7c.1.1.1.3 0 .4l-.2.4-.4.4c-.1.1-.2.3-.1.5.1.2.6 1 1.3 1.6.9.8 1.7 1.1 1.9 1.2.2.1.4.1.5-.1l.7-.9c.2-.2.3-.2.5-.1l1.6.8c.2.1.4.2.4.3.1.1.1.6-.1 1.2z"/></svg></span>
+      <div><small>Dúvidas sobre seu pedido?</small><b id="zapNome"></b><span class="fn" id="zapFone"></span></div>
+      <span class="script">Estamos à disposição para ajudar!</span>
     </a>
-    <a class="btn claro" id="voltar" href="/">Voltar ao cardápio</a>
-    <p class="rodape" id="atualizado"></p>
-    <p class="rodape"><a href="/" style="color:inherit;text-decoration:none">Feito com <b>Bistrô Connect</b></a></p>
+    <a class="btn" id="voltar" href="/">Voltar ao cardápio</a>
+    <p class="rod" id="atualizado"></p>
+    <p class="rod"><b>Bistrô Connect</b>Mais praticidade, conexão e tecnologia para sua gastronomia.</p>
   </div>
 </main>
 <script src="/assets/config.js"></script>
-<script src="/assets/pedido.js?v=20261021d"></script>
+<script src="/assets/pedido.js?v=20261021f"></script>
 </body>
 </html>

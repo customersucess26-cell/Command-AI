@@ -701,8 +701,10 @@ begin
   select * into l from public.lojas where id = o.loja_id;
   return jsonb_build_object(
     'code', o.code, 'status', o.status, 'delivery_type', o.delivery_type, 'scheduled_for', o.scheduled_for,
-    'created_at', o.created_at, 'customer_name', o.customer_name, 'customer_phone', o.customer_phone,
-    'address', o.address, 'payment_method', o.payment_method, 'notes', o.notes,
+    'created_at', o.created_at, 'updated_at', o.updated_at, 'first_name', split_part(o.customer_name, ' ', 1), 'customer_name', o.customer_name, 'customer_phone', o.customer_phone,
+    'address', o.address, 'payment_method', o.payment_method, 'payment_status', o.payment_status, 'notes', o.notes,
+    'history', (select coalesce(jsonb_agg(jsonb_build_object('status', e.para, 'at', e.at) order by e.id), '[]'::jsonb)
+                  from public.order_events e where e.order_id = o.id and e.campo = 'status'),
     'items', (select coalesce(jsonb_agg(jsonb_build_object('name', i ->> 'name', 'unit', coalesce(i ->> 'unit', ''),
                                          'qty', (i ->> 'qty')::int, 'price', (i ->> 'price')::numeric,
                                          'options', (select coalesce(jsonb_agg(x ->> 'name'), '[]'::jsonb)
@@ -711,7 +713,7 @@ begin
                                   '[]'::jsonb)
                 from jsonb_array_elements(o.items) i),
     'subtotal', o.subtotal, 'delivery_fee', o.delivery_fee, 'total', o.total,
-    'store_name', l.store_name, 'whatsapp', l.whatsapp, 'slug', l.slug, 'logo_url', l.logo_url, 'capa_url', l.capa_url, 'modelo', l.modelo);
+    'store_name', l.store_name, 'whatsapp', l.whatsapp, 'slug', l.slug, 'logo_url', l.logo_url, 'capa_url', l.capa_url, 'modelo', l.modelo, 'cor', l.cor);
 end $$;
 
 -- ================= faturamento e plano =================
