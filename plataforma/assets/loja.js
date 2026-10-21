@@ -96,49 +96,64 @@
     var n = parseInt(hex.slice(1), 16), m = [n >> 16 & 255, n >> 8 & 255, n & 255], t = luz(hex) < 0.38 ? Math.min(0.75, (0.38 - luz(hex)) * 2.2 + 0.25) : 0;
     return t ? "#" + m.map(function (v) { return ("0" + Math.round(v + (255 - v) * t).toString(16)).slice(-2); }).join("") : hex;
   }
+  /* cada tipo de loja usa um dos 4 modelos da página de vendas: grade (padaria), café, hambúrguer e pratos (restaurante) */
+  var LAYOUTS = { padaria: "grid", doceria: "grid", cafeteria: "cafe", hamburgueria: "burger", pizzaria: "burger", restaurante: "plates", outro: "plates" };
+  var FUNDO_TEMA = { grid: "#231710", cafe: "#2A1A12", burger: "#121212", plates: "#FBF8F3" };
+  var layout = "plates", catAtual = "";
+  var SVG_MENU = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+  var SVG_SACOLA = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
+  function iniciaisDe(nome) {
+    /* iniciais sem "da", "de", "do"…: "Doceria da Marina" vira DM */
+    var palavras = String(nome || "?").split(/\s+/).filter(Boolean);
+    var fortes = palavras.filter(function (x) { return !/^(d[aeo]s?|e|&|a|o|na|no)$/i.test(x); });
+    return (fortes.length ? fortes : palavras).slice(0, 2).map(function (x) { return x[0]; }).join("").toUpperCase();
+  }
+  function logoEl(cls) {
+    var l = el("div", cls); l.setAttribute("aria-hidden", "true");
+    var lu = urlSegura(loja.logo_url), ini = iniciaisDe(loja.store_name);
+    if (lu) { var il = el("img"); il.alt = ""; il.src = lu; il.addEventListener("error", function () { l.textContent = ini; }); l.appendChild(il); }
+    else l.textContent = ini;
+    return l;
+  }
   function montaLoja() {
-    var modelo = TEMAS[loja.modelo] ? loja.modelo : "outro";
-    document.body.className = "m-" + modelo + " t-" + TEMAS[modelo];
+    var modelo = LAYOUTS[loja.modelo] ? loja.modelo : "outro";
+    layout = LAYOUTS[modelo];
+    document.body.className = "lm-" + layout;
+    /* cor da marca própria da loja: troca o destaque do modelo (a cor padrão da plataforma mantém o do modelo) */
     var raiz = document.documentElement.style;
-    /* loja que ainda usa a cor padrão da plataforma ganha o destaque do tema (dourado, vermelho ou âmbar) */
-    var COR_TEMA = { artesanal: "#D4A65A", brasa: "#E0301E", autoral: "#C98A3E" };
-    var corLoja = /^#b0703f$/i.test(loja.cor || "") ? COR_TEMA[TEMAS[modelo]] : loja.cor;
-    if (/^#[0-9a-f]{6}$/i.test(corLoja || "")) { var viva = clareia(corLoja); raiz.setProperty("--cor", viva); raiz.setProperty("--cor-txt", corTexto(viva)); }
-    var eb = $("eyebrow"); eb.textContent = ETIQUETAS[modelo]; eb.hidden = false;
-    var tr = $("faixaTrilho"); tr.textContent = "";
-    for (var k = 0; k < 8; k++) { tr.appendChild(el("span", "", loja.store_name)); tr.appendChild(el("i", "", "★")); }
-    var meta = document.querySelector('meta[name="theme-color"]'); if (meta && loja.cor) meta.setAttribute("content", loja.cor);
+    ["--cor", "--cor-txt", "--on", "--on-ink", "--bar", "--bar-ink"].forEach(function (v) { raiz.removeProperty(v); });
+    if (/^#[0-9a-f]{6}$/i.test(loja.cor || "") && !/^#b0703f$/i.test(loja.cor)) {
+      var viva = (layout === "grid" || layout === "plates") ? loja.cor : clareia(loja.cor), tx = corTexto(viva);
+      raiz.setProperty("--cor", viva); raiz.setProperty("--cor-txt", tx); raiz.setProperty("--on", viva); raiz.setProperty("--on-ink", tx);
+      raiz.setProperty("--bar", viva); raiz.setProperty("--bar-ink", tx);
+    }
+    var meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.setAttribute("content", FUNDO_TEMA[layout]);
     document.title = loja.store_name + " · Cardápio";
 
-    $("nome").textContent = loja.store_name;
-    $("descricao").textContent = loja.descricao || "";
-    $("descricao").hidden = !loja.descricao;
     var aberta = loja.accept_orders !== false;
-    $("selo").textContent = aberta ? "Recebendo pedidos" : "Pedidos pausados";
-    $("selo").classList.toggle("fechada", !aberta);
+    var topo = $("topo"); topo.textContent = ""; topo.className = "topo topo-" + layout;
+    if (layout === "grid") {
+      var bar = el("div", "t-bar");
+      var bi = el("button", "t-ico"); bi.type = "button"; bi.id = "btnInfo"; bi.setAttribute("aria-label", "Horário, endereço e contato"); bi.innerHTML = SVG_MENU;
+      bi.addEventListener("click", function () { var t = $("s-visite"); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); });
+      var bs = el("button", "t-ico round"); bs.type = "button"; bs.id = "btnSacola"; bs.setAttribute("aria-label", "Ver pedido"); bs.innerHTML = SVG_SACOLA;
+      var bd = el("span", "t-badge", "0"); bd.id = "sacolaBadge"; bd.hidden = true; bs.appendChild(bd);
+      bs.addEventListener("click", function () { abreFolha("carrinho"); });
+      bar.appendChild(bi); bar.appendChild(logoEl("t-logo")); bar.appendChild(bs);
+      topo.appendChild(bar);
+    }
+    var cab = el("div", "t-head");
+    if (layout !== "grid") cab.appendChild(logoEl("t-logo"));
+    cab.appendChild(el("p", "t-etiqueta", ETIQUETAS[modelo]));
+    var h1 = el("h1", "t-nome", loja.store_name); h1.id = "nome"; cab.appendChild(h1);
+    if (loja.descricao) cab.appendChild(el("p", "t-desc", loja.descricao));
+    var selo = el("span", "selo" + (aberta ? "" : " fechada"), aberta ? "Recebendo pedidos" : "Pedidos pausados"); cab.appendChild(selo);
+    topo.appendChild(cab);
     $("pausa").hidden = aberta;
 
-    var fundo = $("capaFundo"); fundo.textContent = "";
-    var capa = urlSegura(loja.capa_url);
-    /* sem capa própria: foto padrão pelo tipo do negócio, até a loja enviar a dela */
-    var padrao = !capa && ((window.BC_CAPAS || {})[loja.modelo] || "");
-    if (capa || padrao) {
-      var ic = el("img", padrao ? "padrao" : ""); ic.alt = ""; ic.src = capa || padrao;
-      ic.addEventListener("load", function () { fundo.classList.add("carregou"); });
-      ic.addEventListener("error", function () {
-        /* capa da loja não abriu: usa a capa padrão do tipo, se houver */
-        var reserva = (window.BC_CAPAS || {})[loja.modelo];
-        if (!padrao && reserva && ic.getAttribute("src") !== reserva) { ic.className = "padrao"; ic.src = reserva; } else ic.remove();
-      }); fundo.appendChild(ic);
-    }
-    var logo = $("logo"); logo.textContent = "";
-    var lu = urlSegura(loja.logo_url);
-    /* iniciais sem "da", "de", "do"…: "Doceria da Marina" vira DM */
-    var palavras = String(loja.store_name || "?").split(/\s+/).filter(Boolean);
-    var fortes = palavras.filter(function (p) { return !/^(d[aeo]s?|e|&|a|o|na|no)$/i.test(p); });
-    var iniciais = (fortes.length ? fortes : palavras).slice(0, 2).map(function (p) { return p[0]; }).join("").toUpperCase();
-    if (lu) { var il = el("img"); il.alt = ""; il.src = lu; il.addEventListener("error", function () { logo.textContent = iniciais; }); logo.appendChild(il); }
-    else logo.textContent = iniciais;
+    /* capa enviada pela loja: faixa de foto logo abaixo do topo */
+    var fx = $("capaFaixa"); fx.textContent = ""; var capa = urlSegura(loja.capa_url); fx.hidden = !capa;
+    if (capa) { var ic = el("img"); ic.alt = ""; ic.src = capa; ic.decoding = "async"; ic.addEventListener("error", function () { fx.hidden = true; }); fx.appendChild(ic); }
 
     var inf = $("infos"); inf.textContent = "";
     function chip(icone, txt, href) {
@@ -190,8 +205,8 @@
     }
     return { key: k, p: p, q: q, ops: ops, unit: r2(unit) };
   }
-  function controle(p) {
-    var box = el("div", "ctrl"); box.dataset.id = p.id;
+  function controle(p, comTexto) {
+    var box = el("div", "ctrl" + (!comTexto && (layout === "cafe" || layout === "burger") ? " round" : "")); box.dataset.id = p.id;
     pintaControle(box, p, p.id, false);
     return box;
   }
@@ -199,15 +214,17 @@
   function pintaControle(box, p, key, linha) {
     key = key || p.id; box.textContent = ""; if (linha) box.dataset.linha = "1";
     var aberta = loja.accept_orders !== false;
+    var redondo = !linha && box.classList.contains("round");
     if (!linha && temOpc(p)) {
       var n0 = qtdProduto(p.id);
-      var bo = el("button", "add", n0 ? "Adicionar (" + n0 + ")" : "Escolher"); bo.type = "button"; bo.dataset.opc = p.id;
+      var bo = el("button", "add", redondo ? "+" : n0 ? "Adicionar (" + n0 + ")" : "Escolher"); bo.type = "button"; bo.dataset.opc = p.id;
+      if (redondo && n0) bo.dataset.n = String(n0);
       bo.setAttribute("aria-label", "Escolher opções de " + p.name); bo.disabled = !aberta;
       box.appendChild(bo); return;
     }
     var q = qtd(key);
     if (!q) {
-      var b = el("button", "add", "Adicionar"); b.type = "button"; b.dataset.mais = key;
+      var b = el("button", "add", redondo ? "+" : "Adicionar"); b.type = "button"; b.dataset.mais = key;
       b.setAttribute("aria-label", "Adicionar " + p.name); b.disabled = !aberta;
       box.appendChild(b);
     } else {
@@ -239,61 +256,97 @@
     if (p.unit) d.appendChild(el("small", "", p.unit));
     return d;
   }
-  function cartao(p) {
-    var c = el("article", "prod revela" + (urlSegura(p.image_url) ? "" : " sem-foto"));
-    var t = el("div");
-    if (p.badge) t.appendChild(el("span", "badge", p.badge));
-    t.appendChild(el("h3", "", p.name));
-    if (p.description) t.appendChild(el("p", "", p.description));
-    var meta = el("div", "meta"); meta.appendChild(precoEl(p)); meta.appendChild(controle(p));
-    t.appendChild(meta); c.appendChild(t);
-    if (urlSegura(p.image_url)) c.appendChild(foto(p));
+  function etiquetaFoto(p) { return p.badge ? el("span", "m-tag", p.badge) : null; }
+  function fotoCartao(p, extra) {
+    var f = foto(p, "foto pic" + (extra ? " " + extra : "")), t = etiquetaFoto(p); if (t) f.appendChild(t); return f;
+  }
+  function cartaoGrade(p) {
+    var c = el("article", "m-card revela");
+    c.appendChild(fotoCartao(p));
+    c.appendChild(el("h3", "m-name", p.name));
+    c.appendChild(el("p", "m-desc", p.description || ""));
+    c.appendChild(el("hr"));
+    c.appendChild(el("p", "m-unit", p.unit || "Unidade"));
+    c.appendChild(el("p", "m-price", brl(p.price)));
+    c.appendChild(controle(p));
     return c;
+  }
+  function cartaoPrato(p) {
+    var c = el("article", "m-plate revela");
+    c.appendChild(fotoCartao(p, "redonda"));
+    c.appendChild(el("h3", "m-name", p.name));
+    c.appendChild(el("p", "m-desc", p.description || ""));
+    c.appendChild(el("p", "m-price", brl(p.price) + (p.unit ? " · " + p.unit : "")));
+    c.appendChild(controle(p));
+    return c;
+  }
+  function cartaoLinha(p) {
+    var c = el("article", "m-row revela");
+    c.appendChild(fotoCartao(p));
+    var t = el("div", "t");
+    t.appendChild(el("h3", "m-name", p.name));
+    if (p.description) t.appendChild(el("p", "m-desc", p.description));
+    var meta = el("div", "meta"), pr = el("span", "m-preco");
+    pr.appendChild(el("b", "m-price", brl(p.price))); if (p.unit) pr.appendChild(el("small", "m-w", p.unit));
+    meta.appendChild(pr); meta.appendChild(controle(p)); t.appendChild(meta); c.appendChild(t);
+    return c;
+  }
+  function cartao(p) { return layout === "grid" ? cartaoGrade(p) : layout === "plates" ? cartaoPrato(p) : cartaoLinha(p); }
+
+  /* categorias com produto; produto sem categoria vai para "Mais opções" */
+  function listaCategorias() {
+    var out = [], usadas = {};
+    cats.forEach(function (c) {
+      var it = prods.filter(function (p) { return p.category_id === c.id; });
+      if (it.length) { out.push({ id: c.id, nome: c.name, itens: it }); usadas[c.id] = 1; }
+    });
+    var soltos = prods.filter(function (p) { return !p.category_id || !usadas[p.category_id] && !cats.some(function (c) { return c.id === p.category_id; }); });
+    if (soltos.length) out.push({ id: "outros", nome: "Mais opções", itens: soltos });
+    return out;
+  }
+  function blocoCategoria(c, primeira) {
+    var box = el("section", "secao-cat"); box.id = "s-" + c.id;
+    var itens = c.itens.slice();
+    if (layout === "cafe") {
+      /* prateleira: até 3 itens em destaque com foto, como no modelo café */
+      var dest = itens.filter(function (p) { return p.featured && urlSegura(p.image_url); }).slice(0, 3);
+      /* sem destaques marcados, a primeira aba mostra os 3 primeiros itens com foto */
+      if (dest.length < 2 && primeira) dest = itens.filter(function (p) { return urlSegura(p.image_url); }).slice(0, 3);
+      if (dest.length >= 2 && itens.length > dest.length) {
+        var sh = el("div", "m-shelf");
+        dest.forEach(function (p) {
+          var it = el("article", "it revela"); it.appendChild(fotoCartao(p));
+          it.appendChild(el("h3", "m-name", p.name)); it.appendChild(el("p", "m-price", brl(p.price))); it.appendChild(controle(p, true)); sh.appendChild(it);
+        });
+        box.appendChild(sh);
+        itens = itens.filter(function (p) { return dest.indexOf(p) < 0; });
+        if (itens.length) box.appendChild(el("h2", "m-section", "Especiais da casa"));
+      }
+    }
+    var cls = layout === "grid" ? "m-grid" : layout === "plates" ? "m-plates" : "m-rows";
+    var l = el("div", cls); itens.forEach(function (p) { l.appendChild(cartao(p)); });
+    box.appendChild(l);
+    return box;
   }
   function desenhaMenu() {
     var menu = $("menu"), trilho = $("abasTrilho");
     menu.textContent = ""; trilho.textContent = "";
-    var secoes = [];
-    var destaques = prods.filter(function (p) { return p.featured; });
-    if (destaques.length) {
-      var sd = el("section", "secao"); sd.id = "s-destaques";
-      sd.appendChild(el("h2", "", "Destaques"));
-      var tr = el("div", "destaques");
-      destaques.forEach(function (p) {
-        var d = el("article", "dest revela dir"); d.appendChild(foto(p));
-        var tx = el("div", "dest-txt"); if (p.badge) tx.appendChild(el("span", "badge", p.badge));
-        tx.appendChild(el("h3", "", p.name));
-        var meta = el("div", "meta"); meta.appendChild(precoEl(p)); meta.appendChild(controle(p));
-        tx.appendChild(meta); d.appendChild(tx); tr.appendChild(d);
-      });
-      sd.appendChild(tr); menu.appendChild(sd); secoes.push(["s-destaques", "Destaques"]);
+    var lista = listaCategorias();
+    if (!lista.length) {
+      menu.appendChild(el("p", "vazio", "O cardápio desta loja está sendo preparado. Volte em breve!"));
+      $("abas").hidden = true; desenhaSecoes(); return;
     }
-    var usadas = {};
-    cats.forEach(function (c) {
-      var itens = prods.filter(function (p) { return p.category_id === c.id; });
-      if (!itens.length) return;
-      usadas[c.id] = 1;
-      var s = el("section", "secao"); s.id = "s-" + c.id;
-      s.appendChild(el("h2", "", c.name));
-      var l = el("div", "lista"); itens.forEach(function (p) { l.appendChild(cartao(p)); });
-      s.appendChild(l); menu.appendChild(s); secoes.push([s.id, c.name]);
-    });
-    var soltos = prods.filter(function (p) { return !p.category_id || !usadas[p.category_id] && !cats.some(function (c) { return c.id === p.category_id; }); });
-    if (soltos.length) {
-      var so = el("section", "secao"); so.id = "s-outros"; so.appendChild(el("h2", "", "Mais opções"));
-      var lo = el("div", "lista"); soltos.forEach(function (p) { lo.appendChild(cartao(p)); });
-      so.appendChild(lo); menu.appendChild(so); secoes.push(["s-outros", "Mais opções"]);
-    }
-    if (!prods.length) menu.appendChild(el("p", "vazio", "O cardápio desta loja está sendo preparado. Volte em breve!"));
-    secoes.forEach(function (s, i) {
-      var b = el("button", "aba" + (i === 0 ? " ativa" : ""), s[1]); b.type = "button"; b.dataset.alvo = s[0];
+    if (!lista.some(function (c) { return c.id === catAtual; })) catAtual = lista[0].id;
+    var atual = null;
+    lista.forEach(function (c) {
+      var on = c.id === catAtual; if (on) atual = c;
+      var b = el("button", "aba" + (on ? " ativa" : ""), c.nome); b.type = "button"; b.dataset.cat = c.id; b.setAttribute("aria-pressed", on ? "true" : "false");
       trilho.appendChild(b);
     });
-    $("abas").hidden = secoes.length < 2;
-    observaSecoes();
+    $("abas").hidden = lista.length < 2;
+    menu.appendChild(blocoCategoria(atual, lista[0].id === atual.id));
     desenhaSecoes();
-    if (window.BCEfeitos) window.BCEfeitos.revelar(menu);
-    if (window.BCEfeitos) window.BCEfeitos.revelar($("secoes"));
+    if (window.BCEfeitos) { window.BCEfeitos.revelar(menu); window.BCEfeitos.revelar($("secoes")); }
   }
   /* ---------- seções da página: como pedir, sobre, galeria, depoimentos, visite e chamada final ----------
      O texto e as fotos vêm do painel (Dados da loja > Páginas do site), guardados em loja.extra.secoes.
@@ -367,24 +420,12 @@
       fim.appendChild(bb); box.appendChild(fim);
     }
   }
-  var observador = null;
-  function marcaAba(id) {
-    var ativa = null;
-    Array.prototype.forEach.call($("abasTrilho").children, function (b) { var on = b.dataset.alvo === id; b.classList.toggle("ativa", on); if (on) ativa = b; });
-    if (ativa) { var t = $("abasTrilho"); t.scrollTo({ left: ativa.offsetLeft - 16, behavior: "smooth" }); }
-  }
-  function observaSecoes() {
-    if (observador) observador.disconnect();
-    if (!("IntersectionObserver" in window)) return;
-    observador = new IntersectionObserver(function (ents) {
-      ents.forEach(function (e) { if (e.isIntersecting) marcaAba(e.target.id); });
-    }, { rootMargin: "-80px 0px -65% 0px" });
-    Array.prototype.forEach.call(document.querySelectorAll(".secao"), function (s) { observador.observe(s); });
-  }
   $("abasTrilho").addEventListener("click", function (e) {
-    var b = e.target.closest("[data-alvo]"); if (!b) return;
-    var s = document.getElementById(b.dataset.alvo); if (s) s.scrollIntoView({ behavior: "smooth", block: "start" });
-    marcaAba(b.dataset.alvo);
+    var b = e.target.closest("[data-cat]"); if (!b || b.dataset.cat === catAtual) return;
+    catAtual = b.dataset.cat; desenhaMenu();
+    var y = $("abas").getBoundingClientRect().top + window.scrollY;
+    if (window.scrollY > y) window.scrollTo({ top: y, behavior: "smooth" });
+    var ativa = $("abasTrilho").querySelector(".ativa"); if (ativa) $("abasTrilho").scrollTo({ left: ativa.offsetLeft - 16, behavior: "smooth" });
   });
 
   /* ---------- carrinho ---------- */
@@ -452,6 +493,7 @@
     document.body.classList.toggle("com-barra", c.n > 0);
     $("barraQtd").textContent = String(c.n);
     $("barraTotal").textContent = brl(c.sub);
+    var sb = $("sacolaBadge"); if (sb) { sb.textContent = String(c.n); sb.hidden = !c.n; }
   }
   function resumo(alvo, comTaxa) {
     var c = contas(), box = $(alvo); box.textContent = "";

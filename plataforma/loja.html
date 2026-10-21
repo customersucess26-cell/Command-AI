@@ -9,10 +9,10 @@
 <meta name="description" content="Cardápio e pedidos online. Feito com Bistrô Connect.">
 <title>Cardápio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Gloock&family=Pinyon+Script&family=Anton&family=Barlow:wght@400;500;600;700&family=Permanent+Marker&family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Gloock&family=Pinyon+Script&family=Anton&family=Barlow:wght@400;500;600;700&family=Permanent+Marker&family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Jost:wght@300;400;500;600&family=Oswald:wght@500;600&family=Yellowtail&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
 <link rel="stylesheet" href="/assets/loja.css">
 <link rel="stylesheet" href="/assets/efeitos.css">
-<link rel="stylesheet" href="/assets/vitrine-temas.css">
+<link rel="stylesheet" href="/assets/loja-modelos.css">
 </head>
 <body>
 <div class="estado" id="estado" role="status" aria-live="polite">
@@ -22,20 +22,8 @@
 </div>
 
 <div id="app" hidden>
-  <header class="capa">
-    <div class="capa-fundo" id="capaFundo"></div>
-    <div class="capa-conteudo">
-      <div class="logo" id="logo" aria-hidden="true"></div>
-      <div class="capa-txt">
-        <p class="eyebrow" id="eyebrow" hidden></p>
-        <span class="selo" id="selo"></span>
-        <h1 id="nome"></h1>
-        <p class="descricao" id="descricao"></p>
-      </div>
-    </div>
-  </header>
-
-  <div class="faixa-marca" id="faixaMarca" aria-hidden="true"><div class="faixa-trilho" id="faixaTrilho"></div></div>
+  <header class="topo" id="topo"></header>
+  <div class="capa-faixa" id="capaFaixa" hidden></div>
 
   <section class="infos" id="infos" aria-label="Informações da loja"></section>
   <div class="pausa" id="pausa" hidden>
@@ -57,7 +45,7 @@
 
 <button class="barra" id="barra" type="button" hidden>
   <span class="barra-qtd" id="barraQtd">0</span>
-  <span class="barra-txt">Ver pedido</span>
+  <span class="barra-txt">Finalizar pedido</span>
   <span class="barra-total" id="barraTotal">R$ 0,00</span>
 </button>
 
