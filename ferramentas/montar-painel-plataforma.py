@@ -366,5 +366,11 @@ open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
 exec(open("ferramentas/painel-secoes.pyfrag", encoding="utf-8").read())
 open(f"{DEST}/painel.js", "w", encoding="utf-8").write(j)
 open(f"{DEST}/painel.css", "a", encoding="utf-8").write(css)
+# versão nos arquivos do painel: o navegador baixa de novo quando mudar (troque a data a cada atualização)
+VERSAO = "20261021a"
+_h = open(f"{DEST}/index.html", encoding="utf-8").read()
+for _f in ("painel.css", "painel.js", "../assets/exemplo.js"):
+    _h = _h.replace('"%s"' % _f, '"%s?v=%s"' % (_f, VERSAO))
+open(f"{DEST}/index.html", "w", encoding="utf-8").write(_h)
 subprocess.run(["python3", "ferramentas/csp.py", f"{DEST}/index.html"], check=True)
 print("painel da plataforma montado em", DEST)
