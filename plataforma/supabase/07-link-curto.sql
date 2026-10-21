@@ -1,8 +1,9 @@
--- Bistrô Connect · migração 07: link curto de acompanhamento do pedido (bistroconnect.com.br/p/<código>).
--- Rode uma vez no SQL Editor do Supabase (projeto plataforma). Pode rodar de novo sem problema.
+-- Bistrô Connect · migração 07: link curto de acompanhamento do pedido (bistroconnect.com.br/p/<código>)
+-- e cartão do pedido (imagem para compartilhar). Rode uma vez no SQL Editor do Supabase (projeto plataforma).
+-- Pode rodar de novo sem problema.
 
 alter table public.orders add column if not exists track_code text;
-update public.orders set track_code = substr(track_token, 1, 12) where track_code is null;
+update public.orders set track_code = substr(track_token, 1, 16) where track_code is null or length(track_code) <> 16;
 create unique index if not exists orders_track_code_idx on public.orders (track_code);
 
 create or replace function public.create_order(p_slug text, p_idem text, p_order jsonb)
@@ -142,7 +143,7 @@ begin
   select coalesce(max(o.seq), 0) + 1 into proximo from public.orders o where o.loja_id = loja.id;
 
   loop
-    codigo := substr(replace(gen_random_uuid()::text, '-', ''), 1, 12);
+    codigo := substr(replace(gen_random_uuid()::text, '-', ''), 1, 16);
     exit when not exists (select 1 from public.orders o where o.track_code = codigo);
   end loop;
   insert into public.orders (loja_id, seq, code, idem_key, track_token, track_code, customer_name, customer_phone, delivery_type,
@@ -161,7 +162,7 @@ create or replace function public.rastrear_pedido(p_token text)
 returns jsonb language plpgsql stable security definer set search_path = '' as $$
 declare o public.orders; l public.lojas;
 begin
-  if coalesce(p_token, '') !~ '^([a-f0-9]{12}|[a-f0-9]{32,64})$' then return null; end if;
+  if coalesce(p_token, '') !~ '^([a-f0-9]{16}|[a-f0-9]{32,64})$' then return null; end if;
   select * into o from public.orders where track_token = p_token or track_code = p_token;
   if not found then return null; end if;
   select * into l from public.lojas where id = o.loja_id;
@@ -180,5 +181,36 @@ begin
     'store_name', l.store_name, 'whatsapp', l.whatsapp, 'slug', l.slug, 'cor', l.cor);
 end $$;
 
+create or replace function public.cartao_pedido(p_code text)
+returns jsonb language plpgsql stable security definer set search_path = '' as $$
+declare o public.orders; l public.lojas;
+begin
+  if coalesce(p_code, '') !~ '^([a-f0-9]{16}|[a-f0-9]{32,64})$' then return null; end if;
+  select * into o from public.orders where track_token = p_code or track_code = p_code;
+  if not found then return null; end if;
+  select * into l from public.lojas where id = o.loja_id;
+  return jsonb_build_object(
+    'code', o.code, 'status', o.status, 'delivery_type', o.delivery_type, 'scheduled_for', o.scheduled_for,
+    'created_at', o.created_at, 'customer_name', o.customer_name, 'customer_phone', o.customer_phone,
+    'address', o.address, 'payment_method', o.payment_method, 'notes', o.notes,
+    'items', (select coalesce(jsonb_agg(jsonb_build_object('name', i ->> 'name', 'unit', coalesce(i ->> 'unit', ''),
+                                         'qty', (i ->> 'qty')::int, 'price', (i ->> 'price')::numeric,
+                                         'options', (select coalesce(jsonb_agg(x ->> 'name'), '[]'::jsonb)
+                                                       from jsonb_array_elements(coalesce(i -> 'options', '[]'::jsonb)) x),
+                                         'image_url', coalesce((select pr.image_url from public.products pr where pr.id = i ->> 'product_id'), ''))),
+                                  '[]'::jsonb)
+                from jsonb_array_elements(o.items) i),
+    'subtotal', o.subtotal, 'delivery_fee', o.delivery_fee, 'total', o.total,
+    'store_name', l.store_name, 'whatsapp', l.whatsapp, 'slug', l.slug, 'logo_url', l.logo_url, 'capa_url', l.capa_url, 'modelo', l.modelo);
+end $$;
+
+do $$
+declare f text;
+begin
+  foreach f in array array['create_order(text, text, jsonb)', 'rastrear_pedido(text)', 'cartao_pedido(text)'] loop
+    execute 'revoke all on function public.' || f || ' from public';
+    execute 'grant execute on function public.' || f || ' to anon, authenticated';
+  end loop;
+end $$;
 
 notify pgrst, 'reload schema';

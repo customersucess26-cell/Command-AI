@@ -625,6 +625,17 @@
   /* ---------- envio ---------- */
   /* mensagem do pedido para o WhatsApp da loja. Só texto e símbolos comuns (sem emoji): alguns celulares trocam emoji por "�".
      O link curto no fim faz o WhatsApp mostrar o cartão do pedido (imagem gerada por og.php). */
+  function compartilhaCartao(codigo, num) {
+    var b = $("okCartao"); b.disabled = true; b.textContent = "Gerando cartão…";
+    var url = siteBase() + "/cartao.php?c=" + codigo;
+    fetch(url).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (blob) {
+      var f = new File([blob], "pedido-" + String(num).replace("#", "") + ".png", { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [f] })) return navigator.share({ files: [f], title: "Pedido " + num });
+      window.open(url, "_blank", "noopener");
+    }).catch(function (e) { if (e && e.name === "AbortError") return; window.open(url, "_blank", "noopener"); })
+      .then(function () { b.disabled = false; b.textContent = "Compartilhar cartão do pedido"; });
+  }
+
   function mensagemZap(o, d) {
     var m = ["Olá, " + loja.store_name + "!", "Fiz o pedido *" + o.code + "* pelo site.", "", "*ITENS DO PEDIDO*"];
     (o.items || []).forEach(function (i) {
@@ -687,6 +698,8 @@
         $("okCodigo").textContent = "Pedido " + o.code;
         $("okTxt").textContent = "Total " + brl(o.total) + ". " + (zap ? "Envie o resumo no WhatsApp para a loja confirmar mais rápido." : "A loja já recebeu o seu pedido.");
         $("okRastreio").href = rastreio;
+        $("okCartao").hidden = !o.track_code; $("okCartao").textContent = "Compartilhar cartão do pedido";
+        $("okCartao").onclick = function () { compartilhaCartao(o.track_code, o.code); };
         var link = zap ? "https://wa.me/" + zap + "?text=" + encodeURIComponent(mensagemZap(o, d)) : "";
         $("okZap").hidden = !zap; if (zap) $("okZap").href = link;
         vaiPara("pronto");

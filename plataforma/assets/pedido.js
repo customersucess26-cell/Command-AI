@@ -6,7 +6,7 @@
   var BC = window.BC || {};
   var $ = function (id) { return document.getElementById(id); };
   /* link curto /p/<código> (reescrito pelo .htaccess), ?c=<código> ou, nos links antigos, #<código longo> */
-  var token = ((location.pathname.match(/^\/p\/([a-f0-9]{12})\/?$/) || [])[1] || new URLSearchParams(location.search).get("c") || (location.hash || "").replace(/^#(t=)?/, "")).trim();
+  var token = ((location.pathname.match(/^\/p\/([a-f0-9]{16})\/?$/) || [])[1] || new URLSearchParams(location.search).get("c") || (location.hash || "").replace(/^#(t=)?/, "")).trim();
   var demo = token === "demo";
   var timer = null, ultimo = null, demoInicio = Date.now();
 
@@ -110,7 +110,7 @@
 
   function busca() {
     if (demo) { mostra(exemplo()); return; }
-    if (!/^([a-f0-9]{12}|[a-f0-9]{32,64})$/.test(token)) { mostra(null); return; }
+    if (!/^([a-f0-9]{16}|[a-f0-9]{32,64})$/.test(token)) { mostra(null); return; }
     if (!BC.supabaseUrl || !BC.supabaseKey) {
       $("erroTxt").textContent = "O acompanhamento ainda não está ligado nesta loja. Fale com a loja pelo WhatsApp.";
       mostra(null); return;

@@ -77,4 +77,4 @@ css += """
 
 # link curto de acompanhamento (/p/<código>) no painel; pedidos antigos continuam com o link longo
 j = troca(j, "const linkRastreio=o=>o&&/^[a-f0-9]{32,64}$/.test(o.track_token||'')?new URL('../pedido.html#'+o.track_token,location.href).href:'';",
-          "const linkRastreio=o=>o&&/^[a-f0-9]{12}$/.test(o.track_code||'')?new URL('../p/'+o.track_code,location.href).href:(o&&/^[a-f0-9]{32,64}$/.test(o.track_token||'')?new URL('../pedido.html#'+o.track_token,location.href).href:'');")
+          "const linkRastreio=o=>o&&/^[a-f0-9]{16}$/.test(o.track_code||'')?new URL('../p/'+o.track_code,location.href).href:(o&&/^[a-f0-9]{32,64}$/.test(o.track_token||'')?new URL('../pedido.html#'+o.track_token,location.href).href:'');")

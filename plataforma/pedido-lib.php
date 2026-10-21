@@ -28,14 +28,14 @@ function site_url(): string {
 }
 
 function codigo_valido($c): bool {
-    return is_string($c) && preg_match('/^([a-f0-9]{12}|[a-f0-9]{32,64})$/', $c) === 1;
+    return is_string($c) && preg_match('/^([a-f0-9]{16}|[a-f0-9]{32,64})$/', $c) === 1;
 }
 
-function busca_pedido(string $codigo): ?array {
+function busca_pedido(string $codigo, string $rpc = 'rastrear_pedido'): ?array {
     $c = cfg();
     if ($c['url'] === '' || $c['key'] === '' || !codigo_valido($codigo)) return null;
-    $url = (getenv('BC_REST_BASE') ?: $c['url'] . '/rest/v1') . '/rpc/rastrear_pedido';   // BC_REST_BASE: só para testes locais
-    $corpo = json_encode(['p_token' => $codigo]);
+    $url = (getenv('BC_REST_BASE') ?: $c['url'] . '/rest/v1') . '/rpc/' . $rpc;   // BC_REST_BASE: só para testes locais
+    $corpo = json_encode([$rpc === 'cartao_pedido' ? 'p_code' : 'p_token' => $codigo]);
     $cab = ['apikey: ' . $c['key'], 'Authorization: Bearer ' . $c['key'], 'Content-Type: application/json', 'Accept: application/json'];
     $resp = false;
     if (function_exists('curl_init')) {
@@ -59,6 +59,9 @@ if (!function_exists('mb_strlen')) {      // hospedagem sem mbstring: versões s
     function mb_strlen($t) { return preg_match_all('/./us', (string)$t); }
     function mb_substr($t, $ini, $len = null) { preg_match_all('/./us', (string)$t, $m); return implode('', array_slice($m[0], $ini, $len)); }
 }
+
+/* cartão completo (com nome, telefone e endereço): só para quem tem o código de 16 caracteres */
+function busca_cartao(string $codigo): ?array { return preg_match('/^[a-f0-9]{16}$/', $codigo) ? busca_pedido($codigo, 'cartao_pedido') : null; }
 
 function reais($v): string { return 'R$ ' . number_format((float)$v, 2, ',', '.'); }
 
