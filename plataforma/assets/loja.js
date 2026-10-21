@@ -625,14 +625,91 @@
   /* ---------- envio ---------- */
   /* mensagem do pedido para o WhatsApp da loja. Só texto e símbolos comuns (sem emoji): alguns celulares trocam emoji por "�".
      O link curto no fim faz o WhatsApp mostrar o cartão do pedido (imagem gerada por og.php). */
+  /* Cartão do pedido em imagem, desenhado no próprio navegador (não depende do servidor). */
+  function carregaImg(u) {
+    return new Promise(function (ok) {
+      if (!u) return ok(null);
+      var i = new Image(); i.crossOrigin = "anonymous";
+      i.onload = function () { ok(i); }; i.onerror = function () { ok(null); };
+      i.src = u;
+      setTimeout(function () { ok(null); }, 6000);
+    });
+  }
+  function desenhaCartao(p) {
+    var W = 1024, FT = '"DM Sans","Helvetica Neue",Arial,sans-serif';
+    var itens = p.items || [], entrega = p.delivery_type === "entrega", fee = Number(p.delivery_fee) || 0;
+    var urls = [p.capa_url].concat(itens.map(function (i) { return i.image_url; }));
+    return Promise.all([carregaImg("/assets/img/logo-bistro-connect-clara.png")].concat(urls.map(carregaImg))).then(function (im) {
+      var logo = im[0], capa = im[1], th = im.slice(2);
+      var hero = capa; if (!hero) for (var k = 0; k < th.length; k++) if (th[k]) { hero = th[k]; break; }
+      var linhas = itens.length, extras = itens.filter(function (i) { return (i.options || []).length; }).length;
+      var hItens = 100 + linhas * 88 + extras * 30;
+      var hHero = hero ? 330 : 0;
+      var H = 150 + 70 + hHero + 150 + hItens + 130 + 300 + 120 + 160;
+      var c = document.createElement("canvas"); c.width = W * 2; c.height = H * 2;
+      var x = c.getContext("2d"); x.scale(2, 2);
+      function rr(a, b, w, h, r, cor) { x.beginPath(); x.roundRect ? x.roundRect(a, b, w, h, r) : x.rect(a, b, w, h); x.fillStyle = cor; x.fill(); }
+      function t(txt, a, b, tam, cor, neg, al) { x.font = (neg ? "700 " : "400 ") + tam + "px " + FT; x.fillStyle = cor; x.textAlign = al || "left"; x.fillText(txt, a, b); }
+      function corta(txt, tam, neg, max) { x.font = (neg ? "700 " : "400 ") + tam + "px " + FT; if (x.measureText(txt).width <= max) return txt; while (txt.length > 1 && x.measureText(txt + "…").width > max) txt = txt.slice(0, -1); return txt + "…"; }
+      function cobre(img, a, b, w, h, r) { x.save(); x.beginPath(); x.roundRect ? x.roundRect(a, b, w, h, r) : x.rect(a, b, w, h); x.clip(); var k2 = Math.max(w / img.width, h / img.height), dw = img.width * k2, dh = img.height * k2; x.drawImage(img, a + (w - dw) / 2, b + (h - dh) / 2, dw, dh); x.restore(); }
+      var AZ = "#0b2f45", AZ2 = "#0e5a7a", TQ = "#2bb3d6", ESC = "#0f2a3b", CL = "#d7eef5";
+      x.fillStyle = "#eef4f8"; x.fillRect(0, 0, W, H);
+      x.fillStyle = AZ; x.fillRect(0, 0, W, 150); x.fillStyle = TQ; x.fillRect(0, 145, W, 5);
+      if (logo) { var lh = 96, lw = logo.width * lh / logo.height; x.drawImage(logo, (W - lw) / 2, 25, lw, lh); } else t("Bistrô Connect", W / 2, 90, 46, "#fff", 1, "center");
+      var y = 150, site = siteBase().replace(/^https?:\/\//, "");
+      x.font = "700 24px " + FT; var uw = x.measureText(site).width + 70;
+      rr((W - uw) / 2, y + 14, uw, 48, 24, AZ); t(site, W / 2, y + 46, 24, "#fff", 1, "center"); y += 70;
+      if (hero) { cobre(hero, 30, y, W - 60, hHero - 20, 28); y += hHero; }
+      t(corta("Olá, " + (p.store_name || "Loja") + "!", 54, 1, W - 80), W / 2, y + 66, 54, AZ2, 1, "center");
+      t("Fiz o pedido #" + String(p.code).replace("#", "") + " pelo site.", W / 2, y + 116, 30, "#10212b", 0, "center"); y += 150;
+      rr(30, y, W - 60, hItens, 34, ESC); t("Itens do pedido", 70, y + 58, 30, "#fff", 1);
+      var iy = y + 96;
+      itens.forEach(function (i, n) {
+        var q = Number(i.qty) || 1, ops = (i.options || []).filter(Boolean);
+        if (th[n]) cobre(th[n], 62, iy, 70, 70, 14); else rr(62, iy, 70, 70, 14, AZ2);
+        t(corta(i.name || "", 27, 1, 520), 152, iy + 32, 27, "#fff", 1);
+        t(q + " x " + brl(i.price), 152, iy + 62, 22, "#cfe6ee", 0);
+        t(brl((Number(i.price) || 0) * q), W - 62, iy + 46, 27, "#fff", 1, "right");
+        iy += 80;
+        if (ops.length) { t(corta("+ " + ops.join(", "), 20, 0, W - 240), 152, iy + 6, 20, TQ, 0); iy += 30; }
+        iy += 8;
+      });
+      y += hItens + 28;
+      rr(30, y, 470, 76, 38, CL); t(entrega ? (fee > 0 ? "Entrega: " + brl(fee) : "Entrega grátis") : "Retirada na loja", 265, y + 49, 27, AZ2, 1, "center");
+      rr(520, y, W - 550, 76, 38, AZ); t("Total: " + brl(p.total), 520 + (W - 550) / 2, y + 51, 30, "#fff", 1, "center"); y += 130;
+      var pag = { pix: "Pix", dinheiro: "Dinheiro", cartao: "Cartão", credito: "Cartão de crédito", debito: "Cartão de débito" };
+      var end = entrega ? String(p.address || "-") : "Retirada na loja";
+      var linhasInfo = [[entrega ? "Entrega em" : "Retirada", end], ["Para", p.customer_name || ""], ["Pagamento", pag[p.payment_method] || p.payment_method || "-"]];
+      rr(30, y, W - 60, 40 + 3 * 86, 30, "#dce6ec"); rr(32, y + 2, W - 64, 36 + 3 * 86, 28, "#fff");
+      var ly = y + 40;
+      linhasInfo.forEach(function (r) {
+        x.beginPath(); x.arc(84, ly + 14, 24, 0, 7); x.fillStyle = CL; x.fill();
+        x.beginPath(); x.arc(84, ly + 14, 8, 0, 7); x.fillStyle = AZ2; x.fill();
+        t(r[0], 130, ly + 8, 22, "#5b6b76", 0); t(corta(r[1], 27, 1, W - 200), 130, ly + 44, 27, "#10212b", 1); ly += 86;
+      });
+      y += 40 + 3 * 86 + 28;
+      rr(30, y, W - 60, 100, 40, ESC);
+      x.beginPath(); x.arc(96, y + 50, 26, 0, 7); x.fillStyle = "#25d366"; x.fill();
+      t(corta(p.customer_name || "", 28, 1, W - 260), 148, y + 42, 28, "#fff", 1);
+      var d = String(p.customer_phone || "").replace(/\D/g, ""); if (d.length > 11 && d.slice(0, 2) === "55") d = d.slice(2);
+      t(d.length === 11 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7) : d.length === 10 ? "(" + d.slice(0, 2) + ") " + d.slice(2, 6) + "-" + d.slice(6) : d, 148, y + 78, 26, "#cfe6ee", 0);
+      y += 120;
+      t("Pedido feito pelo site, direto no seu WhatsApp.", W / 2, y + 40, 24, "#5b6b76", 0, "center");
+      t("Bistrô Connect", W / 2, y + 80, 26, AZ2, 1, "center");
+      return new Promise(function (ok) { c.toBlob(ok, "image/png"); });
+    });
+  }
   function compartilhaCartao(codigo, num) {
     var b = $("okCartao"); b.disabled = true; b.textContent = "Gerando cartão…";
-    var url = siteBase() + "/cartao.php?c=" + codigo;
-    fetch(url).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (blob) {
-      var f = new File([blob], "pedido-" + String(num).replace("#", "") + ".png", { type: "image/png" });
-      if (navigator.canShare && navigator.canShare({ files: [f] })) return navigator.share({ files: [f], title: "Pedido " + num });
-      window.open(url, "_blank", "noopener");
-    }).catch(function (e) { if (e && e.name === "AbortError") return; window.open(url, "_blank", "noopener"); })
+    api("rpc/cartao_pedido", { method: "POST", body: JSON.stringify({ p_code: codigo }) })
+      .then(desenhaCartao)
+      .then(function (blob) {
+        if (!blob) throw 0;
+        var f = new File([blob], "pedido-" + String(num).replace("#", "") + ".png", { type: "image/png" });
+        if (navigator.canShare && navigator.canShare({ files: [f] })) return navigator.share({ files: [f], title: "Pedido " + num });
+        var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = f.name; document.body.appendChild(a); a.click(); a.remove();
+      })
+      .catch(function (e) { if (e && e.name === "AbortError") return; b.textContent = "Não consegui gerar o cartão"; return new Promise(function (r) { setTimeout(r, 2500); }); })
       .then(function () { b.disabled = false; b.textContent = "Compartilhar cartão do pedido"; });
   }
 
