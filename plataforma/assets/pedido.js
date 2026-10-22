@@ -148,7 +148,8 @@
   }
 
   function exemplo() {
-    var passo = demoPasso != null ? demoPasso : Math.min(4, Math.floor((Date.now() - demoInicio) / 8000));
+    var vel = +(String(new URLSearchParams(location.search).get("d") || "").match(/"v":(\d+)/) || [])[1] || 8000;
+    var passo = demoPasso != null ? demoPasso : Math.min(4, Math.floor((Date.now() - demoInicio) / Math.max(1500, vel)));
     var st = ["novo", "confirmado", "em_preparo", "pronto", "entregue"][passo], agora = Date.now(), h = [];
     for (var i = 0; i <= passo; i++) h.push({ status: ["novo", "confirmado", "em_preparo", "pronto", "entregue"][i], at: new Date(agora - (passo - i) * 6 * 60000).toISOString() });
     var dd = null; try { dd = JSON.parse(new URLSearchParams(location.search).get("d") || "null"); } catch (e) { dd = null; }
@@ -196,7 +197,7 @@
 
   if (demo) window.addEventListener("message", function (e) { if (e.origin === location.origin && e.data && typeof e.data.bcDemo === "number") { demoPasso = Math.max(0, Math.min(4, e.data.bcDemo)); busca(); } });
   busca();
-  timer = setInterval(function () { if (!document.hidden) busca(); }, demo ? 4000 : 6000);
+  timer = setInterval(function () { if (!document.hidden) busca(); }, demo ? 1000 : 6000);
   document.addEventListener("visibilitychange", function () { if (!document.hidden && timer) busca(); });
   $("erro").addEventListener("click", function () { if (!ultimo && !demo) { $("carregando").hidden = false; $("erro").hidden = true; busca(); } });
   window.addEventListener("hashchange", function () { location.reload(); });
