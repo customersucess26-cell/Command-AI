@@ -26,7 +26,7 @@ window.BC = {
   empresa: {
     razaoSocial: "",   // ex.: "Adilson Rutes Marketing Digital LTDA"
     cnpj: "",          // ex.: "00.000.000/0001-00"
-    email: "",         // e-mail para assuntos de privacidade e suporte
+    email: "contato@bistroconnect.com.br",   // e-mail para assuntos de privacidade e suporte
     cidade: ""         // ex.: "Ponta Grossa/PR" (foro dos Termos)
   }
 };
