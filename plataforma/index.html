@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-7qYhy5n2Omg3URRzf2X2haDIL5YIXkaYKfYSKdyamZk=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-duP0ZIdoSzCvmUTEgsbFueo+v5M0ETvVYsLRlvgx8yE=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Cardápio digital e pedidos no WhatsApp, sem comissão</title>
 <meta name="description" content="Loja online para a sua padaria, café, hamburgueria ou restaurante: cardápio com fotos, pedido pronto no WhatsApp, rastreio para o cliente e painel completo. Sem comissão por pedido.">
@@ -1013,6 +1013,18 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
 .m-trk-top span{opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .m-trk-v{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
 .m-trk-v iframe{display:block;width:390px;border:0;transform-origin:0 0}
+.m-ok{position:absolute;inset:0;z-index:7;background:var(--m-bg,#F3ECE2);color:var(--m-ink,#2B1D14);overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;animation:ckUp .35s cubic-bezier(.2,.8,.2,1)}
+.m-ok[hidden]{display:none!important}
+.m-ok-c{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 12px 10px;gap:5px}
+.m-ok-ic{width:40px;height:40px;border-radius:50%;background:#2F8A55;color:#fff;display:grid;place-items:center;font-size:20px;font-weight:700}
+.m-ok-t{font:700 19px var(--m-title,'Fraunces',Georgia,serif)}
+.m-ok-n{font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;background:color-mix(in srgb,var(--m-accent,#A8693D) 18%,transparent);color:var(--m-accent,#A8693D)}
+.m-ok-p{font-size:10.5px;opacity:.75;margin:0 6px}
+.m-ok-card{width:100%;margin-top:4px}.m-ok-card .wc{zoom:1.22;box-shadow:0 10px 24px -14px rgba(0,0,0,.5);border-radius:10px}
+.m-ok-a{position:sticky;bottom:0;display:flex;flex-direction:column;gap:6px;padding:8px 12px 14px;background:linear-gradient(transparent,var(--m-bg,#F3ECE2) 30%)}
+.m-ok-a button{border:0;border-radius:12px;padding:10px;font:700 12px 'DM Sans',Arial,sans-serif;cursor:pointer}
+.ok-zap{background:#25D366;color:#053B1D}.ok-zap.feito{background:#DCF5EA;color:#0F7A55}
+.ok-trk{background:var(--m-on,#2B1A10);color:var(--m-on-ink,#F7EEE2)}
 /* ===== cartão do pedido (imagem real) ===== */
 .wa-im{padding:3px!important;background:#fff}.wa-im img{display:block;width:100%;border-radius:7px}.nt-some{animation:ntsome 6s ease forwards}@keyframes ntsome{0%,55%{opacity:1;transform:none}75%,100%{opacity:0;transform:translateY(-14px);pointer-events:none}}
 .cartao-chat{overflow:hidden;padding:6px 5px!important;justify-content:flex-start}.cartao-chat .wa-b{max-width:98%!important;width:98%}.cartao-chat .wa-dia{display:none}
@@ -1558,7 +1570,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
     sc.append(tabs,body,cbtn,ck,wa);
     function all(){var a=[];M.cats.forEach(function(c){a=a.concat(c.items,c.more||[])});return a}
     function addBtn(it,label){var b=el('button','m-add',label||'Adicionar');b.type='button';b.setAttribute('aria-label','Adicionar '+it.n);b.onclick=function(){cart[it.n]=(cart[it.n]||0)+1;draw();cartDraw()};return b}
-    function pic(it,cls){var d=el('div',cls||'pic');var im=el('img','m-photo');im.src=IMG[it.img]||'';im.alt=it.n;im.loading='lazy';d.appendChild(im);if(it.tag&&M.layout!=='numbered')d.appendChild(el('span','m-tag',it.tag));if(cart[it.n])d.appendChild(el('span','m-qty',cart[it.n]));return d}
+    function pic(it,cls){var d=el('div',cls||'pic');var im=el('img','m-photo');im.src=IMG[it.img]||'';im.alt=it.n;d.appendChild(im);if(it.tag&&M.layout!=='numbered')d.appendChild(el('span','m-tag',it.tag));if(cart[it.n])d.appendChild(el('span','m-qty',cart[it.n]));return d}
     function drawTabs(){tabs.innerHTML='';M.cats.forEach(function(c,i){var b=el('button',null,c.n);b.type='button';b.setAttribute('aria-pressed',i===cur);b.onclick=function(){cur=i;drawTabs();draw();body.scrollTop=0};tabs.appendChild(b)})}
     function rows(list){var w=el('div','m-rows');list.forEach(function(it){var r=el('div','m-row');r.appendChild(pic(it));var t=el('div','t');t.appendChild(el('p','m-name',it.n));if(it.d)t.appendChild(el('p','m-desc',it.d));var m=el('div','meta');var pr=el('span');if(it.w){pr.appendChild(el('span','w',it.w))}pr.appendChild(el('span','m-price',brl2(it.p)));m.append(pr,addBtn(it,'+'));t.appendChild(m);r.appendChild(t);w.appendChild(r)});return w}
     function draw(){body.innerHTML='';var c=M.cats[cur];
@@ -1589,13 +1601,17 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
       later(3600,function(){var b=bub('wain');b.appendChild(document.createTextNode('Oi, '+nome.split(' ')[0]+'! Recebemos o seu pedido #'+num+'. Previsão: '+(mode==='entrega'?'35 a 45':'20 a 25')+' min. Acompanhe pelo link:'));var nIt=L.out.reduce(function(s,x){return s+x.q},0),lk=el('div','wa-link');lk.style.cursor='pointer';lk.onclick=function(){abreRastreio()};lk.innerHTML='<img src="'+imgOf(L.out[0].n)+'" alt=""><div><b>Pedido #'+num+' · '+hx(M.brand)+'</b><small>'+nIt+(nIt>1?' itens':' item')+' · Total '+brl2(L.t+f)+' · Pedido recebido</small><small class="dm">bistroconnect.com.br</small></div>';b.appendChild(lk);b.appendChild(el('span','wa-time',hhmm(1)))});
       later(5600,function(){var b=bub('sys');b.textContent='👩‍🍳 Pedido #'+num+' em preparo'});
       later(7600,function(){var b=bub('sys');b.textContent=mode==='entrega'?'🛵 Saiu para entrega · chega em ~10 min':'✅ Pronto! Pode retirar no balcão'});
-      function abreRastreio(){if(my!==seq||wa.hidden)return;var d={v:2300,n:num,l:M.brand,m:{padaria:'padaria',cafe:'cafeteria',burger:'hamburgueria',rest:'restaurante'}[key]||'padaria',c:nome.split(' ')[0],a:addr||'Rua das Flores, 120 · Centro',t:mode==='entrega'?'e':'r',f:f,i:L.out.map(function(x){return [x.n,x.q,x.p,imgOf(x.n)]})};
+      function abreRastreio(){if(my!==seq)return;var d={v:2300,n:num,l:M.brand,m:{padaria:'padaria',cafe:'cafeteria',burger:'hamburgueria',rest:'restaurante'}[key]||'padaria',c:nome.split(' ')[0],a:addr||'Rua das Flores, 120 · Centro',t:mode==='entrega'?'e':'r',f:f,i:L.out.map(function(x){return [x.n,x.q,x.p,imgOf(x.n)]})};
         var tk=sc.querySelector('.m-trk');if(!tk){tk=el('div','m-trk');tk.innerHTML='<div class="m-trk-top"><button type="button">‹ Cardápio</button><span>bistroconnect.com.br/p/…</span></div><div class="m-trk-v"><iframe tabindex="-1" title="Página de acompanhamento do pedido"></iframe></div>';sc.appendChild(tk);tk.querySelector('button').onclick=function(){back.onclick()}}
         var fr=tk.querySelector('iframe');fr.src='pedido.html?c=demo&d='+encodeURIComponent(JSON.stringify(d));var k=sc.clientWidth/390;fr.style.transform='scale('+k+')';fr.style.height=Math.ceil((sc.clientHeight-34)/k)+'px';tk.hidden=false}
       
-      wa.hidden=false;abreRastreio()}
+      var ok=sc.querySelector('.m-ok');if(!ok){ok=el('div','m-ok');sc.appendChild(ok)}
+      ok.innerHTML='<div class="m-ok-c"><div class="m-ok-ic">✓</div><b class="m-ok-t">Pedido recebido!</b><span class="m-ok-n">Pedido #'+num+'</span><p class="m-ok-p">Total '+brl2(L.t+f)+'. Envie o cartão no WhatsApp para a loja confirmar.</p></div><div class="m-ok-a"><button type="button" class="ok-zap">Enviar no WhatsApp</button><button type="button" class="ok-trk">Acompanhar pedido</button></div>';
+      var cw=el('div','m-ok-card');cw.appendChild(wc.cloneNode(true));ok.querySelector('.m-ok-c').appendChild(cw);
+      ok.querySelector('.ok-zap').onclick=function(){var b=ok.querySelector('.ok-zap');b.textContent='Cartão enviado ✓';b.classList.add('feito')};
+      ok.querySelector('.ok-trk').onclick=function(){abreRastreio()};ok.hidden=false;ok.scrollTop=0}
     ck.querySelector('.ck-send').onclick=doSend;
-    cbtn.onclick=send;back.onclick=function(){seq++;wa.hidden=true;ck.hidden=true;var tk=sc.querySelector('.m-trk');if(tk)tk.hidden=true;cart={};draw();cartDraw()};
+    cbtn.onclick=send;back.onclick=function(){seq++;wa.hidden=true;ck.hidden=true;var tk=sc.querySelector('.m-trk');if(tk)tk.hidden=true;var okk=sc.querySelector('.m-ok');if(okk)okk.hidden=true;cart={};draw();cartDraw()};
     drawTabs();draw();cartDraw();
   }
   var hero=document.getElementById('heroPhone');
@@ -1609,6 +1625,9 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
     ['pointerdown','wheel','touchstart','keydown'].forEach(function(ev){phone.addEventListener(ev,function(e){if(e.isTrusted){phone.__user=true;var f=phone.querySelector('.finger');if(f)f.classList.remove('on');var bd=phone.querySelector('.auto-badge');if(bd)bd.style.opacity=0}},{passive:true})});
     if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){phone.__vis=e.isIntersecting})},{threshold:.35}).observe(phone)}else phone.__vis=true}
   function finger(phone){var sc=phone.querySelector('.screen');var f=sc.querySelector('.finger');if(!f){f=document.createElement('div');f.className='finger';f.innerHTML='<svg viewBox="0 0 32 32"><path d="M10 4.5a2.5 2.5 0 0 1 5 0V12.3a2.3 2.3 0 0 1 4.6.2v1.2a2.3 2.3 0 0 1 4.6.3v1.3a2.2 2.2 0 0 1 4.4.2V22c0 4.4-3.4 7.5-7.8 7.5h-2.8c-2.4 0-4.6-1.2-6-3.2L4.6 19.6a2.3 2.3 0 0 1 3.7-2.7L10 19z" fill="#fff" stroke="#0E1526" stroke-width="1.6" stroke-linejoin="round"/><path d="M15 12.6v4.6M19.6 13.8v3.6M24.2 15.2v2.8" stroke="#0E1526" stroke-width="1.4" stroke-linecap="round"/></svg>';sc.appendChild(f);var bd=document.createElement('div');bd.className='auto-badge';bd.textContent='Demonstração · toque para testar';sc.appendChild(bd)}return f}
+  async function rola(phone,sel,dy){if(phone.__user)return;var sc=phone.querySelector('.screen'),box=sc.querySelector(sel);if(!box||box.offsetParent===null)return;
+    var f=finger(phone),s=sc.getBoundingClientRect(),k=s.width/sc.offsetWidth||1,x=sc.offsetWidth*0.62,y=sc.offsetHeight*0.7;f.classList.add('on');f.style.transform='translate('+x+'px,'+y+'px)';await sleep(500);if(phone.__user)return;
+    f.style.transform='translate('+x+'px,'+(y-dy*0.6)+'px)';box.scrollBy({top:dy,behavior:'smooth'});await sleep(700)}
   async function tap(phone,sel,idx){if(phone.__user)return false;var sc=phone.querySelector('.screen');var list=sc.querySelectorAll(sel);var el=list[Math.min(idx||0,list.length-1)];if(!el||el.offsetParent===null)return false;
     var body=sc.querySelector('.m-body');if(body&&body.contains(el)){var br=body.getBoundingClientRect(),er=el.getBoundingClientRect();if(er.bottom>br.bottom-70||er.top<br.top+10){body.scrollBy({top:er.top-br.top-body.clientHeight*0.45,behavior:'smooth'});await sleep(650)}}
     if(phone.__user)return false;var f=finger(phone);var s=sc.getBoundingClientRect(),r=el.getBoundingClientRect(),k=s.width/sc.offsetWidth||1;
@@ -1616,7 +1635,7 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
     f.classList.remove('tap');void f.offsetWidth;f.classList.add('tap');el.click();await sleep(420);return true}
   async function demoOnce(phone){var steps=[['.m-add',0],['.m-add',2],['.m-tabs button',1],['.m-add',0],['.m-cart',0]];
     await sleep(900);for(var i=0;i<steps.length;i++){if(phone.__user||!phone.__vis)return;await tap(phone,steps[i][0],steps[i][1]);await sleep(700)}
-    await sleep(1900);if(phone.__user)return;await tap(phone,'.ck-send',0);await sleep(10500);if(phone.__user)return;await tap(phone,'.m-trk-top button',0);await sleep(500);await tap(phone,'.m-tabs button',0);
+    await sleep(1900);if(phone.__user)return;await tap(phone,'.ck-send',0);await sleep(1600);if(phone.__user)return;await rola(phone,'.m-ok',160);await sleep(900);await tap(phone,'.ok-zap',0);await sleep(1300);if(phone.__user)return;await tap(phone,'.ok-trk',0);await sleep(2600);if(phone.__user)return;await rola(phone,'.m-trk-v',230);await sleep(2600);await rola(phone,'.m-trk-v',230);await sleep(2600);if(phone.__user)return;await tap(phone,'.m-trk-top button',0);await sleep(500);await tap(phone,'.m-tabs button',0);
     var f=phone.querySelector('.finger');if(f)f.classList.remove('on')}
   async function autoLoop(phone,delay,next){watch(phone);if(REDUCED)return;await sleep(delay||0);
     while(!phone.__user){if(!phone.__vis){await sleep(700);continue}await demoOnce(phone);if(phone.__user)break;await sleep(900);if(next&&!phone.__user)next()}}
