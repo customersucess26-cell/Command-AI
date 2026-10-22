@@ -496,12 +496,28 @@
     if (r) return r.value;
     return loja.faz_entrega ? "entrega" : "retirada";
   }
+  /* ---------- cupom do cartão de volta (?cupom=CODIGO no link ou digitado no pedido) ---------- */
+  var cupom = { codigo: "", ok: false, pct: 0, minimo: 0 };
+  function confereCupom(cod) {
+    cod = String(cod || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 20);
+    var msg = $("cupomMsg"); if ($("fCupom")) $("fCupom").value = cod;
+    if (!cod) { cupom = { codigo: "", ok: false, pct: 0, minimo: 0 }; if (msg) { msg.textContent = ""; msg.className = "cupom-msg"; } resumo("resumoDados", true); return; }
+    api("rpc/confere_cupom", { method: "POST", body: JSON.stringify({ p_slug: slug, p_code: cod }) }).then(function (r) {
+      cupom = r && r.ok ? { codigo: cod, ok: true, pct: Number(r.pct) || 0, minimo: Number(r.minimo) || 0 } : { codigo: cod, ok: false, pct: 0, minimo: 0 };
+      if (msg) {
+        msg.className = "cupom-msg " + (cupom.ok ? "ok" : "erro");
+        msg.textContent = cupom.ok ? cupom.pct + "% de desconto aplicado" + (cupom.minimo > 0 ? " em pedidos a partir de " + brl(cupom.minimo) : "") + "." : "Cupom não encontrado nesta loja.";
+      }
+      resumo("resumoDados", true);
+    }).catch(function () {});
+  }
   function contas() {
     var sub = 0, n = 0;
     itensCarrinho().forEach(function (i) { sub += i.unit * i.q; n += i.q; });
     sub = r2(sub);
     var taxa = tipoEscolhido() === "entrega" ? r2(loja.delivery_fee) : 0;
-    return { sub: sub, taxa: taxa, total: r2(sub + taxa), n: n };
+    var desc = cupom.ok && sub >= cupom.minimo ? r2(sub * cupom.pct / 100) : 0;
+    return { sub: sub, taxa: taxa, desc: desc, total: r2(sub - desc + taxa), n: n };
   }
   function atualizaBarra() {
     var c = contas();
@@ -516,6 +532,7 @@
     var c = contas(), box = $(alvo); box.textContent = "";
     function linha(a, b, cls) { var d = el("div", cls || ""); d.appendChild(el("span", "", a)); d.appendChild(el("span", "", b)); box.appendChild(d); }
     linha("Subtotal", brl(c.sub));
+    if (comTaxa && c.desc > 0) linha("Cupom " + cupom.codigo + " (" + cupom.pct + "%)", "− " + brl(c.desc), "desconto");
     if (comTaxa && tipoEscolhido() === "entrega") linha("Entrega", c.taxa > 0 ? brl(c.taxa) : "Grátis");
     linha("Total", brl(comTaxa ? c.total : c.sub), "total");
   }
@@ -593,6 +610,13 @@
     return "(" + d.slice(0, 2) + ") " + d.slice(2, 7) + "-" + d.slice(7);
   }
   $("fFone").addEventListener("input", function () { var f = $("fFone"); f.value = mascaraFone(f.value); });
+  (function () {
+    var f = $("fCupom"), b = $("btnCupom"); if (!f) return;
+    b.addEventListener("click", function () { confereCupom(f.value); });
+    f.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); confereCupom(f.value); } });
+    var q = new URLSearchParams(location.search).get("cupom") || ""; if (q) { lsSet("bc-cupom-" + slug, q); }
+    var salvo = lsGet("bc-cupom-" + slug); if (salvo) setTimeout(function () { confereCupom(salvo); }, 900);
+  })();
   function preparaDados() {
     var salvo = lsGet("bc-cliente") || {};
     if (!$("fNome").value && salvo.nome) $("fNome").value = String(salvo.nome).slice(0, 80);
@@ -645,7 +669,7 @@
       var logo = im[0], capa = im[1], th = im.slice(2);
       var hero = capa; if (!hero) for (var k = 0; k < th.length; k++) if (th[k]) { hero = th[k]; break; }
       var linhas = itens.length, extras = itens.filter(function (i) { return (i.options || []).length; }).length;
-      var hItens = 100 + linhas * 88 + extras * 30;
+      var hItens = 100 + linhas * 88 + extras * 30 + (Number(p.discount) > 0 ? 44 : 0);
       var hHero = hero ? 330 : 0;
       var H = 150 + 70 + hHero + 150 + hItens + 130 + 300 + 120 + 160;
       var c = document.createElement("canvas"); c.width = W * 2; c.height = H * 2;
@@ -685,6 +709,7 @@
         if (ops.length) { t(corta("+ " + ops.join(", "), 20, 0, W - 240), 152, iy + 6, 20, TQ, 0); iy += 30; }
         iy += 8;
       });
+      if (Number(p.discount) > 0) t("Cupom " + (p.coupon || "") + "   − " + brl(p.discount), W - 62, iy + 22, 24, ACL, 1, "right");
       y += hItens + 28;
       rr(30, y, 470, 76, 38, CL); t(entrega ? (fee > 0 ? "Entrega: " + brl(fee) : "Entrega grátis") : "Retirada na loja", 265, y + 49, 27, AZ2, 1, "center");
       rr(520, y, W - 550, 76, 38, AZ); t("Total: " + brl(p.total), 520 + (W - 550) / 2, y + 51, 30, LT, 1, "center"); y += 130;
@@ -746,6 +771,7 @@
       if (ops.length) m.push("   ↳ " + ops.join(", "));
     });
     m.push("");
+    if (Number(o.discount) > 0) m.push("Cupom " + (o.coupon || "") + ": − " + brl(o.discount));
     if (Number(o.delivery_fee) > 0) m.push("Entrega: " + brl(o.delivery_fee));
     m.push("*TOTAL: " + brl(o.total) + "*", "");
     m.push(d.tipo === "entrega" ? "*Entregar em:* " + d.end : "*Retirada* na loja");
@@ -775,7 +801,7 @@
 
     var pedido = {
       customer_name: nome, customer_phone: fone, delivery_type: tipo, address: tipo === "entrega" ? end : "",
-      scheduled_for: quando, notes: obs, payment_method: pag, expected_total: c.total,
+      scheduled_for: quando, notes: obs, payment_method: pag, expected_total: c.total, coupon: c.desc > 0 ? cupom.codigo : "",
       items: itens.map(function (i) { var x = { product_id: i.p.id, qty: i.q }; if (i.ops.length) x.options = i.ops.map(function (o) { return { g: o.g, o: o.o }; }); return x; })
     };
     var sig = JSON.stringify(pedido);
@@ -794,7 +820,7 @@
         idem = { sig: "", chave: "" };
         carrinho = {}; salvaCarrinho();
         repintaControles();
-        $("fObs").value = ""; $("fQuando").value = "";
+        $("fObs").value = ""; $("fQuando").value = ""; if (Number(o.discount) > 0) lsSet("bc-cupom-" + slug, ""); confereCupom("");
         var rastreio = siteBase() + (o.track_code ? "/p/" + o.track_code : "/pedido.html#" + o.track_token);
         $("okCodigo").textContent = "Pedido " + o.code;
         $("okTxt").textContent = "Total " + brl(o.total) + ". " + (zap ? "Envie o resumo no WhatsApp para a loja confirmar mais rápido." : "A loja já recebeu o seu pedido.");
@@ -816,6 +842,7 @@
       .catch(function (err) {
         if (w) try { w.close(); } catch (e) {}
         var msg = err && err.amigavel && err.message ? err.message : "Não conseguimos enviar o pedido agora. Ele NÃO foi enviado. Confira a internet e tente de novo.";
+        if (err && err.hint === "CUPOM") { cupom.ok = false; resumo("resumoDados", true); var cm = $("cupomMsg"); if (cm) { cm.className = "cupom-msg erro"; cm.textContent = msg; } }
         if (err && (err.hint === "PRICE_CHANGED")) {
           carregaCardapio().then(function () { desenhaMenu(); atualizaBarra(); vaiPara("carrinho"); $("notaCarrinho").textContent = msg; $("notaCarrinho").classList.add("alerta"); }).catch(function () {});
           return;

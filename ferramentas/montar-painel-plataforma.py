@@ -364,12 +364,14 @@ exec(open("ferramentas/painel-opcionais.pyfrag", encoding="utf-8").read())
 open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
 # páginas do site (Sobre, Galeria, Depoimentos)
 exec(open("ferramentas/painel-secoes.pyfrag", encoding="utf-8").read())
+# cartão de volta (cupom) em Dados da loja
+exec(open("ferramentas/painel-cupom.pyfrag", encoding="utf-8").read())
 # visual igual ao da página de vendas (tema quente, Visão geral)
 exec(open("ferramentas/painel-visual.pyfrag", encoding="utf-8").read())
 open(f"{DEST}/painel.js", "w", encoding="utf-8").write(j)
 open(f"{DEST}/painel.css", "a", encoding="utf-8").write(css)
 # versão nos arquivos do painel: o navegador baixa de novo quando mudar (troque a data a cada atualização)
-VERSAO = "20261021f"
+VERSAO = "20261022a"
 _h = open(f"{DEST}/index.html", encoding="utf-8").read()
 for _f in ("painel.css", "painel.js", "../assets/exemplo.js"):
     _h = _h.replace('"%s"' % _f, '"%s?v=%s"' % (_f, VERSAO))

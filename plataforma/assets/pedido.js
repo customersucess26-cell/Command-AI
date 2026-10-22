@@ -122,6 +122,10 @@
       row.appendChild(el("em", "", Number(i.price) > 0 ? brl(i.price * i.qty) : "sob consulta"));
       it.appendChild(row);
     });
+    if (Number(p.discount) > 0) {
+      var dc = el("div", "it sem-foto"); dc.appendChild(el("span", "q", "")); dc.appendChild(el("span", "", "Cupom " + (p.coupon || ""))); dc.appendChild(el("em", "", "− " + brl(p.discount)));
+      it.appendChild(dc);
+    }
     if (Number(p.delivery_fee) > 0 || entrega) {
       var e = el("div", "it sem-foto"); e.appendChild(el("span", "q", "")); e.appendChild(el("span", "", "Entrega")); e.appendChild(el("em", "", Number(p.delivery_fee) > 0 ? brl(p.delivery_fee) : "Grátis"));
       it.appendChild(e);

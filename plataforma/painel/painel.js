@@ -341,7 +341,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')fechaGavetas()});
 function preencheLoja(){if(document.activeElement&&document.activeElement.closest('#lojaForm'))return;
   $('#sNome').value=settings.store_name||'';$('#sWhats').value=settings.whatsapp||'';$('#sInsta').value=settings.instagram||'';$('#sEnd').value=settings.address||'';$('#sHoras').value=settings.hours||'';$('#sTaxa').value=num(settings.delivery_fee)?num(settings.delivery_fee).toFixed(2).replace('.',','):'';$('#sMin').value=num(settings.min_order)?num(settings.min_order).toFixed(2).replace('.',','):'';$('#sAceita').checked=settings.accept_orders!==false;
   $('#sDesc').value=settings.descricao||'';$('#sEntrega').checked=settings.faz_entrega!==false;$('#sRetirada').checked=settings.faz_retirada!==false;$('#sCor').value=/^#[0-9a-f]{6}$/i.test(settings.cor||'')?settings.cor:'#B0703F';
-  document.querySelectorAll('[data-pag]').forEach(c=>c.checked=(settings.pagamentos||['Pix','Cartão','Dinheiro']).includes(c.dataset.pag));mostraFotoLoja();preencheSec()}
+  document.querySelectorAll('[data-pag]').forEach(c=>c.checked=(settings.pagamentos||['Pix','Cartão','Dinheiro']).includes(c.dataset.pag));mostraFotoLoja();preencheSec();preencheCupom()}
 $('#lojaForm').addEventListener('submit',e=>{e.preventDefault();const nome=$('#sNome').value.trim();if(!nome)return toast('Informe o nome da loja');
   let w=digitos($('#sWhats').value);if(w.length===10||w.length===11)w='55'+w;if(w&&(w.length<12||w.length>13))return toast('Confira o WhatsApp: DDD + número');
   const pags=[...document.querySelectorAll('[data-pag]')].filter(c=>c.checked).map(c=>c.dataset.pag);if(!pags.length)return toast('Marque pelo menos uma forma de pagamento');
@@ -530,6 +530,36 @@ $('#secDepAdd').addEventListener('click',()=>{const d=$('#secDeps');if(d.childre
 document.addEventListener('click',e=>{const t=e.target;if(!t.closest)return;
   if(t.dataset.secFotoRm!=null){secFotos.splice(+t.dataset.secFotoRm,1);desenhaSecGaleria();salvaSec('Foto retirada')}
   else if(t.dataset.secDepRm!=null){t.closest('.sec-dep').remove();$('#secDepAdd').hidden=false}});
+
+
+/* ================= cartão de volta (cupom) ================= */
+function preencheCupom(){if(!$('#cupForm')||(document.activeElement&&document.activeElement.closest('#cupForm')))return;
+  const c=settings.cupom||{};$('#cupAtivo').checked=!!c.ativo;$('#cupCodigo').value=c.codigo||'';$('#cupPct').value=String(c.pct||15);$('#cupMin').value=c.minimo||0;$('#cupUmaVez').checked=c.uma_vez!==false;
+  const agora=new Date(),usos=validos(orders).filter(o=>o.coupon&&new Date(o.created_at).getMonth()===agora.getMonth()&&new Date(o.created_at).getFullYear()===agora.getFullYear());
+  $('#cupResumo').textContent=c.ativo?usos.length+' pedido'+(usos.length===1?'':'s')+' com o cupom este mês · '+brl(usos.reduce((s,o)=>s+num(o.total),0)):'desligado'}
+function lerCupom(){const cod=$('#cupCodigo').value.toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,20);
+  return {ativo:$('#cupAtivo').checked,codigo:cod,pct:+$('#cupPct').value,minimo:Math.max(0,Math.min(10000,+$('#cupMin').value||0)),uma_vez:$('#cupUmaVez').checked}}
+$('#cupForm').addEventListener('submit',e=>{e.preventDefault();const c=lerCupom();
+  if(c.codigo.length<3){toast('O código precisa de 3 a 20 letras ou números');$('#cupCodigo').focus();return}
+  tenta(()=>grava('settings',{cupom:c}),c.ativo?'Cupom '+c.codigo+' ligado':'Cupom salvo (desligado)').then(()=>{settings.cupom=c;if(document.activeElement)document.activeElement.blur();preencheCupom()})});
+$('#cupImprime').addEventListener('click',()=>{const c=lerCupom();
+  if(c.codigo.length<3){toast('Defina o código do cupom antes de imprimir');return}
+  if(typeof qrcode!=='function'){toast('Não consegui gerar o QR agora. Atualize a página.');return}
+  const url=linkDaLoja()+'?cupom='+encodeURIComponent(c.codigo),loja=settings.store_name||'Nossa loja',cor=/^#[0-9a-f]{6}$/i.test(settings.cor||'')?settings.cor:'#A8693D';
+  const q=qrcode(0,'M');q.addData(url);q.make();const svg=q.createSvgTag({cellSize:4,margin:0,scalable:true});
+  const um=`<div class="ct"><div class="tx"><small>${esc(loja)}</small><b>Na próxima,<br>peça direto e ganhe <em>${c.pct}%</em></b><p>Aponte a câmera, peça pelo nosso cardápio e use o cupom</p><span class="cod">${esc(c.codigo)}</span>${c.minimo>0?`<i>Pedido mínimo ${brl(c.minimo)}.</i>`:''}</div><div class="qr">${svg}<span>${esc(url.replace(/^https?:\/\//,'').replace(/\?.*$/,''))}</span></div></div>`;
+  const w=window.open('','_blank');if(!w){toast('Libere as janelas deste site para imprimir');return}
+  w.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>Cartões · ${esc(loja)}</title><style>
+@page{size:A4;margin:10mm}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#2B1D14}
+.folha{display:grid;grid-template-columns:repeat(2,90mm);grid-auto-rows:50mm;gap:6mm 8mm;justify-content:center}
+.ct{border:1px dashed #bbb;border-radius:4mm;display:grid;grid-template-columns:1fr 30mm;gap:3mm;padding:4mm 4.5mm;background:#FBF7F1;overflow:hidden}
+.tx small{display:block;font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase;color:${cor};font-weight:700}
+.tx b{display:block;font:700 13pt/1.12 Georgia,serif;margin:1.5mm 0}.tx b em{font-style:normal;color:${cor}}
+.tx p{margin:0;font-size:7.5pt;line-height:1.3;color:#5b4b3e}.cod{display:inline-block;margin-top:1.6mm;border:1.5px solid ${cor};color:${cor};border-radius:2mm;padding:.6mm 2.4mm;font:700 10pt monospace;letter-spacing:.08em}
+.tx i{display:block;font-size:6.5pt;color:#7a6a5c;margin-top:1mm}.qr{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1mm}.qr svg{width:28mm;height:28mm}.qr span{font-size:5.5pt;color:#7a6a5c;text-align:center;word-break:break-all}
+.dica{text-align:center;font-size:9pt;color:#777;margin:0 0 4mm}@media print{.dica{display:none}}
+</style></head><body><p class="dica">Imprima em papel mais grosso (180 g ou mais) e recorte na linha tracejada.</p><div class="folha">${um.repeat(10)}</div></body></html>`);
+  w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},500)});
 
 /* ================= início ================= */
 let started=false;

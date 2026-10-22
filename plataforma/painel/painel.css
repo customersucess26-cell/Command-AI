@@ -505,6 +505,8 @@ details.hp .hb li{margin:5px 0}
 .sec-dep .x{grid-column:2;grid-row:1/3;width:34px;height:34px;border:0;background:transparent;font-size:22px;cursor:pointer;color:var(--muted);border-radius:8px}
 #secForm{margin-top:16px}
 
+#cupForm{margin-top:16px}
+
 /* ===== visual igual ao da página de vendas: claro quente, menu marrom, títulos Fraunces ===== */
 :root{--bg:#F4EFE8;--surface:#FFFFFF;--surface-2:#EFE7DC;--line:#E7DED3;--hover:#FAF6F0;--fg:#2B1D14;--muted:#7A6A5C;
   --accent:#B8743F;--accent-ink:#FFFFFF;--accent-soft:#F3E2D0;--warn:#9A5B00;--warn-soft:#FFF0D6;

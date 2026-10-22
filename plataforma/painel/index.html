@@ -12,11 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
-<link rel="stylesheet" href="painel.css?v=20261021f">
+<link rel="stylesheet" href="painel.css?v=20261022a">
 <script src="../assets/config.js"></script>
 <script src="../assets/vendor/supabase-2.45.4.js"></script>
-<script src="../assets/exemplo.js?v=20261021f" defer></script>
-<script src="painel.js?v=20261021f" defer></script>
+<script src="../assets/exemplo.js?v=20261022a" defer></script>
+<script src="../assets/vendor/qrcode-generator-2.0.4.js" defer></script>
+<script src="painel.js?v=20261022a" defer></script>
 </head>
 <body>
 
@@ -237,6 +238,18 @@
             <div id="secDeps"></div><button type="button" class="btn small" id="secDepAdd">+ Depoimento</button></div>
         </div>
         <div class="acoes-linha"><button class="btn primary" type="submit">Salvar páginas</button><span class="muted fino">As mudanças aparecem no site na hora.</span></div>
+      </form>
+      <form class="box form-loja" id="cupForm" novalidate>
+        <div class="box-head"><h2>Cartão de volta</h2><span class="muted fino" id="cupResumo"></span></div>
+        <p class="muted fino">Transforme quem pediu por app, no balcão ou por telefone em cliente do seu cardápio. Imprima o cartão, coloque na sacola e o cliente ganha desconto no próximo pedido feito direto com você.</p>
+        <div class="form">
+          <label class="full inline"><input type="checkbox" id="cupAtivo"> Cupom ligado</label>
+          <label>Código do cupom<input id="cupCodigo" maxlength="20" placeholder="VOLTEI15" autocomplete="off"></label>
+          <label>Desconto<select id="cupPct"><option value="10">10%</option><option value="15" selected>15%</option><option value="20">20%</option></select></label>
+          <label>Pedido mínimo (R$)<input id="cupMin" type="number" min="0" step="1" value="0"></label>
+          <label class="inline"><input type="checkbox" id="cupUmaVez" checked> Uma vez por WhatsApp</label>
+        </div>
+        <div class="acoes-linha"><button class="btn primary" type="submit">Salvar cupom</button><button class="btn" type="button" id="cupImprime">Imprimir cartões (10 por folha)</button><span class="muted fino">O desconto só vale nos pedidos feitos pelo seu cardápio.</span></div>
       </form>
     </section>
 

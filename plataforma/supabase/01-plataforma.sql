@@ -76,6 +76,19 @@ alter table public.lojas add column if not exists origem jsonb not null default 
 alter table public.lojas drop constraint if exists lojas_extra_tam;
 alter table public.lojas add constraint lojas_extra_tam
   check (jsonb_typeof(extra) = 'object' and pg_column_size(extra) < 30000);
+-- cartão de volta: cupom da loja para o cliente que veio de outro canal pedir direto (ex.: {"ativo":true,"codigo":"VOLTEI15","pct":15,"minimo":30,"uma_vez":true})
+alter table public.lojas add column if not exists cupom jsonb not null default '{}'::jsonb;
+create or replace function public.cupom_ok(j jsonb)
+returns boolean language sql immutable set search_path = '' as $$
+  select jsonb_typeof(j) = 'object' and (j = '{}'::jsonb or (
+    coalesce(j ->> 'codigo', '') ~ '^[A-Z0-9]{3,20}$'
+    and jsonb_typeof(j -> 'pct') = 'number' and (j ->> 'pct')::numeric between 5 and 30
+    and coalesce(jsonb_typeof(j -> 'minimo'), 'number') = 'number' and coalesce((j ->> 'minimo')::numeric, 0) between 0 and 10000
+    and coalesce(jsonb_typeof(j -> 'ativo'), 'boolean') = 'boolean'
+    and coalesce(jsonb_typeof(j -> 'uma_vez'), 'boolean') = 'boolean'))
+$$;
+alter table public.lojas drop constraint if exists lojas_cupom_ok;
+alter table public.lojas add constraint lojas_cupom_ok check (public.cupom_ok(cupom));
 
 create table if not exists public.membros (
   loja_id   uuid not null references public.lojas (id) on delete cascade,
@@ -197,6 +210,9 @@ create index if not exists orders_loja_created_idx on public.orders (loja_id, cr
 alter table public.orders add column if not exists track_code text;
 update public.orders set track_code = substr(track_token, 1, 16) where track_code is null or length(track_code) <> 16;
 create unique index if not exists orders_track_code_idx on public.orders (track_code);
+-- desconto do cartão de volta (cupom) no pedido
+alter table public.orders add column if not exists discount numeric(10,2) not null default 0;
+alter table public.orders add column if not exists coupon text not null default '';
 
 create table if not exists public.order_events (
   id         bigint generated always as identity primary key,
@@ -261,7 +277,7 @@ grant select (id, slug, store_name, modelo, descricao, whatsapp, address, hours,
   on public.lojas to anon;
 grant select on public.lojas to authenticated;
 grant update (store_name, descricao, whatsapp, address, hours, instagram, cor, logo_url, capa_url,
-              delivery_fee, min_order, accept_orders, faz_entrega, faz_retirada, pagamentos, extra)
+              delivery_fee, min_order, accept_orders, faz_entrega, faz_retirada, pagamentos, extra, cupom)
   on public.lojas to authenticated;
 create policy "publico le ativas" on public.lojas for select to anon using (status = 'ativa');
 create policy "equipe le" on public.lojas for select to authenticated
@@ -548,6 +564,8 @@ declare
   total   numeric;
   proximo int;
   codigo  text;
+  cup     text := upper(btrim(coalesce(p_order ->> 'coupon', '')));
+  descon  numeric := 0;
 begin
   select * into loja from public.lojas l where l.slug = lower(coalesce(p_slug, ''));
   if not found or loja.status <> 'ativa' then perform public.recusa('Loja não encontrada.'); end if;
@@ -556,7 +574,7 @@ begin
   select * into ja from public.orders o where o.loja_id = loja.id and o.idem_key = p_idem;
   if found then
     return jsonb_build_object('code', ja.code, 'track_token', ja.track_token, 'track_code', ja.track_code, 'total', ja.total,
-                              'subtotal', ja.subtotal, 'delivery_fee', ja.delivery_fee, 'items', ja.items);
+                              'subtotal', ja.subtotal, 'delivery_fee', ja.delivery_fee, 'discount', ja.discount, 'coupon', ja.coupon, 'items', ja.items);
   end if;
 
   if not loja.accept_orders then
@@ -635,7 +653,22 @@ begin
     perform public.recusa(format('Pedido mínimo: R$ %s.', replace(to_char(loja.min_order, 'FM999990.00'), '.', ',')));
   end if;
   taxa  := case when tipo = 'entrega' then loja.delivery_fee else 0 end;
-  total := round(soma + taxa, 2);
+  -- cupom do cartão de volta: conferido aqui, nunca no navegador
+  if cup <> '' then
+    if not coalesce((loja.cupom ->> 'ativo')::boolean, false) or cup is distinct from (loja.cupom ->> 'codigo') then
+      perform public.recusa('Este cupom não vale nesta loja. Confira o código.', 'CUPOM');
+    end if;
+    if soma < coalesce((loja.cupom ->> 'minimo')::numeric, 0) then
+      perform public.recusa(format('O cupom vale para pedidos a partir de R$ %s.', replace(to_char((loja.cupom ->> 'minimo')::numeric, 'FM999990.00'), '.', ',')), 'CUPOM');
+    end if;
+    if coalesce((loja.cupom ->> 'uma_vez')::boolean, true) and exists (
+         select 1 from public.orders o where o.loja_id = loja.id and o.coupon = cup and o.status <> 'cancelado'
+           and regexp_replace(o.customer_phone, '\D', '', 'g') = digs) then
+      perform public.recusa('Este cupom já foi usado neste WhatsApp.', 'CUPOM');
+    end if;
+    descon := round(soma * (loja.cupom ->> 'pct')::numeric / 100, 2);
+  end if;
+  total := round(soma - descon + taxa, 2);
   if jsonb_typeof(p_order -> 'expected_total') = 'number' and round((p_order ->> 'expected_total')::numeric, 2) <> total then
     perform public.recusa('Os preços mudaram desde que você montou o pedido. Confira o novo total e envie de novo.', 'PRICE_CHANGED');
   end if;
@@ -654,15 +687,15 @@ begin
     exit when not exists (select 1 from public.orders o where o.track_code = codigo);
   end loop;
   insert into public.orders (loja_id, seq, code, idem_key, track_token, track_code, customer_name, customer_phone, delivery_type,
-                             address, scheduled_for, notes, items, subtotal, delivery_fee, total, payment_method)
+                             address, scheduled_for, notes, items, subtotal, delivery_fee, total, payment_method, discount, coupon)
   values (loja.id, proximo, '#' || proximo::text, p_idem,
           replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', ''), codigo,
-          nome, fone, tipo, ender, quando, obs, itens, soma, taxa, total, forma)
+          nome, fone, tipo, ender, quando, obs, itens, soma, taxa, total, forma, descon, case when descon > 0 then cup else '' end)
   returning * into novo;
   insert into public.order_events (order_id, loja_id, actor, campo, para) values (novo.id, loja.id, 'cliente', 'status', 'novo');
 
   return jsonb_build_object('code', novo.code, 'track_token', novo.track_token, 'track_code', novo.track_code, 'total', novo.total,
-                            'subtotal', novo.subtotal, 'delivery_fee', novo.delivery_fee, 'items', novo.items);
+                            'subtotal', novo.subtotal, 'delivery_fee', novo.delivery_fee, 'discount', novo.discount, 'coupon', novo.coupon, 'items', novo.items);
 end $$;
 
 -- ================= rastreio do pedido =================
@@ -682,11 +715,24 @@ begin
                                          'options', (select coalesce(jsonb_agg(x ->> 'name'), '[]'::jsonb)
                                                        from jsonb_array_elements(coalesce(i -> 'options', '[]'::jsonb)) x))), '[]'::jsonb)
                 from jsonb_array_elements(o.items) i),
-    'subtotal', o.subtotal, 'delivery_fee', o.delivery_fee, 'total', o.total,
+    'subtotal', o.subtotal, 'delivery_fee', o.delivery_fee, 'discount', o.discount, 'coupon', o.coupon, 'total', o.total,
     'payment_method', o.payment_method, 'payment_status', o.payment_status,
     'history', (select coalesce(jsonb_agg(jsonb_build_object('status', e.para, 'at', e.at) order by e.id), '[]'::jsonb)
                   from public.order_events e where e.order_id = o.id and e.campo = 'status'),
     'store_name', l.store_name, 'whatsapp', l.whatsapp, 'slug', l.slug, 'cor', l.cor);
+end $$;
+
+-- ================= cupom do cartão de volta: o cardápio confere antes de enviar (não revela o código) =================
+create or replace function public.confere_cupom(p_slug text, p_code text)
+returns jsonb language plpgsql stable security definer set search_path = '' as $$
+declare l public.lojas;
+begin
+  select * into l from public.lojas x where x.slug = lower(coalesce(p_slug, '')) and x.status = 'ativa';
+  if not found or not coalesce((l.cupom ->> 'ativo')::boolean, false)
+     or upper(btrim(coalesce(p_code, ''))) is distinct from (l.cupom ->> 'codigo') then
+    return jsonb_build_object('ok', false);
+  end if;
+  return jsonb_build_object('ok', true, 'pct', (l.cupom ->> 'pct')::numeric, 'minimo', coalesce((l.cupom ->> 'minimo')::numeric, 0));
 end $$;
 
 -- ================= cartão do pedido (imagem que o cliente compartilha com a loja) =================
@@ -712,7 +758,7 @@ begin
                                          'image_url', coalesce((select pr.image_url from public.products pr where pr.id = i ->> 'product_id'), ''))),
                                   '[]'::jsonb)
                 from jsonb_array_elements(o.items) i),
-    'subtotal', o.subtotal, 'delivery_fee', o.delivery_fee, 'total', o.total,
+    'subtotal', o.subtotal, 'delivery_fee', o.delivery_fee, 'discount', o.discount, 'coupon', o.coupon, 'total', o.total,
     'store_name', l.store_name, 'whatsapp', l.whatsapp, 'slug', l.slug, 'logo_url', l.logo_url, 'capa_url', l.capa_url, 'modelo', l.modelo, 'cor', l.cor);
 end $$;
 
@@ -776,7 +822,7 @@ begin
     execute 'revoke all on function public.' || f || ' from public';
     execute 'grant execute on function public.' || f || ' to authenticated';
   end loop;
-  foreach f in array array['create_order(text, text, jsonb)', 'rastrear_pedido(text)', 'cartao_pedido(text)'] loop
+  foreach f in array array['create_order(text, text, jsonb)', 'rastrear_pedido(text)', 'cartao_pedido(text)', 'confere_cupom(text, text)'] loop
     execute 'revoke all on function public.' || f || ' from public';
     execute 'grant execute on function public.' || f || ' to anon, authenticated';
   end loop;

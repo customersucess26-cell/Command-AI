@@ -280,3 +280,8 @@ h1,h2,h3{font-family:var(--f-titulo);font-weight:var(--titulo-peso);letter-spaci
 .ok-dica{font-size:14px;color:var(--suave);margin:2px 0 0}.ok-dica b{color:var(--tinta)}
 
 .rodape .acesso{display:block;margin-top:8px;font-size:12px;opacity:.7;text-decoration:underline dotted}.rodape .acesso:hover{opacity:1}
+
+.cupom-linha{display:flex;gap:8px}.cupom-linha input{flex:1;text-transform:uppercase;letter-spacing:.06em}
+.cupom-linha .btn{width:auto;min-height:46px;margin:0;padding:0 16px}
+.cupom-msg{display:block;font-size:13px;margin-top:4px;min-height:1em}.cupom-msg.ok{color:var(--ok)}.cupom-msg.erro{color:var(--erro)}
+.resumo .desconto span:last-child{color:var(--ok);font-weight:700}
