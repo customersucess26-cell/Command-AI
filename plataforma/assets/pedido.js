@@ -151,6 +151,15 @@
     var passo = demoPasso != null ? demoPasso : Math.min(4, Math.floor((Date.now() - demoInicio) / 8000));
     var st = ["novo", "confirmado", "em_preparo", "pronto", "entregue"][passo], agora = Date.now(), h = [];
     for (var i = 0; i <= passo; i++) h.push({ status: ["novo", "confirmado", "em_preparo", "pronto", "entregue"][i], at: new Date(agora - (passo - i) * 6 * 60000).toISOString() });
+    var dd = null; try { dd = JSON.parse(new URLSearchParams(location.search).get("d") || "null"); } catch (e) { dd = null; }
+    if (dd && typeof dd === "object") {      /* demonstração da página de vendas: loja, itens e tema do telefone */
+      var its = (Array.isArray(dd.i) ? dd.i : []).slice(0, 8).map(function (x) { return { name: String(x[0] || "").slice(0, 60), unit: "", qty: +x[1] || 1, price: +x[2] || 0, image_url: /^\/assets\/img\/[a-z0-9_\/.-]+$/i.test(x[3] || "") ? x[3] : "" }; });
+      var sub = its.reduce(function (a, x) { return a + x.qty * x.price; }, 0), fee = +dd.f || 0, ent = dd.t !== "r";
+      return { code: "#" + (+dd.n || 42), status: st, delivery_type: ent ? "entrega" : "retirada", scheduled_for: "O quanto antes", created_at: h[0].at,
+        modelo: String(dd.m || "padaria"), first_name: String(dd.c || "Maria").slice(0, 30), store_name: String(dd.l || "Sua loja").slice(0, 40), whatsapp: "5542999990000",
+        address: String(dd.a || "Rua das Flores, 120 · Centro").slice(0, 80), items: its, subtotal: sub, delivery_fee: ent ? fee : 0, total: sub + (ent ? fee : 0),
+        payment_method: "pix", payment_status: passo >= 1 ? "pago" : "pendente", history: h };
+    }
     return {
       code: "#42", status: st, delivery_type: "entrega", scheduled_for: "Hoje, o quanto antes", created_at: h[0].at, modelo: "padaria",
       first_name: "Juliana", store_name: "Padaria da Ana", whatsapp: "5542999990000", address: "Rua das Flores, 120 · Centro",

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-1WYgZMDjdiTkztb0pFLCcRE5c092dareFiV/cG8O1fo=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-pV7rcQlbAJskeBUx1QON38Q3l3S/LBwIM7pRqY0NJcQ=' 'sha256-AOAbjrcJsHwANgFlGJwVJClKXM8zikTv4t3YDQXhRq0=' https://connect.facebook.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://googleads.g.doubleclick.net https://*.doubleclick.net https://www.google.com https://*.supabase.co wss://*.supabase.co; frame-src https://td.doubleclick.net https://www.googletagmanager.com 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Cardápio digital e pedidos no WhatsApp, sem comissão</title>
 <meta name="description" content="Loja online para a sua padaria, café, hamburgueria ou restaurante: cardápio com fotos, pedido pronto no WhatsApp, rastreio para o cliente e painel completo. Sem comissão por pedido.">
@@ -1006,6 +1006,13 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
 @media (max-width:400px){.cel-tela{height:600px}.wa-b{font-size:13.5px}.wa-b.pedido{font-size:12.8px}}
 @media (prefers-reduced-motion:reduce){.js-efeitos .ad2-lado .wa-b{opacity:1;transform:none;animation:none!important}.js-efeitos .ad2-lado .cel-notif{display:none}}
 
+.m-trk{position:absolute;inset:0;z-index:8;background:#F3ECE2;display:flex;flex-direction:column;animation:ckUp .35s cubic-bezier(.2,.8,.2,1)}
+.m-trk[hidden]{display:none!important}
+.m-trk-top{display:flex;align-items:center;gap:8px;background:#075E54;color:#fff;padding:24px 10px 8px;font-size:11px;flex:none}
+.m-trk-top button{border:1px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:8px;padding:3px 8px;font-size:11px;cursor:pointer}
+.m-trk-top span{opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-trk-v{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.m-trk-v iframe{display:block;width:390px;border:0;transform-origin:0 0}
 /* ===== cartão do pedido (imagem real) ===== */
 .wa-im{padding:3px!important;background:#fff}.wa-im img{display:block;width:100%;border-radius:7px}.nt-some{animation:ntsome 6s ease forwards}@keyframes ntsome{0%,55%{opacity:1;transform:none}75%,100%{opacity:0;transform:translateY(-14px);pointer-events:none}}
 .cartao-chat{overflow:hidden;padding:6px 5px!important;justify-content:flex-start}.cartao-chat .wa-b{max-width:98%!important;width:98%}.cartao-chat .wa-dia{display:none}
@@ -1579,12 +1586,16 @@ form.lead input:not(:placeholder-shown):not(:focus):invalid{border-color:#B4372F
       wc.innerHTML='<div class="wc-h"><img src="assets/img/logo-bistro-connect-clara.png" alt=""></div><div class="wc-ph" style="background-image:url('+imgOf(L.out[0].n)+')"></div><div class="wc-t"><b>Olá, '+hx(M.brand)+'!</b><small>Fiz o pedido #'+num+' pelo site.</small></div><div class="wc-it"><b>Itens do pedido</b>'+rowsH+'</div><div class="wc-pl"><span>'+(mode==='entrega'?'Entrega: '+brl2(f):'Retirada na loja')+'</span><span class="t">Total: '+brl2(L.t+f)+'</span></div><div class="wc-inf"><div><small>'+(mode==='entrega'?'Entrega em':'Retirada')+'</small><b>'+hx(mode==='entrega'?(addr||'Endereço informado'):'Na loja')+'</b></div><div><small>Para</small><b>'+hx(nome)+'</b></div><div><small>Pagamento</small><b>'+hx(pay==='Cartão'?'Cartão na entrega':pay)+'</b></div></div><div class="wc-z"><i></i><div><b>'+hx(nome)+'</b><small>'+hx(fone||'(42) 99999-0000')+'</small></div></div><div class="wc-f">Pedido feito pelo site, direto no seu WhatsApp.</div>';
       o.appendChild(wc);o.appendChild(el('span','wa-time',hhmm()+' ✓✓'));
       function later(ms,fn){setTimeout(function(){if(my===seq&&!wa.hidden)fn()},ms)}
-      later(3600,function(){var b=bub('wain');b.appendChild(document.createTextNode('Oi, '+nome.split(' ')[0]+'! Recebemos o seu pedido #'+num+'. Previsão: '+(mode==='entrega'?'35 a 45':'20 a 25')+' min. Acompanhe pelo link:'));var nIt=L.out.reduce(function(s,x){return s+x.q},0),lk=el('div','wa-link');lk.innerHTML='<img src="'+imgOf(L.out[0].n)+'" alt=""><div><b>Pedido #'+num+' · '+hx(M.brand)+'</b><small>'+nIt+(nIt>1?' itens':' item')+' · Total '+brl2(L.t+f)+' · Pedido recebido</small><small class="dm">bistroconnect.com.br</small></div>';b.appendChild(lk);b.appendChild(el('span','wa-time',hhmm(1)))});
+      later(3600,function(){var b=bub('wain');b.appendChild(document.createTextNode('Oi, '+nome.split(' ')[0]+'! Recebemos o seu pedido #'+num+'. Previsão: '+(mode==='entrega'?'35 a 45':'20 a 25')+' min. Acompanhe pelo link:'));var nIt=L.out.reduce(function(s,x){return s+x.q},0),lk=el('div','wa-link');lk.style.cursor='pointer';lk.onclick=function(){abreRastreio()};lk.innerHTML='<img src="'+imgOf(L.out[0].n)+'" alt=""><div><b>Pedido #'+num+' · '+hx(M.brand)+'</b><small>'+nIt+(nIt>1?' itens':' item')+' · Total '+brl2(L.t+f)+' · Pedido recebido</small><small class="dm">bistroconnect.com.br</small></div>';b.appendChild(lk);b.appendChild(el('span','wa-time',hhmm(1)))});
       later(5600,function(){var b=bub('sys');b.textContent='👩‍🍳 Pedido #'+num+' em preparo'});
       later(7600,function(){var b=bub('sys');b.textContent=mode==='entrega'?'🛵 Saiu para entrega · chega em ~10 min':'✅ Pronto! Pode retirar no balcão'});
+      function abreRastreio(){if(my!==seq||wa.hidden)return;var d={n:num,l:M.brand,m:{padaria:'padaria',cafe:'cafeteria',burger:'hamburgueria',rest:'restaurante'}[key]||'padaria',c:nome.split(' ')[0],a:addr||'Rua das Flores, 120 · Centro',t:mode==='entrega'?'e':'r',f:f,i:L.out.map(function(x){return [x.n,x.q,x.p,imgOf(x.n)]})};
+        var tk=sc.querySelector('.m-trk');if(!tk){tk=el('div','m-trk');tk.innerHTML='<div class="m-trk-top"><button type="button">‹ WhatsApp</button><span>bistroconnect.com.br/p/…</span></div><div class="m-trk-v"><iframe tabindex="-1" title="Página de acompanhamento do pedido"></iframe></div>';sc.appendChild(tk);tk.querySelector('button').onclick=function(){tk.hidden=true}}
+        var fr=tk.querySelector('iframe');fr.src='pedido.html?c=demo&d='+encodeURIComponent(JSON.stringify(d));var k=sc.clientWidth/390;fr.style.transform='scale('+k+')';fr.style.height=Math.ceil((sc.clientHeight-34)/k)+'px';tk.hidden=false}
+      later(9800,abreRastreio);
       wa.hidden=false}
     ck.querySelector('.ck-send').onclick=doSend;
-    cbtn.onclick=send;back.onclick=function(){seq++;wa.hidden=true;ck.hidden=true;cart={};draw();cartDraw()};
+    cbtn.onclick=send;back.onclick=function(){seq++;wa.hidden=true;ck.hidden=true;var tk=sc.querySelector('.m-trk');if(tk)tk.hidden=true;cart={};draw();cartDraw()};
     drawTabs();draw();cartDraw();
   }
   var hero=document.getElementById('heroPhone');
