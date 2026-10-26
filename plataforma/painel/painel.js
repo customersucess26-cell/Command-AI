@@ -145,7 +145,7 @@ function render(){if($('#app').hidden)return;marca();
   const aberta=settings.accept_orders!==false;$('#btnPausa').textContent=aberta?'Recebendo pedidos':'Pedidos pausados';$('#btnPausa').classList.toggle('fechada',!aberta);
   $('#lojaStatus').textContent=RECURSOS.pedidos?(aberta?'Recebendo pedidos':'Pedidos pausados'):'Cardápio online';$('#lojaStatus').classList.toggle('fechada',RECURSOS.pedidos&&!aberta);
   const h=new Date().getHours();$('#subtitulo').textContent=aba==='inicio'?(h<12?'Bom dia':h<18?'Boa tarde':'Boa noite')+' · '+new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'}):'';
-  if(aba==='inicio')desenhaInicio();if(aba==='pedidos')desenhaPedidos();if(aba==='financeiro')desenhaFinanceiro();if(aba==='clientes')desenhaClientes();if(aba==='cardapio')desenhaCardapio();if(aba==='loja')preencheLoja();if(aba==='equipe')desenhaEquipe();if(aba==='atendimento')desenhaAtend();if(aba==='inicio')desenhaLink()}
+  if(aba==='inicio')desenhaInicio();if(aba==='pedidos')desenhaPedidos();if(aba==='financeiro')desenhaFinanceiro();if(aba==='clientes')desenhaClientes();if(aba==='cardapio')desenhaCardapio();if(aba==='loja')preencheLoja();if(aba==='equipe')desenhaEquipe();if(aba==='atendimento'){desenhaAtend();waDesenha()}if(aba==='inicio')desenhaLink()}
 function kpi(l,v,s,cls,serie){return `<div class="kpi${cls?' '+cls:''}${serie?' com-spark':''}"><span class="lbl">${esc(l)}</span><span class="val">${esc(v)}</span>${s?`<span class="sub">${esc(s)}</span>`:''}${serie?spark(serie):''}</div>`}
 /* mini gráfico dos últimos 7 dias dentro do cartão */
 function spark(serie){const mx=Math.max(1,...serie),w=100,h=30,n=serie.length-1||1,pts=serie.map((v,i)=>[i/n*w,h-2-(v/mx)*(h-6)]);const linha=pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
@@ -590,6 +590,137 @@ function desenhaAtend(){const T=atTextos(),s=settings,falta=[];
 document.addEventListener('click',async e=>{const b=e.target.closest('[data-at-copia]');if(!b)return;const t=b.parentElement.querySelector('pre').textContent;
   try{await navigator.clipboard.writeText(t);b.textContent='Copiado ✓';setTimeout(()=>b.textContent='Copiar',1800)}catch(_){prompt('Copie o texto:',t)}});
 
+
+/* ================= atendimento: WhatsApp oficial (caixa de entrada) ================= */
+let waConta=null,waConvs=[],waMsgs=[],waAtual=null,waCanal=null,waBusca='',waEnviando=false;
+const waChave=f=>{let d=digitos(f).replace(/^55(?=\d{10,11}$)/,'');return d.length>=10?d.slice(0,2)+d.slice(-8):d};
+const waFoneBR=w=>{const d=digitos(w).replace(/^55/,'');return d.length>=10?'('+d.slice(0,2)+') '+d.slice(2,-4)+'-'+d.slice(-4):'+'+digitos(w)};
+const waNorm=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const waIni=n=>String(n||'?').trim().split(/\s+/).slice(0,2).map(x=>x[0]||'').join('').toUpperCase()||'?';
+function waQuando(s){const d=new Date(s);if(isNaN(d))return '';const h=new Date();if(d.toDateString()===h.toDateString())return horaBR(d);const o=new Date(h-864e5);if(d.toDateString()===o.toDateString())return 'ontem';return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}
+function waDemoDados(){const m=x=>new Date(Date.now()-x*60000).toISOString(),j=x=>new Date(Date.now()+x*3600000).toISOString(),l=linkDaLoja(),s=linkDaLoja().replace(/\/l\/.*/,'');
+  waConta={loja_id:'demo',numero:'5542999990000',robo:true};
+  waConvs=[{id:1,wa_id:'5542999114670',nome:'Carlos Souza',ultima_msg:'tem pão sem glúten hoje?',ultima_em:m(2),nao_lidas:1,janela_ate:j(23),modo:'robo'},
+    {id:2,wa_id:'5542988776655',nome:'Juliana Prado',ultima_msg:'Certo! Já chamei alguém da equipe.',ultima_em:m(9),nao_lidas:2,janela_ate:j(23),modo:'humano'},
+    {id:3,wa_id:'5542991234567',nome:'Marcos',ultima_msg:'Obrigado, chegou certinho!',ultima_em:m(80),nao_lidas:0,janela_ate:j(22),modo:'robo'}];
+  waDemoMsgs={1:[['in','Oi, boa noite',m(6)],['out',`Olá, Carlos! Aqui é ${settings.store_name}.\n\nPara pedir, é só abrir o nosso cardápio:\n${l}\n\nResponda com um número:\n1 - Cardápio e pedido\n2 - Meu pedido\n3 - Horário e endereço\n4 - Entrega e pagamento\n5 - Falar com a equipe`,m(6),'robô','read'],
+      ['in','2',m(4)],['out',`O seu pedido #12 está sendo preparado agora.\n\nAcompanhe em tempo real:\n${s}/p/3874d7594d594370`,m(4),'robô','read'],['in','tem pão sem glúten hoje?',m(2)]],
+    2:[['in','Boa tarde! Dá para trocar a bebida do meu pedido?',m(11)],['in','5',m(10)],['out','Certo! Já chamei alguém da equipe. É só aguardar um pouquinho que já te respondemos por aqui.',m(9),'robô','read'],['in','',m(9),'','','image']],
+    3:[['in','Obrigado, chegou certinho!',m(80)],['out','Nós que agradecemos! Quando quiser pedir de novo:\n'+l,m(80),'robô','read']]};
+  waBusca=''}
+let waDemoMsgs={};
+async function waInicia(){const pode=['dono','gerente','atendente'].includes(papel);if(!pode)return;
+  if(demo){waDemoDados();waBadge();return}
+  const r=await db.from('whats_contas').select('*').eq('loja_id',lojaId).maybeSingle();
+  if(r.error||!r.data||!r.data.ativo){waConta=null;waBadge();return}
+  waConta=r.data;await waCarregaConvs();
+  if(waCanal)db.removeChannel(waCanal);
+  const fl='loja_id=eq.'+lojaId;
+  waCanal=db.channel('whats-'+lojaId)
+    .on('postgres_changes',{event:'*',schema:'public',table:'whats_conversas',filter:fl},()=>waCarregaConvs())
+    .on('postgres_changes',{event:'*',schema:'public',table:'whats_mensagens',filter:fl},p=>waChegou(p.new))
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'whats_contas',filter:fl},p=>{if(p.new){waConta=p.new;waDesenha()}})
+    .subscribe()}
+async function waCarregaConvs(){if(demo)return waDesenha();
+  const r=await db.from('whats_conversas').select('*').eq('loja_id',lojaId).order('ultima_em',{ascending:false}).limit(300);
+  if(!r.error)waConvs=r.data||[];waBadge();if(aba==='atendimento')waDesenhaLista(),waDesenhaCab()}
+async function waCarregaMsgs(){if(!waAtual)return;
+  if(demo){waMsgs=(waDemoMsgs[waAtual]||[]).map((x,i)=>({id:waAtual*100+i,direcao:x[0],texto:x[1],criado_em:x[2],autor:x[3]||'',status:x[4]||'',tipo:x[5]||'text',midia_id:x[5]?'x':''}));return}
+  const r=await db.from('whats_mensagens').select('*').eq('conversa_id',waAtual).order('id',{ascending:false}).limit(200);
+  if(!r.error)waMsgs=(r.data||[]).reverse()}
+function waChegou(m){if(!m)return;if(m.conversa_id===waAtual){const i=waMsgs.findIndex(x=>x.id===m.id);if(i>=0)waMsgs[i]=m;else waMsgs.push(m);
+    if(aba==='atendimento'){waDesenhaMsgs();if(m.direcao==='in'&&!document.hidden)waLida(waAtual)}}
+  if(m.direcao==='in'&&!(m.conversa_id===waAtual&&aba==='atendimento'&&!document.hidden))bip()}
+function waLida(id){const c=waConvs.find(x=>x.id===id);if(c&&c.nao_lidas){c.nao_lidas=0;waBadge();if(aba==='atendimento')waDesenhaLista()}
+  if(!demo)db.rpc('whats_lida',{p_conversa:id})}
+function waBadge(){const n=waConvs.filter(c=>c.nao_lidas>0).length,b=$('#waBadge');if(!b)return;b.textContent=n;b.hidden=!n}
+function waJanela(c){return c&&c.janela_ate&&new Date(c.janela_ate)>new Date()}
+function waDesenha(){
+  const ok=!!waConta;$('#waOff').hidden=ok;$('#waApp').hidden=!ok;
+  $('#atProntos').open=!ok&&$('#atProntos').dataset.mexeu!=='1'?true:$('#atProntos').open;
+  const sup=digitos(CFG.suporteWhatsapp||'');$('#waPedir').href=sup?zapUrl(sup,'Olá! Quero conectar o WhatsApp oficial da loja '+(settings.store_name||'')+' ao painel do Bistrô Connect.'):'mailto:'+((CFG.empresa&&CFG.empresa.email)||'contato@bistroconnect.com.br')+'?subject=Conectar%20WhatsApp';
+  if(!ok)return;
+  $('#waRobo').checked=waConta.robo!==false;$('#waRobo').disabled=!['dono','gerente'].includes(papel);
+  waDesenhaLista();waDesenhaCab();waDesenhaMsgs()}
+function waDesenhaLista(){const q=waNorm(waBusca),l=waConvs.filter(c=>!q||waNorm(c.nome+' '+c.wa_id+' '+c.ultima_msg).includes(q));
+  $('#waLista').innerHTML=l.length?l.map(c=>`<button type="button" class="wa-item${c.id===waAtual?' on':''}${c.nao_lidas?' nova':''}" data-wa-conv="${c.id}"><span class="wa-av">${esc(waIni(c.nome||c.wa_id))}</span>
+    <span class="wa-it-txt"><span class="wa-it-l1"><b>${esc(c.nome||waFoneBR(c.wa_id))}</b><small>${esc(waQuando(c.ultima_em))}</small></span>
+    <span class="wa-it-l2"><span>${esc(String(c.ultima_msg||'').split('\n')[0])}</span>${c.nao_lidas?`<i>${c.nao_lidas}</i>`:''}</span>
+    <span class="wa-tag ${c.modo==='humano'?'eq':'rb'}">${c.modo==='humano'?'Equipe atendendo':'Robô'}</span></span></button>`).join('')
+   :`<p class="muted fino wa-nada">${waConvs.length?'Nenhuma conversa encontrada.':'Ainda não chegou mensagem. Quando um cliente escrever no WhatsApp da loja, a conversa aparece aqui.'}</p>`}
+function waDesenhaCab(){const c=waConvs.find(x=>x.id===waAtual),tem=!!c;
+  $('#waVazio').hidden=tem;['.wa-cab','#waMsgs','#waForm','#waRapidas'].forEach(s=>$(s).hidden=!tem);$('#waApp').classList.toggle('aberta',tem);
+  if(!tem){$('#waAviso').hidden=true;return}
+  $('#waAv').textContent=waIni(c.nome||c.wa_id);$('#waNome').textContent=c.nome||waFoneBR(c.wa_id);$('#waFone').textContent=waFoneBR(c.wa_id);
+  const h=c.modo==='humano';$('#waModo').textContent=h?'Devolver ao robô':'Eu atendo';$('#waModo').title=h?'O robô volta a responder esta conversa':'O robô para de responder esta conversa';
+  const j=waJanela(c),av=$('#waAviso');
+  if(!j){av.hidden=false;av.className='wa-aviso fecha';av.textContent='Passaram 24 horas desde a última mensagem do cliente. Pelas regras do WhatsApp, você só pode responder quando ele escrever de novo.'}
+  else if(!waConta.robo||!h){av.hidden=true}
+  else{av.hidden=false;av.className='wa-aviso';av.textContent='Você está atendendo esta conversa: o robô fica quieto até você devolver.'}
+  $('#waTexto').disabled=!j;$('#waEnviar').disabled=!j||waEnviando;
+  const T=atTextos(),cs=[['cardapio','Cardápio'],['pedido','Status do pedido'],['horario','Horário'],['entrega','Entrega'],['pagamento','Pagamento'],['cupom','Cupom'],['obrigado','Obrigado']];
+  $('#waRapidas').innerHTML=cs.filter(x=>x[0]==='pedido'||T.rapidas.some(r=>r[0]===x[0])).map(x=>`<button type="button" class="chip" data-wa-rap="${x[0]}">${x[1]}</button>`).join('')}
+function waTicks(m){if(m.direcao!=='out')return '';const s=m.status;
+  if(s==='failed')return '<span class="wa-st falhou">não enviada</span>';if(s==='enviando')return '<span class="wa-st">enviando…</span>';
+  return `<span class="wa-st${s==='read'?' lida':''}" title="${s==='read'?'Lida':s==='delivered'?'Entregue':'Enviada'}">${s==='read'||s==='delivered'?'✓✓':'✓'}</span>`}
+function waLinks(t){return esc(t).replace(/https?:\/\/[^\s<]+/g,u=>`<a href="${u}" target="_blank" rel="noopener">${u}</a>`)}
+function waDesenhaMsgs(){const box=$('#waMsgs');if(!waAtual){box.innerHTML='';return}
+  const fim=box.scrollHeight-box.scrollTop-box.clientHeight<80;let dia='';
+  box.innerHTML=waMsgs.map(m=>{const d=new Date(m.criado_em).toLocaleDateString('pt-BR'),sep=d!==dia?`<div class="wa-dia"><span>${esc(waQuando(m.criado_em)===horaBR(m.criado_em)?'Hoje':d)}</span></div>`:'';dia=d;
+    const midia=m.midia_id?`<button type="button" class="btn small wa-midia" data-wa-midia="${m.id}">${m.tipo==='audio'?'▶ Ouvir áudio':m.tipo==='image'?'Ver foto':m.tipo==='video'?'Ver vídeo':'Abrir arquivo'}</button>`:'';
+    const txt=m.texto?`<div class="wa-txt">${waLinks(m.texto)}</div>`:(m.midia_id?'':`<div class="wa-txt muted">${m.tipo==='reaction'?'reagiu':'mensagem sem texto'}</div>`);
+    return `${sep}<div class="wa-b ${m.direcao==='in'?'in':'out'}${m.autor==='robô'?' robo':''}">${m.direcao==='out'&&m.autor?`<small class="wa-autor">${m.autor==='robô'?'Robô':esc(m.autor)}</small>`:''}${midia}${txt}<span class="wa-hora">${horaBR(m.criado_em)}${waTicks(m)}</span></div>`}).join('');
+  if(fim||box.dataset.c!==String(waAtual)){box.scrollTop=box.scrollHeight;box.dataset.c=waAtual}}
+async function waAbre(id){waAtual=id;$('#waMsgs').dataset.c='';waDesenhaLista();waDesenhaCab();$('#waMsgs').innerHTML='<p class="muted fino wa-nada">Carregando…</p>';
+  if(!matchMedia('(min-width:900px)').matches)$('#waApp').scrollIntoView({block:'start'});
+  await waCarregaMsgs();if(waAtual!==id)return;waDesenhaMsgs();waLida(id);if(matchMedia('(min-width:900px)').matches)$('#waTexto').focus()}
+function waTextoRapido(k){const c=waConvs.find(x=>x.id===waAtual);if(k==='pedido'){
+    const o=orders.filter(o=>waChave(o.customer_phone)===waChave(c.wa_id)).sort((a,b)=>new Date(b.created_at)-new Date(a.created_at))[0];
+    if(!o)return toast('Nenhum pedido recente deste número');const ent=o.delivery_type==='entrega';
+    const st={novo:'Recebemos o seu pedido '+o.code+' e já vamos confirmar.',confirmado:'O seu pedido '+o.code+' foi confirmado.',em_preparo:'O seu pedido '+o.code+' está sendo preparado agora.',
+      pronto:ent?'O seu pedido '+o.code+' saiu para entrega!':'O seu pedido '+o.code+' está pronto para retirar.',entregue:'O seu pedido '+o.code+(ent?' já foi entregue.':' já foi retirado.'),cancelado:'O pedido '+o.code+' foi cancelado.'}[o.status]||'';
+    return st+(o.track_code&&o.status!=='cancelado'?'\n\nAcompanhe em tempo real:\n'+linkDaLoja().replace(/\/l\/.*/,'')+'/p/'+o.track_code:'')}
+  const r=atTextos().rapidas.find(x=>x[0]===k);return r?r[2]:''}
+async function waEnvia(){const t=$('#waTexto').value.trim(),c=waConvs.find(x=>x.id===waAtual);if(!t||!c||waEnviando)return;
+  if(demo){const l=waDemoMsgs[c.id]||(waDemoMsgs[c.id]=[]);l.push(['out',t,new Date().toISOString(),'você','sent']);c.modo='humano';c.ultima_msg=t;c.ultima_em=new Date().toISOString();
+    $('#waTexto').value='';waAutoAltura();await waCarregaMsgs();waDesenha();setTimeout(async()=>{l[l.length-1][4]='read';await waCarregaMsgs();waDesenhaMsgs()},1500);return}
+  waEnviando=true;$('#waEnviar').disabled=true;
+  try{const s=(await db.auth.getSession()).data.session;
+    const r=await fetch(CFG.supabaseUrl.replace(/\/+$/,'')+'/functions/v1/whats-enviar',{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.supabaseKey,Authorization:'Bearer '+(s&&s.access_token||'')},body:JSON.stringify({acao:'enviar',conversa:c.id,texto:t})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){toast(j.erro||'Não foi possível enviar. Tente de novo.');if(j.hint==='JANELA'){c.janela_ate=null;waDesenhaCab()}}
+    else{$('#waTexto').value='';waAutoAltura()}
+  }catch(e){toast('Sem conexão com o servidor. Verifique a internet.')}
+  waEnviando=false;waDesenhaCab();await waCarregaMsgs();waDesenhaMsgs()}
+async function waMidia(b){const id=Number(b.dataset.waMidia);if(demo)return toast('Na demonstração a foto não abre');b.disabled=true;b.textContent='Abrindo…';
+  try{const s=(await db.auth.getSession()).data.session;
+    const r=await fetch(CFG.supabaseUrl.replace(/\/+$/,'')+'/functions/v1/whats-enviar',{method:'POST',headers:{'Content-Type':'application/json',apikey:CFG.supabaseKey,Authorization:'Bearer '+(s&&s.access_token||'')},body:JSON.stringify({acao:'midia',mensagem:id})});
+    if(!r.ok){const j=await r.json().catch(()=>({}));b.disabled=false;b.textContent='Tentar de novo';return toast(j.erro||'Não foi possível abrir.')}
+    const tipo=r.headers.get('content-type')||'',u=URL.createObjectURL(await r.blob());let el;
+    if(tipo.startsWith('image/')){el=document.createElement('img');el.src=u;el.alt='Foto enviada pelo cliente'}
+    else if(tipo.startsWith('audio/')){el=document.createElement('audio');el.controls=true;el.src=u}
+    else if(tipo.startsWith('video/')){el=document.createElement('video');el.controls=true;el.src=u}
+    else{el=document.createElement('a');el.href=u;el.download='arquivo';el.textContent='Baixar arquivo'}
+    el.className='wa-midia-el';b.replaceWith(el);if(el.play&&tipo.startsWith('audio/'))el.play().catch(()=>{})}
+  catch(e){b.disabled=false;b.textContent='Tentar de novo';toast('Sem conexão com o servidor.')}}
+function waAutoAltura(){const t=$('#waTexto');t.style.height='auto';t.style.height=Math.min(t.scrollHeight,160)+'px'}
+document.addEventListener('click',async e=>{let b;
+  if(b=e.target.closest('[data-wa-conv]'))return waAbre(Number(b.dataset.waConv));
+  if(b=e.target.closest('[data-wa-rap]')){const t=waTextoRapido(b.dataset.waRap);if(t){const x=$('#waTexto');x.value=x.value.trim()?x.value.trim()+'\n\n'+t:t;waAutoAltura();x.focus()}return}
+  if(b=e.target.closest('[data-wa-midia]'))return waMidia(b);
+  if(e.target.closest('#waVolta')){waAtual=null;waDesenhaLista();waDesenhaCab();return}
+  if(e.target.closest('#waModo')){const c=waConvs.find(x=>x.id===waAtual);if(!c)return;const novo=c.modo==='humano'?'robo':'humano';
+    if(!demo){const r=await db.rpc('whats_modo',{p_conversa:c.id,p_modo:novo});if(r.error)return toast(erroAmigavel(r.error))}
+    c.modo=novo;waDesenhaLista();waDesenhaCab();toast(novo==='robo'?'O robô volta a responder esta conversa':'Você está atendendo: o robô fica quieto')}});
+document.addEventListener('change',async e=>{if(e.target.id!=='waRobo')return;const v=e.target.checked;
+  if(!demo){const r=await db.rpc('whats_robo',{p_loja:lojaId,p_ligado:v});if(r.error){e.target.checked=!v;return toast(erroAmigavel(r.error))}}
+  waConta.robo=v;waDesenhaCab();toast(v?'Robô ligado: ele responde o básico sozinho':'Robô desligado: só a equipe responde')});
+document.addEventListener('input',e=>{if(e.target.id==='waBusca'){waBusca=e.target.value;waDesenhaLista()}if(e.target.id==='waTexto')waAutoAltura()});
+document.addEventListener('keydown',e=>{if(e.target.id==='waTexto'&&e.key==='Enter'&&!e.shiftKey&&matchMedia('(min-width:900px)').matches){e.preventDefault();waEnvia()}});
+document.addEventListener('submit',e=>{if(e.target.id==='waForm'){e.preventDefault();waEnvia()}});
+document.addEventListener('toggle',e=>{if(e.target.id==='atProntos')e.target.dataset.mexeu='1'},true);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&waAtual&&aba==='atendimento')waLida(waAtual)});
+
 /* ================= início ================= */
 let started=false;
 async function start(){if(started)return;started=true;
@@ -602,6 +733,7 @@ async function start(){if(started)return;started=true;
       .subscribe(st=>$('#aoVivo').classList.toggle('on',st==='SUBSCRIBED'));
     setInterval(()=>{if(!document.hidden)carregar('orders')},60000)}
   else{orders.forEach(o=>vistos.add(String(o.id)));primeiraCarga=false;$('#aoVivo').classList.add('on');$('#contaEmail').textContent='Demonstração'}
+  waInicia();
   if(!demo)db.rpc('eh_admin_plataforma').then(r=>{if(r.data===true)$('#btnPlataforma').hidden=false});
   abrirAba('inicio')}
 (async()=>{
