@@ -1,0 +1,82 @@
+# Trecho do montar-painel-plataforma.py (carregado por exec): aba "Atendimento" (WhatsApp Business).
+# Gera saudação, mensagem de ausência e respostas rápidas já preenchidas com os dados da loja, com botão de copiar
+# e o passo a passo para configurar no app WhatsApp Business (grátis, sem integração e sem risco ao número).
+
+h = troca(h, '''<span>Clientes</span>''', '''<span>Clientes</span>''')  # confere que o menu existe
+_i = h.index('<button type="button" data-aba="clientes"'); _f = h.index('</button>', _i) + len('</button>')
+h = h[:_f] + '''
+      <button type="button" data-aba="atendimento" data-papel="dono gerente atendente"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><span>Atendimento</span></button>''' + h[_f:]
+h = troca(h, '''    <!-- EQUIPE -->''', '''    <!-- ATENDIMENTO -->
+    <section class="panel" data-panel="atendimento" hidden>
+      <div class="box at-intro"><div class="box-head"><h2>Atendimento automático no WhatsApp</h2><span class="muted fino">grátis, pelo app WhatsApp Business</span></div>
+        <p class="muted">Os textos abaixo já vêm com o link do seu cardápio, horário, entrega e pagamento. Configure uma vez no WhatsApp Business e o cliente que manda "oi" recebe o cardápio na hora, mesmo quando ninguém está olhando o celular.</p>
+        <p class="muted fino" id="atFalta"></p>
+      </div>
+      <div class="grid2">
+        <div class="box"><div class="box-head"><h2>1. Mensagem de saudação</h2></div><p class="muted fino">Vai sozinha para quem escreve pela primeira vez ou depois de 14 dias sem conversar.</p><div id="atSaudacao"></div>
+          <ol class="at-passos"><li>Abra o <b>WhatsApp Business</b> › <b>Configurações</b> › <b>Ferramentas comerciais</b>.</li><li>Toque em <b>Mensagem de saudação</b> e ligue a opção.</li><li>Cole o texto e, em destinatários, escolha <b>Todos</b>.</li></ol></div>
+        <div class="box"><div class="box-head"><h2>2. Mensagem de ausência</h2></div><p class="muted fino">Responde fora do horário, para o cliente não ficar sem resposta.</p><div id="atAusencia"></div>
+          <ol class="at-passos"><li>Em <b>Perfil comercial</b>, preencha o <b>Horário comercial</b>.</li><li>Em <b>Ferramentas comerciais</b› › <b>Mensagem de ausência</b>, ligue e cole o texto.</li><li>Em <b>Programar</b>, escolha <b>Fora do horário comercial</b>.</li></ol></div>
+      </div>
+      <div class="box"><div class="box-head"><h2>3. Respostas rápidas</h2><span class="muted fino">digite "/" e o atalho na conversa</span></div>
+        <p class="muted fino">Em <b>Ferramentas comerciais</b› › <b>Respostas rápidas</b› › <b>+</b>: cole a mensagem e use o atalho indicado. Na conversa, a equipe digita, por exemplo, <code>/cardapio</code> e a resposta aparece pronta.</p>
+        <div class="at-rapidas" id="atRapidas"></div></div>
+      <div class="grid2">
+        <div class="box"><div class="box-head"><h2>4. Link no perfil</h2></div><p class="muted fino">Em <b>Perfil comercial</b› › <b>Site</b>, cole o link do cardápio. Ele aparece para todo cliente que abrir o seu contato.</p><div id="atPerfil"></div></div>
+        <div class="box"><div class="box-head"><h2>5. Etiquetas</h2></div><p class="muted fino">Organize as conversas por etapa. Crie em <b>Ferramentas comerciais</b› › <b>Etiquetas</b>:</p>
+          <div class="at-tags"><span>Novo pedido</span><span>Aguardando Pix</span><span>Pago</span><span>Saiu para entrega</span><span>Cliente fiel</span></div></div>
+      </div>
+      <div class="box at-futuro"><div class="box-head"><h2>Em breve: atendimento dentro do painel</h2></div>
+        <p class="muted fino">Estamos preparando a conexão oficial com o WhatsApp para as conversas aparecerem aqui no painel, com resposta automática ao "cadê meu pedido?" e aviso de status direto no WhatsApp do cliente. Quando estiver disponível, avisamos por aqui.</p></div>
+    </section>
+
+    <!-- EQUIPE -->''')
+h = h.replace('</b›', '</b>')
+open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
+
+j = troca(j, "const TITULOS={inicio:'Início',", "const TITULOS={inicio:'Início',atendimento:'Atendimento no WhatsApp',")
+j = troca(j, "atendente:['inicio','pedidos','clientes','ajustes']", "atendente:['inicio','pedidos','clientes','atendimento','ajustes']")
+j = troca(j, "if(aba==='equipe')desenhaEquipe();", "if(aba==='equipe')desenhaEquipe();if(aba==='atendimento')desenhaAtend();")
+
+AT_JS = r"""
+/* ================= atendimento: textos do WhatsApp Business ================= */
+function atTextos(){const s=settings,link=linkDaLoja(),nome=s.store_name||'nossa loja',horas=String(s.hours||'').trim(),end=String(s.address||'').trim(),
+    taxa=num(s.delivery_fee),min=num(s.min_order),pags=(s.pagamentos||[]).join(', '),c=s.cupom||{};
+  const entrega=s.faz_entrega?(taxa>0?'Entregamos com taxa de '+brl(taxa):'A entrega é grátis')+(min>0?', pedido mínimo de '+brl(min):'')+'.':'',
+        retira=s.faz_retirada?(end?'Também dá para retirar aqui: '+end+'.':'Também dá para retirar na loja.'):'';
+  const T={
+    saudacao:`Olá! Que bom ter você aqui na ${nome}.\n\nPara pedir, é só abrir o nosso cardápio, com fotos e preços:\n${link}\n\nVocê escolhe, confirma e o pedido chega organizado para a gente. Se preferir, é só responder aqui que já te atendemos.`,
+    ausencia:`Olá! Agora estamos fechados${horas?'. Nosso horário: '+horas:''}.\n\nVocê já pode ver o cardápio e deixar o seu pedido pronto:\n${link}\n\nAssim que abrirmos, respondemos você.`,
+    rapidas:[
+      ['cardapio','Cardápio',`Aqui está o nosso cardápio, com fotos e preços:\n${link}\n\nMonte o pedido por lá que ele chega certinho para a gente.`],
+      ['horario','Horário e endereço',(horas?`Nosso horário: ${horas}.`:'Fale com a gente para saber o horário de hoje.')+(end?`\nEndereço: ${end}.`:'')],
+      ['entrega','Entrega e retirada',[entrega,retira].filter(Boolean).join('\n')||'Fale com a gente para combinar a entrega.'],
+      ['pagamento','Formas de pagamento',pags?`Aceitamos: ${pags}.`:'Fale com a gente para combinar o pagamento.'],
+      ['pedido','Cadê meu pedido?','Depois de enviar pelo cardápio, você recebe um link para acompanhar o pedido em tempo real. Se não encontrar, me diga o seu nome que eu confiro aqui.'],
+      ['obrigado','Agradecimento',`Obrigado pelo pedido! Da próxima vez, peça direto pelo nosso cardápio:\n${link}`]
+    ]};
+  if(c.ativo&&c.codigo)T.rapidas.push(['cupom','Cupom de desconto',`No seu próximo pedido pelo nosso cardápio você ganha ${c.pct}% de desconto com o cupom ${c.codigo}:\n${link}?cupom=${encodeURIComponent(c.codigo)}`]);
+  return T}
+function atBloco(txt,atalho,titulo){return `<div class="at-msg">${titulo?`<div class="at-msg-h"><b>${esc(titulo)}</b>${atalho?`<code>/${esc(atalho)}</code>`:''}</div>`:''}<pre>${esc(txt)}</pre><button type="button" class="btn small" data-at-copia>Copiar</button></div>`}
+function desenhaAtend(){const T=atTextos(),s=settings,falta=[];
+  if(!String(s.hours||'').trim())falta.push('horário');if(!String(s.address||'').trim())falta.push('endereço');if(!(s.pagamentos||[]).length)falta.push('formas de pagamento');
+  $('#atFalta').innerHTML=falta.length?'Para os textos ficarem completos, preencha em <a href="#" data-ir="loja">Dados da loja</a>: '+esc(falta.join(', '))+'.':'';
+  $('#atSaudacao').innerHTML=atBloco(T.saudacao);$('#atAusencia').innerHTML=atBloco(T.ausencia);
+  $('#atRapidas').innerHTML=T.rapidas.map(r=>atBloco(r[2],r[0],r[1])).join('');
+  $('#atPerfil').innerHTML=atBloco(linkDaLoja())}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-at-copia]');if(!b)return;const t=b.parentElement.querySelector('pre').textContent;
+  try{await navigator.clipboard.writeText(t);b.textContent='Copiado ✓';setTimeout(()=>b.textContent='Copiar',1800)}catch(_){prompt('Copie o texto:',t)}});
+"""
+j = troca(j, "/* ================= início ================= */", AT_JS + "\n/* ================= início ================= */")
+
+css += """
+/* atendimento */
+.at-msg{border:1px solid var(--line);border-radius:12px;background:var(--surface-2);padding:10px 12px;margin:8px 0;display:flex;flex-direction:column;gap:8px}
+.at-msg-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.at-msg-h code{font-size:12px}
+.at-msg pre{margin:0;white-space:pre-wrap;word-break:break-word;font:14px/1.5 var(--f-body);color:var(--fg)}
+.at-msg .btn{align-self:flex-start}
+.at-rapidas{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.at-passos{margin:10px 0 0;padding-left:20px;font-size:13.5px;color:var(--muted)}.at-passos li{margin:3px 0}
+.at-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.at-tags span{border-radius:99px;padding:4px 10px;font-size:12.5px;font-weight:600;background:var(--accent-soft);color:var(--accent)}
+.at-futuro{border-style:dashed}
+"""

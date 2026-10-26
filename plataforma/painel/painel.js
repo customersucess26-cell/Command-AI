@@ -130,8 +130,8 @@ $('#btnNotif').addEventListener('click',async()=>{if(!('Notification' in window)
 setInterval(()=>{if(aba==='pedidos')desenhaPedidos()},30000);
 
 /* ================= navegação ================= */
-const TITULOS={inicio:'Visão geral',pedidos:'Pedidos',financeiro:'Financeiro',clientes:'Clientes',cardapio:'Cardápio',loja:'Dados da loja',equipe:'Equipe',ajustes:'Conta e ajustes'};
-const ABAS_PAPEL={dono:Object.keys(TITULOS),gerente:Object.keys(TITULOS),atendente:['inicio','pedidos','clientes','ajustes'],cozinha:['pedidos','ajustes']};
+const TITULOS={inicio:'Visão geral',atendimento:'Atendimento no WhatsApp',pedidos:'Pedidos',financeiro:'Financeiro',clientes:'Clientes',cardapio:'Cardápio',loja:'Dados da loja',equipe:'Equipe',ajustes:'Conta e ajustes'};
+const ABAS_PAPEL={dono:Object.keys(TITULOS),gerente:Object.keys(TITULOS),atendente:['inicio','pedidos','clientes','atendimento','ajustes'],cozinha:['pedidos','ajustes']};
 function aplicaPapel(){document.querySelectorAll('[data-papel]').forEach(el=>{el.hidden=!el.dataset.papel.split(' ').includes(papel)})}
 function abrirAba(t){if(!TITULOS[t]||(!RECURSOS.pedidos&&['pedidos','financeiro','clientes'].includes(t)))t='inicio';if(!(ABAS_PAPEL[papel]||[]).includes(t))t=(ABAS_PAPEL[papel]||['pedidos'])[0];aba=t;
   document.querySelectorAll('[data-aba]').forEach(b=>{if(b.dataset.aba===t)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
@@ -145,7 +145,7 @@ function render(){if($('#app').hidden)return;marca();
   const aberta=settings.accept_orders!==false;$('#btnPausa').textContent=aberta?'Recebendo pedidos':'Pedidos pausados';$('#btnPausa').classList.toggle('fechada',!aberta);
   $('#lojaStatus').textContent=RECURSOS.pedidos?(aberta?'Recebendo pedidos':'Pedidos pausados'):'Cardápio online';$('#lojaStatus').classList.toggle('fechada',RECURSOS.pedidos&&!aberta);
   const h=new Date().getHours();$('#subtitulo').textContent=aba==='inicio'?(h<12?'Bom dia':h<18?'Boa tarde':'Boa noite')+' · '+new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'}):'';
-  if(aba==='inicio')desenhaInicio();if(aba==='pedidos')desenhaPedidos();if(aba==='financeiro')desenhaFinanceiro();if(aba==='clientes')desenhaClientes();if(aba==='cardapio')desenhaCardapio();if(aba==='loja')preencheLoja();if(aba==='equipe')desenhaEquipe();if(aba==='inicio')desenhaLink()}
+  if(aba==='inicio')desenhaInicio();if(aba==='pedidos')desenhaPedidos();if(aba==='financeiro')desenhaFinanceiro();if(aba==='clientes')desenhaClientes();if(aba==='cardapio')desenhaCardapio();if(aba==='loja')preencheLoja();if(aba==='equipe')desenhaEquipe();if(aba==='atendimento')desenhaAtend();if(aba==='inicio')desenhaLink()}
 function kpi(l,v,s,cls,serie){return `<div class="kpi${cls?' '+cls:''}${serie?' com-spark':''}"><span class="lbl">${esc(l)}</span><span class="val">${esc(v)}</span>${s?`<span class="sub">${esc(s)}</span>`:''}${serie?spark(serie):''}</div>`}
 /* mini gráfico dos últimos 7 dias dentro do cartão */
 function spark(serie){const mx=Math.max(1,...serie),w=100,h=30,n=serie.length-1||1,pts=serie.map((v,i)=>[i/n*w,h-2-(v/mx)*(h-6)]);const linha=pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
@@ -560,6 +560,35 @@ $('#cupImprime').addEventListener('click',()=>{const c=lerCupom();
 .dica{text-align:center;font-size:9pt;color:#777;margin:0 0 4mm}@media print{.dica{display:none}}
 </style></head><body><p class="dica">Imprima em papel mais grosso (180 g ou mais) e recorte na linha tracejada.</p><div class="folha">${um.repeat(10)}</div></body></html>`);
   w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},500)});
+
+
+/* ================= atendimento: textos do WhatsApp Business ================= */
+function atTextos(){const s=settings,link=linkDaLoja(),nome=s.store_name||'nossa loja',horas=String(s.hours||'').trim(),end=String(s.address||'').trim(),
+    taxa=num(s.delivery_fee),min=num(s.min_order),pags=(s.pagamentos||[]).join(', '),c=s.cupom||{};
+  const entrega=s.faz_entrega?(taxa>0?'Entregamos com taxa de '+brl(taxa):'A entrega é grátis')+(min>0?', pedido mínimo de '+brl(min):'')+'.':'',
+        retira=s.faz_retirada?(end?'Também dá para retirar aqui: '+end+'.':'Também dá para retirar na loja.'):'';
+  const T={
+    saudacao:`Olá! Que bom ter você aqui na ${nome}.\n\nPara pedir, é só abrir o nosso cardápio, com fotos e preços:\n${link}\n\nVocê escolhe, confirma e o pedido chega organizado para a gente. Se preferir, é só responder aqui que já te atendemos.`,
+    ausencia:`Olá! Agora estamos fechados${horas?'. Nosso horário: '+horas:''}.\n\nVocê já pode ver o cardápio e deixar o seu pedido pronto:\n${link}\n\nAssim que abrirmos, respondemos você.`,
+    rapidas:[
+      ['cardapio','Cardápio',`Aqui está o nosso cardápio, com fotos e preços:\n${link}\n\nMonte o pedido por lá que ele chega certinho para a gente.`],
+      ['horario','Horário e endereço',(horas?`Nosso horário: ${horas}.`:'Fale com a gente para saber o horário de hoje.')+(end?`\nEndereço: ${end}.`:'')],
+      ['entrega','Entrega e retirada',[entrega,retira].filter(Boolean).join('\n')||'Fale com a gente para combinar a entrega.'],
+      ['pagamento','Formas de pagamento',pags?`Aceitamos: ${pags}.`:'Fale com a gente para combinar o pagamento.'],
+      ['pedido','Cadê meu pedido?','Depois de enviar pelo cardápio, você recebe um link para acompanhar o pedido em tempo real. Se não encontrar, me diga o seu nome que eu confiro aqui.'],
+      ['obrigado','Agradecimento',`Obrigado pelo pedido! Da próxima vez, peça direto pelo nosso cardápio:\n${link}`]
+    ]};
+  if(c.ativo&&c.codigo)T.rapidas.push(['cupom','Cupom de desconto',`No seu próximo pedido pelo nosso cardápio você ganha ${c.pct}% de desconto com o cupom ${c.codigo}:\n${link}?cupom=${encodeURIComponent(c.codigo)}`]);
+  return T}
+function atBloco(txt,atalho,titulo){return `<div class="at-msg">${titulo?`<div class="at-msg-h"><b>${esc(titulo)}</b>${atalho?`<code>/${esc(atalho)}</code>`:''}</div>`:''}<pre>${esc(txt)}</pre><button type="button" class="btn small" data-at-copia>Copiar</button></div>`}
+function desenhaAtend(){const T=atTextos(),s=settings,falta=[];
+  if(!String(s.hours||'').trim())falta.push('horário');if(!String(s.address||'').trim())falta.push('endereço');if(!(s.pagamentos||[]).length)falta.push('formas de pagamento');
+  $('#atFalta').innerHTML=falta.length?'Para os textos ficarem completos, preencha em <a href="#" data-ir="loja">Dados da loja</a>: '+esc(falta.join(', '))+'.':'';
+  $('#atSaudacao').innerHTML=atBloco(T.saudacao);$('#atAusencia').innerHTML=atBloco(T.ausencia);
+  $('#atRapidas').innerHTML=T.rapidas.map(r=>atBloco(r[2],r[0],r[1])).join('');
+  $('#atPerfil').innerHTML=atBloco(linkDaLoja())}
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-at-copia]');if(!b)return;const t=b.parentElement.querySelector('pre').textContent;
+  try{await navigator.clipboard.writeText(t);b.textContent='Copiado ✓';setTimeout(()=>b.textContent='Copiar',1800)}catch(_){prompt('Copie o texto:',t)}});
 
 /* ================= início ================= */
 let started=false;

@@ -507,6 +507,16 @@ details.hp .hb li{margin:5px 0}
 
 #cupForm{margin-top:16px}
 
+/* atendimento */
+.at-msg{border:1px solid var(--line);border-radius:12px;background:var(--surface-2);padding:10px 12px;margin:8px 0;display:flex;flex-direction:column;gap:8px}
+.at-msg-h{display:flex;justify-content:space-between;align-items:center;gap:8px}.at-msg-h code{font-size:12px}
+.at-msg pre{margin:0;white-space:pre-wrap;word-break:break-word;font:14px/1.5 var(--f-body);color:var(--fg)}
+.at-msg .btn{align-self:flex-start}
+.at-rapidas{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.at-passos{margin:10px 0 0;padding-left:20px;font-size:13.5px;color:var(--muted)}.at-passos li{margin:3px 0}
+.at-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.at-tags span{border-radius:99px;padding:4px 10px;font-size:12.5px;font-weight:600;background:var(--accent-soft);color:var(--accent)}
+.at-futuro{border-style:dashed}
+
 /* ===== visual igual ao da página de vendas: claro quente, menu marrom, títulos Fraunces ===== */
 :root{--bg:#F4EFE8;--surface:#FFFFFF;--surface-2:#EFE7DC;--line:#E7DED3;--hover:#FAF6F0;--fg:#2B1D14;--muted:#7A6A5C;
   --accent:#B8743F;--accent-ink:#FFFFFF;--accent-soft:#F3E2D0;--warn:#9A5B00;--warn-soft:#FFF0D6;
