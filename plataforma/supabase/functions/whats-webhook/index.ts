@@ -41,7 +41,7 @@ async function confereAssinatura(corpo: string, cabecalho: string | null) {
   return dif === 0;
 }
 
-export async function enviaTexto(phoneNumberId: string, token: string, para: string, texto: string) {
+async function enviaTexto(phoneNumberId: string, token: string, para: string, texto: string) {
   const r = await fetch(`${GRAPH}/${phoneNumberId}/messages`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
@@ -59,7 +59,7 @@ type Pedido = { code: string; status: string; tipo: string; track_code: string; 
 const brl = (n: number) => "R$ " + Number(n || 0).toFixed(2).replace(".", ",");
 const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
-export function intencao(texto: string): string {
+function intencao(texto: string): string {
   const t = " " + norm(texto).replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim() + " ";
   const n = t.trim();
   if (n === "1") return "cardapio";
@@ -95,7 +95,7 @@ function statusPedido(p: NonNullable<Pedido>) {
 
 const OPCOES = "Responda com um número:\n1 - Cardápio e pedido\n2 - Meu pedido\n3 - Horário e endereço\n4 - Entrega e pagamento\n5 - Falar com a equipe";
 
-export function resposta(texto: string, nome: string, nova: boolean, l: Loja, p: Pedido): { texto: string; modo?: string } | null {
+function resposta(texto: string, nome: string, nova: boolean, l: Loja, p: Pedido): { texto: string; modo?: string } | null {
   const link = `${SITE}/l/${l.slug}`;
   const primeiro = String(nome || "").trim().split(/\s+/)[0] || "";
   const ola = `Olá${primeiro ? ", " + primeiro : ""}! Aqui é ${l.nome}.`;
@@ -168,7 +168,7 @@ async function trataMensagem(v: any, m: any) {
   await rpc("whats_saida", { p_conversa: r.conversa_id, p_texto: resp.texto, p_wamid: wamid, p_autor: "robô", p_status: status, p_modo: resp.modo ?? null });
 }
 
-export async function trata(corpo: any) {
+async function trata(corpo: any) {
   for (const e of corpo?.entry || []) {
     for (const ch of e.changes || []) {
       if (ch.field !== "messages") continue;
@@ -183,7 +183,7 @@ export async function trata(corpo: any) {
   }
 }
 
-if (import.meta.main) Deno.serve(async (req) => {
+Deno.serve(async (req) => {
   const url = new URL(req.url);
   if (req.method === "GET") {
     // a Meta confere o endereço uma vez, na hora de cadastrar o webhook
