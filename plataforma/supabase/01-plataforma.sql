@@ -1072,7 +1072,9 @@ begin
   resumo := left(coalesce(nullif(btrim(p_texto), ''), case p_tipo when 'image' then '📷 Foto' when 'audio' then '🎤 Áudio'
               when 'video' then '🎬 Vídeo' when 'document' then '📄 Documento' when 'sticker' then 'Figurinha'
               when 'location' then '📍 Localização' else 'Mensagem' end), 300);
-  select * into c from public.whats_conversas where loja_id = ct.loja_id and wa_id = p_wa_id;
+  -- a Meta às vezes manda o celular com o 9 e às vezes sem: é a mesma pessoa e a mesma conversa
+  select * into c from public.whats_conversas where loja_id = ct.loja_id and public.whats_chave_fone(wa_id) = public.whats_chave_fone(p_wa_id)
+   order by ultima_em desc limit 1;
   if c.id is null then
     nova := true;
     insert into public.whats_conversas (loja_id, wa_id, nome, ultima_msg, ultima_em, nao_lidas, janela_ate)
