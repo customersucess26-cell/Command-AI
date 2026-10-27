@@ -41,11 +41,14 @@ async function confereAssinatura(corpo: string, cabecalho: string | null) {
   return dif === 0;
 }
 
+// celular do Brasil que chega sem o 9 (55 + DDD + 8 dígitos) é enviado com o 9: a lista de teste da Meta e o app só aceitam assim
+const comNove = (n: string) => /^55\d{2}[6-9]\d{7}$/.test(n) ? n.slice(0, 4) + "9" + n.slice(4) : n;
+
 async function enviaTexto(phoneNumberId: string, token: string, para: string, texto: string) {
   const r = await fetch(`${GRAPH}/${phoneNumberId}/messages`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ messaging_product: "whatsapp", recipient_type: "individual", to: para, type: "text", text: { preview_url: true, body: texto } }),
+    body: JSON.stringify({ messaging_product: "whatsapp", recipient_type: "individual", to: comNove(para), type: "text", text: { preview_url: true, body: texto } }),
   });
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error("Meta: " + (j?.error?.message || r.status));

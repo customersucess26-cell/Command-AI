@@ -33,6 +33,9 @@ async function rpc(fn: string, args: Record<string, unknown>, jwt?: string) {
   return j;
 }
 
+// celular do Brasil que chega sem o 9 (55 + DDD + 8 dígitos) é enviado com o 9
+const comNove = (n: string) => /^55\d{2}[6-9]\d{7}$/.test(n) ? n.slice(0, 4) + "9" + n.slice(4) : n;
+
 async function tokenDa(loja: string) {
   return (await rpc("whats_token", { p_loja: loja })) || env("WA_TOKEN");
 }
@@ -61,7 +64,7 @@ Deno.serve(async (req) => {
     const envio = await fetch(`${GRAPH}/${r.phone_number_id}/messages`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ messaging_product: "whatsapp", recipient_type: "individual", to: r.wa_id, type: "text", text: { preview_url: true, body: String(b.texto).trim() } }),
+      body: JSON.stringify({ messaging_product: "whatsapp", recipient_type: "individual", to: comNove(r.wa_id), type: "text", text: { preview_url: true, body: String(b.texto).trim() } }),
     });
     const j = await envio.json().catch(() => ({}));
     if (!envio.ok) {
