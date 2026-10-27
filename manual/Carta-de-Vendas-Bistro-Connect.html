@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Carta de apresentação · Bistrô Connect</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+@page{size:A4;margin:0}
+:root{--navy:#0E1526;--navy2:#16213A;--ouro:#C9A24A;--ouro2:#F3E3B8;--tinta:#1C2433;--suave:#5E6878;--linha:#E6E8EC;--creme:#FAF7F0;--verde:#2F8A55;--verm:#C0392B}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+html,body{margin:0}
+body{font:10.6pt/1.55 'DM Sans',Arial,sans-serif;color:var(--tinta);background:#fff}
+h1,h2,h3,h4{font-family:'Poppins',Arial,sans-serif;color:var(--navy);margin:0;line-height:1.15}
+p{margin:0 0 9px}b{color:var(--navy)}
+.pg{width:210mm;height:297mm;position:relative;overflow:hidden;page-break-after:always;break-after:page;padding:17mm 17mm 20mm;background:#fff}
+.pg:last-child{page-break-after:auto;break-after:auto}
+.pg.creme{background:var(--creme)}
+.pg.noite{background:radial-gradient(120% 80% at 85% 0%,#1C3A63 0%,var(--navy) 55%,#080C17 100%);color:#E4EAF4}
+.pg.noite h1,.pg.noite h2,.pg.noite h3,.pg.noite h4,.pg.noite b{color:#fff}
+.sel{display:inline-block;font:600 7.6pt 'Poppins';letter-spacing:.22em;text-transform:uppercase;color:var(--ouro);margin-bottom:7px}
+.tit{font-size:23pt;letter-spacing:-.01em;margin-bottom:6px}
+.tit em{font-style:normal;color:var(--ouro)}
+.sub{font-size:11.4pt;color:var(--suave);margin:0 0 12px;max-width:150mm}
+.noite .sub{color:#B9C5DA}
+.rod{position:absolute;left:17mm;right:17mm;bottom:9mm;display:flex;justify-content:space-between;font-size:8pt;color:#98A1B1;border-top:1px solid var(--linha);padding-top:3mm}
+.noite .rod{color:#7F8BA3;border-color:rgba(255,255,255,.14)}
+.fio{height:3px;width:46mm;background:linear-gradient(90deg,var(--ouro),transparent);margin:5px 0 12px}
+
+/* capa */
+.capa{display:flex;flex-direction:column;justify-content:space-between;padding:22mm}
+.capa .topo{font:600 8.4pt 'Poppins';letter-spacing:.32em;color:var(--ouro);text-transform:uppercase}
+.capa .logo{width:92mm;display:block;margin:0 auto 12mm}
+.capa h1{font-size:31pt;line-height:1.12;text-align:center;letter-spacing:-.015em}
+.capa h1 em{font-style:normal;color:var(--ouro)}
+.capa .linha{width:56mm;height:3px;background:linear-gradient(90deg,transparent,var(--ouro),transparent);margin:9mm auto}
+.capa .lead{text-align:center;font-size:12.6pt;color:#C9D3E3;max-width:140mm;margin:0 auto}
+.capa .para{text-align:center;font-size:12pt;color:#fff;margin-top:11mm;padding:3.4mm 6mm;border:1px solid rgba(201,162,74,.55);border-radius:99px;display:table;margin-left:auto;margin-right:auto}
+.capa .pe{display:flex;justify-content:space-between;color:#8E9AB0;font-size:9pt;border-top:1px solid rgba(255,255,255,.14);padding-top:5mm}
+.capa .fotos{position:absolute;right:-6mm;top:14mm;display:flex;gap:4mm;opacity:.0}
+
+/* carta */
+.carta{display:grid;grid-template-columns:1fr 62mm;gap:12mm}
+.carta .txt p{font-size:11.8pt;line-height:1.66}
+.carta .txt .abre{font:700 14pt 'Poppins';color:var(--navy);margin-bottom:10px}
+.tres{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:9mm}.tres div{border:1px solid var(--linha);border-radius:14px;padding:11px 13px;font-size:9.6pt;line-height:1.42;color:var(--suave);background:var(--creme)}.tres b{display:block;font:600 10.6pt 'Poppins';margin-bottom:3px}
+.assina{margin-top:12px;font-size:11pt}.assina b{display:block;font:700 12pt 'Poppins'}
+.lado{display:grid;gap:9px;align-content:start}
+.num{border-radius:16px;padding:12px 14px;background:var(--navy);color:#fff}
+.num small{display:block;color:#B9C5DA;font-size:8.6pt;line-height:1.35}
+.num b{display:block;font:800 21pt 'Poppins';color:var(--ouro);margin:2px 0}
+.num.claro{background:#fff;border:1px solid var(--linha);color:var(--tinta)}.num.claro small{color:var(--suave)}.num.claro b{color:var(--verde)}
+.destaque{border-left:4px solid var(--ouro);background:var(--creme);padding:10px 14px;border-radius:0 12px 12px 0;margin:12px 0;font-size:11pt}
+
+/* pilares */
+.pilares{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 12px}
+.pil{border:1px solid var(--linha);border-radius:16px;padding:13px 15px;background:#fff;break-inside:avoid}
+.pil .ic{width:34px;height:34px;border-radius:11px;background:var(--navy);color:var(--ouro);display:grid;place-items:center;font:700 14pt 'Poppins';margin-bottom:7px}
+.pil h4{font-size:12pt;margin-bottom:3px}.pil p{font-size:9.8pt;color:var(--suave);margin:0}
+.mais{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.mais div{background:var(--creme);border-radius:12px;padding:9px 10px;font-size:9.2pt;line-height:1.35;color:var(--suave)}.mais b{display:block;font:600 9.6pt 'Poppins';margin-bottom:2px}
+
+/* telas */
+.fone{border-radius:7mm;background:#141414;padding:1.5mm;box-shadow:0 8mm 14mm -7mm rgba(14,21,38,.55);position:relative}
+.fone img{display:block;width:100%;border-radius:5.6mm;aspect-ratio:700/1191;object-fit:cover;object-position:top}
+.fone.alto img{aspect-ratio:600/1240}
+.tela{border-radius:3.2mm;background:#1a2133;padding:0;box-shadow:0 8mm 14mm -8mm rgba(14,21,38,.55);overflow:hidden}
+.tela .barra{height:5.4mm;background:#2a334a;display:flex;align-items:center;gap:1.1mm;padding-left:2.4mm}.tela .barra i{width:1.7mm;height:1.7mm;border-radius:50%;background:#5b6682}.tela .barra i:first-child{background:#e0645c}.tela .barra i:nth-child(2){background:#e3b341}.tela .barra i:nth-child(3){background:#58b368}
+.tela img{display:block;width:100%}
+.jornada{display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;margin:8px 0 10px}
+.jor .fone{margin-bottom:8px}
+.jor .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--ouro);color:var(--navy);font:700 9pt 'Poppins';margin-right:5px}
+.jor h4{font-size:10.6pt;margin-bottom:2px}.jor p{font-size:9pt;color:var(--suave);margin:0;line-height:1.4}
+.lista{margin:6px 0 10px;padding:0;list-style:none}
+.lista li{position:relative;padding-left:20px;margin:5px 0;font-size:10.2pt}
+.lista li::before{content:'';position:absolute;left:0;top:5px;width:11px;height:11px;border-radius:50%;background:var(--ouro) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 6.2l2 2 4-4.4' fill='none' stroke='%230E1526' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+.noite .lista li{color:#DCE4F1}
+.cols{display:grid;gap:9mm}
+.c2{grid-template-columns:1fr 1fr}
+.leg{font-size:8.6pt;color:var(--suave);text-align:center;margin-top:5px}
+
+/* planos */
+.planos{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.plano{border:1px solid var(--linha);border-radius:16px;padding:18px 12px;background:#fff;text-align:center}
+.plano h4{font-size:11.6pt;margin-bottom:4px}
+.plano .v{font:800 22pt 'Poppins';color:var(--navy);line-height:1}.plano .v small{font:500 9pt 'DM Sans';color:var(--suave)}
+.plano .f{font-size:8.8pt;color:var(--suave);margin:6px 0 0;line-height:1.35}
+.plano.dest{background:var(--navy);border-color:var(--navy);box-shadow:0 6mm 12mm -6mm rgba(14,21,38,.6)}.plano.dest h4,.plano.dest .v{color:#fff}.plano.dest .v{color:var(--ouro)}.plano.dest .f,.plano.dest .v small{color:#B9C5DA}
+.plano .tag{display:inline-block;font:600 7pt 'Poppins';letter-spacing:.12em;text-transform:uppercase;background:var(--ouro);color:var(--navy);padding:2px 7px;border-radius:99px;margin-bottom:6px}
+.conta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.conta>div{border-radius:16px;padding:13px 15px}
+.conta .ruim{background:#FBECEA;border:1px solid #F0C9C4}.conta .bom{background:#E8F5EC;border:1px solid #BFE0CA}
+.conta small{display:block;font-size:8.8pt;color:var(--suave);line-height:1.35}.conta b{display:block;font:800 20pt 'Poppins';margin:3px 0}
+.conta .ruim b{color:var(--verm)}.conta .bom b{color:var(--verde)}
+.nota{font-size:8.4pt;color:var(--suave)}
+.comp{width:100%;border-collapse:separate;border-spacing:0;margin-top:8mm;font-size:10pt;border:1px solid var(--linha);border-radius:14px;overflow:hidden}.comp th{background:var(--navy);color:#fff;font:600 9.6pt 'Poppins';padding:8px 12px;text-align:left}.comp th:nth-child(3){color:var(--ouro)}.comp td{padding:8px 12px;border-top:1px solid var(--linha)}.comp .r{color:var(--verm);font-weight:700}.comp .g{color:var(--verde);font-weight:700}
+
+/* sites */
+.sites{display:grid;grid-template-columns:1.35fr 1fr;gap:8mm;align-items:start;margin:8px 0}
+.sites .col{display:grid;gap:7mm}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm;margin-top:8px}
+.mini .fone img{aspect-ratio:390/800}
+
+/* final */
+.passos{display:grid;gap:9px;margin:8px 0 12px}
+.passo{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;border:1px solid var(--linha);border-radius:14px;padding:15px 16px;background:#fff}
+.passo::before{counter-increment:p;content:counter(p);width:30px;height:30px;border-radius:50%;background:var(--ouro);color:var(--navy);font:700 11pt 'Poppins';display:grid;place-items:center}
+.passos{counter-reset:p}.passo b{font:600 11pt 'Poppins';display:block}.passo p{margin:0;font-size:9.8pt;color:var(--suave)}
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:8px 0}
+.faq div{background:#fff;border:1px solid var(--linha);border-radius:12px;padding:12px 14px;font-size:10pt;line-height:1.42;color:var(--suave)}.faq b{display:block;font:600 9.8pt 'Poppins';margin-bottom:2px}
+.cta{display:grid;grid-template-columns:1fr 40mm;gap:10mm;align-items:center;border-radius:18px;background:var(--navy);color:#fff;padding:20px 22px;margin-top:16px}
+.cta h3{color:#fff;font-size:15pt;margin-bottom:6px}.cta p{color:#C9D3E3;font-size:10pt;margin:0 0 8px}
+.cta .contato{display:grid;gap:4px}.cta .contato div{font-size:10pt}.cta .contato small{color:#8E9AB0;font-size:8pt;display:block;letter-spacing:.08em;text-transform:uppercase}.cta .contato b{color:#fff}
+.cta .qr{background:#fff;border-radius:12px;padding:6px}.cta .qr svg{display:block;width:100%;height:auto}.cta .qr span{display:block;text-align:center;font-size:7.4pt;color:var(--suave);margin-top:3px}
+</style>
+</head>
+<body>
+
+<!-- 1 CAPA -->
+<section class="pg noite capa">
+  <div class="topo">Carta de apresentação</div>
+  <div>
+    <img class="logo" src="carta-img/logo-clara.png" alt="Bistrô Connect">
+    <h1>O cliente que pede no app é do app.<br><em>O que pede no seu cardápio é seu.</em></h1>
+    <div class="linha"></div>
+    <p class="lead">Cardápio online, pedido, rastreio e painel para a sua loja. Sem comissão por pedido.</p>
+    <div class="para">Preparada para a sua loja</div>
+  </div>
+  <div class="pe"><span>bistroconnect.com.br</span><span>contato@bistroconnect.com.br</span></div>
+</section>
+
+<!-- 2 CARTA -->
+<section class="pg">
+  <span class="sel">Uma conversa franca</span>
+  <h2 class="tit">Quanto da sua venda <em>fica com você?</em></h2>
+  <div class="fio"></div>
+  <div class="carta">
+    <div class="txt">
+      <p class="abre">Olá!</p>
+      <p>Todo mês, uma parte do que a sua loja vende fica com o aplicativo de delivery. Dependendo do plano, são de <b>12% a 23% de cada pedido</b>. E tem um custo que não aparece na fatura: o cliente que pediu é do app. Você faz o pão, o hambúrguer, a entrega, e quem fica com o telefone dele é outra empresa.</p>
+      <p>O <b>Bistrô Connect</b> existe para virar esse jogo. É o <b>cardápio online com o nome, a cor e o link da sua loja</b>. O cliente escolhe, finaliza e acompanha o pedido pelo celular. E o pedido cai direto no seu painel, <b>sem comissão por pedido</b>.</p>
+      <p>Você não precisa largar o app. Ele continua trazendo cliente novo. A diferença é o que acontece depois: com o <b>cartão de volta</b> (um QR com desconto que vai na sacola), quem já conhece a sua casa passa a pedir direto, de novo e de novo.</p>
+      <div class="destaque">Nas próximas páginas você vê, com telas reais, como o cliente pede, como a sua equipe recebe e quanto custa. Se fizer sentido, a sua loja entra no ar em poucos passos.</div>
+      <p class="assina">Um abraço,<b>Adilson Rutes</b>Bistrô Connect</p>
+    </div>
+    <div class="lado">
+      <div class="num"><small>Uma loja que vende pelo app</small><b>R$ 10 mil</b><small>por mês, com comissão de até 23%, deixa até <b style="display:inline;font:700 9pt 'DM Sans';color:#fff">R$ 2.300 por mês</b> no app</small></div>
+      <div class="num claro"><small>No Bistrô Connect, a mesma venda paga uma mensalidade com teto</small><b>R$ 49</b><small>por mês na faixa até R$ 10 mil. Nunca passa de R$ 199.</small></div>
+      <div class="num claro"><small>Comissão por pedido</small><b>R$ 0</b><small>Todos os recursos em todos os planos.</small></div>
+    </div>
+  </div>
+  <div class="tres">
+    <div><b>Seu nome, seu link</b>Cardápio com a cara da sua loja, no ar para o cliente pedir em qualquer lugar.</div>
+    <div><b>Pedido organizado</b>Itens, endereço, pagamento e observações chegando prontos no painel, com alerta sonoro.</div>
+    <div><b>O cliente é seu</b>Você fica com o telefone de quem pede e traz o cliente de volta com o cartão de volta.</div>
+  </div>
+  <p class="nota" style="position:absolute;left:17mm;right:17mm;bottom:17mm">Percentuais de comissão variam conforme o plano e o contrato com cada aplicativo. Confira o seu. O valor de R$ 2.300 é uma conta de exemplo (23% de R$ 10 mil).</p>
+  <div class="rod"><span>Bistrô Connect · carta de apresentação</span><span>2</span></div>
+</section>
+
+<!-- 3 O QUE É -->
+<section class="pg creme">
+  <span class="sel">O que é</span>
+  <h2 class="tit">Uma loja online <em>completa</em>, do pedido ao painel</h2>
+  <div class="fio"></div>
+  <p class="sub">O Bistrô Connect é a plataforma de cardápio e pedidos para padarias, cafés, hamburguerias, pizzarias, doceiras e restaurantes. Quatro peças que trabalham juntas:</p>
+  <div class="pilares">
+    <div class="pil"><div class="ic">1</div><h4>Cardápio online</h4><p>Fotos, descrições, preços e opcionais (tamanho, adicionais). Link próprio da sua loja, que você coloca no Instagram, no WhatsApp e no balcão.</p></div>
+    <div class="pil"><div class="ic">2</div><h4>Pedido sem confusão</h4><p>O cliente monta a sacola, escolhe entrega ou retirada e a forma de pagamento. Os valores são conferidos pelo sistema, sem erro de conta.</p></div>
+    <div class="pil"><div class="ic">3</div><h4>Rastreio em tempo real</h4><p>O cliente acompanha as etapas do pedido pelo celular: recebido, confirmado, em preparo, saiu para entrega, entregue. Menos “cadê meu pedido?” para a sua equipe responder.</p></div>
+    <div class="pil"><div class="ic">4</div><h4>Painel de pedidos</h4><p>Alerta sonoro a cada pedido novo, quadro por etapa, comanda para imprimir, financeiro e lista de clientes. Funciona no computador e no celular.</p></div>
+  </div>
+  <div class="cols c2" style="margin-top:6mm;align-items:center">
+    <div class="fone" style="width:50mm;margin:0 auto"><img src="carta-img/vitrine-padaria.jpg" alt="Cardápio online"></div>
+    <div>
+      <h3 style="font-size:14pt;margin-bottom:6px">E ainda tem mais</h3>
+      <div class="mais" style="grid-template-columns:1fr 1fr">
+        <div><b>Cartão de volta</b>QR com desconto na sacola do app para o cliente pedir direto.</div>
+        <div><b>Atendimento no WhatsApp</b>As mensagens da loja dentro do painel, com robô para o básico.</div>
+        <div><b>Equipe com funções</b>Dono, gerente, atendente e cozinha, cada um vê o que precisa.</div>
+        <div><b>Segurança</b>Login em 2 etapas para quem gerencia a loja e dados protegidos.</div>
+      </div>
+      <p class="nota" style="margin-top:8px">Atendimento no WhatsApp pelo painel usa a conexão oficial do WhatsApp (API da Meta), com um número cadastrado para isso.</p>
+    </div>
+  </div>
+  <div class="rod"><span>Bistrô Connect · carta de apresentação</span><span>3</span></div>
+</section>
+
+<!-- 4 JORNADA DO CLIENTE -->
+<section class="pg">
+  <span class="sel">O cliente pede</span>
+  <h2 class="tit">Do cardápio ao pedido em <em>poucos toques</em></h2>
+  <div class="fio"></div>
+  <p class="sub">Sem baixar aplicativo e sem cadastro longo. O cliente abre o link, escolhe e envia. É assim que ele vê, no celular:</p>
+  <div class="jornada">
+    <div class="jor"><div class="fone"><img src="carta-img/vitrine-padaria.jpg" alt=""></div><h4><span class="n">1</span>Escolhe</h4><p>Cardápio com fotos grandes, categorias e destaques da casa.</p></div>
+    <div class="jor"><div class="fone"><img src="carta-img/carrinho.jpg" alt=""></div><h4><span class="n">2</span>Monta a sacola</h4><p>Ajusta a quantidade e vê o total antes de continuar.</p></div>
+    <div class="jor"><div class="fone"><img src="carta-img/dados.jpg" alt=""></div><h4><span class="n">3</span>Informa os dados</h4><p>Nome, WhatsApp, entrega ou retirada e forma de pagamento.</p></div>
+    <div class="jor"><div class="fone"><img src="carta-img/pedido-recebido.jpg" alt=""></div><h4><span class="n">4</span>Pedido enviado</h4><p>Confirmação na hora, com o cartão do pedido para guardar e compartilhar.</p></div>
+  </div>
+  <div class="cols c2" style="margin-top:6mm">
+    <div><h3 style="font-size:13pt;margin-bottom:4px">Por que isso vende mais</h3>
+      <ul class="lista"><li>O cliente pede <b>no horário dele</b>, mesmo com a equipe ocupada ou a loja fechada (pedido agendado).</li><li>Cada pedido já chega <b>organizado</b>: itens, endereço, pagamento e observações.</li><li>O link serve em qualquer lugar: bio do Instagram, status, grupo e etiqueta da embalagem.</li></ul></div>
+    <div><h3 style="font-size:13pt;margin-bottom:4px">Por que isso protege a sua margem</h3>
+      <ul class="lista"><li><b>Zero comissão</b> por pedido, em qualquer plano.</li><li>O <b>telefone do cliente é seu</b>: você sabe quem pede, quando e quanto.</li><li>Preços e opcionais <b>conferidos pelo sistema</b>: o total nunca sai errado.</li></ul></div>
+  </div>
+  <div class="rod"><span>Bistrô Connect · carta de apresentação</span><span>4</span></div>
+</section>
+
+<!-- 5 CARTÃO E RASTREIO -->
+<section class="pg creme">
+  <span class="sel">Depois do pedido</span>
+  <h2 class="tit">O cartão e o rastreio <em>falam por você</em></h2>
+  <div class="fio"></div>
+  <p class="sub">Ao enviar, o cliente recebe um <b>cartão do pedido em imagem</b>, que ele compartilha no WhatsApp da loja. E acompanha cada etapa por um link próprio, que se atualiza sozinho.</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7mm;align-items:start;margin:8px 0">
+    <div><div class="fone"><img src="carta-img/cartao-padaria.jpg" alt=""></div><p class="leg"><b>O cartão do pedido</b><br>Imagem com itens, endereço e total, no estilo da sua loja.</p></div>
+    <div><div class="fone alto"><img src="carta-img/rast-padaria.jpg" alt=""></div><p class="leg"><b>Rastreio da padaria</b><br>Linha do tempo com a etapa atual em destaque.</p></div>
+    <div><div class="fone alto"><img src="carta-img/rast-burger.jpg" alt=""></div><p class="leg"><b>Rastreio da hamburgueria</b><br>O visual muda com o tipo de loja: cada uma com a sua cara.</p></div>
+  </div>
+  <div class="cols c2" style="margin-top:6mm">
+    <ul class="lista"><li>O cliente sabe <b>em que pé está o pedido</b> sem precisar perguntar.</li><li>Quando a sua equipe muda a etapa no painel, <b>a tela dele muda sozinha</b>.</li></ul>
+    <ul class="lista"><li>O link do rastreio abre com a <b>foto da sua loja</b> na prévia do WhatsApp.</li><li>Fica uma lembrança de marca na mão de quem comprou.</li></ul>
+  </div>
+  <div class="rod"><span>Bistrô Connect · carta de apresentação</span><span>5</span></div>
+</section>
+
+<!-- 6 PAINEL -->
+<section class="pg">
+  <span class="sel">A sua equipe</span>
+  <h2 class="tit">O painel que <em>organiza a cozinha</em></h2>
+  <div class="fio"></div>
+  <p class="sub">Pedido novo toca um alerta, aparece no quadro e segue as etapas até a entrega. Do jeito que fica mais fácil para você:</p>
+  <div class="tela"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/painel-quadro.jpg" alt="Painel em quadro"></div>
+  <p class="leg">Vista em <b>quadro</b>: cada coluna é uma etapa do pedido.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5mm;margin-top:5mm">
+    <div><div class="tela"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/painel-lista.jpg" alt=""></div><p class="leg">Em <b>lista</b></p></div>
+    <div><div class="tela"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/painel-grade.jpg" alt=""></div><p class="leg">Em <b>grade</b></p></div>
+    <div><div class="tela"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/painel-escuro.jpg" alt=""></div><p class="leg">Modo <b>escuro</b></p></div>
+  </div>
+  <div class="cols c2" style="margin-top:5mm">
+    <ul class="lista"><li><b>Visão geral</b> do dia: pedidos, faturamento e produtos mais vendidos.</li><li><b>Financeiro</b> por período e <b>lista de clientes</b> com histórico.</li><li><b>Comanda para imprimir</b> (80 ou 58 mm), até ao aceitar o pedido.</li></ul>
+    <ul class="lista"><li><b>Equipe com funções</b>: dono, gerente, atendente e cozinha.</li><li><b>Pedido manual</b>: anote o pedido que chegou por telefone ou balcão.</li><li><b>Cardápio e preços</b> editáveis na hora, pelo celular.</li></ul>
+  </div>
+  <div class="rod"><span>Bistrô Connect · carta de apresentação</span><span>6</span></div>
+</section>
+
+<!-- 7 WHATSAPP -->
+<section class="pg noite">
+  <span class="sel">Atendimento</span>
+  <h2 class="tit">O WhatsApp da loja <em>dentro do painel</em></h2>
+  <div class="fio"></div>
+  <p class="sub">As mensagens dos clientes chegam no painel. A equipe responde por ali, cada pessoa no seu login, e o robô cuida do básico.</p>
+  <div class="tela"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/atendimento.png" alt="Atendimento no WhatsApp"></div>
+  <div class="cols c2" style="margin-top:7mm;align-items:center">
+    <div>
+      <ul class="lista">
+        <li><b>Robô</b> responde cardápio, horário, entrega, pagamento e <b>“cadê meu pedido?”</b> com o link do rastreio.</li>
+        <li>Pediu atendente? O robô para e <b>chama a equipe</b>.</li>
+        <li><b>Botão “+ Pedido”</b>: anote o pedido do cliente dentro da conversa e mande o link do rastreio.</li>
+        <li><b>Aviso de etapa</b>: o cliente recebe no WhatsApp quando o pedido sai para entrega.</li>
+      </ul>
+      <p class="nota" style="color:#8E9AB0">Usa a conexão oficial do WhatsApp (API da Meta), com um número dedicado. A Meta permite responder gratuitamente por até 24h depois da última mensagem do cliente.</p>
+    </div>
+    <div class="tela"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/novo-pedido.png" alt="Novo pedido"></div>
+  </div>
+  <div class="rod"><span>Bistrô Connect · carta de apresentação</span><span>7</span></div>
+</section>
+
+<!-- 8 CARTÃO DE VOLTA -->
+<section class="pg creme">
+  <span class="sel">Cartão de volta</span>
+  <h2 class="tit">O app apresenta o cliente. <em>Do segundo pedido em diante, ele é seu.</em></h2>
+  <div class="fio"></div>
+  <div class="cols c2" style="grid-template-columns:1fr 70mm;align-items:start">
+    <div>
+      <p>Todo pedido que sai da sua loja pelo app pode levar junto um <b>cartão com QR code e um cupom de desconto</b>. O cliente aponta o celular, cai no seu cardápio e pede direto no próximo pedido.</p>
+      <ul class="lista"><li>Você define o <b>percentual do cupom</b> (de 5% a 30%), o valor mínimo e se vale uma vez por cliente.</li><li>O painel <b>gera as folhas para imprimir</b>, com 10 cartões por página e o QR da sua loja.</li><li>O desconto é <b>conferido pelo sistema</b>, sem fraude e sem conta de cabeça.</li></ul>
+      <div class="conta">
+        <div class="ruim"><small>Pedido de R$ 60 no app (plano de entrega, 23%)</small><b>R$ 13,80</b><small>de comissão. Em todo pedido, para sempre.</small></div>
+        <div class="bom"><small>O mesmo pedido pelo cartão de volta (15%)</small><b>R$ 9,00</b><small>de desconto, uma vez só. Depois, zero comissão.</small></div>
+      </div>
+      <p class="nota">Antes de usar, confira o contrato do aplicativo que você usa sobre material promocional dentro das embalagens.</p>
+    </div>
+    <div><div class="tela" style="border-radius:3mm"><img src="carta-img/cartoes-qr.png" alt="Cartões com QR"></div><p class="leg">Folha pronta para imprimir, com o QR da loja</p></div>
+  </div>
+  <div class="tela" style="margin-top:7mm"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/cartao-de-volta.png" alt="" style="max-height:80mm;object-fit:cover;object-position:top"></div>
+  <div class="rod"><span>Bistrô Connect · carta de apresentação</span><span>8</span></div>
+</section>
+
+<!-- 9 INVESTIMENTO -->
+<section class="pg">
+  <span class="sel">Investimento</span>
+  <h2 class="tit">Você paga pelo que vende. <em>E o preço tem teto.</em></h2>
+  <div class="fio"></div>
+  <p class="sub">Sem taxa de implantação e sem comissão por pedido. A mensalidade acompanha quanto a sua loja vendeu pela plataforma no mês. <b>Todos os planos têm todos os recursos.</b></p>
+  <div class="planos">
+    <div class="plano"><span class="tag">Vagas limitadas</span><h4>Começo</h4><div class="v">Convite</div><p class="f">Vendas de até<br><b>R$ 3 mil por mês</b></p></div>
+    <div class="plano dest"><h4>Crescendo</h4><div class="v">R$ 49<small>/mês</small></div><p class="f">Vendas de até<br><b style="color:#fff">R$ 10 mil por mês</b></p></div>
+    <div class="plano"><h4>Forte</h4><div class="v">R$ 99<small>/mês</small></div><p class="f">Vendas de até<br><b>R$ 30 mil por mês</b></p></div>
+    <div class="plano"><h4>Sem limites</h4><div class="v">R$ 199<small>/mês</small></div><p class="f">Acima de<br><b>R$ 30 mil por mês</b></p></div>
+  </div>
+  <div class="cols c2" style="margin-top:6mm">
+    <div><h3 style="font-size:13pt;margin-bottom:4px">Em todos os planos</h3>
+      <ul class="lista"><li>Cardápio online com o link da sua loja</li><li>Pedidos, rastreio e cartão do pedido</li><li>Painel, financeiro, clientes e equipe</li><li>Cartão de volta com cupom e QR</li><li>Atendimento no WhatsApp pelo painel</li><li>Suporte pelo WhatsApp</li></ul></div>
+    <div><h3 style="font-size:13pt;margin-bottom:4px">A conta, na prática</h3>
+      <div class="conta" style="grid-template-columns:1fr;margin:4px 0">
+        <div class="ruim"><small>Loja que vende R$ 10 mil/mês e paga 23% ao app</small><b>R$ 2.300/mês</b></div>
+        <div class="bom"><small>A mesma venda direta no Bistrô Connect (faixa até R$ 10 mil)</small><b>R$ 49/mês</b></div>
+      </div>
+      <p class="nota">Exemplo ilustrativo. Se um dia a sua venda passar da faixa, a mensalidade sobe só naquele mês, e o teto é R$ 199.</p></div>
+  </div>
+  <table class="comp">
+    <tr><th></th><th>App de delivery</th><th>Bistrô Connect</th></tr>
+    <tr><td>Comissão por pedido</td><td class="r">12% a 23%</td><td class="g">R$ 0</td></tr>
+    <tr><td>Quem fica com o telefone do cliente</td><td class="r">O aplicativo</td><td class="g">Você</td></tr>
+    <tr><td>Quem define o visual e o link</td><td class="r">O aplicativo</td><td class="g">Você</td></tr>
+    <tr><td>Quanto custa vender R$ 10 mil no mês</td><td class="r">Até R$ 2.300</td><td class="g">R$ 49</td></tr>
+  </table>
+  <div class="destaque" style="margin-top:8mm"><b>Quer ajuda para montar?</b> A plataforma não cobra taxa de implantação. Se preferir que a gente cadastre o cardápio, as fotos e os preços por você, pelo WhatsApp e videochamada, é um serviço à parte, combinado conforme o tamanho do seu cardápio.</div>
+  <div class="rod"><span>Bistrô Connect · carta de apresentação</span><span>9</span></div>
+</section>
+
+<!-- 10 SITE PERSONALIZADO -->
+<section class="pg noite">
+  <span class="sel">Para quem quer ir além</span>
+  <h2 class="tit">Site de marca, <em>feito sob medida</em></h2>
+  <div class="fio"></div>
+  <p class="sub">O cardápio da plataforma já resolve o pedido. Mas se você quer uma <b>vitrine com a cara da sua marca</b>, a gente cria o seu site completo, no mesmo nível destes que já entregamos:</p>
+  <div class="sites">
+    <div class="col">
+      <div class="tela"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/site-ambar.jpg" alt="Âmbar"></div>
+      <div class="tela"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/site-bruto.jpg" alt="Bruto Burger"></div>
+    </div>
+    <div class="col">
+      <div class="tela"><div class="barra"><i></i><i></i><i></i></div><img src="carta-img/site-padaria.jpg" alt="Padaria e Confeitaria"></div>
+      <div class="cols c2" style="grid-template-columns:1fr 1fr;gap:4mm">
+        <div class="fone"><img src="carta-img/site-ambar-mob.jpg" alt="" style="aspect-ratio:390/800"></div>
+        <div class="fone"><img src="carta-img/site-padaria-mob.jpg" alt="" style="aspect-ratio:390/800"></div>
+      </div>
+    </div>
+  </div>
+  <p class="leg" style="color:#8E9AB0;text-align:left">Âmbar (cozinha e vinhos), Bruto Burger e Padaria &amp; Confeitaria: três estilos criados para o ramo de cada loja.</p>
+  <div class="cols c2" style="margin-top:6mm">
+    <div><h3 style="font-size:13pt;margin-bottom:4px">O que está no projeto</h3>
+      <ul class="lista"><li>Design exclusivo, com a identidade da sua marca</li><li>Fotos, história, horários, endereço e mapa</li><li>Funciona no celular e aparece bem no Google</li><li>Botão <b>“Pedir agora”</b> levando direto ao seu cardápio da plataforma</li></ul></div>
+    <div><h3 style="font-size:13pt;margin-bottom:4px">Como funciona</h3>
+      <ul class="lista"><li>Conversa rápida para entender a marca</li><li>Você aprova o desenho antes de publicar</li><li>Domínio próprio (ex.: suapadaria.com.br)</li><li>Investimento <b>sob orçamento</b>, conforme o projeto</li></ul></div>
+  </div>
+  <div class="rod"><span>Bistrô Connect · carta de apresentação</span><span>10</span></div>
+</section>
+
+<!-- 11 COMO COMEÇAR -->
+<section class="pg creme">
+  <span class="sel">Vamos começar</span>
+  <h2 class="tit">Sua loja no ar em <em>3 passos</em></h2>
+  <div class="fio"></div>
+  <div class="passos">
+    <div class="passo"><div><b>Criamos a sua conta e a sua loja</b><p>Nome, cor, logo, horário, entrega e formas de pagamento. Seu link próprio já nasce pronto.</p></div></div>
+    <div class="passo"><div><b>Cadastramos o seu cardápio</b><p>Você mesmo, pelo painel, ou com a nossa ajuda: fotos, preços e opcionais.</p></div></div>
+    <div class="passo"><div><b>Você divulga o link e recebe os pedidos</b><p>No Instagram, no WhatsApp, no balcão e no cartão de volta. Cada pedido toca no painel.</p></div></div>
+  </div>
+  <div class="faq">
+    <div><b>Preciso sair do app de delivery?</b>Não. Ele continua trazendo cliente novo. O cardápio próprio é para o cliente que já conhece a sua casa pedir direto.</div>
+    <div><b>Preciso entender de tecnologia?</b>Não. Se você usa WhatsApp, usa o painel. E a gente ajuda a montar.</div>
+    <div><b>E se eu não gostar?</b>Sem fidelidade e sem multa. Você cancela quando quiser.</div>
+    <div><b>Funciona para o meu tipo de loja?</b>Padaria, café, hamburgueria, pizzaria, doceria e restaurante, cada um com visual próprio.</div>
+  </div>
+  <div class="cta">
+    <div>
+      <h3>Vamos colocar a sua loja no ar?</h3>
+      <p>Fale com a gente e veja o seu cardápio funcionando.</p>
+      <div class="contato">
+        <div><small>Site</small><b>bistroconnect.com.br</b></div>
+        <div><small>E-mail</small><b>contato@bistroconnect.com.br</b></div>
+        
+      </div>
+    </div>
+    <div class="qr"><div id="qr"></div><span>Aponte a câmera</span></div>
+  </div>
+  <div class="rod"><span>Bistrô Connect · a evolução digital da sua gastronomia</span><span>11</span></div>
+</section>
+
+<script src="../plataforma/assets/vendor/qrcode-generator-2.0.4.js"></script>
+<script>
+try{var q=qrcode(0,'M');q.addData('https://bistroconnect.com.br');q.make();document.getElementById('qr').innerHTML=q.createSvgTag({cellSize:4,margin:0,scalable:true})}catch(e){}
+</script>
+</body>
+</html>
