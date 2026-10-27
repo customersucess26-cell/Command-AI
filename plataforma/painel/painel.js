@@ -826,7 +826,7 @@ document.addEventListener('submit',async e=>{if(e.target.id!=='pmForm')return;e.
     const c=prtCfg();if(o&&ped.aceitar&&c.auto&&!demo)imprimeComanda(o,c.vias);
     if(pm.conv&&o){const l=linkRastreio(o),ta=$('#waTexto');if(ta){ta.value=`Anotei o seu pedido ${o.code}! Total ${brl(o.total)}.`+(l?`\n\nAcompanhe em tempo real:\n${l}`:'');waAutoAltura();ta.focus()}}
     else if(aba==='pedidos'&&o)abrePedido(o.id)}
-  catch(err){console.error(err);toast(erroAmigavel(err))}
+  catch(err){console.error(err);const m=erroAmigavel(err);toast(m.startsWith('Não foi possível concluir')&&err&&(err.code||err.message)?'Não foi possível criar o pedido ('+(err.code||'')+' '+String(err.message||'').slice(0,90)+')':m)}
   pm.enviando=false;$('#pmCriar').disabled=false});
 
 /* ================= início ================= */
