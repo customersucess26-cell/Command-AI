@@ -12,12 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
-<link rel="stylesheet" href="painel.css?v=20261027a">
+<link rel="stylesheet" href="painel.css?v=20261028a">
 <script src="../assets/config.js"></script>
 <script src="../assets/vendor/supabase-2.45.4.js"></script>
-<script src="../assets/exemplo.js?v=20261027a" defer></script>
+<script src="../assets/exemplo.js?v=20261028a" defer></script>
 <script src="../assets/vendor/qrcode-generator-2.0.4.js" defer></script>
-<script src="painel.js?v=20261027a" defer></script>
+<script src="painel.js?v=20261028a" defer></script>
 </head>
 <body>
 
@@ -150,6 +150,7 @@
         <span class="seg-tema seg-vista" role="group" aria-label="Jeito de ver os pedidos"><button type="button" data-vista="quadro">▦ Quadro</button><button type="button" data-vista="lista">☰ Lista</button><button type="button" data-vista="grade">▥ Grade</button></span>
         <span class="grow"></span>
         <label class="inline-lbl fino"><input type="checkbox" id="mostrarFechados"> Mostrar entregues e cancelados de hoje</label>
+        <button type="button" class="btn primary" id="btnPedidoManual" data-papel="dono gerente atendente">+ Pedido</button>
         <button class="btn small" type="button" id="btnNotif">Ativar avisos no computador</button>
       </div>
       <div class="kanban" id="kanban"></div>
@@ -264,14 +265,15 @@
       <div class="wa" id="waApp" hidden>
         <aside class="wa-lado">
           <div class="wa-topo"><input type="search" id="waBusca" placeholder="Buscar conversa" aria-label="Buscar conversa">
-            <label class="wa-robo" title="O robô responde cardápio, status do pedido, horário, entrega e pagamento"><input type="checkbox" id="waRobo"><span>Robô responde</span></label></div>
+            <label class="wa-robo" title="O robô responde cardápio, status do pedido, horário, entrega e pagamento"><input type="checkbox" id="waRobo"><span>Robô responde</span></label>
+            <label class="wa-robo" title="Quando você mudar a etapa do pedido, o cliente recebe o aviso no WhatsApp (dentro das 24h da conversa)"><input type="checkbox" id="waAvisa"><span>Avisar etapa do pedido</span></label></div>
           <div class="wa-lista" id="waLista"></div>
         </aside>
         <div class="wa-chat" id="waChat">
           <div class="wa-vazio" id="waVazio"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg><b>Escolha uma conversa</b><span class="muted fino">As mensagens novas aparecem aqui na hora.</span></div>
           <header class="wa-cab" hidden><button type="button" class="wa-volta" id="waVolta" aria-label="Voltar para as conversas">‹</button><span class="wa-av" id="waAv"></span>
             <div class="wa-quem"><b id="waNome"></b><small id="waFone"></small></div>
-            <button type="button" class="btn small" id="waModo"></button></header>
+            <button type="button" class="btn small primary" id="waCriaPedido" title="Anotar o pedido deste cliente">+ Pedido</button><button type="button" class="btn small" id="waModo"></button></header>
           <div class="wa-msgs" id="waMsgs" hidden></div>
           <div class="wa-aviso" id="waAviso" hidden></div>
           <div class="wa-rapidas" id="waRapidas" hidden></div>
@@ -338,6 +340,16 @@
           <p class="muted fino">Mínimo de 12 caracteres. Cada pessoa da equipe deve ter o próprio login.</p>
           <div class="acoes-linha"><button type="submit" class="btn">Trocar senha</button><button type="button" class="btn perigo" id="btnSairTudo">Sair de todos os aparelhos</button></div>
         </form>
+        <div class="box" id="boxImpressao" data-recurso="pedidos">
+          <div class="box-head"><h2>Impressão da comanda</h2><span class="muted fino">vale só neste computador</span></div>
+          <label class="inline-lbl"><input type="checkbox" id="prtAuto"> Imprimir a comanda quando eu <b>aceitar</b> o pedido</label>
+          <label class="inline-lbl"><input type="checkbox" id="prtChegar"> Imprimir assim que o pedido <b>chegar</b></label>
+          <div class="form" style="margin-top:8px"><label>Largura do papel<select id="prtLarg"><option value="80">80 mm</option><option value="58">58 mm</option></select></label>
+            <label>Vias<select id="prtVias"><option value="1">1 via</option><option value="2">2 vias (cozinha e entrega)</option><option value="3">3 vias</option></select></label></div>
+          <div class="acoes-linha"><button type="button" class="btn" id="prtTeste">Imprimir teste</button></div>
+          <details class="muted fino" style="margin-top:8px"><summary>Imprimir sem aparecer a janela de confirmação</summary>
+            <ol class="at-passos"><li>Deixe a impressora térmica como <b>padrão</b> do computador.</li><li>Clique com o botão direito no atalho do <b>Google Chrome</b> › <b>Propriedades</b>.</li><li>No campo <b>Destino</b>, depois de <code>chrome.exe"</code>, acrescente um espaço e <code>--kiosk-printing</code>. Salve e abra o painel por esse atalho.</li></ol></details>
+        </div>
         <div class="box">
           <div class="box-head"><h2>Aparência</h2></div>
           <div class="seg" role="group" aria-label="Tema"><button type="button" data-tema="auto">Automático</button><button type="button" data-tema="light">Claro</button><button type="button" data-tema="dark">Escuro</button></div>
@@ -357,6 +369,32 @@
     <div class="ficha-acoes" id="pdAcoes"></div>
     <div class="ficha-corpo" id="pdCorpo"></div>
   </div>
+</aside>
+<aside class="ficha" id="fichaNovoPedido" role="dialog" aria-modal="true" aria-labelledby="pmTitulo" hidden>
+  <form class="ficha-wrap" id="pmForm" novalidate>
+    <header class="ficha-topo"><div><h2 id="pmTitulo">Novo pedido</h2><p class="muted fino" id="pmSub">Anote o pedido do cliente. Os valores são calculados pelo cardápio.</p></div><button type="button" class="x" data-fechar aria-label="Fechar">×</button></header>
+    <div class="ficha-corpo">
+      <div class="form">
+        <label>Nome do cliente<input id="pmNome" maxlength="80" autocomplete="off" required></label>
+        <label>WhatsApp (com DDD)<input id="pmFone" inputmode="tel" maxlength="20" autocomplete="off" required></label>
+        <label>Origem<select id="pmOrigem"><option value="whatsapp">WhatsApp</option><option value="telefone">Telefone</option><option value="balcao">Balcão</option></select></label>
+        <label>Pagamento<select id="pmPag"></select></label>
+        <div class="full"><span class="fino muted">Como o cliente recebe</span>
+          <div class="seg" role="group" aria-label="Entrega ou retirada"><button type="button" data-pm-tipo="retirada" aria-pressed="true">Retirada</button><button type="button" data-pm-tipo="entrega" aria-pressed="false">Entrega</button></div></div>
+        <label class="full" id="pmEndLbl" hidden>Endereço de entrega<input id="pmEnd" maxlength="200" autocomplete="off"></label>
+        <label>Para quando (opcional)<input id="pmQuando" maxlength="60" placeholder="ex.: hoje 18h"></label>
+        <label>Cupom (opcional)<input id="pmCupom" maxlength="20" autocomplete="off" style="text-transform:uppercase"></label>
+        <label class="full">Observações<textarea id="pmObs" rows="2" maxlength="300" placeholder="ex.: sem cebola, troco para 50"></textarea></label>
+      </div>
+      <div class="pm-prod">
+        <div class="box-head"><h3>Produtos</h3></div>
+        <input id="pmBusca" type="search" placeholder="Buscar produto" maxlength="40" aria-label="Buscar produto">
+        <div class="pm-lista" id="pmLista"></div>
+      </div>
+      <div class="pm-carrinho"><div class="box-head"><h3>Pedido</h3></div><div id="pmCarrinho"></div><div class="pm-total" id="pmResumo"></div></div>
+    </div>
+    <footer class="ficha-pe"><label class="inline-lbl fino"><input type="checkbox" id="pmAceitar" checked> Já aceitar o pedido</label><span class="grow"></span><button type="button" class="btn" data-fechar>Cancelar</button><button type="submit" class="btn primary" id="pmCriar">Criar pedido</button></footer>
+  </form>
 </aside>
 <aside class="ficha" id="fichaProduto" role="dialog" aria-modal="true" aria-labelledby="prTitulo" hidden>
   <form class="ficha-wrap" id="prForm" novalidate>

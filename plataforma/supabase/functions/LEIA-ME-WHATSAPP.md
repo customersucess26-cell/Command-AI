@@ -77,3 +77,13 @@ Pronto: a aba Atendimento da loja vira a caixa de entrada. Se a loja usar um app
 - "Falar com a equipe", pedido não encontrado ou cancelado: passa a conversa para a equipe e fica quieto.
 - Quando alguém da equipe responde, a conversa passa para a equipe. O botão **Devolver ao robô** devolve.
 - Conversa em andamento que o robô não entende: ele não responde; fica marcada como não lida para a equipe.
+
+## Pedido pela conversa, impressão e aviso de etapa (arquivo `11-pedido-whatsapp.sql`)
+
+- **+ Pedido** (na conversa e em Pedidos): a equipe anota o pedido do cliente. Os preços, opcionais, cupom e mínimo
+  são conferidos pelo servidor, igual ao cardápio. A loja pausada não bloqueia a equipe.
+- **Origem do pedido** (WhatsApp, telefone ou balcão) aparece na ficha do pedido e na comanda.
+- **Impressão da comanda** (Conta e ajustes): imprime ao aceitar, ou assim que o pedido chega; 80 ou 58 mm; 1 a 3 vias.
+  A configuração vale só no computador onde foi feita. Para não aparecer a janela de impressão, abra o Chrome com `--kiosk-printing`.
+- **Avisar etapa do pedido** (Atendimento): ao mudar a etapa, o cliente recebe a mensagem no WhatsApp, só dentro das 24h
+  da conversa. Atualize também a função `whats-enviar` (arquivo novo).

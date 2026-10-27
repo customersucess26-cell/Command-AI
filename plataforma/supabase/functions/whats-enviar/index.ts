@@ -1,6 +1,6 @@
 // Bistrô Connect · whats-enviar
 // Chamada pelo painel (aba Atendimento) com o login da pessoa da equipe:
-//   { acao: "enviar", conversa, texto }  manda a resposta para o WhatsApp do cliente
+//   { acao: "enviar", conversa, texto, auto? }  manda a resposta para o WhatsApp do cliente (auto = aviso do sistema, o robô continua)
 //   { acao: "midia", mensagem }          devolve a foto/áudio que o cliente mandou
 // A permissão é conferida no banco (whats_responder / whats_midia), com o login de quem chamou.
 // Segredos: WA_TOKEN (token geral, quando a loja não tem token próprio). "Verify JWT" pode ficar ligado.
@@ -59,7 +59,7 @@ Deno.serve(async (req) => {
       return new Response(arq.body, { headers: { ...CORS, "Content-Type": info.mime_type || "application/octet-stream", "Cache-Control": "private, max-age=3600" } });
     }
 
-    const r = await rpc("whats_responder", { p_conversa: Number(b.conversa), p_texto: String(b.texto || "") }, jwt);
+    const r = await rpc("whats_responder", { p_conversa: Number(b.conversa), p_texto: String(b.texto || ""), p_auto: b.auto === true }, jwt);
     const token = await tokenDa(r.loja_id);
     const envio = await fetch(`${GRAPH}/${r.phone_number_id}/messages`, {
       method: "POST",

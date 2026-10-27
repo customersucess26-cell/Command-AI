@@ -213,6 +213,10 @@ create unique index if not exists orders_track_code_idx on public.orders (track_
 -- desconto do cartão de volta (cupom) no pedido
 alter table public.orders add column if not exists discount numeric(10,2) not null default 0;
 alter table public.orders add column if not exists coupon text not null default '';
+-- de onde veio o pedido: site (cardápio), whatsapp, telefone, balcao
+alter table public.orders add column if not exists origem text not null default 'site';
+alter table public.orders drop constraint if exists orders_origem_ok;
+alter table public.orders add constraint orders_origem_ok check (origem in ('site','whatsapp','telefone','balcao'));
 
 create table if not exists public.order_events (
   id         bigint generated always as identity primary key,
@@ -577,7 +581,7 @@ begin
                               'subtotal', ja.subtotal, 'delivery_fee', ja.delivery_fee, 'discount', ja.discount, 'coupon', ja.coupon, 'items', ja.items);
   end if;
 
-  if not loja.accept_orders then
+  if not loja.accept_orders and coalesce(current_setting('bc.interno', true), '') <> '1' then
     perform public.recusa('A loja não está recebendo pedidos pelo site agora. Chame no WhatsApp.');
   end if;
   if length(nome) not between 2 and 80 then perform public.recusa('Informe seu nome.'); end if;
@@ -673,9 +677,9 @@ begin
     perform public.recusa('Os preços mudaram desde que você montou o pedido. Confira o novo total e envie de novo.', 'PRICE_CHANGED');
   end if;
 
-  if (select count(*) from public.orders o where o.loja_id = loja.id and o.created_at > now() - interval '10 minutes'
+  if coalesce(current_setting('bc.interno', true), '') <> '1' and ((select count(*) from public.orders o where o.loja_id = loja.id and o.created_at > now() - interval '10 minutes'
         and regexp_replace(o.customer_phone, '\D', '', 'g') = digs) >= 5
-     or (select count(*) from public.orders o where o.loja_id = loja.id and o.created_at > now() - interval '10 minutes') >= 120 then
+     or (select count(*) from public.orders o where o.loja_id = loja.id and o.created_at > now() - interval '10 minutes') >= 120) then
     perform public.recusa('Muitos pedidos seguidos. Fale com a loja no WhatsApp.');
   end if;
 
@@ -696,6 +700,30 @@ begin
 
   return jsonb_build_object('code', novo.code, 'track_token', novo.track_token, 'track_code', novo.track_code, 'total', novo.total,
                             'subtotal', novo.subtotal, 'delivery_fee', novo.delivery_fee, 'discount', novo.discount, 'coupon', novo.coupon, 'items', novo.items);
+end $$;
+
+-- ================= pedido criado pela equipe (WhatsApp, telefone, balcão) =================
+-- Usa as mesmas regras do cardápio (preços, opcionais, cupom, mínimo): o valor sempre sai do servidor.
+create or replace function public.criar_pedido_painel(p_loja uuid, p_idem text, p_order jsonb)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare l public.lojas; r jsonb; orig text := coalesce(p_order ->> 'origem', 'whatsapp'); quem text;
+begin
+  if not public.pode(p_loja, array['dono','gerente','atendente']) then
+    raise exception 'Sua função na equipe não permite criar pedidos.' using errcode = '42501';
+  end if;
+  if orig not in ('whatsapp','telefone','balcao') then orig := 'whatsapp'; end if;
+  select * into l from public.lojas where id = p_loja;
+  if l.id is null or l.status <> 'ativa' then raise exception 'Loja não encontrada.' using errcode = 'P0001'; end if;
+  perform set_config('bc.interno', '1', true);
+  r := public.create_order(l.slug, p_idem, p_order - 'origem' - 'aceitar');
+  select coalesce((select u.email from auth.users u where u.id = auth.uid()), 'equipe') into quem;
+  update public.orders set origem = orig where loja_id = p_loja and track_code = r ->> 'track_code' and origem <> orig;
+  update public.order_events set actor = quem
+   where order_id = (select id from public.orders where loja_id = p_loja and track_code = r ->> 'track_code') and actor = 'cliente';
+  if coalesce((p_order ->> 'aceitar')::boolean, false) then
+    update public.orders set status = 'confirmado' where loja_id = p_loja and track_code = r ->> 'track_code' and status = 'novo';
+  end if;
+  return r || jsonb_build_object('origem', orig);
 end $$;
 
 -- ================= rastreio do pedido =================
@@ -878,6 +906,7 @@ create table if not exists public.whats_contas (
   robo            boolean not null default true,
   criado_em       timestamptz not null default now()
 );
+alter table public.whats_contas add column if not exists avisa_status boolean not null default false;
 
 create table if not exists public.whats_segredos (
   loja_id uuid primary key references public.lojas (id) on delete cascade,
@@ -961,8 +990,17 @@ begin
   update public.whats_contas set robo = coalesce(p_ligado, true) where loja_id = p_loja;
 end $$;
 
+-- aviso automático ao cliente quando o pedido muda de etapa (dentro das 24h): liga/desliga por loja
+create or replace function public.whats_avisa(p_loja uuid, p_ligado boolean)
+returns void language plpgsql security definer set search_path = '' as $$
+begin
+  if not public.pode(p_loja, array['dono','gerente']) then raise exception 'Sem permissão.' using errcode = '42501'; end if;
+  update public.whats_contas set avisa_status = coalesce(p_ligado, false) where loja_id = p_loja;
+end $$;
+
 -- a equipe responde: grava a mensagem como "enviando" e devolve o que a função whats-enviar precisa para mandar
-create or replace function public.whats_responder(p_conversa bigint, p_texto text)
+drop function if exists public.whats_responder(bigint, text);
+create or replace function public.whats_responder(p_conversa bigint, p_texto text, p_auto boolean default false)
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare c public.whats_conversas; ct public.whats_contas; txt text := btrim(coalesce(p_texto, '')); quem text; mid bigint;
 begin
@@ -980,8 +1018,8 @@ begin
   select coalesce(nullif(split_part(u.raw_user_meta_data ->> 'nome', ' ', 1), ''), split_part(u.email, '@', 1), 'equipe')
     into quem from auth.users u where u.id = auth.uid();
   insert into public.whats_mensagens (conversa_id, loja_id, direcao, tipo, texto, status, autor)
-       values (c.id, c.loja_id, 'out', 'text', txt, 'enviando', coalesce(quem, 'equipe')) returning id into mid;
-  update public.whats_conversas set ultima_msg = txt, ultima_em = now(), nao_lidas = 0, modo = 'humano' where id = c.id;
+       values (c.id, c.loja_id, 'out', 'text', txt, 'enviando', case when coalesce(p_auto, false) then 'sistema' else coalesce(quem, 'equipe') end) returning id into mid;
+  update public.whats_conversas set ultima_msg = txt, ultima_em = now(), nao_lidas = case when coalesce(p_auto, false) then nao_lidas else 0 end, modo = case when coalesce(p_auto, false) then modo else 'humano' end where id = c.id;
   return jsonb_build_object('id', mid, 'loja_id', c.loja_id, 'wa_id', c.wa_id, 'phone_number_id', ct.phone_number_id);
 end $$;
 
@@ -1103,7 +1141,7 @@ do $$
 declare f text;
 begin
   foreach f in array array['whats_lida(bigint)', 'whats_modo(bigint, text)', 'whats_robo(uuid, boolean)',
-                           'whats_responder(bigint, text)', 'whats_midia(bigint)', 'liga_whats(uuid, text, text, text)'] loop
+                           'whats_responder(bigint, text, boolean)', 'whats_avisa(uuid, boolean)', 'whats_midia(bigint)', 'criar_pedido_painel(uuid, text, jsonb)', 'liga_whats(uuid, text, text, text)'] loop
     execute format('revoke all on function public.%s from public, anon', f);
     execute format('grant execute on function public.%s to authenticated', f);
   end loop;

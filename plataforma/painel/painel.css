@@ -573,6 +573,25 @@ details.hp .hb li{margin:5px 0}
   .wa .wa-chat{display:none}.wa.aberta .wa-lado{display:none}.wa.aberta .wa-chat{display:flex}.wa-volta{display:block}
   .wa-b{max-width:88%}}
 
+/* pedido criado pela equipe */
+#fichaNovoPedido .ficha-corpo{gap:16px}
+.pm-prod,.pm-carrinho{display:grid;gap:8px}
+.pm-prod h3,.pm-carrinho h3{margin:0;font-size:15px}
+.pm-prod input[type=search]{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font:inherit}
+.pm-lista{display:grid;gap:6px;max-height:300px;overflow:auto}
+.pm-prod-l{border:1px solid var(--line);border-radius:12px;background:var(--surface-2);padding:8px 10px}
+.pm-prod-top{display:flex;align-items:center;gap:10px}
+.pm-nome{flex:1;min-width:0;display:flex;flex-direction:column}.pm-nome small{color:var(--muted);font-size:12px;font-weight:400}
+.pm-ops{display:grid;gap:8px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.pm-ops fieldset{border:0;padding:0;margin:0;display:grid;gap:4px}.pm-ops legend{font-weight:700;font-size:13px;padding:0}.pm-ops legend small{font-weight:400;color:var(--muted)}
+.pm-ops .btn{justify-self:start}
+.pm-item{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.pm-qtd{display:flex;align-items:center;gap:6px}
+.pm-total{display:grid;gap:4px;margin-top:6px}.pm-total>div{display:flex;justify-content:space-between}.pm-total .t{font-size:17px;border-top:1px solid var(--line);padding-top:6px}
+.seg [aria-pressed=true]{background:var(--accent);color:var(--accent-ink)}
+#comanda .via{page-break-after:always}#comanda .via:last-child{page-break-after:auto}
+#comanda .grande{font-size:18px;font-weight:800;margin:2px 0}#comanda .tipo{font-weight:800;margin-top:4px}#comanda .op{padding-left:10px;font-size:11px}
+
 /* ===== visual igual ao da página de vendas: claro quente, menu marrom, títulos Fraunces ===== */
 :root{--bg:#F4EFE8;--surface:#FFFFFF;--surface-2:#EFE7DC;--line:#E7DED3;--hover:#FAF6F0;--fg:#2B1D14;--muted:#7A6A5C;
   --accent:#B8743F;--accent-ink:#FFFFFF;--accent-soft:#F3E2D0;--warn:#9A5B00;--warn-soft:#FFF0D6;
