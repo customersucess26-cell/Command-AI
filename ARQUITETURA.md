@@ -11,11 +11,17 @@ Este documento explica como o sistema é organizado, onde mexer e como publicar.
 - **Ferramentas de apoio** em Python e Node (geram painel, PDFs, exemplos e testes). Não vão para o ar.
 
 ```
-Cliente (celular)  ->  loja.html + assets/loja.js  --RPC create_order-->  Supabase (Postgres)
-                                                                              |  realtime
-Equipe (painel)    ->  painel/index.html + painel.js  <------------------------+
-Cliente (rastreio) ->  /p/<código> -> pedido.php (prévia) + pedido.html + assets/pedido.js --RPC cartao_pedido-->
-WhatsApp (Meta)    ->  Edge Function whats-webhook  ->  Postgres (whats_*)  ->  painel (aba Atendimento)
+Cliente (celular)
+  loja.html + assets/loja.js --RPC create_order--> Supabase (Postgres)
+                                                        |
+Equipe (painel)                                         | tempo real
+  painel/index.html + painel.js <-----------------------+
+
+Cliente (rastreio)
+  /p/<codigo> -> pedido.php + pedido.html --RPC cartao_pedido--> Supabase
+
+WhatsApp (Meta)
+  Edge Function whats-webhook -> tabelas whats_* -> aba Atendimento
 ```
 
 ## 2. Linguagens e peças
@@ -35,20 +41,20 @@ Biblioteca de terceiros no navegador: `@supabase/supabase-js` (arquivo local em 
 ## 3. Mapa de pastas
 
 ```
-plataforma/                 o que vai para o public_html
-  index.html                página de vendas (com demonstrações usando as páginas reais)
-  entrar.html, entrar.js    cadastro, login e criação da loja
-  loja.html + assets/loja.*  cardápio público da loja (/l/<slug>)
-  pedido.html, pedido.php   rastreio do pedido (/p/<código>) e prévia no WhatsApp
-  painel/                   painel da loja (GERADO, ver seção 6)
-  admin/                    painel do administrador da plataforma
-  crm/                      CRM de leads (GERADO)
-  assets/config.js          configuração pública (URL e chave anon do Supabase)
-  supabase/                 arquivos SQL e Edge Functions (bloqueados no Apache)
-paineis/loja/               FONTE do painel da loja
-ferramentas/                geradores Python (bloqueados no Apache)
-manual/                     PDFs de venda e manuais (guia, carta, kit de mensagens)
-sites/, modelos/            sites completos de exemplo (Âmbar, Bruto Burger, Padaria & Café)
+plataforma/                  o que vai para o public_html
+  index.html                 pagina de vendas
+  entrar.html                cadastro, login e criacao da loja
+  loja.html, assets/loja.*   cardapio publico (/l/<slug>)
+  pedido.html, pedido.php    rastreio (/p/<codigo>) e previa no WhatsApp
+  painel/                    painel da loja (GERADO, ver secao 6)
+  admin/                     painel do administrador
+  crm/                       CRM de leads (GERADO)
+  assets/config.js           configuracao publica (URL e chave anon)
+  supabase/                  SQL e Edge Functions (bloqueados no Apache)
+paineis/loja/                FONTE do painel da loja
+ferramentas/                 geradores Python (bloqueados no Apache)
+manual/                      PDFs de venda e manuais
+sites/, modelos/             sites completos de exemplo
 ```
 
 ## 4. Banco de dados (Supabase)
