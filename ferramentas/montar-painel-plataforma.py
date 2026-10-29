@@ -41,7 +41,6 @@ h = troca(h, '''    <div id="semConfig" hidden>''', '''    <div id="semLoja" hid
       <h1>Você ainda não tem loja</h1>
       <p class="muted">Sua conta entrou, mas não faz parte da equipe de nenhuma loja. Crie a sua ou peça um convite para o dono da loja.</p>
       <a class="btn primary big" href="../index.html#contato">Pedir minha vaga</a>
-      <a class="btn link" href="../admin/">Sou administrador da plataforma</a>
       <button class="btn link" type="button" data-sair>Sair</button>
     </div>
     <div id="escolheLoja" hidden>
@@ -68,8 +67,7 @@ h = troca(h, '''<span>Dados da loja</span></button>''', '''<span>Dados da loja</
       <button type="button" data-aba="equipe" data-papel="dono gerente"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14 15.5c.9-.6 2-1 3-1 2.8 0 5 2.2 5 5"/></svg><span>Equipe</span></button>''')
 h = troca(h, '''        <a class="btn ghost-escuro small" href="../" target="_blank" rel="noopener">Ver site ↗</a>''',
           '''        <a class="btn ghost-escuro small" id="verSite" href="../" target="_blank" rel="noopener">Ver loja ↗</a>
-        <button class="btn ghost-escuro small" type="button" id="btnTrocaLoja" hidden>Trocar loja</button>
-        <a class="btn ghost-escuro small" id="btnPlataforma" href="../admin/" hidden>Plataforma</a>''')
+        <button class="btn ghost-escuro small" type="button" id="btnTrocaLoja" hidden>Trocar loja</button>''')
 h = troca(h, '''        <button class="btn primary" type="button" id="btnNovoProduto">+ Produto</button>''',
           '''        <button class="btn primary" type="button" id="btnNovoProduto" data-papel="dono gerente">+ Produto</button>''')
 h = troca(h, '''    <section class="panel" data-panel="inicio">
@@ -310,7 +308,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-tira]');if
 j = troca(j, "/* ================= início ================= */", extra + "\n/* ================= início ================= */")
 j = troca(j, "  $('#auth').hidden=true;$('#app').hidden=false;$('#faixaDemo').hidden=!demo;",
           "  $('#auth').hidden=true;$('#app').hidden=false;$('#faixaDemo').hidden=!demo;aplicaPapel();$('#btnTrocaLoja').hidden=minhas.length<2;")
-j = troca(j, "  abrirAba(lsGet('lj-aba',RECURSOS.pedidos?'pedidos':'cardapio'))}", "  if(!demo)db.rpc('eh_admin_plataforma').then(r=>{if(r.data===true)$('#btnPlataforma').hidden=false});\n  abrirAba(lsGet('lj-aba','inicio'))}")
+j = troca(j, "  abrirAba(lsGet('lj-aba',RECURSOS.pedidos?'pedidos':'cardapio'))}", "  abrirAba(lsGet('lj-aba','inicio'))}")
 open(f"{DEST}/painel.js", "w", encoding="utf-8").write(j)
 
 # estilos extras
@@ -376,7 +374,7 @@ exec(open("ferramentas/painel-visual.pyfrag", encoding="utf-8").read())
 open(f"{DEST}/painel.js", "w", encoding="utf-8").write(j)
 open(f"{DEST}/painel.css", "a", encoding="utf-8").write(css)
 # versão nos arquivos do painel: o navegador baixa de novo quando mudar (troque a data a cada atualização)
-VERSAO = "20261030a"
+VERSAO = "20261030b"
 _h = open(f"{DEST}/index.html", encoding="utf-8").read()
 for _f in ("painel.css", "painel.js", "../assets/exemplo.js"):
     _h = _h.replace('"%s"' % _f, '"%s?v=%s"' % (_f, VERSAO))

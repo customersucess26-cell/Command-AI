@@ -16,6 +16,10 @@ troca('''<p class="muted">Este navegador já está ligado ao painel. Para o <b>f
         <button class="btn big" type="button" id="btnBaixaCfg">Baixar config.js</button>''',
       '''<p class="muted">Este navegador já está ligado ao painel. Na plataforma, o formulário e a Bia da página de vendas gravam no mesmo banco e o <code>config.js</code> já está certo, então não é preciso baixar nada.</p>
         <button class="btn big" type="button" id="btnBaixaCfg" hidden>Baixar config.js</button>''')
+# acesso exclusivo do dono: o CRM é a porta de entrada; de dentro dele abre a lista de lojas (mesma aba e mesma sessão)
+troca('''        <a class="btn ghost-escuro small" href="../" target="_blank" rel="noopener">Ver site ↗</a>''',
+      '''        <a class="btn ghost-escuro small" href="../admin/">Lojas da plataforma</a>
+        <a class="btn ghost-escuro small" href="../" target="_blank" rel="noopener">Ver site ↗</a>''')
 open(p, "w", encoding="utf-8").write(s)
 subprocess.run(["python3", "ferramentas/csp.py", p], check=True)
 print("CRM copiado para", DEST)

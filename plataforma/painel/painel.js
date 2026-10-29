@@ -892,7 +892,6 @@ async function start(){if(started)return;started=true;
     setInterval(()=>{if(!document.hidden)carregar('orders')},60000)}
   else{orders.forEach(o=>vistos.add(String(o.id)));primeiraCarga=false;$('#aoVivo').classList.add('on');$('#contaEmail').textContent='Demonstração'}
   waInicia();
-  if(!demo)db.rpc('eh_admin_plataforma').then(r=>{if(r.data===true)$('#btnPlataforma').hidden=false});
   abrirAba('inicio')}
 (async()=>{
   let msg='';try{msg=sessionStorage.getItem('lj-msg')||'';sessionStorage.removeItem('lj-msg')}catch(e){}

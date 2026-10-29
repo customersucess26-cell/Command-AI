@@ -58,7 +58,7 @@ open(f"{DEST}/index.html", "w", encoding="utf-8").write(h)
 j = troca(j, "const TITULOS={inicio:'Início',", "const TITULOS={inicio:'Início',atendimento:'Atendimento no WhatsApp',")
 j = troca(j, "atendente:['inicio','pedidos','clientes','ajustes']", "atendente:['inicio','pedidos','clientes','atendimento','ajustes']")
 j = troca(j, "if(aba==='equipe')desenhaEquipe();", "if(aba==='equipe')desenhaEquipe();if(aba==='atendimento'){desenhaAtend();waDesenha()}")
-j = troca(j, "  if(!demo)db.rpc('eh_admin_plataforma').then(", "  waInicia();\n  if(!demo)db.rpc('eh_admin_plataforma').then(")
+j = troca(j, "  abrirAba(lsGet('lj-aba','inicio'))}", "  waInicia();\n  abrirAba(lsGet('lj-aba','inicio'))}")
 
 AT_JS = r"""
 /* ================= atendimento: textos do WhatsApp Business ================= */
