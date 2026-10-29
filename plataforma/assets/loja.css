@@ -285,3 +285,14 @@ h1,h2,h3{font-family:var(--f-titulo);font-weight:var(--titulo-peso);letter-spaci
 .cupom-linha .btn{width:auto;min-height:46px;margin:0;padding:0 16px}
 .cupom-msg{display:block;font-size:13px;margin-top:4px;min-height:1em}.cupom-msg.ok{color:var(--ok)}.cupom-msg.erro{color:var(--erro)}
 .resumo .desconto span:last-child{color:var(--ok);font-weight:700}
+
+/* leve também (sugestões no carrinho) */
+.sugestoes{margin:14px 0 4px;padding-top:12px;border-top:1px dashed var(--linha)}
+.sugestoes h4{margin:0 0 8px;font-size:14px}
+.sug-fila{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.sug{flex:0 0 150px;border:1px solid var(--linha);border-radius:14px;padding:8px;display:flex;flex-direction:column;gap:6px;background:var(--fundo-card,#fff)}
+.sug-foto{width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:rgba(0,0,0,.05);display:grid;place-items:center;font-weight:700}
+.sug-foto img{width:100%;height:100%;object-fit:cover;display:block}
+.sug-txt b{font-size:13px;line-height:1.2;display:block}.sug-txt small{color:var(--suave);font-size:12px}
+.sug .ctrl{margin-top:auto}
+#campoBairro select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--linha);font:inherit;background:transparent;color:inherit}

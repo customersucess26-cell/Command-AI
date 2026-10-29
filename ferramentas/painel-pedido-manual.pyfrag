@@ -20,6 +20,7 @@ h = troca(h, '''<aside class="ficha" id="fichaProduto"''', '''<aside class="fich
         <div class="full"><span class="fino muted">Como o cliente recebe</span>
           <div class="seg" role="group" aria-label="Entrega ou retirada"><button type="button" data-pm-tipo="retirada" aria-pressed="true">Retirada</button><button type="button" data-pm-tipo="entrega" aria-pressed="false">Entrega</button></div></div>
         <label class="full" id="pmEndLbl" hidden>Endereço de entrega<input id="pmEnd" maxlength="200" autocomplete="off"></label>
+        <label class="full" id="pmBairroLbl" hidden>Bairro<select id="pmBairro"></select></label>
         <label>Para quando (opcional)<input id="pmQuando" maxlength="60" placeholder="ex.: hoje 18h"></label>
         <label>Cupom (opcional)<input id="pmCupom" maxlength="20" autocomplete="off" style="text-transform:uppercase"></label>
         <label class="full">Observações<textarea id="pmObs" rows="2" maxlength="300" placeholder="ex.: sem cebola, troco para 50"></textarea></label>
@@ -114,6 +115,7 @@ function pmAbre(conv){pm={itens:[],tipo:'retirada',conv:conv||null,abrindo:null,
   $('#pmPag').innerHTML=(settings.pagamentos&&settings.pagamentos.length?settings.pagamentos:['Pix','Cartão','Dinheiro']).map(p=>`<option>${esc(p)}</option>`).join('');
   $('#pmOrigem').value=conv?'whatsapp':(aba==='pedidos'?'telefone':'whatsapp');
   if(conv){$('#pmNome').value=conv.nome||'';$('#pmFone').value=pmFoneFmt(conv.wa_id);pmRecorrente()}
+  {const bs=bairrosLoja();$('#pmBairro').innerHTML=bs.length?'<option value="">Escolha o bairro</option>'+bs.map(b=>`<option value="${esc(b.n)}">${esc(b.n)} · ${num(b.t)?brl(b.t):'grátis'}</option>`).join(''):''}
   pmTipo(settings.faz_entrega===false?'retirada':'retirada');
   $('#pmSub').textContent=conv?'Pedido de '+(conv.nome||pmFoneFmt(conv.wa_id))+', vindo do WhatsApp.':'Anote o pedido do cliente. Os valores são calculados pelo cardápio.';
   pmLista();pmCarrinho();abreGaveta($('#fichaNovoPedido'));setTimeout(()=>$((conv?'#pmBusca':'#pmNome')).focus(),60)}
@@ -123,7 +125,9 @@ function pmRecorrente(){const k=waChave($('#pmFone').value);if(!k)return;
   if(u.delivery_type==='entrega'&&u.address&&settings.faz_entrega!==false){pmTipo('entrega');$('#pmEnd').value=u.address}
   if(u.payment_method&&[...$('#pmPag').options].some(x=>x.value===u.payment_method))$('#pmPag').value=u.payment_method;
   $('#pmSub').textContent='Cliente que já pediu '+orders.filter(o=>waChave(o.customer_phone)===k).length+'x: nome, endereço e pagamento preenchidos com o último pedido.'}
-function pmTipo(t){pm.tipo=t;document.querySelectorAll('[data-pm-tipo]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.pmTipo===t));$('#pmEndLbl').hidden=t!=='entrega';pmCarrinho()}
+const bairrosLoja=()=>Array.isArray((settings.extra||{}).bairros)?settings.extra.bairros:[];
+function pmTaxa(){if(pm.tipo!=='entrega')return 0;const b=bairrosLoja();if(b.length){const x=b.find(y=>y.n===$('#pmBairro').value);return x?num(x.t):0}return num(settings.delivery_fee)}
+function pmTipo(t){pm.tipo=t;document.querySelectorAll('[data-pm-tipo]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.pmTipo===t));$('#pmEndLbl').hidden=t!=='entrega';$('#pmBairroLbl').hidden=!(t==='entrega'&&bairrosLoja().length);pmCarrinho()}
 const pmProdutos=()=>prods.filter(p=>p.active!==false&&num(p.price)>=0).sort((a,b)=>((C(a.category_id)||{}).position||0)-((C(b.category_id)||{}).position||0)||String(a.name).localeCompare(b.name));
 function pmLista(){const q=waNorm($('#pmBusca').value),l=pmProdutos().filter(p=>!q||waNorm(p.name+' '+((C(p.category_id)||{}).name||'')).includes(q));
   $('#pmLista').innerHTML=l.length?l.map(p=>{const ops=Array.isArray(p.opcoes)?p.opcoes:[];
@@ -136,7 +140,7 @@ function pmSubtotal(){return pm.itens.reduce((s,i)=>{const p=P(i.id);return s+(p
 function pmCarrinho(){const box=$('#pmCarrinho');
   box.innerHTML=pm.itens.length?pm.itens.map((i,k)=>{const p=P(i.id);if(!p)return '';const lb=pmItemLabel(p,i.sel);
     return `<div class="pm-item"><span class="pm-nome">${esc(p.name)}${lb?`<small>${esc(lb)}</small>`:''}</span><span class="pm-qtd"><button type="button" class="btn small" data-pm-q="${k}|-1" aria-label="Menos">−</button><b>${i.qty}</b><button type="button" class="btn small" data-pm-q="${k}|1" aria-label="Mais">+</button></span><b>${brl(pmItemUnit(p,i.sel)*i.qty)}</b></div>`}).join(''):'<p class="muted fino">Escolha os produtos acima.</p>';
-  const sub=pmSubtotal(),taxa=pm.tipo==='entrega'?num(settings.delivery_fee):0,min=num(settings.min_order);
+  const sub=pmSubtotal(),taxa=pmTaxa(),min=num(settings.min_order);
   $('#pmResumo').innerHTML=`<div><span>Subtotal</span><b>${brl(sub)}</b></div>${taxa?`<div><span>Entrega</span><b>${brl(taxa)}</b></div>`:''}<div class="t"><span>Total estimado</span><b>${brl(sub+taxa)}</b></div>${min&&sub<min&&pm.itens.length?`<p class="fino" style="color:var(--bad)">Pedido mínimo da loja: ${brl(min)}</p>`:''}<p class="muted fino">O cupom e o valor final são conferidos pelo cardápio ao criar.</p>`}
 document.addEventListener('click',e=>{let b;
   if(e.target.closest('#btnPedidoManual')){pmAbre(null);return}
@@ -150,18 +154,19 @@ document.addEventListener('click',e=>{let b;
     pm.abrindo=null;pmLista();pmAdiciona(p,sel);return}
   if(b=e.target.closest('[data-pm-q]')){const [k,d]=b.dataset.pmQ.split('|'),i=pm.itens[+k];if(!i)return;i.qty+=+d;if(i.qty<1)pm.itens.splice(+k,1);if(i.qty>99)i.qty=99;pmCarrinho()}});
 document.addEventListener('input',e=>{if(e.target.id==='pmBusca')pmLista()});
-document.addEventListener('change',e=>{if(e.target.id==='pmFone')pmRecorrente()});
+document.addEventListener('change',e=>{if(e.target.id==='pmFone')pmRecorrente();if(e.target.id==='pmBairro')pmCarrinho()});
 document.addEventListener('submit',async e=>{if(e.target.id!=='pmForm')return;e.preventDefault();if(pm.enviando)return;
   const nome=$('#pmNome').value.trim(),fone=pmFoneFmt($('#pmFone').value),dg=digitos(fone);
   if(nome.length<2)return toast('Informe o nome do cliente');
   if(dg.length<10||dg.length>13)return toast('Informe o WhatsApp com DDD');
   if(pm.tipo==='entrega'&&$('#pmEnd').value.trim().length<8)return toast('Informe o endereço completo da entrega');
+  if(pm.tipo==='entrega'&&bairrosLoja().length&&!$('#pmBairro').value)return toast('Escolha o bairro da entrega');
   if(!pm.itens.length)return toast('Escolha ao menos um produto');
   const ped={customer_name:nome,customer_phone:fone,delivery_type:pm.tipo,address:pm.tipo==='entrega'?$('#pmEnd').value.trim():'',scheduled_for:$('#pmQuando').value.trim(),notes:$('#pmObs').value.trim(),
-    payment_method:$('#pmPag').value,coupon:$('#pmCupom').value.trim(),origem:$('#pmOrigem').value,aceitar:$('#pmAceitar').checked,items:pm.itens.map(i=>({product_id:String(i.id),qty:i.qty,options:i.sel}))};
+    payment_method:$('#pmPag').value,coupon:$('#pmCupom').value.trim(),neighborhood:pm.tipo==='entrega'?$('#pmBairro').value:'',origem:$('#pmOrigem').value,aceitar:$('#pmAceitar').checked,items:pm.itens.map(i=>({product_id:String(i.id),qty:i.qty,options:i.sel}))};
   pm.enviando=true;$('#pmCriar').disabled=true;
   try{let r;
-    if(demo){const sub=pmSubtotal(),taxa=pm.tipo==='entrega'?num(settings.delivery_fee):0,n=orders.length+1;
+    if(demo){const sub=pmSubtotal(),taxa=pmTaxa(),n=orders.length+1;
       const o=await grava('orders',{code:'#'+(100+n),status:ped.aceitar?'confirmado':'novo',customer_name:nome,customer_phone:fone,delivery_type:pm.tipo,address:ped.address,scheduled_for:ped.scheduled_for,notes:ped.notes,
         items:pm.itens.map(i=>{const p=P(i.id);return {product_id:p.id,name:p.name,unit:p.unit||'',price:pmItemUnit(p,i.sel),qty:i.qty,options:i.sel.map(s=>{const g=p.opcoes.find(x=>x.id===s.g),it=g.itens.find(x=>x.id===s.o);return {group:g.nome,name:it.nome,price:it.preco}})}}),
         subtotal:sub,delivery_fee:taxa,discount:0,total:sub+taxa,payment_method:ped.payment_method,payment_status:'pendente',origem:ped.origem,track_code:'0123456789abcdef'});r={code:o.code}}

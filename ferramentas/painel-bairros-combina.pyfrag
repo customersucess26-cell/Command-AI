@@ -1,0 +1,52 @@
+# Trecho do montar-painel-plataforma.py (carregado por exec): taxa de entrega por bairro (Dados da loja)
+# e "leve também" (sugestões no carrinho, no cadastro do produto). Depende do 13-bairros.sql.
+
+# ---------------------------------------------------------------- HTML
+h = troca(h, '''          <label data-recurso="pedidos">Pedido mínimo (R$)<input id="sMin" inputmode="decimal" maxlength="8"></label>''',
+'''          <label data-recurso="pedidos">Pedido mínimo (R$)<input id="sMin" inputmode="decimal" maxlength="8"></label>
+          <label class="full" data-recurso="pedidos">Taxa de entrega por bairro (opcional)<textarea id="sBairros" rows="4" maxlength="2400" placeholder="Centro = 5,00&#10;Jardim Europa = 8,50&#10;Vila Nova = 0"></textarea>
+            <small class="muted">Um bairro por linha, no formato <b>nome = valor</b>. Com bairros cadastrados, o cliente escolhe o bairro e paga a taxa dele. Deixe vazio para usar a taxa única acima.</small></label>''')
+h = troca(h, '''        <div class="full opc-box">
+          <div class="opc-cab"><b>Opcionais</b>''', '''        <div class="full opc-box" id="prCombinaBox">
+          <div class="opc-cab"><b>Leve também</b><small class="muted">Até 3 produtos que aparecem como sugestão no carrinho quando o cliente pedir este item. Sem escolha, o carrinho sugere os itens em destaque de outras categorias.</small></div>
+          <div id="prCombina" class="combina-lista"></div>
+        </div>
+        <div class="full opc-box">
+          <div class="opc-cab"><b>Opcionais</b>''')
+
+# ---------------------------------------------------------------- JS
+j = troca(j, "mostraFotoLoja();preencheSec();preencheCupom()}", "mostraFotoLoja();preencheSec();preencheCupom();preencheBairros()}")
+j = troca(j, "if(!$('#sEntrega').checked&&!$('#sRetirada').checked)return toast('Marque entrega, retirada ou os dois');",
+          "if(!$('#sEntrega').checked&&!$('#sRetirada').checked)return toast('Marque entrega, retirada ou os dois');\n  const bairros=lerBairros();if(bairros===null)return;")
+j = troca(j, "accept_orders:$('#sAceita').checked}),'Dados da loja salvos')});",
+          "accept_orders:$('#sAceita').checked,extra:Object.assign({},settings.extra||{},{bairros})}),'Dados da loja salvos')});")
+j = troca(j, "opcAtual=JSON.parse(JSON.stringify(p.opcoes||[]));desenhaOpc();", "opcAtual=JSON.parse(JSON.stringify(p.opcoes||[]));desenhaOpc();desenhaCombina(p);")
+j = troca(j, "else delete linha.extra.origem;", "else delete linha.extra.origem;\n    {const cb=[...document.querySelectorAll('#prCombina input:checked')].map(x=>x.value).slice(0,3);if(cb.length)linha.extra.combina=cb;else delete linha.extra.combina}")
+
+BC_JS = r"""
+/* ================= taxa por bairro e "leve também" ================= */
+function preencheBairros(){const b=Array.isArray((settings.extra||{}).bairros)?settings.extra.bairros:[];
+  $('#sBairros').value=b.map(x=>x.n+' = '+(num(x.t)?num(x.t).toFixed(2).replace('.',','):'0')).join('\n')}
+function lerBairros(){const linhas=$('#sBairros').value.split('\n').map(x=>x.trim()).filter(Boolean),out=[],vistos=new Set();
+  for(const l of linhas){const i=l.lastIndexOf('=');if(i<1){toast('Bairro sem valor: "'+l.slice(0,30)+'". Use nome = valor');return null}
+    const n=l.slice(0,i).trim().replace(/\s+/g,' '),t=num(l.slice(i+1));
+    if(n.length<2||n.length>40){toast('Nome de bairro inválido: "'+n.slice(0,30)+'"');return null}
+    if(t>999){toast('Taxa muito alta em "'+n+'"');return null}
+    if(vistos.has(n.toLowerCase())){toast('Bairro repetido: "'+n+'"');return null}
+    vistos.add(n.toLowerCase());out.push({n,t})}
+  if(out.length>80){toast('No máximo 80 bairros');return null}
+  return out}
+function desenhaCombina(p){const atual=new Set((p.extra&&Array.isArray(p.extra.combina))?p.extra.combina:[]);
+  const l=prods.filter(x=>String(x.id)!==String(p.id||'')&&x.active!==false).sort((a,b)=>String(a.name).localeCompare(String(b.name),'pt-BR'));
+  $('#prCombina').innerHTML=l.length?l.map(x=>`<label class="chk"><input type="checkbox" value="${esc(x.id)}"${atual.has(String(x.id))?' checked':''}> ${esc(x.name)}</label>`).join(''):'<span class="muted fino">Cadastre outros produtos para sugerir aqui.</span>'}
+document.addEventListener('change',e=>{if(e.target.closest('#prCombina')&&e.target.checked&&document.querySelectorAll('#prCombina input:checked').length>3){e.target.checked=false;toast('Escolha até 3 produtos')}});
+"""
+j = troca(j, "/* ================= início ================= */", BC_JS + "\n/* ================= início ================= */")
+
+css += """
+/* taxa por bairro e leve também */
+.combina-lista{display:flex;flex-wrap:wrap;gap:6px;max-height:150px;overflow:auto;margin-top:6px}
+.combina-lista .chk{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:13px;background:var(--surface-2);cursor:pointer}
+.combina-lista .chk:has(input:checked){border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+#sBairros{font-family:inherit}
+"""

@@ -12,12 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
-<link rel="stylesheet" href="painel.css?v=20261028a">
+<link rel="stylesheet" href="painel.css?v=20261029a">
 <script src="../assets/config.js"></script>
 <script src="../assets/vendor/supabase-2.45.4.js"></script>
-<script src="../assets/exemplo.js?v=20261028a" defer></script>
+<script src="../assets/exemplo.js?v=20261029a" defer></script>
 <script src="../assets/vendor/qrcode-generator-2.0.4.js" defer></script>
-<script src="painel.js?v=20261028a" defer></script>
+<script src="painel.js?v=20261029a" defer></script>
 </head>
 <body>
 
@@ -207,6 +207,8 @@
           <label class="full">Horário de funcionamento<input id="sHoras" maxlength="160" placeholder="Terça a domingo, 18h às 23h30"></label>
           <label data-recurso="pedidos">Taxa de entrega (R$)<input id="sTaxa" inputmode="decimal" maxlength="8"></label>
           <label data-recurso="pedidos">Pedido mínimo (R$)<input id="sMin" inputmode="decimal" maxlength="8"></label>
+          <label class="full" data-recurso="pedidos">Taxa de entrega por bairro (opcional)<textarea id="sBairros" rows="4" maxlength="2400" placeholder="Centro = 5,00&#10;Jardim Europa = 8,50&#10;Vila Nova = 0"></textarea>
+            <small class="muted">Um bairro por linha, no formato <b>nome = valor</b>. Com bairros cadastrados, o cliente escolhe o bairro e paga a taxa dele. Deixe vazio para usar a taxa única acima.</small></label>
           <label class="full inline" data-recurso="pedidos"><input type="checkbox" id="sAceita"> Receber pedidos pelo site agora</label>
           <label class="inline"><input type="checkbox" id="sEntrega"> Faz entrega</label>
           <label class="inline"><input type="checkbox" id="sRetirada"> Cliente pode retirar</label>
@@ -382,6 +384,7 @@
         <div class="full"><span class="fino muted">Como o cliente recebe</span>
           <div class="seg" role="group" aria-label="Entrega ou retirada"><button type="button" data-pm-tipo="retirada" aria-pressed="true">Retirada</button><button type="button" data-pm-tipo="entrega" aria-pressed="false">Entrega</button></div></div>
         <label class="full" id="pmEndLbl" hidden>Endereço de entrega<input id="pmEnd" maxlength="200" autocomplete="off"></label>
+        <label class="full" id="pmBairroLbl" hidden>Bairro<select id="pmBairro"></select></label>
         <label>Para quando (opcional)<input id="pmQuando" maxlength="60" placeholder="ex.: hoje 18h"></label>
         <label>Cupom (opcional)<input id="pmCupom" maxlength="20" autocomplete="off" style="text-transform:uppercase"></label>
         <label class="full">Observações<textarea id="pmObs" rows="2" maxlength="300" placeholder="ex.: sem cebola, troco para 50"></textarea></label>
@@ -412,6 +415,10 @@
         <label>Categoria<select id="prCat"></select></label>
         <label>Selo<input id="prSelo" maxlength="24" placeholder="Novo, Mais pedido…"></label>
         <label class="full" id="prOrigemLbl" hidden>Origem (vinhos)<input id="prOrigem" maxlength="60" placeholder="Mendoza, Argentina"></label>
+        <div class="full opc-box" id="prCombinaBox">
+          <div class="opc-cab"><b>Leve também</b><small class="muted">Até 3 produtos que aparecem como sugestão no carrinho quando o cliente pedir este item. Sem escolha, o carrinho sugere os itens em destaque de outras categorias.</small></div>
+          <div id="prCombina" class="combina-lista"></div>
+        </div>
         <div class="full opc-box">
           <div class="opc-cab"><b>Opcionais</b><small class="muted">Ponto da carne, adicionais, tamanho. O cliente escolhe ao adicionar o produto.</small></div>
           <div id="prOpc"></div>

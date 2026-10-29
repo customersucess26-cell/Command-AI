@@ -592,6 +592,12 @@ details.hp .hb li{margin:5px 0}
 #comanda .via{page-break-after:always}#comanda .via:last-child{page-break-after:auto}
 #comanda .grande{font-size:18px;font-weight:800;margin:2px 0}#comanda .tipo{font-weight:800;margin-top:4px}#comanda .op{padding-left:10px;font-size:11px}
 
+/* taxa por bairro e leve também */
+.combina-lista{display:flex;flex-wrap:wrap;gap:6px;max-height:150px;overflow:auto;margin-top:6px}
+.combina-lista .chk{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:99px;padding:4px 10px;font-size:13px;background:var(--surface-2);cursor:pointer}
+.combina-lista .chk:has(input:checked){border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+#sBairros{font-family:inherit}
+
 /* ===== visual igual ao da página de vendas: claro quente, menu marrom, títulos Fraunces ===== */
 :root{--bg:#F4EFE8;--surface:#FFFFFF;--surface-2:#EFE7DC;--line:#E7DED3;--hover:#FAF6F0;--fg:#2B1D14;--muted:#7A6A5C;
   --accent:#B8743F;--accent-ink:#FFFFFF;--accent-soft:#F3E2D0;--warn:#9A5B00;--warn-soft:#FFF0D6;

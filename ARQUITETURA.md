@@ -76,10 +76,10 @@ Funções mais importantes:
 **Papéis na loja:** `dono`, `gerente`, `atendente`, `cozinha`. A cozinha só vê pedidos e não mexe em pagamento (gatilho `pedido_alterado`).
 
 ### Ordem dos arquivos SQL
-`01-plataforma.sql` é a instalação **completa e atual**: já contém o que está nos arquivos 02, 04, 05 e 07 a 12.
+`01-plataforma.sql` é a instalação **completa e atual**: já contém o que está nos arquivos 02, 04, 05 e 07 a 13.
 O `03-crm.sql` (tabela de leads do CRM) é **separado**: em banco novo, rode o `01` e depois o `03`.
 Os demais arquivos são **correções incrementais** para bancos que já existem e podem ser rodados mais de uma vez (idempotentes).
-Em banco existente que parou no `06`, rode `07, 08, 09, 10, 11, 12` nesta ordem. Depois de rodar SQL novo: `notify pgrst, 'reload schema';`.
+Em banco existente que parou no `06`, rode `07, 08, 09, 10, 11, 12, 13` nesta ordem (o `13` precisa vir depois do `09` e do `11`, porque os três substituem a função `create_order`). Depois de rodar SQL novo: `notify pgrst, 'reload schema';`.
 
 ## 5. Funções de servidor (Edge Functions)
 

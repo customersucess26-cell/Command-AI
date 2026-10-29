@@ -215,6 +215,17 @@ alter table public.orders add column if not exists discount numeric(10,2) not nu
 alter table public.orders add column if not exists coupon text not null default '';
 -- de onde veio o pedido: site (cardápio), whatsapp, telefone, balcao
 alter table public.orders add column if not exists origem text not null default 'site';
+-- bairro escolhido na entrega (quando a loja cobra taxa por bairro: lojas.extra.bairros = [{"n":"Centro","t":5}])
+alter table public.orders add column if not exists bairro text not null default '';
+create or replace function public.bairros_ok(j jsonb)
+returns boolean language sql immutable set search_path = '' as $$
+  select j is null or j = 'null'::jsonb or (jsonb_typeof(j) = 'array' and jsonb_array_length(j) <= 80 and not exists (
+    select 1 from jsonb_array_elements(j) x
+     where jsonb_typeof(x) <> 'object' or jsonb_typeof(x -> 'n') <> 'string' or length(btrim(x ->> 'n')) not between 2 and 40
+        or jsonb_typeof(x -> 't') <> 'number' or (x ->> 't')::numeric not between 0 and 999))
+$$;
+alter table public.lojas drop constraint if exists lojas_bairros_ok;
+alter table public.lojas add constraint lojas_bairros_ok check (public.bairros_ok(extra -> 'bairros'));
 alter table public.orders drop constraint if exists orders_origem_ok;
 alter table public.orders add constraint orders_origem_ok check (origem in ('site','whatsapp','telefone','balcao'));
 
@@ -570,6 +581,8 @@ declare
   codigo  text;
   cup     text := upper(btrim(coalesce(p_order ->> 'coupon', '')));
   descon  numeric := 0;
+  bairro  text := btrim(coalesce(p_order ->> 'neighborhood', ''));
+  bx      jsonb;
 begin
   select * into loja from public.lojas l where l.slug = lower(coalesce(p_slug, ''));
   if not found or loja.status <> 'ativa' then perform public.recusa('Loja não encontrada.'); end if;
@@ -657,6 +670,15 @@ begin
     perform public.recusa(format('Pedido mínimo: R$ %s.', replace(to_char(loja.min_order, 'FM999990.00'), '.', ',')));
   end if;
   taxa  := case when tipo = 'entrega' then loja.delivery_fee else 0 end;
+  -- loja com taxa por bairro: o bairro precisa ser um dos cadastrados e a taxa vem do servidor
+  if tipo = 'entrega' and jsonb_typeof(loja.extra -> 'bairros') = 'array' and jsonb_array_length(loja.extra -> 'bairros') > 0 then
+    select x into bx from jsonb_array_elements(loja.extra -> 'bairros') x where lower(btrim(x ->> 'n')) = lower(bairro) limit 1;
+    if bx is null then perform public.recusa('Escolha o bairro da entrega.'); end if;
+    bairro := btrim(bx ->> 'n'); taxa := (bx ->> 't')::numeric;
+    if position(lower(bairro) in lower(ender)) = 0 then ender := ender || ' - ' || bairro; end if;
+  else
+    bairro := '';
+  end if;
   -- cupom do cartão de volta: conferido aqui, nunca no navegador
   if cup <> '' then
     if not coalesce((loja.cupom ->> 'ativo')::boolean, false) or cup is distinct from (loja.cupom ->> 'codigo') then
@@ -691,10 +713,10 @@ begin
     exit when not exists (select 1 from public.orders o where o.track_code = codigo);
   end loop;
   insert into public.orders (loja_id, seq, code, idem_key, track_token, track_code, customer_name, customer_phone, delivery_type,
-                             address, scheduled_for, notes, items, subtotal, delivery_fee, total, payment_method, discount, coupon)
+                             address, scheduled_for, notes, items, subtotal, delivery_fee, total, payment_method, discount, coupon, bairro)
   values (loja.id, proximo, '#' || proximo::text, p_idem,
           replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', ''), codigo,
-          nome, fone, tipo, ender, quando, obs, itens, soma, taxa, total, forma, descon, case when descon > 0 then cup else '' end)
+          nome, fone, tipo, ender, quando, obs, itens, soma, taxa, total, forma, descon, case when descon > 0 then cup else '' end, bairro)
   returning * into novo;
   insert into public.order_events (order_id, loja_id, actor, campo, para) values (novo.id, loja.id, 'cliente', 'status', 'novo');
 

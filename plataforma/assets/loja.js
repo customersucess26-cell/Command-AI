@@ -69,7 +69,7 @@
   function carregaCardapio() {
     return Promise.all([
       api("categories?select=id,name,position&loja_id=eq." + loja.id + "&active=eq.true&order=position.asc,name.asc"),
-      api("products?select=id,category_id,name,description,price,unit,image_url,featured,badge,position,opcoes&loja_id=eq." + loja.id + "&active=eq.true&order=position.asc,name.asc")
+      api("products?select=id,category_id,name,description,price,unit,image_url,featured,badge,position,opcoes,extra&loja_id=eq." + loja.id + "&active=eq.true&order=position.asc,name.asc")
     ]).then(function (r) {
       cats = r[0] || []; prods = r[1] || []; porId = {};
       prods.forEach(function (p) { p.price = Number(p.price) || 0; p.opcoes = Array.isArray(p.opcoes) ? p.opcoes : []; porId[p.id] = p; });
@@ -88,6 +88,7 @@
         loja = r && r[0];
         if (!loja) { estado("Não encontramos esta loja. Confira o endereço.", true); document.title = "Loja não encontrada"; return null; }
         loja.delivery_fee = Number(loja.delivery_fee) || 0; loja.min_order = Number(loja.min_order) || 0;
+        loja.bairros = ((loja.extra && Array.isArray(loja.extra.bairros)) ? loja.extra.bairros : []).filter(function (b) { return b && typeof b.n === "string" && b.n.trim().length >= 2 && isFinite(Number(b.t)); }).map(function (b) { return { n: b.n.trim(), t: Number(b.t) }; });
         loja.pagamentos = Array.isArray(loja.pagamentos) && loja.pagamentos.length ? loja.pagamentos : ["Pix", "Cartão", "Dinheiro"];
         carrinho = lsGet("bc-carrinho-" + slug) || {};
         if (typeof carrinho !== "object" || Array.isArray(carrinho)) carrinho = {};
@@ -179,7 +180,7 @@
       inf.appendChild(c);
     }
     if (loja.hours) chip("◷", loja.hours);
-    if (loja.faz_entrega) chip("➜", loja.delivery_fee > 0 ? "Entrega " + brl(loja.delivery_fee) : "Entrega grátis");
+    if (loja.faz_entrega) chip("➜", taxaResumo());
     if (loja.faz_retirada) chip("⌂", "Retirada na loja");
     if (loja.min_order > 0) chip("◎", "Pedido mínimo " + brl(loja.min_order));
     if (loja.address) chip("⚲", loja.address, "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(loja.address));
@@ -415,7 +416,7 @@
     var linhas = [], zap = zapNumero(loja.whatsapp), insta = String(loja.instagram || "").replace(/^@/, "").replace(/[^A-Za-z0-9._]/g, "").slice(0, 40);
     if (loja.address) linhas.push(["Endereço", loja.address]);
     if (loja.hours) linhas.push(["Horário", loja.hours]);
-    var como = [loja.faz_entrega ? "Entrega" + (loja.delivery_fee > 0 ? " (" + brl(loja.delivery_fee) + ")" : " grátis") : "", loja.faz_retirada ? "Retirada na loja" : ""].filter(Boolean).join(" · ");
+    var como = [loja.faz_entrega ? "Entrega" + (loja.bairros.length ? " (taxa por bairro, " + taxaResumo().replace("Entrega ", "") + ")" : loja.delivery_fee > 0 ? " (" + brl(loja.delivery_fee) + ")" : " grátis") : "", loja.faz_retirada ? "Retirada na loja" : ""].filter(Boolean).join(" · ");
     if (como) linhas.push(["Como receber", como]);
     linhas.push(["Pagamento", loja.pagamentos.join(" · ")]);
     var vi = secaoEl("s-visite", "Visite ou peça", "visite"), lv = el("dl", "visite-lista");
@@ -491,6 +492,17 @@
     return Object.keys(carrinho).filter(function (k) { return carrinho[k] > 0; })
       .map(function (k) { return linhaCarrinho(k, carrinho[k]); }).filter(Boolean);
   }
+  /* taxa por bairro: a loja cadastra os bairros e o valor de cada um; o servidor confere de novo ao criar o pedido */
+  function taxaResumo() {
+    if (!loja.bairros.length) return loja.delivery_fee > 0 ? "Entrega " + brl(loja.delivery_fee) : "Entrega grátis";
+    var min = Math.min.apply(null, loja.bairros.map(function (b) { return b.t; }));
+    return min > 0 ? "Entrega a partir de " + brl(min) : "Entrega grátis em alguns bairros";
+  }
+  function bairroEscolhido() {
+    var s = $("fBairro"); if (!s || !loja.bairros.length) return null;
+    for (var i = 0; i < loja.bairros.length; i++) if (loja.bairros[i].n === s.value) return loja.bairros[i];
+    return null;
+  }
   function tipoEscolhido() {
     var r = document.querySelector('input[name="tipo"]:checked');
     if (r) return r.value;
@@ -515,7 +527,7 @@
     var sub = 0, n = 0;
     itensCarrinho().forEach(function (i) { sub += i.unit * i.q; n += i.q; });
     sub = r2(sub);
-    var taxa = tipoEscolhido() === "entrega" ? r2(loja.delivery_fee) : 0;
+    var bx = bairroEscolhido(), taxa = tipoEscolhido() === "entrega" ? r2(bx ? bx.t : loja.bairros.length ? 0 : loja.delivery_fee) : 0;
     var desc = cupom.ok && sub >= cupom.minimo ? r2(sub * cupom.pct / 100) : 0;
     return { sub: sub, taxa: taxa, desc: desc, total: r2(sub - desc + taxa), n: n };
   }
@@ -536,6 +548,32 @@
     if (comTaxa && tipoEscolhido() === "entrega") linha("Entrega", c.taxa > 0 ? brl(c.taxa) : "Grátis");
     linha("Total", brl(comTaxa ? c.total : c.sub), "total");
   }
+  /* "Leve também": sugestões que a loja escolheu no produto (extra.combina) ou, sem escolha, itens em destaque de outras categorias */
+  function sugestoes(itens) {
+    var noCarrinho = {}, cats = {}, ids = [];
+    itens.forEach(function (i) { noCarrinho[i.p.id] = 1; cats[i.p.category_id] = 1; });
+    itens.forEach(function (i) {
+      ((i.p.extra && Array.isArray(i.p.extra.combina)) ? i.p.extra.combina : []).forEach(function (id) { if (ids.indexOf(id) < 0) ids.push(id); });
+    });
+    var lista = ids.map(function (id) { return porId[id]; }).filter(function (p) { return p && p.active !== false && !noCarrinho[p.id] && Number(p.price) > 0; });
+    if (!lista.length) {
+      lista = prods.filter(function (p) { return p.featured && p.active !== false && !noCarrinho[p.id] && !cats[p.category_id] && Number(p.price) > 0; });
+    }
+    return lista.slice(0, 4);
+  }
+  function desenhaSugestoes(itens) {
+    var box = $("sugestoes"); if (!box) return; box.textContent = "";
+    var l = itens.length && loja.accept_orders !== false ? sugestoes(itens) : [];
+    box.hidden = !l.length; if (!l.length) return;
+    box.appendChild(el("h4", "", "Leve também"));
+    var fila = el("div", "sug-fila");
+    l.forEach(function (p) {
+      var c = el("div", "sug"); c.appendChild(foto(p, "sug-foto"));
+      var t = el("div", "sug-txt"); t.appendChild(el("b", "", p.name)); t.appendChild(el("small", "", brl(p.price) + (p.unit ? " · " + p.unit : "")));
+      c.appendChild(t); c.appendChild(controle(p, true)); fila.appendChild(c);
+    });
+    box.appendChild(fila);
+  }
   function desenhaCarrinho() {
     var box = $("linhas"); box.textContent = "";
     var itens = itensCarrinho();
@@ -551,13 +589,14 @@
       var c = el("div", "ctrl"); c.dataset.id = i.key; pintaControle(c, i.p, i.key, true); l.appendChild(c);
       box.appendChild(l);
     });
+    desenhaSugestoes(itens);
     resumo("resumoCarrinho", false);
     var c = contas(), nota = $("notaCarrinho"), btn = $("btnAvancar");
     nota.classList.remove("alerta");
     if (loja.accept_orders === false) { nota.textContent = "A loja pausou os pedidos pelo site agora. Chame no WhatsApp."; nota.classList.add("alerta"); btn.disabled = true; }
     else if (!c.n) { nota.textContent = ""; btn.disabled = true; }
     else if (loja.min_order > 0 && c.sub < loja.min_order) { nota.textContent = "Pedido mínimo: " + brl(loja.min_order) + ". Faltam " + brl(loja.min_order - c.sub) + "."; nota.classList.add("alerta"); btn.disabled = true; }
-    else { nota.textContent = loja.faz_entrega && loja.delivery_fee > 0 ? "A taxa de entrega (" + brl(loja.delivery_fee) + ") entra no próximo passo, se escolher entrega." : ""; btn.disabled = false; }
+    else { nota.textContent = loja.faz_entrega && (loja.bairros.length || loja.delivery_fee > 0) ? "A taxa de entrega entra no próximo passo, se escolher entrega." : ""; btn.disabled = false; }
   }
 
   /* ---------- folha do pedido ---------- */
@@ -623,7 +662,13 @@
     if (!$("fFone").value && salvo.fone) $("fFone").value = mascaraFone(salvo.fone);
     if (!$("fEnd").value && salvo.end) $("fEnd").value = String(salvo.end).slice(0, 200);
     $("optEntrega").hidden = !loja.faz_entrega; $("optRetirada").hidden = !loja.faz_retirada;
-    $("taxaTxt").textContent = loja.delivery_fee > 0 ? "+ " + brl(loja.delivery_fee) : "grátis";
+    $("taxaTxt").textContent = loja.bairros.length ? "por bairro" : loja.delivery_fee > 0 ? "+ " + brl(loja.delivery_fee) : "grátis";
+    var sb = $("fBairro");
+    if (sb && !sb.options.length && loja.bairros.length) {
+      var o0 = el("option", "", "Escolha o bairro"); o0.value = ""; sb.appendChild(o0);
+      loja.bairros.forEach(function (b) { var o = el("option", "", b.n + " · " + (b.t > 0 ? brl(b.t) : "grátis")); o.value = b.n; sb.appendChild(o); });
+      if (salvo.bairro) sb.value = salvo.bairro;
+    }
     if (!document.querySelector('input[name="tipo"]:checked')) {
       var padrao = document.querySelector('input[name="tipo"][value="' + (loja.faz_entrega ? "entrega" : "retirada") + '"]');
       if (padrao) padrao.checked = true;
@@ -639,7 +684,8 @@
     trocaTipo();
     $("erroDados").textContent = "";
   }
-  function trocaTipo() { $("campoEnd").hidden = tipoEscolhido() !== "entrega"; resumo("resumoDados", true); }
+  function trocaTipo() { var ent = tipoEscolhido() === "entrega"; $("campoEnd").hidden = !ent; $("campoBairro").hidden = !(ent && loja.bairros.length); resumo("resumoDados", true); }
+  $("fBairro").addEventListener("change", function () { resumo("resumoDados", true); });
   $("passoDados").addEventListener("change", function (e) { if (e.target.name === "tipo") trocaTipo(); });
   $("passoDados").addEventListener("submit", function (e) { e.preventDefault(); envia(); });
 
@@ -796,17 +842,19 @@
     if (nome.length < 2) return marcaErro($("fNome"), "Informe seu nome.");
     if (digitos(fone).length < 10 || digitos(fone).length > 13) return marcaErro($("fFone"), "Informe seu WhatsApp com DDD.");
     if (tipo === "entrega" && end.length < 8) return marcaErro($("fEnd"), "Informe o endereço completo para entrega.");
+    var bx = bairroEscolhido();
+    if (tipo === "entrega" && loja.bairros.length && !bx) return marcaErro($("fBairro"), "Escolha o bairro da entrega.");
     if (!pag) return marcaErro(null, "Escolha a forma de pagamento.");
     if (loja.min_order > 0 && c.sub < loja.min_order) return marcaErro(null, "Pedido mínimo: " + brl(loja.min_order) + ".");
 
     var pedido = {
       customer_name: nome, customer_phone: fone, delivery_type: tipo, address: tipo === "entrega" ? end : "",
-      scheduled_for: quando, notes: obs, payment_method: pag, expected_total: c.total, coupon: c.desc > 0 ? cupom.codigo : "",
+      scheduled_for: quando, notes: obs, payment_method: pag, expected_total: c.total, neighborhood: tipo === "entrega" && bx ? bx.n : "", coupon: c.desc > 0 ? cupom.codigo : "",
       items: itens.map(function (i) { var x = { product_id: i.p.id, qty: i.q }; if (i.ops.length) x.options = i.ops.map(function (o) { return { g: o.g, o: o.o }; }); return x; })
     };
     var sig = JSON.stringify(pedido);
     if (idem.sig !== sig) idem = { sig: sig, chave: chaveNova() };
-    lsSet("bc-cliente", { nome: nome, fone: digitos(fone), end: end });
+    lsSet("bc-cliente", { nome: nome, fone: digitos(fone), end: end, bairro: bx ? bx.n : "" });
 
     var zap = zapNumero(loja.whatsapp);
     var w = null;
@@ -815,7 +863,7 @@
     $("erroDados").textContent = "";
     api("rpc/create_order", { method: "POST", body: JSON.stringify({ p_slug: slug, p_idem: idem.chave, p_order: pedido }) })
       .then(function (o) {
-        var d = { tipo: tipo, end: end, quando: quando, pag: pag, nome: nome, fone: fone, obs: obs };
+        var d = { tipo: tipo, end: bx && end.toLowerCase().indexOf(bx.n.toLowerCase()) < 0 ? end + " - " + bx.n : end, quando: quando, pag: pag, nome: nome, fone: fone, obs: obs };
         ultimoPedido = o;
         idem = { sig: "", chave: "" };
         carrinho = {}; salvaCarrinho();
