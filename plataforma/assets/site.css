@@ -210,8 +210,8 @@ p.intro{font-size:19px;color:var(--suave);max-width:38em;margin:0 0 40px}
 @media (max-width:420px){.marca{font-size:17px;gap:8px}.marca svg{width:30px;height:30px}.topo nav{gap:2px}.topo nav a{padding:12px 8px}.topo .btn{padding:0 14px}}
 
 /* logo oficial (imagem) em placa clara, legível no fundo escuro */
-.marca-logo{height:80px;width:auto;display:block}
-@media (max-width:560px){.marca-logo{height:58px}}
+.marca-logo{height:50px;width:auto;display:block}
+@media (max-width:560px){.marca-logo{height:36px}}
 
 /* ============ cadastro: campos com nome flutuante, etapas, cartão de vidro ============ */
 .campo.f{position:relative;display:block;margin-bottom:18px}
@@ -324,7 +324,7 @@ p.intro{font-size:19px;color:var(--suave);max-width:38em;margin:0 0 40px}
 body.legal{background:var(--creme)}
 .legal-topo{background:var(--espresso);color:var(--creme);padding-top:env(safe-area-inset-top)}
 .legal-topo .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:76px;flex-wrap:wrap}
-.legal-topo .marca-logo{height:52px}
+.legal-topo .marca-logo{height:38px}
 .legal-topo nav{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 .legal-topo nav a{text-decoration:none;font-weight:600;font-size:15px;padding:10px 12px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center}
 .legal-topo nav a[aria-current="page"]{background:rgba(255,248,238,.1)}

@@ -192,7 +192,7 @@ i = s.index('<footer>'); j = s.index('</footer>') + len('</footer>')
 s = s[:i] + '''<footer>
   <div class="in rodape-v6">
     <div class="rod-marca">
-      <img src="/assets/img/logo-bistro-connect-clara.png" alt="Bistrô Connect" width="302" height="170" loading="lazy">
+      <img src="/assets/img/logo-bistro-connect-clara.png?v=2" alt="Bistrô Connect" width="722" height="143" loading="lazy">
       <p>Cardápio digital, pedido pronto no WhatsApp e painel completo para padarias, cafés, hamburguerias e restaurantes. Sem comissão por pedido.</p>
     </div>
     <nav aria-label="Produto"><b>Produto</b><a href="#modelos">Modelos</a><a href="#como-funciona">Como funciona</a><a href="#calculadora">Quanto você economiza</a><a href="#planos">Planos</a></nav>

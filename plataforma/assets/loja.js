@@ -721,7 +721,7 @@
     var W = 1024, FT = '"DM Sans","Helvetica Neue",Arial,sans-serif';
     var itens = p.items || [], entrega = p.delivery_type === "entrega", mesa = p.mesa ? String(p.mesa) : "", fee = Number(p.delivery_fee) || 0;
     var urls = [p.capa_url].concat(itens.map(function (i) { return i.image_url; }));
-    return Promise.all([carregaImg("/assets/img/logo-bistro-connect-clara.png")].concat(urls.map(carregaImg))).then(function (im) {
+    return Promise.all([carregaImg("/assets/img/logo-bistro-connect-clara.png?v=2")].concat(urls.map(carregaImg))).then(function (im) {
       var logo = im[0], capa = im[1], th = im.slice(2);
       var hero = capa; if (!hero) for (var k = 0; k < th.length; k++) if (th[k]) { hero = th[k]; break; }
       var linhas = itens.length, extras = itens.filter(function (i) { return (i.options || []).length; }).length;
@@ -746,7 +746,7 @@
       var AZ = DK, AZ2 = AC, TQ = ACL, ESC = DK;
       x.fillStyle = FUNDO; x.fillRect(0, 0, W, H);
       x.fillStyle = AZ; x.fillRect(0, 0, W, 150); x.fillStyle = AC; x.fillRect(0, 145, W, 5);
-      if (logo) { var lh = 96, lw = logo.width * lh / logo.height; x.drawImage(logo, (W - lw) / 2, 25, lw, lh); } else t("Bistrô Connect", W / 2, 90, 46, LT, 1, "center");
+      if (logo) { var lh = 64, lw = logo.width * lh / logo.height; x.drawImage(logo, (W - lw) / 2, 43, lw, lh); } else t("Bistrô Connect", W / 2, 90, 46, LT, 1, "center");
       var y = 150, site = siteBase().replace(/^https?:\/\//, "");
       x.font = "700 24px " + FT; var uw = x.measureText(site).width + 70;
       rr((W - uw) / 2, y + 14, uw, 48, 24, AZ); t(site, W / 2, y + 46, 24, LT, 1, "center"); y += 70;
