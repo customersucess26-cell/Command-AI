@@ -42,13 +42,13 @@
   function css(u) { return "url('" + String(u).replace(/['"\\()\s]/g, encodeURIComponent) + "')"; }
 
   function passos(p) {
-    var entrega = p.delivery_type === "entrega";
+    var entrega = p.delivery_type === "entrega", mesa = !!p.mesa;
     return [
       ["novo", "Pedido recebido", "A loja já recebeu o seu pedido."],
       ["confirmado", "Confirmado", "A loja confirmou e vai começar."],
       ["em_preparo", "Em preparo", "Estamos preparando com carinho."],
-      ["pronto", entrega ? "Saiu para entrega" : "Pronto para retirar", entrega ? "Está a caminho." : "Pode vir buscar."],
-      ["entregue", entrega ? "Entregue" : "Retirado", "Bom apetite!"]
+      ["pronto", entrega ? "Saiu para entrega" : mesa ? "Pronto para servir" : "Pronto para retirar", entrega ? "Está a caminho." : mesa ? "A equipe já leva até a sua mesa." : "Pode vir buscar."],
+      ["entregue", entrega ? "Entregue" : mesa ? "Servido" : "Retirado", "Bom apetite!"]
     ];
   }
   var SUBTITULO = {
@@ -57,6 +57,7 @@
     em_preparo: "Estamos preparando o seu pedido agora.",
     pronto_entrega: "Seu pedido saiu para entrega!",
     pronto_retirada: "Seu pedido está pronto para retirar.",
+    pronto_mesa: "Seu pedido está pronto e já vai para a sua mesa.",
     entregue: "Pedido finalizado. Bom apetite!",
     cancelado: "Este pedido foi cancelado."
   };
@@ -81,7 +82,7 @@
 
     var nome = p.first_name || String(p.customer_name || "").split(" ")[0];
     $("titulo").textContent = nome ? "Olá, " + nome + "!" : "Olá!";
-    $("subtitulo").textContent = SUBTITULO[p.status === "pronto" ? (entrega ? "pronto_entrega" : "pronto_retirada") : p.status] || SUBTITULO.novo;
+    $("subtitulo").textContent = SUBTITULO[p.status === "pronto" ? (entrega ? "pronto_entrega" : p.mesa ? "pronto_mesa" : "pronto_retirada") : p.status] || SUBTITULO.novo;
     $("codigo").textContent = "Pedido " + p.code;
     $("dataPed").textContent = "Data: " + dia(p.created_at) + " - " + hora(p.created_at);
     $("estSub").textContent = final ? (cancel ? "Pedido cancelado" : "Pedido finalizado") : "Em breve, ele estará com você!";
@@ -97,7 +98,7 @@
     lista.forEach(function (st, i) {
       var est = i < idx ? "feito" : i === idx ? (i === lista.length - 1 ? "feito" : "atual") : "pendente";
       var d = el("div", "hs " + est), ic = el("i"); ic.innerHTML = est === "feito" && i < lista.length - 1 ? I.check : (i === 3 && !entrega ? I.sacola : IC5[i]);
-      d.appendChild(ic); d.appendChild(el("b", "", i === 3 && !entrega ? "Pronto" : i === 3 ? "A caminho" : i === 4 ? (entrega ? "Entregue" : "Retirado") : i === 0 ? "Recebido" : st[1])); hs.appendChild(d);
+      d.appendChild(ic); d.appendChild(el("b", "", i === 3 && !entrega ? "Pronto" : i === 3 ? "A caminho" : i === 4 ? (entrega ? "Entregue" : p.mesa ? "Servido" : "Retirado") : i === 0 ? "Recebido" : st[1])); hs.appendChild(d);
     });
     var ol = $("passos"); ol.textContent = "";
     lista.forEach(function (s, i) {
@@ -134,7 +135,7 @@
 
     var inf = $("info"); inf.textContent = "";
     function bloco(ic, a, b) { var d = el("div"); var c = el("span", "ic"); c.innerHTML = ic; var t = el("div"); t.appendChild(el("small", "", a)); t.appendChild(el("b", "", b)); d.appendChild(c); d.appendChild(t); inf.appendChild(d); }
-    bloco(I.pino, entrega ? "Entrega em" : "Retirada", entrega ? (p.address || "Endereço informado no pedido") : "Na loja");
+    bloco(I.pino, entrega ? "Entrega em" : p.mesa ? "Mesa" : "Retirada", entrega ? (p.address || "Endereço informado no pedido") : p.mesa ? "Mesa " + p.mesa : "Na loja");
     bloco(I.relogio, "Horário", p.scheduled_for || "O quanto antes");
     bloco(I.cartao, "Pagamento", (FORMAS[p.payment_method] || p.payment_method || "A combinar") + (p.payment_status ? " · " + (PGTO[p.payment_status] || "A pagar") : ""));
 

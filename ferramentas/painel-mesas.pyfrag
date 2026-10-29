@@ -1,0 +1,61 @@
+# Trecho do montar-painel-plataforma.py (carregado por exec): pedido na mesa por QR (consumo no local).
+# A loja liga em Dados da loja > Pedidos na mesa, imprime um QR por mesa e vê "Mesa N" nos pedidos. Depende do 14-mesas.sql.
+
+# ---------------------------------------------------------------- HTML
+h = troca(h, '''      <form class="box form-loja" id="cupForm" novalidate>''', '''      <form class="box form-loja" id="mesaForm" novalidate data-recurso="pedidos">
+        <div class="box-head"><h2>Pedidos na mesa (QR)</h2><span class="muted fino" id="mesaResumo"></span></div>
+        <p class="muted fino">O cliente aponta a câmera para o QR da mesa, pede pelo cardápio e o pedido chega aqui com o número da mesa, sem endereço e sem pedido mínimo.</p>
+        <div class="form">
+          <label class="full inline"><input type="checkbox" id="mesaAtiva"> Pedidos na mesa ligados</label>
+          <label>Quantidade de mesas<input id="mesaQtd" type="number" inputmode="numeric" min="1" max="200" value="10"></label>
+        </div>
+        <div class="acoes"><button class="btn primary" type="submit">Salvar</button><button class="btn" type="button" id="mesaImprime">Imprimir QRs das mesas</button></div>
+      </form>
+      <form class="box form-loja" id="cupForm" novalidate>''')
+h = troca(h, '''<button type="button" data-pm-tipo="entrega" aria-pressed="false">Entrega</button>''',
+ '''<button type="button" data-pm-tipo="entrega" aria-pressed="false">Entrega</button><button type="button" data-pm-tipo="mesa" id="pmMesaBtn" aria-pressed="false" hidden>Mesa</button>''')
+h = troca(h, '''<label class="full" id="pmBairroLbl" hidden>''', '''<label class="full" id="pmMesaLbl" hidden>Número da mesa<input id="pmMesa" type="number" inputmode="numeric" min="1" max="200"></label>
+        <label class="full" id="pmBairroLbl" hidden>''')
+
+# ---------------------------------------------------------------- JS
+j = troca(j, "preencheCupom();preencheBairros()}", "preencheCupom();preencheBairros();preencheMesas()}")
+# Mesa N no cartão, na ficha, na comanda e no CSV
+j = troca(j, "${o.delivery_type==='entrega'?'Entrega':'Retirada'}</span>", "${o.delivery_type==='entrega'?'Entrega':o.mesa?'Mesa '+esc(o.mesa):'Retirada'}</span>")
+j = troca(j, ":'Retirada no balcão'}</span>", ":(o.mesa?'Mesa '+esc(o.mesa):'Retirada no balcão')}</span>")
+j = troca(j, "${ent?'ENTREGA':'RETIRADA NO BALCÃO'}</div>", "${ent?'ENTREGA':o.mesa?'MESA '+esc(o.mesa):'RETIRADA NO BALCÃO'}</div>")
+j = troca(j, "o.customer_phone,o.delivery_type,o.address,resumoItens(o)", "o.customer_phone,o.mesa?'mesa '+o.mesa:o.delivery_type,o.address,resumoItens(o)")
+# "+ Pedido": opção Mesa
+j = troca(j, "$('#pmBairroLbl').hidden=!(t==='entrega'&&bairrosLoja().length);pmCarrinho()}",
+          "$('#pmBairroLbl').hidden=!(t==='entrega'&&bairrosLoja().length);$('#pmMesaLbl').hidden=t!=='mesa';pmCarrinho()}")
+j = troca(j, "pmTipo(settings.faz_entrega===false?'retirada':'retirada');", "pmTipo('retirada');$('#pmMesaBtn').hidden=!mesasLoja().ativo;$('#pmMesa').value='';")
+j = troca(j, "  if(!pm.itens.length)return toast('Escolha ao menos um produto');",
+          "  if(pm.tipo==='mesa'){const n=+$('#pmMesa').value;if(!(n>=1&&n<=mesasLoja().qtd))return toast('Informe uma mesa de 1 a '+mesasLoja().qtd)}\n  if(!pm.itens.length)return toast('Escolha ao menos um produto');")
+j = troca(j, "delivery_type:pm.tipo,address:pm.tipo==='entrega'?$('#pmEnd').value.trim():'',", "delivery_type:pm.tipo,table:pm.tipo==='mesa'?String(+$('#pmMesa').value):'',address:pm.tipo==='entrega'?$('#pmEnd').value.trim():'',")
+j = troca(j, "delivery_type:pm.tipo,address:ped.address,", "delivery_type:pm.tipo==='mesa'?'retirada':pm.tipo,mesa:ped.table,address:ped.address,")
+
+MESA_JS = r"""
+/* ================= pedidos na mesa (QR) ================= */
+function mesasLoja(){const m=(settings.extra||{}).mesas||{};return {ativo:m.ativo===true,qtd:Math.max(1,Math.min(200,+m.qtd||10))}}
+function preencheMesas(){const m=mesasLoja();$('#mesaAtiva').checked=m.ativo;$('#mesaQtd').value=m.qtd;
+  const n=validos(orders).filter(o=>o.mesa&&new Date(o.created_at).toDateString()===new Date().toDateString()).length;
+  $('#mesaResumo').textContent=m.ativo?m.qtd+' mesas · '+n+' pedido'+(n===1?'':'s')+' na mesa hoje':'desligado'}
+function lerMesas(){const q=Math.round(+$('#mesaQtd').value);if(!(q>=1&&q<=200)){toast('Informe de 1 a 200 mesas');return null}return {ativo:$('#mesaAtiva').checked,qtd:q}}
+$('#mesaForm').addEventListener('submit',e=>{e.preventDefault();const m=lerMesas();if(!m)return;
+  tenta(()=>grava('settings',{extra:Object.assign({},settings.extra||{},{mesas:m})}),m.ativo?'Pedidos na mesa ligados':'Salvo (desligado)').then(()=>{settings.extra=Object.assign({},settings.extra||{},{mesas:m});if(document.activeElement)document.activeElement.blur();preencheMesas()})});
+$('#mesaImprime').addEventListener('click',()=>{const m=lerMesas();if(!m)return;
+  if(typeof qrcode!=='function'){toast('Não consegui gerar o QR agora. Atualize a página.');return}
+  const loja=settings.store_name||'Nossa loja',cor=/^#[0-9a-f]{6}$/i.test(settings.cor||'')?settings.cor:'#A8693D',base=linkDaLoja();
+  const um=n=>{const url=base+'?mesa='+n,q=qrcode(0,'M');q.addData(url);q.make();
+    return `<div class="mc"><small>${esc(loja)}</small><div class="qr">${q.createSvgTag({cellSize:4,margin:0,scalable:true})}</div><b>Mesa ${n}</b><p>Aponte a câmera, veja o cardápio e peça da sua mesa</p></div>`};
+  const w=window.open('','_blank');if(!w){toast('Libere as janelas deste site para imprimir');return}
+  w.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>QR das mesas · ${esc(loja)}</title><style>
+@page{size:A4;margin:10mm}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#2B1D14}
+.folha{display:grid;grid-template-columns:repeat(2,90mm);grid-auto-rows:128mm;gap:6mm 8mm;justify-content:center}
+.mc{border:1px dashed #bbb;border-radius:4mm;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3mm;padding:6mm;background:#FBF7F1;text-align:center;break-inside:avoid}
+.mc small{font-size:9pt;letter-spacing:.14em;text-transform:uppercase;color:${cor};font-weight:700}.qr svg{width:56mm;height:56mm}
+.mc b{font:700 26pt Georgia,serif;color:${cor}}.mc p{margin:0;font-size:9pt;color:#5b4b3e;max-width:60mm}
+.dica{text-align:center;font-size:9pt;color:#777;margin:0 0 4mm}@media print{.dica{display:none}}
+</style></head><body><p class="dica">Imprima em papel firme (ou plastifique) e coloque um QR em cada mesa. Cada QR leva o número da mesa.</p><div class="folha">${Array.from({length:m.qtd},(_,k)=>um(k+1)).join('')}</div></body></html>`);
+  w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},500)});
+"""
+j = troca(j, "/* ================= início ================= */", MESA_JS + "\n/* ================= início ================= */")

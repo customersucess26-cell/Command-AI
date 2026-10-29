@@ -12,12 +12,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
-<link rel="stylesheet" href="painel.css?v=20261029a">
+<link rel="stylesheet" href="painel.css?v=20261030a">
 <script src="../assets/config.js"></script>
 <script src="../assets/vendor/supabase-2.45.4.js"></script>
-<script src="../assets/exemplo.js?v=20261029a" defer></script>
+<script src="../assets/exemplo.js?v=20261030a" defer></script>
 <script src="../assets/vendor/qrcode-generator-2.0.4.js" defer></script>
-<script src="painel.js?v=20261029a" defer></script>
+<script src="painel.js?v=20261030a" defer></script>
 </head>
 <body>
 
@@ -243,6 +243,15 @@
         </div>
         <div class="acoes-linha"><button class="btn primary" type="submit">Salvar páginas</button><span class="muted fino">As mudanças aparecem no site na hora.</span></div>
       </form>
+      <form class="box form-loja" id="mesaForm" novalidate data-recurso="pedidos">
+        <div class="box-head"><h2>Pedidos na mesa (QR)</h2><span class="muted fino" id="mesaResumo"></span></div>
+        <p class="muted fino">O cliente aponta a câmera para o QR da mesa, pede pelo cardápio e o pedido chega aqui com o número da mesa, sem endereço e sem pedido mínimo.</p>
+        <div class="form">
+          <label class="full inline"><input type="checkbox" id="mesaAtiva"> Pedidos na mesa ligados</label>
+          <label>Quantidade de mesas<input id="mesaQtd" type="number" inputmode="numeric" min="1" max="200" value="10"></label>
+        </div>
+        <div class="acoes"><button class="btn primary" type="submit">Salvar</button><button class="btn" type="button" id="mesaImprime">Imprimir QRs das mesas</button></div>
+      </form>
       <form class="box form-loja" id="cupForm" novalidate>
         <div class="box-head"><h2>Cartão de volta</h2><span class="muted fino" id="cupResumo"></span></div>
         <p class="muted fino">Transforme quem pediu por app, no balcão ou por telefone em cliente do seu cardápio. Imprima o cartão, coloque na sacola e o cliente ganha desconto no próximo pedido feito direto com você.</p>
@@ -382,8 +391,9 @@
         <label>Origem<select id="pmOrigem"><option value="whatsapp">WhatsApp</option><option value="telefone">Telefone</option><option value="balcao">Balcão</option></select></label>
         <label>Pagamento<select id="pmPag"></select></label>
         <div class="full"><span class="fino muted">Como o cliente recebe</span>
-          <div class="seg" role="group" aria-label="Entrega ou retirada"><button type="button" data-pm-tipo="retirada" aria-pressed="true">Retirada</button><button type="button" data-pm-tipo="entrega" aria-pressed="false">Entrega</button></div></div>
+          <div class="seg" role="group" aria-label="Entrega ou retirada"><button type="button" data-pm-tipo="retirada" aria-pressed="true">Retirada</button><button type="button" data-pm-tipo="entrega" aria-pressed="false">Entrega</button><button type="button" data-pm-tipo="mesa" id="pmMesaBtn" aria-pressed="false" hidden>Mesa</button></div></div>
         <label class="full" id="pmEndLbl" hidden>Endereço de entrega<input id="pmEnd" maxlength="200" autocomplete="off"></label>
+        <label class="full" id="pmMesaLbl" hidden>Número da mesa<input id="pmMesa" type="number" inputmode="numeric" min="1" max="200"></label>
         <label class="full" id="pmBairroLbl" hidden>Bairro<select id="pmBairro"></select></label>
         <label>Para quando (opcional)<input id="pmQuando" maxlength="60" placeholder="ex.: hoje 18h"></label>
         <label>Cupom (opcional)<input id="pmCupom" maxlength="20" autocomplete="off" style="text-transform:uppercase"></label>

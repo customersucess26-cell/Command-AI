@@ -226,6 +226,15 @@ returns boolean language sql immutable set search_path = '' as $$
 $$;
 alter table public.lojas drop constraint if exists lojas_bairros_ok;
 alter table public.lojas add constraint lojas_bairros_ok check (public.bairros_ok(extra -> 'bairros'));
+-- pedido na mesa (QR): lojas.extra.mesas = {"ativo": true, "qtd": 12}; o pedido guarda o número da mesa
+alter table public.orders add column if not exists mesa text not null default '';
+create or replace function public.mesas_ok(j jsonb)
+returns boolean language sql immutable set search_path = '' as $$
+  select j is null or j = 'null'::jsonb or (jsonb_typeof(j) = 'object' and jsonb_typeof(j -> 'ativo') = 'boolean'
+    and jsonb_typeof(j -> 'qtd') = 'number' and (j ->> 'qtd')::numeric = trunc((j ->> 'qtd')::numeric) and (j ->> 'qtd')::numeric between 1 and 200)
+$$;
+alter table public.lojas drop constraint if exists lojas_mesas_ok;
+alter table public.lojas add constraint lojas_mesas_ok check (public.mesas_ok(extra -> 'mesas'));
 alter table public.orders drop constraint if exists orders_origem_ok;
 alter table public.orders add constraint orders_origem_ok check (origem in ('site','whatsapp','telefone','balcao'));
 
@@ -583,6 +592,8 @@ declare
   descon  numeric := 0;
   bairro  text := btrim(coalesce(p_order ->> 'neighborhood', ''));
   bx      jsonb;
+  mesa    text := btrim(coalesce(p_order ->> 'table', ''));
+  na_mesa boolean := false;
 begin
   select * into loja from public.lojas l where l.slug = lower(coalesce(p_slug, ''));
   if not found or loja.status <> 'ativa' then perform public.recusa('Loja não encontrada.'); end if;
@@ -601,7 +612,13 @@ begin
   if length(digs) not between 10 and 13 or length(fone) > 30 then
     perform public.recusa('Informe seu WhatsApp com DDD.');
   end if;
-  if tipo = 'entrega' then
+  if tipo = 'mesa' then
+    if not coalesce((loja.extra -> 'mesas' ->> 'ativo')::boolean, false) then perform public.recusa('Esta loja não atende pelas mesas.'); end if;
+    if (case when mesa ~ '^[0-9]{1,3}$' then mesa::int else 0 end) not between 1 and coalesce((loja.extra -> 'mesas' ->> 'qtd')::int, 0) then
+      perform public.recusa('Mesa inválida. Confira o QR da mesa.');
+    end if;
+    mesa := mesa::int::text; na_mesa := true; tipo := 'retirada'; ender := '';
+  elsif tipo = 'entrega' then
     if not loja.faz_entrega then perform public.recusa('Esta loja não faz entrega. Escolha retirada.'); end if;
     if length(ender) not between 8 and 200 then perform public.recusa('Informe o endereço completo para entrega.'); end if;
   elsif tipo = 'retirada' then
@@ -666,7 +683,7 @@ begin
   end loop;
 
   soma  := round(soma, 2);
-  if soma < loja.min_order then
+  if soma < loja.min_order and not na_mesa then
     perform public.recusa(format('Pedido mínimo: R$ %s.', replace(to_char(loja.min_order, 'FM999990.00'), '.', ',')));
   end if;
   taxa  := case when tipo = 'entrega' then loja.delivery_fee else 0 end;
@@ -713,10 +730,10 @@ begin
     exit when not exists (select 1 from public.orders o where o.track_code = codigo);
   end loop;
   insert into public.orders (loja_id, seq, code, idem_key, track_token, track_code, customer_name, customer_phone, delivery_type,
-                             address, scheduled_for, notes, items, subtotal, delivery_fee, total, payment_method, discount, coupon, bairro)
+                             address, scheduled_for, notes, items, subtotal, delivery_fee, total, payment_method, discount, coupon, bairro, mesa)
   values (loja.id, proximo, '#' || proximo::text, p_idem,
           replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', ''), codigo,
-          nome, fone, tipo, ender, quando, obs, itens, soma, taxa, total, forma, descon, case when descon > 0 then cup else '' end, bairro)
+          nome, fone, tipo, ender, quando, obs, itens, soma, taxa, total, forma, descon, case when descon > 0 then cup else '' end, bairro, case when na_mesa then mesa else '' end)
   returning * into novo;
   insert into public.order_events (order_id, loja_id, actor, campo, para) values (novo.id, loja.id, 'cliente', 'status', 'novo');
 
@@ -758,7 +775,7 @@ begin
   if not found then return null; end if;
   select * into l from public.lojas where id = o.loja_id;
   return jsonb_build_object(
-    'code', o.code, 'status', o.status, 'delivery_type', o.delivery_type, 'scheduled_for', o.scheduled_for,
+    'code', o.code, 'status', o.status, 'delivery_type', o.delivery_type, 'mesa', o.mesa, 'scheduled_for', o.scheduled_for,
     'created_at', o.created_at, 'updated_at', o.updated_at, 'first_name', split_part(o.customer_name, ' ', 1),
     'items', (select coalesce(jsonb_agg(jsonb_build_object('name', i ->> 'name', 'unit', coalesce(i ->> 'unit', ''),
                                          'qty', (i ->> 'qty')::int, 'price', (i ->> 'price')::numeric,
@@ -796,7 +813,7 @@ begin
   if not found then return null; end if;
   select * into l from public.lojas where id = o.loja_id;
   return jsonb_build_object(
-    'code', o.code, 'status', o.status, 'delivery_type', o.delivery_type, 'scheduled_for', o.scheduled_for,
+    'code', o.code, 'status', o.status, 'delivery_type', o.delivery_type, 'mesa', o.mesa, 'scheduled_for', o.scheduled_for,
     'created_at', o.created_at, 'updated_at', o.updated_at, 'first_name', split_part(o.customer_name, ' ', 1), 'customer_name', o.customer_name, 'customer_phone', o.customer_phone,
     'address', o.address, 'payment_method', o.payment_method, 'payment_status', o.payment_status, 'notes', o.notes,
     'history', (select coalesce(jsonb_agg(jsonb_build_object('status', e.para, 'at', e.at) order by e.id), '[]'::jsonb)

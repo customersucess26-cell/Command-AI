@@ -68,8 +68,8 @@ function reais($v): string { return 'R$ ' . number_format((float)$v, 2, ',', '.'
 function rotulo_status(array $p): string {
     $entrega = ($p['delivery_type'] ?? '') === 'entrega';
     $map = ['novo' => 'Pedido recebido', 'confirmado' => 'Confirmado', 'em_preparo' => 'Em preparo',
-            'pronto' => $entrega ? 'Saiu para entrega' : 'Pronto para retirar',
-            'entregue' => $entrega ? 'Entregue' : 'Retirado', 'cancelado' => 'Cancelado'];
+            'pronto' => $entrega ? 'Saiu para entrega' : (!empty($p['mesa']) ? 'Pronto para servir' : 'Pronto para retirar'),
+            'entregue' => $entrega ? 'Entregue' : (!empty($p['mesa']) ? 'Servido' : 'Retirado'), 'cancelado' => 'Cancelado'];
     return $map[$p['status'] ?? ''] ?? 'Pedido recebido';
 }
 

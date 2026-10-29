@@ -89,6 +89,13 @@
         if (!loja) { estado("Não encontramos esta loja. Confira o endereço.", true); document.title = "Loja não encontrada"; return null; }
         loja.delivery_fee = Number(loja.delivery_fee) || 0; loja.min_order = Number(loja.min_order) || 0;
         loja.bairros = ((loja.extra && Array.isArray(loja.extra.bairros)) ? loja.extra.bairros : []).filter(function (b) { return b && typeof b.n === "string" && b.n.trim().length >= 2 && isFinite(Number(b.t)); }).map(function (b) { return { n: b.n.trim(), t: Number(b.t) }; });
+        /* pedido na mesa: o QR da mesa abre o cardápio com ?mesa=N (guardado na aba enquanto o cliente está sentado) */
+        loja.mesa = "";
+        try {
+          var cfgMesa = loja.extra && loja.extra.mesas, mq = (new URLSearchParams(location.search).get("mesa") || "").replace(/\D/g, "").slice(0, 3);
+          if (mq) sessionStorage.setItem("bc-mesa-" + slug, mq); else mq = sessionStorage.getItem("bc-mesa-" + slug) || "";
+          if (cfgMesa && cfgMesa.ativo && mq && +mq >= 1 && +mq <= +cfgMesa.qtd) loja.mesa = String(+mq);
+        } catch (e) {}
         loja.pagamentos = Array.isArray(loja.pagamentos) && loja.pagamentos.length ? loja.pagamentos : ["Pix", "Cartão", "Dinheiro"];
         carrinho = lsGet("bc-carrinho-" + slug) || {};
         if (typeof carrinho !== "object" || Array.isArray(carrinho)) carrinho = {};
@@ -180,7 +187,8 @@
       inf.appendChild(c);
     }
     if (loja.hours) chip("◷", loja.hours);
-    if (loja.faz_entrega) chip("➜", taxaResumo());
+    if (loja.mesa) chip("▣", "Você está na mesa " + loja.mesa);
+    else if (loja.faz_entrega) chip("➜", taxaResumo());
     if (loja.faz_retirada) chip("⌂", "Retirada na loja");
     if (loja.min_order > 0) chip("◎", "Pedido mínimo " + brl(loja.min_order));
     if (loja.address) chip("⚲", loja.address, "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(loja.address));
@@ -504,6 +512,7 @@
     return null;
   }
   function tipoEscolhido() {
+    if (loja.mesa) return "mesa";
     var r = document.querySelector('input[name="tipo"]:checked');
     if (r) return r.value;
     return loja.faz_entrega ? "entrega" : "retirada";
@@ -595,7 +604,7 @@
     nota.classList.remove("alerta");
     if (loja.accept_orders === false) { nota.textContent = "A loja pausou os pedidos pelo site agora. Chame no WhatsApp."; nota.classList.add("alerta"); btn.disabled = true; }
     else if (!c.n) { nota.textContent = ""; btn.disabled = true; }
-    else if (loja.min_order > 0 && c.sub < loja.min_order) { nota.textContent = "Pedido mínimo: " + brl(loja.min_order) + ". Faltam " + brl(loja.min_order - c.sub) + "."; nota.classList.add("alerta"); btn.disabled = true; }
+    else if (!loja.mesa && loja.min_order > 0 && c.sub < loja.min_order) { nota.textContent = "Pedido mínimo: " + brl(loja.min_order) + ". Faltam " + brl(loja.min_order - c.sub) + "."; nota.classList.add("alerta"); btn.disabled = true; }
     else { nota.textContent = loja.faz_entrega && (loja.bairros.length || loja.delivery_fee > 0) ? "A taxa de entrega entra no próximo passo, se escolher entrega." : ""; btn.disabled = false; }
   }
 
@@ -673,7 +682,8 @@
       var padrao = document.querySelector('input[name="tipo"][value="' + (loja.faz_entrega ? "entrega" : "retirada") + '"]');
       if (padrao) padrao.checked = true;
     }
-    $("tipoBox").hidden = !(loja.faz_entrega && loja.faz_retirada);
+    $("tipoBox").hidden = !(loja.faz_entrega && loja.faz_retirada) || !!loja.mesa;
+    $("fQuando").parentNode.hidden = !!loja.mesa;
     var box = $("pagOpcoes");
     if (!box.children.length) {
       loja.pagamentos.forEach(function (f, i) {
@@ -709,7 +719,7 @@
   }
   function desenhaCartao(p) {
     var W = 1024, FT = '"DM Sans","Helvetica Neue",Arial,sans-serif';
-    var itens = p.items || [], entrega = p.delivery_type === "entrega", fee = Number(p.delivery_fee) || 0;
+    var itens = p.items || [], entrega = p.delivery_type === "entrega", mesa = p.mesa ? String(p.mesa) : "", fee = Number(p.delivery_fee) || 0;
     var urls = [p.capa_url].concat(itens.map(function (i) { return i.image_url; }));
     return Promise.all([carregaImg("/assets/img/logo-bistro-connect-clara.png")].concat(urls.map(carregaImg))).then(function (im) {
       var logo = im[0], capa = im[1], th = im.slice(2);
@@ -757,11 +767,11 @@
       });
       if (Number(p.discount) > 0) t("Cupom " + (p.coupon || "") + "   − " + brl(p.discount), W - 62, iy + 22, 24, ACL, 1, "right");
       y += hItens + 28;
-      rr(30, y, 470, 76, 38, CL); t(entrega ? (fee > 0 ? "Entrega: " + brl(fee) : "Entrega grátis") : "Retirada na loja", 265, y + 49, 27, AZ2, 1, "center");
+      rr(30, y, 470, 76, 38, CL); t(mesa ? "Mesa " + mesa : entrega ? (fee > 0 ? "Entrega: " + brl(fee) : "Entrega grátis") : "Retirada na loja", 265, y + 49, 27, AZ2, 1, "center");
       rr(520, y, W - 550, 76, 38, AZ); t("Total: " + brl(p.total), 520 + (W - 550) / 2, y + 51, 30, LT, 1, "center"); y += 130;
       var pag = { pix: "Pix", dinheiro: "Dinheiro", cartao: "Cartão", credito: "Cartão de crédito", debito: "Cartão de débito" };
-      var end = entrega ? String(p.address || "-") : "Retirada na loja";
-      var linhasInfo = [[entrega ? "Entrega em" : "Retirada", end], ["Para", p.customer_name || ""], ["Pagamento", pag[p.payment_method] || p.payment_method || "-"]];
+      var end = entrega ? String(p.address || "-") : mesa ? "Mesa " + mesa : "Retirada na loja";
+      var linhasInfo = [[entrega ? "Entrega em" : mesa ? "Local" : "Retirada", end], ["Para", p.customer_name || ""], ["Pagamento", pag[p.payment_method] || p.payment_method || "-"]];
       rr(30, y, W - 60, 40 + 3 * 86, 30, BORDA); rr(32, y + 2, W - 64, 36 + 3 * 86, 28, CARTAO);
       var ly = y + 40;
       linhasInfo.forEach(function (r) {
@@ -820,7 +830,7 @@
     if (Number(o.discount) > 0) m.push("Cupom " + (o.coupon || "") + ": − " + brl(o.discount));
     if (Number(o.delivery_fee) > 0) m.push("Entrega: " + brl(o.delivery_fee));
     m.push("*TOTAL: " + brl(o.total) + "*", "");
-    m.push(d.tipo === "entrega" ? "*Entregar em:* " + d.end : "*Retirada* na loja");
+    m.push(d.tipo === "mesa" ? "*Mesa " + loja.mesa + "*" : d.tipo === "entrega" ? "*Entregar em:* " + d.end : "*Retirada* na loja");
     if (d.quando) m.push("*Para:* " + d.quando);
     m.push("*Pagamento:* " + d.pag);
     m.push("*Cliente:* " + d.nome + " · " + d.fone);
@@ -845,10 +855,10 @@
     var bx = bairroEscolhido();
     if (tipo === "entrega" && loja.bairros.length && !bx) return marcaErro($("fBairro"), "Escolha o bairro da entrega.");
     if (!pag) return marcaErro(null, "Escolha a forma de pagamento.");
-    if (loja.min_order > 0 && c.sub < loja.min_order) return marcaErro(null, "Pedido mínimo: " + brl(loja.min_order) + ".");
+    if (!loja.mesa && loja.min_order > 0 && c.sub < loja.min_order) return marcaErro(null, "Pedido mínimo: " + brl(loja.min_order) + ".");
 
     var pedido = {
-      customer_name: nome, customer_phone: fone, delivery_type: tipo, address: tipo === "entrega" ? end : "",
+      customer_name: nome, customer_phone: fone, delivery_type: tipo, table: loja.mesa || "", address: tipo === "entrega" ? end : "",
       scheduled_for: quando, notes: obs, payment_method: pag, expected_total: c.total, neighborhood: tipo === "entrega" && bx ? bx.n : "", coupon: c.desc > 0 ? cupom.codigo : "",
       items: itens.map(function (i) { var x = { product_id: i.p.id, qty: i.q }; if (i.ops.length) x.options = i.ops.map(function (o) { return { g: o.g, o: o.o }; }); return x; })
     };

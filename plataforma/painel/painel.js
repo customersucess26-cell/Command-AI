@@ -181,7 +181,7 @@ const linkRastreio=o=>o&&/^[a-f0-9]{16}$/.test(o.track_code||'')?new URL('../p/'
 function msgStatus(o,st){const n=primeiroNome(o.customer_name),loja=settings.store_name||'',l=linkRastreio(o),txt=({confirmado:`Olá, ${n}! Seu pedido ${o.code} foi confirmado aqui na ${loja}. Já vamos começar a preparar.`,em_preparo:`${n}, seu pedido ${o.code} está sendo preparado agora!`,pronto:o.delivery_type==='entrega'?`${n}, seu pedido ${o.code} saiu para entrega!`:`${n}, seu pedido ${o.code} está pronto para retirar!`,entregue:`Obrigado pelo pedido, ${n}! Bom apetite. Se puder, conta pra gente o que achou.`,cancelado:`${n}, tivemos um problema com o pedido ${o.code}. Pode falar com a gente por aqui?`}[st])||`Olá, ${n}! Sobre o seu pedido ${o.code}: `;
   return l&&st!=='entregue'&&st!=='cancelado'?txt+'\n\nAcompanhe aqui: '+l:txt}
 function cardPedido(o){const px=PROXIMO[o.status],min=(Date.now()-new Date(o.created_at))/60000,z=zapUrl(o.customer_phone,msgStatus(o,o.status));
-  return `<div class="ped s-${esc(o.status)}${chegou.has(String(o.id))?' chegou':''}" data-pedido="${esc(o.id)}" tabindex="0" role="button" aria-label="Pedido ${esc(o.code)}"><div class="ped-top"><b>${esc(o.code)}</b><span class="tempo${o.status==='novo'&&min>10?' demora':''}">${esc(tempo(o))}</span></div>${esteira(o)}<span class="cli">${esc(o.customer_name||'Cliente')}</span><span class="itens">${esc(resumoItens(o))}</span><div class="ped-pe"><span class="tot">${brl(o.total)}</span><span class="chip ${o.delivery_type==='entrega'?'info':''}">${o.delivery_type==='entrega'?'Entrega':'Retirada'}</span><span class="chip ${o.payment_status==='pago'?'ok':'warn'}">${o.payment_status==='pago'?'Pago':esc(o.payment_method||'A pagar')}</span></div><div class="acts">${px?`<button class="btn small primary" type="button" data-avanca="${esc(o.id)}">${esc(proxRot(o,px))}</button>`:''}${z?`<a class="ic-zap" href="${esc(z)}" target="_blank" rel="noopener noreferrer" aria-label="Avisar ${esc(o.customer_name)} no WhatsApp">${ZAP}</a>`:''}<button class="btn small" type="button" data-imprime="${esc(o.id)}">Imprimir</button></div></div>`}
+  return `<div class="ped s-${esc(o.status)}${chegou.has(String(o.id))?' chegou':''}" data-pedido="${esc(o.id)}" tabindex="0" role="button" aria-label="Pedido ${esc(o.code)}"><div class="ped-top"><b>${esc(o.code)}</b><span class="tempo${o.status==='novo'&&min>10?' demora':''}">${esc(tempo(o))}</span></div>${esteira(o)}<span class="cli">${esc(o.customer_name||'Cliente')}</span><span class="itens">${esc(resumoItens(o))}</span><div class="ped-pe"><span class="tot">${brl(o.total)}</span><span class="chip ${o.delivery_type==='entrega'?'info':''}">${o.delivery_type==='entrega'?'Entrega':o.mesa?'Mesa '+esc(o.mesa):'Retirada'}</span><span class="chip ${o.payment_status==='pago'?'ok':'warn'}">${o.payment_status==='pago'?'Pago':esc(o.payment_method||'A pagar')}</span></div><div class="acts">${px?`<button class="btn small primary" type="button" data-avanca="${esc(o.id)}">${esc(proxRot(o,px))}</button>`:''}${z?`<a class="ic-zap" href="${esc(z)}" target="_blank" rel="noopener noreferrer" aria-label="Avisar ${esc(o.customer_name)} no WhatsApp">${ZAP}</a>`:''}<button class="btn small" type="button" data-imprime="${esc(o.id)}">Imprimir</button></div></div>`}
 const ZAP='<svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.6 13.9c-.2.6-1.2 1.1-1.7 1.2-.4.1-1 .1-1.6-.1-.4-.1-.8-.3-1.4-.5-2.5-1.1-4.1-3.6-4.2-3.7-.1-.2-1-1.3-1-2.5s.6-1.8.9-2.1c.2-.2.5-.3.6-.3h.5c.1 0 .3 0 .5.4l.7 1.7c.1.1.1.3 0 .4l-.2.4-.4.4c-.1.1-.2.3-.1.5.1.2.6 1 1.3 1.6.9.8 1.7 1.1 1.9 1.2.2.1.4.1.5-.1l.7-.9c.2-.2.3-.2.5-.1l1.6.8c.2.1.4.2.4.3.1.1.1.6-.1 1.2z"/></svg>';
 
 /* ===== jeitos de ver os pedidos ===== */
@@ -228,7 +228,7 @@ function abrePedido(id){const o=OD(id);if(!o)return;const f=$('#fichaPedido');f.
   $('#pdAcoes').dataset.pedId=o.id;
   $('#pdAcoes').innerHTML=`<div class="linha-status">${STATUS.map(([st,n])=>`<button class="btn small s-${st}" type="button" data-st="${st}" aria-pressed="${o.status===st}">${esc(n.replace(' / saiu',''))}</button>`).join('')}</div>${z?`<a class="btn zap small" href="${esc(z)}" target="_blank" rel="noopener noreferrer">Avisar no WhatsApp</a>`:''}<button class="btn small" type="button" data-imprime="${esc(o.id)}">Imprimir comanda</button>${linkRastreio(o)?`<button class="btn small" type="button" data-rastreio="${esc(o.id)}">Copiar link de rastreio</button>`:''}`;
   $('#pdCorpo').dataset.pedId=o.id;
-  $('#pdCorpo').innerHTML=`<div class="pd-bloco"><b>Cliente</b><span>${esc(o.customer_name)} · ${esc(o.customer_phone)}</span><span>${o.delivery_type==='entrega'?'Entrega: '+esc(o.address||'endereço não informado'):'Retirada no balcão'}</span>${o.scheduled_for?`<span>Para: ${esc(o.scheduled_for)}</span>`:''}</div>
+  $('#pdCorpo').innerHTML=`<div class="pd-bloco"><b>Cliente</b><span>${esc(o.customer_name)} · ${esc(o.customer_phone)}</span><span>${o.delivery_type==='entrega'?'Entrega: '+esc(o.address||'endereço não informado'):(o.mesa?'Mesa '+esc(o.mesa):'Retirada no balcão')}</span>${o.scheduled_for?`<span>Para: ${esc(o.scheduled_for)}</span>`:''}</div>
   <table class="pd-itens"><tbody>${(o.items||[]).map(i=>`<tr><td>${esc(i.qty)}× ${esc(i.name)}${i.unit?` <span class="muted">(${esc(i.unit)})</span>`:''}${optHtml(i)}</td><td class="n">${brl((+i.price||0)*(+i.qty||0))}</td></tr>`).join('')}<tr><td class="muted">Subtotal</td><td class="n muted">${brl(o.subtotal)}</td></tr>${num(o.delivery_fee)?`<tr><td class="muted">Taxa de entrega</td><td class="n muted">${brl(o.delivery_fee)}</td></tr>`:''}<tr class="tot"><td>Total</td><td class="n">${brl(o.total)}</td></tr></tbody></table>
   <div class="pd-bloco"><b>Pagamento</b><div class="seg">${FORMAS.concat(['']).map(fm=>`<button type="button" data-pg-forma="${esc(fm)}" aria-pressed="${(o.payment_method||'')===fm}">${esc(fm||'Não informado')}</button>`).join('')}</div><div class="seg">${[['pendente','A receber'],['pago','Pago'],['estornado','Estornado']].map(([v,n])=>`<button type="button" data-pg-status="${v}" aria-pressed="${(o.payment_status||'pendente')===v}">${n}</button>`).join('')}</div></div>
   ${o.notes?`<div class="pd-bloco"><b>Observação do cliente</b><span>${esc(o.notes)}</span></div>`:''}
@@ -258,7 +258,7 @@ function desenhaFinanceiro(){
   const ult=dias.slice(-31);barras($('#grafFin'),ult.map(d=>soma(V.filter(o=>diaLocal(o.created_at)===d))),ult.map(d=>ult.length>10?(+d.slice(8,10)%5===0||d===ult[0]?d.slice(8,10):''):d.slice(8,10)+'/'+d.slice(5,7)),brl0,ult.length>10?'dias14':'')}
 function csv(nome,linhas){const cel=v=>{let s=String(v??'');if(/^[=+\-@\t\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};const blob=new Blob(['﻿'+linhas.map(r=>r.map(cel).join(';')).join('\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=nome;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
 const dec=v=>num(v).toFixed(2).replace('.',',');
-$('#btnCsvFin').addEventListener('click',()=>{const [a,b]=intervalo();csv('pedidos-'+a+'-a-'+b+'.csv',[['Código','Data','Hora','Cliente','WhatsApp','Tipo','Endereço','Itens','Subtotal','Entrega','Total','Status','Forma de pagamento','Pagamento','Obs. cliente','Anotações']].concat(noPeriodo().map(o=>[o.code,dataBR(o.created_at),horaBR(o.created_at),o.customer_name,o.customer_phone,o.delivery_type,o.address,resumoItens(o),dec(o.subtotal),dec(o.delivery_fee),dec(o.total),stNome(o.status),o.payment_method,o.payment_status,o.notes,o.admin_notes])))});
+$('#btnCsvFin').addEventListener('click',()=>{const [a,b]=intervalo();csv('pedidos-'+a+'-a-'+b+'.csv',[['Código','Data','Hora','Cliente','WhatsApp','Tipo','Endereço','Itens','Subtotal','Entrega','Total','Status','Forma de pagamento','Pagamento','Obs. cliente','Anotações']].concat(noPeriodo().map(o=>[o.code,dataBR(o.created_at),horaBR(o.created_at),o.customer_name,o.customer_phone,o.mesa?'mesa '+o.mesa:o.delivery_type,o.address,resumoItens(o),dec(o.subtotal),dec(o.delivery_fee),dec(o.total),stNome(o.status),o.payment_method,o.payment_status,o.notes,o.admin_notes])))});
 
 /* ================= clientes ================= */
 function agrupaClientes(){const m={};validos(orders).forEach(o=>{const k=digitos(o.customer_phone)||o.customer_name;if(!k)return;const c=m[k]=m[k]||{nome:o.customer_name,fone:o.customer_phone,n:0,v:0,ult:o.created_at};c.n++;c.v+=num(o.total);if(new Date(o.created_at)>new Date(c.ult)){c.ult=o.created_at;c.nome=o.customer_name}});return Object.values(m).sort((a,b)=>b.v-a.v)}
@@ -340,7 +340,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')fechaGavetas()});
 function preencheLoja(){if(document.activeElement&&document.activeElement.closest('#lojaForm'))return;
   $('#sNome').value=settings.store_name||'';$('#sWhats').value=settings.whatsapp||'';$('#sInsta').value=settings.instagram||'';$('#sEnd').value=settings.address||'';$('#sHoras').value=settings.hours||'';$('#sTaxa').value=num(settings.delivery_fee)?num(settings.delivery_fee).toFixed(2).replace('.',','):'';$('#sMin').value=num(settings.min_order)?num(settings.min_order).toFixed(2).replace('.',','):'';$('#sAceita').checked=settings.accept_orders!==false;
   $('#sDesc').value=settings.descricao||'';$('#sEntrega').checked=settings.faz_entrega!==false;$('#sRetirada').checked=settings.faz_retirada!==false;$('#sCor').value=/^#[0-9a-f]{6}$/i.test(settings.cor||'')?settings.cor:'#B0703F';
-  document.querySelectorAll('[data-pag]').forEach(c=>c.checked=(settings.pagamentos||['Pix','Cartão','Dinheiro']).includes(c.dataset.pag));mostraFotoLoja();preencheSec();preencheCupom();preencheBairros()}
+  document.querySelectorAll('[data-pag]').forEach(c=>c.checked=(settings.pagamentos||['Pix','Cartão','Dinheiro']).includes(c.dataset.pag));mostraFotoLoja();preencheSec();preencheCupom();preencheBairros();preencheMesas()}
 $('#lojaForm').addEventListener('submit',e=>{e.preventDefault();const nome=$('#sNome').value.trim();if(!nome)return toast('Informe o nome da loja');
   let w=digitos($('#sWhats').value);if(w.length===10||w.length===11)w='55'+w;if(w&&(w.length<12||w.length>13))return toast('Confira o WhatsApp: DDD + número');
   const pags=[...document.querySelectorAll('[data-pag]')].filter(c=>c.checked).map(c=>c.dataset.pag);if(!pags.length)return toast('Marque pelo menos uma forma de pagamento');
@@ -730,7 +730,7 @@ function comandaHtml(o,via,vias){
   const ent=o.delivery_type==='entrega',itens=(o.items||[]).map(i=>`<tr><td><b>${esc(i.qty)}x</b> ${esc(i.name)}${(i.options||[]).map(x=>`<div class="op">+ ${esc(x.name)}</div>`).join('')}</td><td class="n">${brl((+i.price||0)*(+i.qty||0))}</td></tr>`).join('');
   return `<div class="via"><h3>${esc(settings.store_name||'')}</h3><div class="c grande">PEDIDO ${esc(o.code)}</div><div class="c">${dataBR(o.created_at)} ${horaBR(o.created_at)}${o.origem&&o.origem!=='site'?' · '+esc(ORIGEM_NOME[o.origem]||o.origem):''}</div>${vias>1?`<div class="c">Via ${via} de ${vias}</div>`:''}<hr>
     <div><b>${esc(o.customer_name)}</b></div><div>${esc(o.customer_phone)}</div>
-    <div class="tipo">${ent?'ENTREGA':'RETIRADA NO BALCÃO'}</div>${ent?`<div>${esc(o.address)}</div>`:''}${o.scheduled_for?`<div>Para: ${esc(o.scheduled_for)}</div>`:''}<hr>
+    <div class="tipo">${ent?'ENTREGA':o.mesa?'MESA '+esc(o.mesa):'RETIRADA NO BALCÃO'}</div>${ent?`<div>${esc(o.address)}</div>`:''}${o.scheduled_for?`<div>Para: ${esc(o.scheduled_for)}</div>`:''}<hr>
     <table>${itens}</table><hr>
     <table><tr><td>Subtotal</td><td class="n">${brl(o.subtotal)}</td></tr>${num(o.discount)?`<tr><td>Desconto${o.coupon?' ('+esc(o.coupon)+')':''}</td><td class="n">-${brl(o.discount)}</td></tr>`:''}${num(o.delivery_fee)?`<tr><td>Entrega</td><td class="n">${brl(o.delivery_fee)}</td></tr>`:''}<tr><td><b>TOTAL</b></td><td class="n"><b>${brl(o.total)}</b></td></tr></table>
     <div>Pagamento: ${esc(o.payment_method||'a combinar')} · <b>${o.payment_status==='pago'?'PAGO':'A RECEBER'}</b></div>${o.notes?`<hr><div><b>OBS:</b> ${esc(o.notes)}</div>`:''}</div>`}
@@ -773,7 +773,7 @@ function pmAbre(conv){pm={itens:[],tipo:'retirada',conv:conv||null,abrindo:null,
   $('#pmOrigem').value=conv?'whatsapp':(aba==='pedidos'?'telefone':'whatsapp');
   if(conv){$('#pmNome').value=conv.nome||'';$('#pmFone').value=pmFoneFmt(conv.wa_id);pmRecorrente()}
   {const bs=bairrosLoja();$('#pmBairro').innerHTML=bs.length?'<option value="">Escolha o bairro</option>'+bs.map(b=>`<option value="${esc(b.n)}">${esc(b.n)} · ${num(b.t)?brl(b.t):'grátis'}</option>`).join(''):''}
-  pmTipo(settings.faz_entrega===false?'retirada':'retirada');
+  pmTipo('retirada');$('#pmMesaBtn').hidden=!mesasLoja().ativo;$('#pmMesa').value='';
   $('#pmSub').textContent=conv?'Pedido de '+(conv.nome||pmFoneFmt(conv.wa_id))+', vindo do WhatsApp.':'Anote o pedido do cliente. Os valores são calculados pelo cardápio.';
   pmLista();pmCarrinho();abreGaveta($('#fichaNovoPedido'));setTimeout(()=>$((conv?'#pmBusca':'#pmNome')).focus(),60)}
 function pmRecorrente(){const k=waChave($('#pmFone').value);if(!k)return;
@@ -784,7 +784,7 @@ function pmRecorrente(){const k=waChave($('#pmFone').value);if(!k)return;
   $('#pmSub').textContent='Cliente que já pediu '+orders.filter(o=>waChave(o.customer_phone)===k).length+'x: nome, endereço e pagamento preenchidos com o último pedido.'}
 const bairrosLoja=()=>Array.isArray((settings.extra||{}).bairros)?settings.extra.bairros:[];
 function pmTaxa(){if(pm.tipo!=='entrega')return 0;const b=bairrosLoja();if(b.length){const x=b.find(y=>y.n===$('#pmBairro').value);return x?num(x.t):0}return num(settings.delivery_fee)}
-function pmTipo(t){pm.tipo=t;document.querySelectorAll('[data-pm-tipo]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.pmTipo===t));$('#pmEndLbl').hidden=t!=='entrega';$('#pmBairroLbl').hidden=!(t==='entrega'&&bairrosLoja().length);pmCarrinho()}
+function pmTipo(t){pm.tipo=t;document.querySelectorAll('[data-pm-tipo]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.pmTipo===t));$('#pmEndLbl').hidden=t!=='entrega';$('#pmBairroLbl').hidden=!(t==='entrega'&&bairrosLoja().length);$('#pmMesaLbl').hidden=t!=='mesa';pmCarrinho()}
 const pmProdutos=()=>prods.filter(p=>p.active!==false&&num(p.price)>=0).sort((a,b)=>((C(a.category_id)||{}).position||0)-((C(b.category_id)||{}).position||0)||String(a.name).localeCompare(b.name));
 function pmLista(){const q=waNorm($('#pmBusca').value),l=pmProdutos().filter(p=>!q||waNorm(p.name+' '+((C(p.category_id)||{}).name||'')).includes(q));
   $('#pmLista').innerHTML=l.length?l.map(p=>{const ops=Array.isArray(p.opcoes)?p.opcoes:[];
@@ -818,13 +818,14 @@ document.addEventListener('submit',async e=>{if(e.target.id!=='pmForm')return;e.
   if(dg.length<10||dg.length>13)return toast('Informe o WhatsApp com DDD');
   if(pm.tipo==='entrega'&&$('#pmEnd').value.trim().length<8)return toast('Informe o endereço completo da entrega');
   if(pm.tipo==='entrega'&&bairrosLoja().length&&!$('#pmBairro').value)return toast('Escolha o bairro da entrega');
+  if(pm.tipo==='mesa'){const n=+$('#pmMesa').value;if(!(n>=1&&n<=mesasLoja().qtd))return toast('Informe uma mesa de 1 a '+mesasLoja().qtd)}
   if(!pm.itens.length)return toast('Escolha ao menos um produto');
-  const ped={customer_name:nome,customer_phone:fone,delivery_type:pm.tipo,address:pm.tipo==='entrega'?$('#pmEnd').value.trim():'',scheduled_for:$('#pmQuando').value.trim(),notes:$('#pmObs').value.trim(),
+  const ped={customer_name:nome,customer_phone:fone,delivery_type:pm.tipo,table:pm.tipo==='mesa'?String(+$('#pmMesa').value):'',address:pm.tipo==='entrega'?$('#pmEnd').value.trim():'',scheduled_for:$('#pmQuando').value.trim(),notes:$('#pmObs').value.trim(),
     payment_method:$('#pmPag').value,coupon:$('#pmCupom').value.trim(),neighborhood:pm.tipo==='entrega'?$('#pmBairro').value:'',origem:$('#pmOrigem').value,aceitar:$('#pmAceitar').checked,items:pm.itens.map(i=>({product_id:String(i.id),qty:i.qty,options:i.sel}))};
   pm.enviando=true;$('#pmCriar').disabled=true;
   try{let r;
     if(demo){const sub=pmSubtotal(),taxa=pmTaxa(),n=orders.length+1;
-      const o=await grava('orders',{code:'#'+(100+n),status:ped.aceitar?'confirmado':'novo',customer_name:nome,customer_phone:fone,delivery_type:pm.tipo,address:ped.address,scheduled_for:ped.scheduled_for,notes:ped.notes,
+      const o=await grava('orders',{code:'#'+(100+n),status:ped.aceitar?'confirmado':'novo',customer_name:nome,customer_phone:fone,delivery_type:pm.tipo==='mesa'?'retirada':pm.tipo,mesa:ped.table,address:ped.address,scheduled_for:ped.scheduled_for,notes:ped.notes,
         items:pm.itens.map(i=>{const p=P(i.id);return {product_id:p.id,name:p.name,unit:p.unit||'',price:pmItemUnit(p,i.sel),qty:i.qty,options:i.sel.map(s=>{const g=p.opcoes.find(x=>x.id===s.g),it=g.itens.find(x=>x.id===s.o);return {group:g.nome,name:it.nome,price:it.preco}})}}),
         subtotal:sub,delivery_fee:taxa,discount:0,total:sub+taxa,payment_method:ped.payment_method,payment_status:'pendente',origem:ped.origem,track_code:'0123456789abcdef'});r={code:o.code}}
     else{const x=await db.rpc('criar_pedido_painel',{p_loja:lojaId,p_idem:pm.idem,p_order:ped});if(x.error)throw x.error;r=x.data;await carregar('orders')}
@@ -852,6 +853,31 @@ function desenhaCombina(p){const atual=new Set((p.extra&&Array.isArray(p.extra.c
   const l=prods.filter(x=>String(x.id)!==String(p.id||'')&&x.active!==false).sort((a,b)=>String(a.name).localeCompare(String(b.name),'pt-BR'));
   $('#prCombina').innerHTML=l.length?l.map(x=>`<label class="chk"><input type="checkbox" value="${esc(x.id)}"${atual.has(String(x.id))?' checked':''}> ${esc(x.name)}</label>`).join(''):'<span class="muted fino">Cadastre outros produtos para sugerir aqui.</span>'}
 document.addEventListener('change',e=>{if(e.target.closest('#prCombina')&&e.target.checked&&document.querySelectorAll('#prCombina input:checked').length>3){e.target.checked=false;toast('Escolha até 3 produtos')}});
+
+
+/* ================= pedidos na mesa (QR) ================= */
+function mesasLoja(){const m=(settings.extra||{}).mesas||{};return {ativo:m.ativo===true,qtd:Math.max(1,Math.min(200,+m.qtd||10))}}
+function preencheMesas(){const m=mesasLoja();$('#mesaAtiva').checked=m.ativo;$('#mesaQtd').value=m.qtd;
+  const n=validos(orders).filter(o=>o.mesa&&new Date(o.created_at).toDateString()===new Date().toDateString()).length;
+  $('#mesaResumo').textContent=m.ativo?m.qtd+' mesas · '+n+' pedido'+(n===1?'':'s')+' na mesa hoje':'desligado'}
+function lerMesas(){const q=Math.round(+$('#mesaQtd').value);if(!(q>=1&&q<=200)){toast('Informe de 1 a 200 mesas');return null}return {ativo:$('#mesaAtiva').checked,qtd:q}}
+$('#mesaForm').addEventListener('submit',e=>{e.preventDefault();const m=lerMesas();if(!m)return;
+  tenta(()=>grava('settings',{extra:Object.assign({},settings.extra||{},{mesas:m})}),m.ativo?'Pedidos na mesa ligados':'Salvo (desligado)').then(()=>{settings.extra=Object.assign({},settings.extra||{},{mesas:m});if(document.activeElement)document.activeElement.blur();preencheMesas()})});
+$('#mesaImprime').addEventListener('click',()=>{const m=lerMesas();if(!m)return;
+  if(typeof qrcode!=='function'){toast('Não consegui gerar o QR agora. Atualize a página.');return}
+  const loja=settings.store_name||'Nossa loja',cor=/^#[0-9a-f]{6}$/i.test(settings.cor||'')?settings.cor:'#A8693D',base=linkDaLoja();
+  const um=n=>{const url=base+'?mesa='+n,q=qrcode(0,'M');q.addData(url);q.make();
+    return `<div class="mc"><small>${esc(loja)}</small><div class="qr">${q.createSvgTag({cellSize:4,margin:0,scalable:true})}</div><b>Mesa ${n}</b><p>Aponte a câmera, veja o cardápio e peça da sua mesa</p></div>`};
+  const w=window.open('','_blank');if(!w){toast('Libere as janelas deste site para imprimir');return}
+  w.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><title>QR das mesas · ${esc(loja)}</title><style>
+@page{size:A4;margin:10mm}*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#2B1D14}
+.folha{display:grid;grid-template-columns:repeat(2,90mm);grid-auto-rows:128mm;gap:6mm 8mm;justify-content:center}
+.mc{border:1px dashed #bbb;border-radius:4mm;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3mm;padding:6mm;background:#FBF7F1;text-align:center;break-inside:avoid}
+.mc small{font-size:9pt;letter-spacing:.14em;text-transform:uppercase;color:${cor};font-weight:700}.qr svg{width:56mm;height:56mm}
+.mc b{font:700 26pt Georgia,serif;color:${cor}}.mc p{margin:0;font-size:9pt;color:#5b4b3e;max-width:60mm}
+.dica{text-align:center;font-size:9pt;color:#777;margin:0 0 4mm}@media print{.dica{display:none}}
+</style></head><body><p class="dica">Imprima em papel firme (ou plastifique) e coloque um QR em cada mesa. Cada QR leva o número da mesa.</p><div class="folha">${Array.from({length:m.qtd},(_,k)=>um(k+1)).join('')}</div></body></html>`);
+  w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},500)});
 
 /* ================= início ================= */
 let started=false;
