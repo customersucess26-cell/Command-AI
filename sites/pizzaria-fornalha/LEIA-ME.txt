@@ -3,9 +3,14 @@ FORNALHA PIZZARIA - modelo de site (pizzaria)
 Mesma estrutura do modelo da hamburgueria: cardápio com pedido no WhatsApp, rastreio (pedido.html)
 e painel da loja (admin/). Configuração em assets/config.js (nome, WhatsApp, Supabase, cor).
 
-Efeitos: brasas e farinha no topo, título letra por letra, pizzas girando, pizza montando na rolagem
-(ingredientes caem na massa), cardápio com tamanhos Média e Grande, lista "mais pedidas" com foto que
-segue o mouse, combos com borda animada e boca do forno com chama.
+Visual: preto e dourado, letras serifadas (Cormorant) e roteiro elegante, misturando as referências
+Patiotime (cardápio em zigue-zague), Da Salvatore (ingredientes em traço), cardápio de lousa
+(lista à la carte) e cartões de ardósia com cantoneiras douradas (combos).
+
+Efeitos: carregamento com monograma, faíscas douradas, nome FORNALHA surgindo letra por letra,
+pizzas nos cantos girando com a rolagem, pizza montando na rolagem (ingredientes caem na massa),
+pizzas das assinaturas girando conforme rola, ícones de ingredientes que se desenham, foto que segue
+o mouse na lista, cartões com inclinação 3D, botões magnéticos, cursor dourado e depoimentos em fade.
 
 FOTOS: as fotos deste modelo foram recortadas de imagens de referência enviadas pelo dono da Bistrô
 Connect e servem só para demonstração. Antes de publicar para um cliente, troque pelas fotos da
