@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-Xr7qUCGhAtli0zz5SKOLCZyNukhq5idjGBGJFb7wc0I=' 'sha256-84EyFLefI7FwYtPedImJf9QbC7g/PEIFSfb5rZ2ug58=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-Nv90NwI0Q5JY9FhcjsOMhemt0SJ5K57PZ0p1d9Cbyic=' 'sha256-84EyFLefI7FwYtPedImJf9QbC7g/PEIFSfb5rZ2ug58=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1127,6 +1127,10 @@ header.nav .in{height:78px!important}
 /* cartão do pedido dentro do celular */
 .bubble.o.cartao{padding:3px 3px 3px;background:#DCF8C6}.bubble.o.cartao .wa-card{display:block;width:100%;height:auto;border-radius:8px}
 .bubble.o.cartao .wa-time{background:rgba(0,0,0,.45);color:#fff;border-radius:8px;padding:0 5px;right:8px;bottom:8px}
+.tscroll{width:100%;animation:tscroll 22s ease-in-out infinite}
+.tframe{display:block;border:0;width:390px;height:1750px;transform:scale(.564);transform-origin:0 0;background:#F3ECE2;pointer-events:none;margin-bottom:-763px}
+@keyframes tscroll{0%,14%{transform:translateY(0)}46%,60%{transform:translateY(-410px)}92%,100%{transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.tscroll{animation:none}}
 </style>
 </head>
 <body>
@@ -1292,21 +1296,7 @@ header.nav .in{height:78px!important}
         </div>
           <div class="track-phone" aria-label="Tela do cliente acompanhando o pedido">
             <div class="notch"></div>
-            <div class="tscr">
-              <div class="t-head"><small>suapadaria.com.br/pedido</small><b>Acompanhe seu pedido</b></div>
-              <div class="t-card">
-                <div class="t-top"><div><small>PEDIDO</small><b id="tNum">#125</b></div><span class="t-eta" id="tEta">~ 25 min</span></div>
-                <p class="t-msg" id="tMsg">Recebemos seu pedido!</p>
-                <div class="t-bar"><i id="tBar"></i></div>
-                <ol class="t-steps" id="tSteps">
-                  <li><span>✓</span><div><b>Pedido recebido</b><small>A loja confirmou</small></div></li>
-                  <li><span>🍳</span><div><b>Em preparo</b><small>Feito na hora</small></div></li>
-                  <li><span>🛵</span><div><b>Saiu para entrega</b><small>A caminho</small></div></li>
-                  <li><span>🏠</span><div><b>Entregue</b><small>Bom apetite!</small></div></li>
-                </ol>
-              </div>
-              <div class="t-items" id="tItems">2x Croissant · 1x Cappuccino</div>
-              <div class="t-wa">Dúvidas? Falar no WhatsApp</div>
+            <div class="tscr"><div class="tscroll"><iframe class="tframe" id="tFrame" data-demo-frame src="/pedido.html?c=demo" title="Página de acompanhamento que o cliente recebe" loading="lazy" tabindex="-1"></iframe></div>
             </div>
           </div>
           <div class="fcard fa1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><div><b>Tudo em tempo real</b><small>Um toque muda o status</small></div></div>
@@ -1784,7 +1774,7 @@ header.nav .in{height:78px!important}
     function top(){var e=Object.entries(S.top).sort(function(a,b){return b[1]-a[1]}).slice(0,4),mx=e[0][1];document.getElementById('dTop').innerHTML=e.map(function(x){return '<div><p><span>'+x[0]+'</span><b>'+x[1]+'</b></p><i style="width:'+(x[1]/mx*100)+'%"></i></div>'}).join('')}
     var ST={novo:['novo','Novo'],prep:['prep','Em preparo'],rota:['rota','Saiu p/ entrega'],ok:['ok','Entregue']};
     var TM=['Recebemos seu pedido!','Seu pedido está sendo preparado.','Saiu para entrega! Chega em poucos minutos.','Entregue. Bom apetite!'],TE=['~ 25 min','~ 18 min','~ 7 min','Entregue'];
-    function track(o,st,items){var p=document.querySelector('.track-phone');if(!p)return;document.getElementById('tNum').textContent='#'+o;if(items)document.getElementById('tItems').textContent=items;document.getElementById('tMsg').textContent=TM[st];document.getElementById('tEta').textContent=TE[st];document.getElementById('tEta').classList.toggle('done',st===3);document.getElementById('tBar').style.width=(st/3*100)+'%';document.querySelectorAll('#tSteps li').forEach(function(li,i){li.className=i<st?'done':(i===st?'cur':'')});p.classList.remove('ping');void p.offsetWidth;p.classList.add('ping')}
+        function track(o,st,items){var p=document.querySelector('.track-phone');if(!p)return;var f=document.getElementById('tFrame');try{if(f&&f.contentWindow)f.contentWindow.postMessage({bcDemo:Math.min(4,st+1)},location.origin)}catch(e){}p.classList.remove('ping');void p.offsetWidth;p.classList.add('ping')}
     track(125,1,'1x Bolo de cenoura · 2x Café');
     function orders(){document.getElementById('dOrders').innerHTML=S.orders.slice(0,5).map(function(o){return '<div class="d-ord" data-n="'+o.n+'"><b>#'+o.n+'</b><span>'+o.c+' · '+o.it+'</span><span class="v">'+brl(o.v)+'</span><span class="d-st '+ST[o.s][0]+'">'+ST[o.s][1]+'</span></div>'}).join('')}
     S.orders=[{n:125,c:'Ana P.',it:'3 itens',v:52.7,s:'prep'},{n:124,c:'João M.',it:'1 item',v:14.9,s:'novo'},{n:123,c:'Carla R.',it:'2 itens',v:29.8,s:'novo'},{n:122,c:'Lucas F.',it:'4 itens',v:68.4,s:'ok'}];
