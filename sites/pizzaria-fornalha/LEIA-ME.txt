@@ -1,0 +1,13 @@
+FORNALHA PIZZARIA - modelo de site (pizzaria)
+
+Mesma estrutura do modelo da hamburgueria: cardápio com pedido no WhatsApp, rastreio (pedido.html)
+e painel da loja (admin/). Configuração em assets/config.js (nome, WhatsApp, Supabase, cor).
+
+Efeitos: brasas e farinha no topo, título letra por letra, pizzas girando, pizza montando na rolagem
+(ingredientes caem na massa), cardápio com tamanhos Média e Grande, lista "mais pedidas" com foto que
+segue o mouse, combos com borda animada e boca do forno com chama.
+
+FOTOS: as fotos deste modelo foram recortadas de imagens de referência enviadas pelo dono da Bistrô
+Connect e servem só para demonstração. Antes de publicar para um cliente, troque pelas fotos da
+pizzaria do cliente (ou fotos com licença de uso), mantendo os mesmos nomes de arquivo em img/.
+O efeito da pizza montando usa img/camada-*.jpg (recortes de uma foto vertical em fundo preto).
