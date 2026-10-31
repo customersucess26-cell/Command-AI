@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-zI6ZA1iXPwdl9i5FrjL2ZiHPITpf9OnknENyPOuAeL0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-z+esFzO2HWr1i7dj8Ps3D7Gkb3+TDBrZHhGw8+Y7MV8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -526,12 +526,46 @@ footer{text-align:left;padding:60px 0 calc(30px + env(safe-area-inset-bottom,0px
 .passos li{transition:transform .4s,border-color .4s}.passos li:hover{transform:translateX(10px);border-color:var(--gold)}
 .passos li:hover b{color:var(--gold2);text-shadow:0 0 18px rgba(201,164,92,.6)}
 @media(prefers-reduced-motion:reduce){.gimg img,.gotas i,.gcard.reserva::after{animation:none!important}}
+
+/* ===== categorias da adega (revisado) ===== */
+.acat{aspect-ratio:auto;display:flex;flex-direction:column;justify-content:flex-start;background:linear-gradient(180deg,#171310,#0c0a09)}
+.acat::after{display:none}
+.acat .avis{position:relative;height:210px;display:flex;align-items:flex-end;justify-content:center;padding:18px 6px 0;background:radial-gradient(ellipse 70% 60% at 50% 78%,rgba(201,164,92,.22),transparent 70%);border-bottom:1px solid rgba(201,164,92,.28)}
+.acat .avis img{position:static;object-fit:contain;transition:transform .7s cubic-bezier(.2,.85,.2,1)}
+.acat .avis img.gf{height:92%;width:auto;max-width:36%;margin:0 -4%;-webkit-mask-image:radial-gradient(ellipse 40% 50% at 50% 50%,#000 50%,transparent 100%);mask-image:radial-gradient(ellipse 40% 50% at 50% 50%,#000 50%,transparent 100%)}
+.acat .avis img.lt{height:68%;width:auto;margin:0 -3%;filter:drop-shadow(0 12px 14px rgba(0,0,0,.7))}
+.acat .avis img:nth-child(2){height:100%;z-index:1;transform:translateY(-6px)}
+.acat .avis img.lt:nth-child(2){height:76%}
+.acat:hover .avis img:nth-child(1){transform:translateX(-8px) rotate(-6deg)}
+.acat:hover .avis img:nth-child(2){transform:translateY(-14px) scale(1.06)}
+.acat:hover .avis img:nth-child(3){transform:translateX(8px) rotate(6deg)}
+.acat-t{border-top:0;margin:0;padding:14px 14px 18px;flex:1}
+.acat-t b{font-size:1.15rem}
+/* bebidas: funde a foto no fundo, sem quadrado aparente */
+.gimg img.foto{object-fit:contain;-webkit-mask-image:radial-gradient(ellipse 42% 50% at 50% 50%,#000 52%,transparent 100%);mask-image:radial-gradient(ellipse 42% 50% at 50% 50%,#000 52%,transparent 100%)}
+.gimg{background:radial-gradient(ellipse 70% 55% at 50% 80%,rgba(201,164,92,.16),transparent 72%)}
+/* cursor taça na adega */
+.cur .taca{display:none}
+.cur.vinho .corta{display:none}.cur.vinho .taca{display:inline}
+.cur.vinho svg{transform-origin:30px 40px}
+.cur.vinho.big svg{transform:rotate(-24deg) scale(1.2)}
+@media(max-width:640px){.acat .avis{height:160px}}
+
+/* cartões de bebida em coluna: foto em cima, texto e botões embaixo */
+.gcard{grid-template-columns:1fr!important;text-align:center;padding:18px 16px 20px;gap:10px}
+.gimg{height:220px}
+.gtx h3{font-size:1.2rem;min-height:2.4em;display:flex;align-items:center;justify-content:center}
+.gtx p{min-height:2.8em}
+.gbt{flex-direction:row;flex-wrap:wrap;justify-content:center}
+.gbt button,.reservar{white-space:nowrap;text-align:center;padding:8px 10px}
+.consulta{display:block;width:100%}
+@media(max-width:640px){.gimg{height:160px}.gtx h3{min-height:0;font-size:1rem}.gbt button,.reservar{white-space:normal}}
 </style>
 </head>
 <body>
 <div id="loader"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><text x="60" y="76" text-anchor="middle">F</text></svg></div>
 <div id="progress"></div>
-<div class="cur" id="cur" aria-hidden="true"><svg viewBox="0 0 64 64"><path class="cabo" d="M33 31l22-22a4 4 0 0 1 6 6L39 37"/><path class="cabo2" d="M30 34l6 6"/><g id="roda"><circle cx="20" cy="44" r="15"/><circle cx="20" cy="44" r="10.5" class="in"/><path d="M20 30.5v27M6.5 44h27M10.5 34.5l19 19M29.5 34.5l-19 19" class="raio"/><circle cx="20" cy="44" r="2.6" class="eixo"/></g></svg></div><canvas id="corte" aria-hidden="true"></canvas>
+<div class="cur" id="cur" aria-hidden="true"><svg viewBox="0 0 64 64"><g class="taca"><path d="M18 8h24c0 15-4 24-12 25-8-1-12-10-12-25z" fill="rgba(255,255,255,.12)" stroke="#efe9de" stroke-width="1.6"/><path d="M19.2 17h21.6c-1 9-4.6 14.6-10.8 15.2C23.8 31.6 20.2 26 19.2 17z" fill="#7a0f22"/><path d="M23 19c1 5 3 8 6 9" stroke="rgba(255,255,255,.45)" stroke-width="1.4" fill="none"/><path d="M30 33v18M21 54h18" stroke="#efe9de" stroke-width="2" stroke-linecap="round"/></g><g class="corta"><path class="cabo" d="M33 31l22-22a4 4 0 0 1 6 6L39 37"/><path class="cabo2" d="M30 34l6 6"/><g id="roda"><circle cx="20" cy="44" r="15"/><circle cx="20" cy="44" r="10.5" class="in"/><path d="M20 30.5v27M6.5 44h27M10.5 34.5l19 19M29.5 34.5l-19 19" class="raio"/><circle cx="20" cy="44" r="2.6" class="eixo"/></g></g></svg></div><canvas id="corte" aria-hidden="true"></canvas>
 
 <header id="hdr">
   <div class="wrap nav">
@@ -564,7 +598,6 @@ footer{text-align:left;padding:60px 0 calc(30px + env(safe-area-inset-bottom,0px
   <div class="desce" aria-hidden="true"><i></i>role</div>
 </section>
 
-<div class="faixa" aria-hidden="true"><div id="tick"></div></div>
 <section class="vant" aria-label="Por que pedir na Fornalha">
   <div class="wrap vgrid">
     <div class="vi rv"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M10 4h16l-2 12a6 6 0 0 1-12 0z"/><path d="M18 22v9M12 32h12"/></svg><div><b>Seleção premium</b><span>Ingredientes italianos e vinhos escolhidos a dedo.</span></div></div>
@@ -788,7 +821,7 @@ var ING=[
 ];
 
 var ticker=["Forno a lenha","Massa de 48 horas","Mozzarella de búfala","Tomate San Marzano","Manjericão fresco","Meio a meio","Pizza doce"],th="";
-for(var k=0;k<4;k++)ticker.forEach(function(w){th+="<span>"+w+"</span>"});$("#tick").innerHTML=th;
+
 
 function esc(t){return String(t==null?"":t).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function src(k){k=String(k||"");return /^(img\/[\w.\/-]+|https:\/\/[^"'\s<>]+)$/.test(k)?k:(IMG[k]||"")}
@@ -840,12 +873,12 @@ function renderCombos(lista){$("#cgrid").innerHTML=lista.map(function(it){var u=
 drawTabs();renderMenu();renderCombos(COMBOS);
 /* ---- adega: vinhos, destilados e sem álcool ---- */
 var ACAT=[
-  {k:"Tintos",img:"img/adega-tinto.jpg",d:"Encorpados, para as pizzas de carne e queijos."},
-  {k:"Brancos e rosés",img:"img/adega-branco.jpg",d:"Leves e frescos, para margherita e vegetarianas."},
-  {k:"Espumantes",img:"img/adega-espumante.jpg",d:"Para brindar e para as pizzas cremosas."},
-  {k:"Destilados",img:"img/beb-jw-black.jpg",fit:1,d:"Cachaça, vodka, rum, tequila, gin, whisky e vermute."},
-  {k:"Sem álcool",latas:["coca-cola","guarana-jesus","fanta-laranja"],d:"Refrigerantes, águas, sucos e sodas."},
-  {k:"Carta de reserva",img:"img/res-sassicaia.jpg",fit:1,d:"Grandes rótulos do mundo, sob consulta."}
+  {k:"Tintos",g:["beb-casillero","beb-catena-malbec","res-tignanello"],d:"Encorpados, para pizzas de carne e queijos."},
+  {k:"Brancos e rosés",g:["beb-concha-y-toro","beb-mateus","beb-miolo-chardonnay"],d:"Leves e frescos, para margherita e vegetarianas."},
+  {k:"Espumantes",g:["beb-salton-brut","beb-chandon","res-cristal"],d:"Para brindar e para as pizzas cremosas."},
+  {k:"Destilados",g:["beb-absolut","beb-jw-black","beb-tanqueray"],d:"Cachaça, vodka, rum, tequila, gin, whisky e vermute."},
+  {k:"Sem álcool",latas:["coca-cola","guarana-jesus","fanta-laranja"],d:"Refrigerantes em lata, sempre gelados."},
+  {k:"Carta de reserva",g:["res-opus-one","res-sassicaia","res-lafite"],d:"Grandes rótulos do mundo, sob consulta."}
 ];
 function B(c,n,d,p,img,o){var x={c:c,n:n,d:d,p:p,img:img,al:c!=="Sem álcool"?1:0};for(var k in o||{})x[k]=o[k];return x}
 var ADEGA=[
@@ -902,11 +935,11 @@ function garrafa(tp,cor,id){var g='<defs><linearGradient id="v'+id+'" x1="0" x2=
   if(sh)s+='<rect x="10" y="0" width="40" height="160" fill="url(#v'+id+')" opacity=".9"/>';
   return s+'</svg>'}
 var acur="Tintos";
-$("#acats").innerHTML=ACAT.map(function(c){var vis=c.img?'<img'+(c.fit?' class="fit"':'')+' src="'+c.img+'" alt="" loading="lazy">':'<span class="aart">'+c.latas.map(function(l){return '<img src="img/lata-'+l+'.webp" alt="">'}).join("")+'</span>';return '<button class="acat rv" type="button" data-ac="'+esc(c.k)+'">'+vis+'<span class="acat-t"><b>'+esc(c.k)+'</b><small>'+esc(c.d)+'</small></span></button>'}).join("");
+$("#acats").innerHTML=ACAT.map(function(c){var vis=c.g?c.g.map(function(n){return '<img class="gf" src="img/'+n+'.jpg" alt="" loading="lazy">'}).join(""):c.latas.map(function(l){return '<img class="lt" src="img/lata-'+l+'.webp" alt="" loading="lazy">'}).join("");return '<button class="acat rv" type="button" data-ac="'+esc(c.k)+'"><span class="avis">'+vis+'</span><span class="acat-t"><b>'+esc(c.k)+'</b><small>'+esc(c.d)+'</small></span></button>'}).join("");
 function aTabs(){$("#atabs").innerHTML=ACAT.map(function(c){return '<button class="tab" role="tab" type="button" data-at="'+esc(c.k)+'" aria-selected="'+(c.k===acur)+'">'+esc(c.k)+'</button>'}).join("")}
 function aGrid(){$("#agrid").innerHTML=ADEGA.filter(function(x){return x.c===acur}).map(function(x,i){
   var vis=x.img?'<img class="'+(/\.webp$/.test(x.img)?'png':'foto')+'" src="'+x.img+'" alt="'+esc(x.n)+'" loading="lazy">':garrafa(x.t,x.cor,"g"+i),bt;
-  if(x.res)bt='<span class="consulta">Sob consulta</span><a class="reservar" target="_blank" rel="noopener" href="'+esc(wa("Olá, Fornalha! Gostaria de consultar o vinho "+x.n+" da carta de reserva."))+'">Consultar no WhatsApp ›</a>';
+  if(x.res)bt='<span class="consulta">Sob consulta</span><a class="reservar" target="_blank" rel="noopener" href="'+esc(wa("Olá, Fornalha! Gostaria de consultar o vinho "+x.n+" da carta de reserva."))+'">Consultar ›</a>';
   else{var cxn=x.cxn||"caixa 6";bt='<button type="button" '+attrs({n:x.un?x.n+" ("+x.un+")":x.n,p:x.p,i:x.img})+'>'+(x.un||"Unidade")+' '+money(x.p)+'</button>'+(x.cx?'<button type="button" '+attrs({n:x.n+" ("+cxn+")",p:x.cx,i:x.img})+'>'+(x.cxn?x.cxn:"6 un.")+' '+money(x.cx)+'</button>':'')}
   return '<article class="gcard'+(x.res?' reserva':'')+(/lata-/.test(x.img)?' gelada':'')+'" data-tilt style="animation-delay:'+(Math.min(i,12)*60)+'ms"><div class="gimg">'+vis+(/lata-/.test(x.img)?'<span class="gotas"><i></i><i></i><i></i><i></i><i></i></span>':'')+'</div><div class="gtx"><h3>'+esc(x.n)+'</h3><p>'+esc(x.d)+'</p><div class="gbt">'+bt+'</div></div></article>'}).join("")}
 aTabs();aGrid();
@@ -1092,13 +1125,13 @@ function counters(){$$("[data-count]").forEach(function(el){var to=+el.dataset.c
   var cu=$("#cur"),roda=$("#roda"),cv=$("#corte"),cx=cv.getContext("2d"),dpr=Math.min(2,devicePixelRatio||1),mx=-100,my=-100,x=-100,y=-100,ang=0,pts=[];
   function size(){cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}size();addEventListener("resize",size);
   document.documentElement.classList.add("has-cursor");
-  addEventListener("pointermove",function(e){mx=e.clientX;my=e.clientY;cu.classList.toggle("big",!!(e.target.closest&&e.target.closest("a,button,.it,.zz-img,.ard-wrap,.vfoto")));
+  addEventListener("pointermove",function(e){mx=e.clientX;my=e.clientY;cu.classList.toggle("big",!!(e.target.closest&&e.target.closest("a,button,.it,.zz-img,.ard-wrap,.vfoto,.gcard")));cu.classList.toggle("vinho",!!(e.target.closest&&e.target.closest("#adega")));
     var t=e.target.closest&&e.target.closest("[data-tilt]");$$("[data-tilt].hot").forEach(function(z){if(z!==t){z.classList.remove("hot");z.style.transform=""}});
     if(t){t.classList.add("hot");var r=t.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;t.style.transform="perspective(1000px) rotateY("+((px-.5)*8).toFixed(2)+"deg) rotateX("+((.5-py)*8).toFixed(2)+"deg) translateY(-6px)"}},{passive:true});
   addEventListener("pointerleave",function(){mx=my=-100});
   (function loop(){var dx=mx-x,dy=my-y;x+=dx*.35;y+=dy*.35;var d=Math.sqrt(dx*dx+dy*dy);ang+=d*2.2*(dx>=0?1:-1);
     cu.style.transform="translate("+x+"px,"+y+"px)";roda.setAttribute("transform","rotate("+(ang%360).toFixed(1)+" 20 44)");
-    if(d>.5)pts.push({x:x,y:y,t:performance.now()});
+    if(d>.5&&!cu.classList.contains("vinho"))pts.push({x:x,y:y,t:performance.now()});
     var now=performance.now();pts=pts.filter(function(p){return now-p.t<420});cx.clearRect(0,0,innerWidth,innerHeight);
     for(var i=1;i<pts.length;i++){var a=pts[i-1],b=pts[i],k=1-(now-b.t)/420;cx.strokeStyle="rgba(234,210,154,"+(k*.55).toFixed(3)+")";cx.lineWidth=1.4*k+.3;cx.beginPath();cx.moveTo(a.x,a.y);cx.lineTo(b.x,b.y);cx.stroke()}
     requestAnimationFrame(loop)})();
