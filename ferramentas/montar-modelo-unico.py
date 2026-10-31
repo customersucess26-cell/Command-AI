@@ -27,7 +27,7 @@ usadas = set(re.findall(r'img/[\w.-]+\.(?:jpg|jpeg|png|webp|mp4|webm)', html))
 dinam = ["camada-", "lata-", "res-", "beb-"] + [f[:-len(os.path.splitext(f)[1])] for f in todas]
 for f in todas:
     nome = os.path.splitext(f)[0]
-    if "img/" + f in usadas or any(nome.startswith(p) for p in ("camada-", "lata-", "res-", "beb-", "vt-", "jd-")) or ('"' + nome + '"' in html):
+    if "img/" + f in usadas or any(nome.startswith(p) for p in ("camada-", "lata-", "res-", "beb-", "vt-", "jd-", "sig-")) or ('"' + nome + '"' in html):
         usadas.add("img/" + f)
 mapa = {k: uri(k) for k in sorted(usadas) if os.path.exists(os.path.join(base, k))}
 # literais "img/arquivo" viram data URI direto (HTML, CSS e JS)
@@ -39,7 +39,7 @@ for arr in re.findall(r'\[([^\]]*)\]\.forEach\(function\(k\)\{IMG\[k\]', html):
     lista_js |= set(re.findall(r'"([\w-]+)"', arr))
 def dinamica(k):
     n = os.path.splitext(os.path.basename(k))[0]
-    return n.startswith(("camada-", "lata-", "res-", "beb-", "vt-", "jd-")) or n in lista_js
+    return n.startswith(("camada-", "lata-", "res-", "beb-", "vt-", "jd-", "sig-")) or n in lista_js
 js_mapa = "<script>window.__IMG=" + "{" + ",".join('"%s":"%s"' % kv for kv in mapa.items() if dinamica(kv[0])) + "};function U(p){return window.__IMG[p]||p}</script>\n"
 html = html.replace("<script>\n" + cfg, js_mapa + "<script>\n" + cfg, 1)
 trocas = [

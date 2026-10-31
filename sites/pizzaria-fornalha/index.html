@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-a3C0Abj9CuLeEAO/pCdOE+jL9SJJLXOVBn0zP2ZsVBw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7IcubpGvBX/oKNAB1uUdJk+bSY6VjiIQiikBW2NhSj4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -649,7 +649,7 @@ a,button,label,[data-ac],[data-at],.tab{cursor:pointer}
 
 <section class="sec" id="assinaturas">
   <div class="wrap">
-    <div class="titulo rv"><span class="eyebrow">Ristorante</span><h2><span class="star">✦</span>Assinaturas<span class="star">✦</span></h2><div class="orn"><i></i><b></b><i></i></div><p>As quatro que fizeram o nome da casa. Escolha o tamanho e ela vai para o seu pedido.</p></div>
+    <div class="titulo rv"><span class="eyebrow">Ristorante</span><h2><span class="star">✦</span>Assinaturas<span class="star">✦</span></h2><div class="orn"><i></i><b></b><i></i></div><p>As cinco que fizeram o nome da casa. Escolha o tamanho e ela vai para o seu pedido.</p></div>
     <div class="assin" id="assin"></div>
   </div>
 </section>
@@ -765,16 +765,17 @@ var $=function(s){return document.querySelector(s)},$$=function(s){return docume
 var reduce=matchMedia("(min-width:100000px)").matches,fine=matchMedia("(pointer:fine)").matches;
 
 var IMG={};
-["margherita","bufala","marinara","diavola","quatro-queijos","aliche","capricciosa","quatro-estacoes","presunto-champignon","vegetariana","bianca","montanara","patio-calabresa","patio-burrata","patio-margherita"].forEach(function(k){IMG[k]="img/"+k+".webp"});
+["margherita","bufala","marinara","diavola","quatro-queijos","aliche","capricciosa","quatro-estacoes","presunto-champignon","vegetariana","bianca","montanara","patio-calabresa","patio-burrata","patio-margherita","sig-pepperoni-rucula","sig-frango-grelhado","sig-suprema","sig-mediterranea","sig-vegetariana"].forEach(function(k){IMG[k]="img/"+k+".webp"});
 ["calabresa","frango-barbecue","moda-da-casa","especial-da-casa","havaiana","toscana","hero"].forEach(function(k){IMG[k]="img/"+k+".jpg"});
 var EX=[{"n":"sal","x":140,"y":0,"w":460,"h":205},{"n":"azeitonas","x":140,"y":205,"w":460,"h":95},{"n":"manjericao","x":140,"y":300,"w":460,"h":110},{"n":"mozzarella","x":140,"y":410,"w":460,"h":135},{"n":"molho","x":140,"y":545,"w":460,"h":110},{"n":"presunto","x":140,"y":655,"w":460,"h":135},{"n":"massa","x":140,"y":780,"w":460,"h":135},{"n":"base","x":0,"y":905,"w":736,"h":403}];
 
 /* ---- assinaturas ---- */
 var SIG=[
-  {n:"Margherita Verace",d:"Tomate San Marzano, fior di latte, manjericão e azeite extravirgem. A pizza que começou tudo.",p:64,pm:49,i:"patio-margherita",h:"Sauvignon Blanc gelado"},
-  {n:"Calabresa Artesanal",d:"Calabresa curada da casa, tomate assado, azeitonas pretas e manjericão em folhas inteiras.",p:66,pm:51,i:"patio-calabresa",h:"Malbec Reserva"},
-  {n:"Burrata e Espinafre",d:"Espinafre salteado no alho, burrata cremosa, parmesão e um fio de azeite trufado.",p:78,pm:60,i:"patio-burrata",h:"Espumante Brut"},
-  {n:"Búfala & Pomodorini",d:"Mozzarella de búfala, tomates-cereja assados na lenha e manjericão fresco.",p:74,pm:58,i:"bufala",h:"Chianti Classico"}
+  {n:"Pepperoni & Rúcula",d:"Pepperoni, presunto, champignon, tomate-cereja, mozzarella e rúcula fresca por cima.",p:72,pm:56,i:"sig-pepperoni-rucula",h:"Syrah"},
+  {n:"Frango Grelhado",d:"Frango temperado na brasa, champignon, pimentões, azeitonas pretas e mozzarella.",p:69,pm:54,i:"sig-frango-grelhado",h:"Merlot"},
+  {n:"Suprema da Casa",d:"Pepperoni, frango, presunto, champignon, pimentão, cebola roxa e azeitonas.",p:79,pm:62,i:"sig-suprema",h:"Malbec"},
+  {n:"Mediterrânea",d:"Tomates frescos, abobrinha, azeitonas pretas, mozzarella e manjericão em folhas.",p:66,pm:51,i:"sig-mediterranea",h:"Chianti Classico"},
+  {n:"Vegetariana Colorida",d:"Pimentões, abacaxi, milho, champignon, azeitonas e mozzarella gratinada.",p:64,pm:50,i:"sig-vegetariana",h:"Pinot Noir"}
 ];
 /* ---- cardápio ---- */
 var MENU={
@@ -811,8 +812,8 @@ var SIDES=[
 ];
 var COMBOS=[
   {n:"Combo Casal",d:"1 pizza grande clássica e 1 refrigerante 2 litros.",p:72,i:"margherita",for:"Para dois"},
-  {n:"Combo Família",d:"2 pizzas grandes, 1 borda recheada e 1 refrigerante 2 litros.",p:139,i:"patio-calabresa",tag:"Mais pedido",for:"Para quatro"},
-  {n:"Combo Turma",d:"3 pizzas grandes e 2 refrigerantes 2 litros.",p:189,i:"quatro-estacoes",for:"Para seis"}
+  {n:"Combo Família",d:"2 pizzas grandes, 1 borda recheada e 1 refrigerante 2 litros.",p:139,i:"sig-suprema",tag:"Mais pedido",for:"Para quatro"},
+  {n:"Combo Turma",d:"3 pizzas grandes e 2 refrigerantes 2 litros.",p:189,i:"sig-pepperoni-rucula",for:"Para seis"}
 ];
 var DEP=[["A borda chega estufada, com as manchinhas do forno. A Margherita Verace é perfeita.","Exemplo de depoimento"],["Chegou quente, com o queijo ainda puxando. Virou a pizza oficial de sexta aqui em casa.","Exemplo de depoimento"],["Massa leve, não pesa. Dá para comer meia sozinho e ainda querer a de chocolate.","Exemplo de depoimento"]];
 var ING=[
