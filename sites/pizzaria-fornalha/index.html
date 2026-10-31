@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WgBaRLhvkA9TIpbI9sSuZWO133yacFpcJMpEmOLb28k='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-a3C0Abj9CuLeEAO/pCdOE+jL9SJJLXOVBn0zP2ZsVBw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -879,17 +879,31 @@ function renderCombos(lista){$("#cgrid").innerHTML=lista.map(function(it){var u=
 drawTabs();renderMenu();renderCombos(COMBOS);
 /* ---- adega: vinhos, destilados e sem álcool ---- */
 var ACAT=[
-  {k:"Tintos",g:["beb-casillero","beb-catena-malbec","res-tignanello"],d:"Encorpados, para pizzas de carne e queijos."},
+  {k:"Tintos",g:["vt-malbec.webp","vt-chianti.webp","vt-syrah.webp"],d:"Encorpados, para pizzas de carne e queijos."},
   {k:"Brancos e rosés",g:["beb-concha-y-toro","beb-mateus","beb-miolo-chardonnay"],d:"Leves e frescos, para margherita e vegetarianas."},
   {k:"Espumantes",g:["beb-salton-brut","beb-chandon","res-cristal"],d:"Para brindar e para as pizzas cremosas."},
-  {k:"Destilados",g:["beb-absolut","beb-jw-black","beb-tanqueray"],d:"Cachaça, vodka, rum, tequila, gin, whisky e vermute."},
+  {k:"Destilados",g:["jd-honey.webp","jd-old-no7.webp","jd-fire.webp"],d:"Cachaça, vodka, rum, tequila, gin, whisky e vermute."},
   {k:"Sem álcool",latas:["coca-cola","guarana-jesus","fanta-laranja"],d:"Refrigerantes em lata, sempre gelados."},
   {k:"Carta de reserva",g:["res-opus-one","res-sassicaia","res-lafite"],d:"Grandes rótulos do mundo, sob consulta."}
 ];
 function B(c,n,d,p,img,o){var x={c:c,n:n,d:d,p:p,img:img,al:c!=="Sem álcool"?1:0};for(var k in o||{})x[k]=o[k];return x}
 var ADEGA=[
-  B("Tintos","Catena Malbec","Mendoza. Intenso e sofisticado, ideal com calabresa.",189,"img/beb-catena-malbec.jpg",{cx:1050}),
-  B("Tintos","Casillero del Diablo Cabernet","Chile. Equilibrado e marcante, para quatro queijos.",99,"img/beb-casillero.jpg",{cx:560}),
+  B("Tintos","Malbec","Argentina. Intenso e frutado, ideal com calabresa.",119,"img/vt-malbec.webp",{cx:684}),
+  B("Tintos","Cabernet Sauvignon","Encorpado, para quatro queijos e carnes.",109,"img/vt-cabernet-sauvignon.webp",{cx:624}),
+  B("Tintos","Chianti Classico","Toscana. O par da pizza napolitana.",139,"img/vt-chianti.webp",{cx:804}),
+  B("Tintos","Merlot","Macio e redondo, agrada a todos.",95,"img/vt-merlot.webp",{cx:540}),
+  B("Tintos","Pinot Noir","Leve e elegante, para pizzas brancas.",129,"img/vt-pinot-noir.webp",{cx:744}),
+  B("Tintos","Syrah","Especiado, para a diavola e a calabresa.",115,"img/vt-syrah.webp",{cx:660}),
+  B("Tintos","Tempranillo","Espanha. Equilibrado, com notas de frutas vermelhas.",105,"img/vt-tempranillo.webp",{cx:600}),
+  B("Tintos","Carménère","Chile. Aveludado, com toque de especiarias.",99,"img/vt-carmenere.webp",{cx:564}),
+  B("Tintos","Bordeaux","França. Clássico e estruturado.",159,"img/vt-bordeaux.webp",{cx:924}),
+  B("Tintos","Bourgogne","França. Delicado e aromático.",179,"img/vt-burgundy.webp",{cx:1044}),
+  B("Tintos","Côtes du Rhône","França. Encorpado e generoso.",135,"img/vt-rhone.webp",{cx:780}),
+  B("Tintos","Barbera","Piemonte. Fresco e fácil de beber.",98,"img/vt-barbera.webp",{cx:558}),
+  B("Tintos","Grenache","Espanha. Frutado e suculento.",92,"img/vt-grenache.webp",{cx:522}),
+  B("Tintos","Cabernet Franc","Herbáceo e elegante.",112,"img/vt-cabernet-franc.webp",{cx:642}),
+  B("Tintos","Petite Sirah","Califórnia. Potente e escuro.",125,"img/vt-petite-sirah.webp",{cx:720}),
+  B("Tintos","Zinfandel","Califórnia. Intenso, com frutas maduras.",128,"img/vt-zinfandel.webp",{cx:738}),
   B("Brancos e rosés","Concha y Toro Sauvignon Blanc","Chile. Fresco e aromático, para margherita.",79,"img/beb-concha-y-toro.jpg",{cx:440}),
   B("Brancos e rosés","Miolo Seleção Chardonnay","Brasil. Equilibrado e elegante, para pizzas brancas.",89,"img/beb-miolo-chardonnay.jpg",{cx:500}),
   B("Brancos e rosés","Mateus Rosé","Portugal. Leve e refrescante.",95,"img/beb-mateus.jpg",{cx:530}),
@@ -908,8 +922,12 @@ var ADEGA=[
   B("Destilados","El Jimador Blanco","Tequila pura e versátil.",22,"img/beb-el-jimador.jpg",{un:"Dose",cx:189,cxn:"Garrafa"}),
   B("Destilados","Tanqueray","Gin elegante e aromático.",28,"img/beb-tanqueray.jpg",{un:"Dose",cx:229,cxn:"Garrafa"}),
   B("Destilados","Gordon's","Gin clássico e versátil.",20,"img/beb-gordons.jpg",{un:"Dose",cx:129,cxn:"Garrafa"}),
-  B("Destilados","Johnnie Walker Black Label","Whisky 12 anos, sofisticado e equilibrado.",32,"img/beb-jw-black.jpg",{un:"Dose",cx:289,cxn:"Garrafa"}),
-  B("Destilados","Ballantine's Finest","Whisky suave e marcante.",22,"img/beb-ballantines.jpg",{un:"Dose",cx:139,cxn:"Garrafa"}),
+  B("Destilados","Jack Daniel's Old No. 7","Tennessee whiskey clássico, suave e marcante.",26,"img/jd-old-no7.webp",{un:"Dose",cx:189,cxn:"Garrafa"}),
+  B("Destilados","Jack Daniel's Honey","Whiskey com licor de mel, macio e adocicado.",26,"img/jd-honey.webp",{un:"Dose",cx:189,cxn:"Garrafa"}),
+  B("Destilados","Jack Daniel's Apple","Whiskey com licor de maçã verde.",26,"img/jd-apple.webp",{un:"Dose",cx:189,cxn:"Garrafa"}),
+  B("Destilados","Jack Daniel's Fire","Whiskey com licor de canela, picante.",26,"img/jd-fire.webp",{un:"Dose",cx:189,cxn:"Garrafa"}),
+  B("Destilados","Jack Daniel's Master Distiller Nº 4","Edição especial, encorpado.",34,"img/jd-master-no4.webp",{un:"Dose",cx:259,cxn:"Garrafa"}),
+  B("Destilados","Jack Daniel's Master Distiller Nº 6","Edição especial, aromático.",34,"img/jd-master-no6.webp",{un:"Dose",cx:259,cxn:"Garrafa"}),
   B("Destilados","Carpano Classico","Vermute tradicional e sofisticado.",18,"img/beb-carpano.jpg",{un:"Dose",cx:159,cxn:"Garrafa"}),
   B("Destilados","Martini Rosso","Vermute clássico e versátil.",14,"img/beb-martini-rosso.jpg",{un:"Dose",cx:79,cxn:"Garrafa"}),
   B("Sem álcool","Coca-Cola","Lata 350 ml, bem gelada.",7,"img/lata-coca-cola.webp",{cx:38}),
@@ -941,7 +959,7 @@ function garrafa(tp,cor,id){var g='<defs><linearGradient id="v'+id+'" x1="0" x2=
   if(sh)s+='<rect x="10" y="0" width="40" height="160" fill="url(#v'+id+')" opacity=".9"/>';
   return s+'</svg>'}
 var acur="Tintos";
-$("#acats").innerHTML=ACAT.map(function(c){var vis=c.g?c.g.map(function(n){return '<img class="gf" src="img/'+n+'.jpg" alt="" loading="lazy">'}).join(""):c.latas.map(function(l){return '<img class="lt" src="img/lata-'+l+'.webp" alt="" loading="lazy">'}).join("");return '<button class="acat rv" type="button" data-ac="'+esc(c.k)+'"><span class="avis">'+vis+'</span><span class="acat-t"><b>'+esc(c.k)+'</b><small>'+esc(c.d)+'</small></span></button>'}).join("");
+$("#acats").innerHTML=ACAT.map(function(c){var vis=c.g?c.g.map(function(n){return /\.webp$/.test(n)?'<img class="lt" src="img/'+n+'" alt="" loading="lazy">':'<img class="gf" src="img/'+n+'.jpg" alt="" loading="lazy">'}).join(""):c.latas.map(function(l){return '<img class="lt" src="img/lata-'+l+'.webp" alt="" loading="lazy">'}).join("");return '<button class="acat rv" type="button" data-ac="'+esc(c.k)+'"><span class="avis">'+vis+'</span><span class="acat-t"><b>'+esc(c.k)+'</b><small>'+esc(c.d)+'</small></span></button>'}).join("");
 function aTabs(){$("#atabs").innerHTML=ACAT.map(function(c){return '<button class="tab" role="tab" type="button" data-at="'+esc(c.k)+'" aria-selected="'+(c.k===acur)+'">'+esc(c.k)+'</button>'}).join("")}
 function aGrid(){$("#agrid").innerHTML=ADEGA.filter(function(x){return x.c===acur}).map(function(x,i){
   var vis=x.img?'<img class="'+(/\.webp$/.test(x.img)?'png':'foto')+'" src="'+x.img+'" alt="'+esc(x.n)+'" loading="lazy">':garrafa(x.t,x.cor,"g"+i),bt;
