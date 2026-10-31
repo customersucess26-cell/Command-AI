@@ -34,7 +34,13 @@ mapa = {k: uri(k) for k in sorted(usadas) if os.path.exists(os.path.join(base, k
 for k, v in mapa.items():
     html = html.replace('"' + k + '"', '"' + v + '"').replace("'" + k + "'", "'" + v + "'").replace("(" + k + ")", "(" + v + ")")
 # montagens dinâmicas passam pelo mapa
-js_mapa = "<script>window.__IMG=" + "{" + ",".join('"%s":"%s"' % kv for kv in mapa.items()) + "};function U(p){return window.__IMG[p]||p}</script>\n"
+lista_js = set()
+for arr in re.findall(r'\[([^\]]*)\]\.forEach\(function\(k\)\{IMG\[k\]', html):
+    lista_js |= set(re.findall(r'"([\w-]+)"', arr))
+def dinamica(k):
+    n = os.path.splitext(os.path.basename(k))[0]
+    return n.startswith(("camada-", "lata-", "res-", "beb-")) or n in lista_js
+js_mapa = "<script>window.__IMG=" + "{" + ",".join('"%s":"%s"' % kv for kv in mapa.items() if dinamica(kv[0])) + "};function U(p){return window.__IMG[p]||p}</script>\n"
 html = html.replace("<script>\n" + cfg, js_mapa + "<script>\n" + cfg, 1)
 trocas = [
     ('IMG[k]="img/"+k+".webp"', 'IMG[k]=U("img/"+k+".webp")'),
@@ -56,6 +62,6 @@ open(out, "w", encoding="utf-8").write(html)
 # demonstração: a hospedagem (LiteSpeed/CDN da Hostinger) pode reescrever ou adiar os scripts da página;
 # com a CSP por resumo (hash) o navegador bloquearia tudo. Aqui não há login nem dados, então libera os scripts da própria página.
 html = open(out, encoding="utf-8").read()
-html = re.sub(r"script-src [^;]*;", "script-src 'self' 'unsafe-inline' https:;", html, count=1)
+html = re.sub(r'<meta http-equiv="Content-Security-Policy"[^>]*>\n?', "", html, count=1)
 open(out, "w", encoding="utf-8").write(html)
 print(out, round(os.path.getsize(out) / 1e6, 1), "MB ·", len(mapa), "arquivos embutidos ·", "sobrou referência externa:" if sobra else "nenhuma referência externa", " ".join(sobra))
