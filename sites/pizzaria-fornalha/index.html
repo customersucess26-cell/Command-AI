@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-z+esFzO2HWr1i7dj8Ps3D7Gkb3+TDBrZHhGw8+Y7MV8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-BJATUOl4u2Tp1aRfQMb7v6+lz52KiVRWBCwcRjBBIDw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -947,11 +947,11 @@ aTabs();aGrid();
 /* ---- bolhas de espumante e brilhos dourados na adega ---- */
 (function(){var cv=$("#bolhas");if(!cv||reduce)return;var cx=cv.getContext("2d"),W,H,dpr=Math.min(2,devicePixelRatio||1),ps=[],vis=false;
   function size(){var r=cv.parentNode.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
-  function mk(i){var b=Math.random()<.65;return {b:b,x:W*(.35+Math.random()*.65),y:i?Math.random()*H:H+10,r:b?1+Math.random()*3.2:.8+Math.random()*1.6,v:b?.4+Math.random()*1.1:.15+Math.random()*.3,w:Math.random()*6.3,a:.25+Math.random()*.5}}
+  function mk(i){var b=Math.random()<.65;return {b:b,x:W*(.35+Math.random()*.65),y:i?Math.random()*H:H+10,r:b?1+Math.random()*3.2:0.8+Math.random()*1.6,v:b?0.4+Math.random()*1.1:.15+Math.random()*.3,w:Math.random()*6.3,a:.25+Math.random()*.5}}
   size();addEventListener("resize",size);for(var i=0;i<(fine?80:36);i++)ps.push(mk(1));
   if("IntersectionObserver" in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(cv.parentNode);
   (function loop(){requestAnimationFrame(loop);if(!vis)return;cx.clearRect(0,0,W,H);
-    ps.forEach(function(p,i){p.y-=p.v;p.w+=.04;p.x+=Math.sin(p.w)*(p.b?.4:.2);if(p.y<-10){ps[i]=mk(0);return}
+    ps.forEach(function(p,i){p.y-=p.v;p.w+=.04;p.x+=Math.sin(p.w)*(p.b?0.4:0.2);if(p.y<-10){ps[i]=mk(0);return}
       cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.283);
       if(p.b){cx.strokeStyle="rgba(255,236,190,"+p.a+")";cx.lineWidth=.8;cx.stroke();cx.fillStyle="rgba(255,250,235,"+(p.a*.25)+")";cx.fill()}
       else{cx.fillStyle="rgba(234,200,120,"+(p.a*(.5+.5*Math.sin(p.w*2)))+")";cx.shadowColor="#c9a45c";cx.shadowBlur=8;cx.fill();cx.shadowBlur=0}})})();

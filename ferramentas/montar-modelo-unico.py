@@ -53,6 +53,14 @@ trocas = [
 ]
 for a, b in trocas:
     html = html.replace(a, b)
+# 3b) se algum script der erro, mostra na própria página (ajuda a achar problema na hospedagem)
+import datetime
+versao = datetime.datetime.now().strftime("%d/%m %H:%M")
+diag = ('<script>window.addEventListener("error",function(e){var d=document.getElementById("errosDemo");if(!d){d=document.createElement("div");d.id="errosDemo";'
+        'd.style.cssText="position:fixed;left:8px;bottom:8px;z-index:99999;max-width:92vw;background:#300;color:#fff;font:12px monospace;padding:8px;border:1px solid #f66";document.body.appendChild(d)}'
+        'd.textContent+="Erro: "+e.message+" (linha "+e.lineno+") "})</script>\n')
+html = html.replace("<head>", "<head>\n<!-- demonstração gerada em " + versao + " -->\n" + diag, 1)
+html = html.replace("</footer>", '<p style="text-align:center;font-size:11px;opacity:.35;margin:8px 0 0">demonstração · ' + versao + '</p></footer>', 1)
 # 4) demonstração: tira o link do painel e o rastreio (precisam do servidor)
 html = re.sub(r'\s*·?\s*<a href="admin/"[^>]*>[^<]*</a>', "", html)
 sobra = sorted(set(re.findall(r'["\'(]img/[\w.-]+', html.replace(js_mapa, ""))) - {'"img/res-', "'img/camada-", "'img/lata-", "'img/", '"img/'})
