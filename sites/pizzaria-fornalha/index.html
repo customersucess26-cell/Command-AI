@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-qWbjrX/01IreBX31Q0y7a4yGDaB11ZGSt0s+gusvYSs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-lxopZN8S1WwQYE83wVmNbdnExOLdE56YV25p5/uxSjg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -395,6 +395,69 @@ section[id],#topo{scroll-margin-top:80px}
 .ard-wrap .pz{animation:flutua 5s ease-in-out infinite alternate}
 @keyframes flutua{to{margin-top:-10px}}
 @media(max-width:860px){.it{grid-template-columns:70px minmax(0,1fr)}.it .th{width:70px;height:70px}.ard-wrap .pz{width:200px;top:-80px}.ard{padding-top:140px}}
+
+/* ===== vantagens ===== */
+.vant{padding:46px 0;border-bottom:1px solid var(--line);background:rgba(0,0,0,.25)}
+.vgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.vi{display:flex;gap:14px;align-items:flex-start;padding:4px 22px;position:relative}
+.vi+.vi::before{content:"";position:absolute;left:0;top:8%;bottom:8%;width:1px;background:linear-gradient(transparent,var(--line),transparent)}
+.vi svg{width:40px;height:40px;flex:none;fill:none;stroke:var(--gold);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round}
+.vi b{display:block;font:500 .74rem var(--f-b);letter-spacing:.24em;text-transform:uppercase;color:var(--gold2);margin-bottom:4px}
+.vi span{font-size:.86rem;color:var(--muted);line-height:1.45}
+@media(max-width:900px){.vgrid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:22px}.vi:nth-child(3)::before{display:none}.vi{padding:4px 12px}}
+.harm{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:.84rem;color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line);padding-bottom:3px}
+.harm svg{width:16px;height:16px;fill:none;stroke:var(--gold);stroke-width:1.5}
+.harm b{color:var(--gold2);font-weight:500}
+/* ===== adega ===== */
+.adega-hero{position:relative;overflow:hidden;border:1px solid var(--line);min-height:360px;display:flex;align-items:center;margin-bottom:34px;background:#0b0606}
+.adega-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.1) brightness(.8);animation:kb 24s ease-in-out infinite alternate}
+.adega-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,6,6,.96) 0%,rgba(30,8,12,.85) 40%,rgba(40,10,16,.35) 75%,rgba(10,6,6,.6)),radial-gradient(ellipse at 80% 50%,rgba(120,20,40,.25),transparent 60%)}
+.ah-txt{position:relative;z-index:2;padding:46px clamp(26px,5vw,64px);max-width:600px}
+.ah-txt h2{font-size:clamp(2.8rem,6vw,4.8rem);font-weight:500;margin:16px 0 4px}
+.ah-txt h2 em{color:var(--gold2)}
+.ah-txt p{color:#d8cfc1;margin:20px 0 28px}
+.selo-18{position:absolute;z-index:2;right:clamp(16px,4vw,48px);top:50%;margin-top:-66px;width:132px;height:132px;border-radius:50%;border:1px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:inset 0 0 0 6px rgba(0,0,0,.4),inset 0 0 0 7px rgba(201,164,92,.35);background:rgba(10,6,6,.5)}
+.selo-18 b{font:600 2.2rem/1 var(--f-d);color:var(--gold2)}
+.selo-18 span{font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.acats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-bottom:34px}
+.acat{position:relative;padding:0;border:1px solid var(--line);background:#0f0d0c;color:var(--cream);text-align:left;overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:flex-end;transition:border-color .4s,transform .5s cubic-bezier(.2,.85,.2,1)}
+.acat:hover{border-color:var(--gold);transform:translateY(-6px)}
+.acat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.85,.2,1)}
+.acat:hover img{transform:scale(1.1)}
+.acat .aart{position:absolute;inset:0 0 34%;display:flex;align-items:flex-end;justify-content:center;gap:4px;background:radial-gradient(circle at 50% 70%,rgba(201,164,92,.18),transparent 65%)}
+.acat .aart svg{height:72%;width:auto;filter:drop-shadow(0 12px 16px rgba(0,0,0,.7))}
+.acat::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,7,7,.96) 8%,rgba(8,7,7,.55) 40%,transparent 70%)}
+.acat-t{position:relative;z-index:2;padding:16px 16px 18px;border-top:1px solid rgba(201,164,92,.35);margin:0 10px 10px}
+.acat-t b{display:block;font:600 1.25rem var(--f-d);color:var(--gold2)}
+.acat-t small{display:block;font-size:.78rem;color:#cfc8bb;line-height:1.4;margin-top:4px}
+.agrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.gcard{display:grid;grid-template-columns:96px minmax(0,1fr);gap:14px;align-items:center;border:1px solid var(--line2);background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);padding:16px 14px;animation:itIn .6s cubic-bezier(.2,.85,.2,1) both;transition:border-color .3s}
+.gcard:hover{border-color:var(--line)}
+.gimg{height:184px;display:flex;align-items:flex-end;justify-content:center;background:radial-gradient(ellipse at 50% 100%,rgba(201,164,92,.18),transparent 70%)}
+.gimg svg{height:100%;width:auto;filter:drop-shadow(0 10px 12px rgba(0,0,0,.6));transition:transform .6s cubic-bezier(.2,.85,.2,1)}
+.gcard:hover .gimg svg{transform:translateY(-8px) rotate(-4deg)}
+.gtx h3{font:600 1.15rem var(--f-d);color:var(--cream)}
+.gtx p{font-size:.8rem;color:var(--muted);margin:4px 0 10px;line-height:1.4}
+.gbt{display:flex;flex-direction:column;gap:6px}
+.gbt button{background:transparent;border:1px solid rgba(201,164,92,.5);color:var(--gold2);font:500 .64rem var(--f-b);letter-spacing:.14em;text-transform:uppercase;padding:7px 8px;transition:all .3s;text-align:left}
+.gbt button:hover{background:var(--gold);color:#16120a}
+.aviso{margin-top:24px;text-align:center;font-size:.8rem;color:var(--muted);letter-spacing:.04em}
+.line img[src=""]{background:#1a1512 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M7 2h10l-1 8a4 4 0 0 1-8 0zM12 14v7M8 21h8' fill='none' stroke='%23c9a45c' stroke-width='1.4'/%3E%3C/svg%3E") center/55% no-repeat}
+.maior{display:flex;gap:8px;align-items:flex-start;font-size:.86rem;color:var(--cream);border:1px solid var(--line);padding:10px;cursor:pointer}
+.maior input{accent-color:var(--gold);margin-top:3px;width:18px!important;height:18px;flex:none}
+.maior.erro{border-color:#ff6a55;color:#ffb3a8}
+@media(max-width:1100px){.agrid{grid-template-columns:repeat(2,minmax(0,1fr))}.acats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.acats{grid-template-columns:repeat(2,minmax(0,1fr))}.agrid{grid-template-columns:1fr}.selo-18{width:84px;height:84px;top:16px;margin-top:0}.selo-18 b{font-size:1.5rem}.selo-18 span{font-size:.45rem}.adega-hero{min-height:440px;align-items:flex-end}}
+/* rodapé */
+footer{text-align:left;padding:60px 0 calc(30px + env(safe-area-inset-bottom,0px))}
+.fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:30px}
+.fmarca .mono{align-items:flex-start;margin-bottom:14px}
+.fgrid p{color:var(--muted);font-size:.86rem;margin-bottom:6px}
+.fgrid h4{margin:0 0 14px;font:500 .7rem var(--f-b);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.fgrid a:not(.mono){display:block;color:var(--cream);opacity:.75;text-decoration:none;font-size:.88rem;margin-bottom:8px}
+.fgrid a:not(.mono):hover{opacity:1;color:var(--gold2)}
+.copy{text-align:center;color:var(--muted);font-size:.76rem;margin-top:44px;padding-top:22px;border-top:1px solid var(--line)}
+@media(max-width:860px){.fgrid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -406,7 +469,7 @@ section[id],#topo{scroll-margin-top:80px}
   <div class="wrap nav">
     <ul><li><a href="#ingredientes">A pizza</a></li><li><a href="#assinaturas">Assinaturas</a></li><li><a href="#cardapio">Cardápio</a></li></ul>
     <a class="mono" href="#topo" aria-label="Fornalha, início"><span>F</span><small>FORNALHA</small></a>
-    <div class="dir"><ul class="d"><li><a href="#combos">Noite da pizza</a></li><li><a href="#visite">Visite</a></li></ul><button class="btn cartbtn" id="openCart" type="button" aria-label="Abrir pedido">Pedido <span class="n" id="cartN">0</span></button></div>
+    <div class="dir"><ul class="d"><li><a href="#adega">Adega</a></li><li><a href="#combos">Noite da pizza</a></li><li><a href="#visite">Visite</a></li></ul><button class="btn cartbtn" id="openCart" type="button" aria-label="Abrir pedido">Pedido <span class="n" id="cartN">0</span></button></div>
   </div>
 </header>
 
@@ -434,6 +497,15 @@ section[id],#topo{scroll-margin-top:80px}
 </section>
 
 <div class="faixa" aria-hidden="true"><div id="tick"></div></div>
+<section class="vant" aria-label="Por que pedir na Fornalha">
+  <div class="wrap vgrid">
+    <div class="vi rv"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M10 4h16l-2 12a6 6 0 0 1-12 0z"/><path d="M18 22v9M12 32h12"/></svg><div><b>Seleção premium</b><span>Ingredientes italianos e vinhos escolhidos a dedo.</span></div></div>
+    <div class="vi rv"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="14" r="9"/><path d="M13 22l-3 10 8-4 8 4-3-10"/><path d="M14 14l3 3 5-6"/></svg><div><b>Harmonização</b><span>Cada pizza com o vinho certo, sugerido pela casa.</span></div></div>
+    <div class="vi rv"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M3 10h18v14H3zM21 15h7l5 5v4H21z"/><circle cx="9" cy="27" r="3"/><circle cx="27" cy="27" r="3"/></svg><div><b>Entrega rápida</b><span>Quentinha na sua porta, em média 30 minutos.</span></div></div>
+    <div class="vi rv"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l12 5v8c0 8-5 14-12 17C11 30 6 24 6 16V8z"/><path d="M13 17l4 4 7-8"/></svg><div><b>Pagamento seguro</b><span>Pix, cartão ou dinheiro, na entrega ou retirada.</span></div></div>
+  </div>
+</section>
+
 
 <section id="explode">
   <div class="stick">
@@ -496,6 +568,22 @@ section[id],#topo{scroll-margin-top:80px}
   </div>
 </section>
 
+<section class="sec" id="adega">
+  <div class="wrap">
+    <div class="adega-hero rv">
+      <img src="img/adega-cave.jpg" alt="" aria-hidden="true">
+      <div class="ah-txt"><span class="eyebrow">Legado da casa</span><h2>Adega <em>Fornalha</em></h2><div class="orn" style="justify-content:flex-start;margin-left:0"><i></i><b></b><i></i></div><p>Vinhos, espumantes e destilados escolhidos para acompanhar cada pizza. E, para quem não bebe, águas, refrigerantes e sucos sempre gelados.</p><a class="btn cheio" href="#adegaLista">Ver a adega ›</a></div>
+      <div class="selo-18" aria-label="Proibido para menores de 18 anos"><b>18+</b><span>aprecie com<br>moderação</span></div>
+    </div>
+    <div class="acats" id="acats"></div>
+    <div class="carta" id="adegaLista">
+      <div class="tabs" role="tablist" id="atabs"></div>
+      <div class="agrid" id="agrid"></div>
+      <p class="aviso">Venda e entrega de bebidas alcoólicas apenas para maiores de 18 anos. Se beber, não dirija. Aprecie com moderação.</p>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="combos">
   <div class="wrap">
     <div class="titulo rv"><span class="eyebrow">Para dividir</span><h2>Noite da pizza</h2><div class="orn"><i></i><b></b><i></i></div><p>Pizza grande, bebida e preço fechado. Para dois, para a família ou para a turma.</p></div>
@@ -528,7 +616,15 @@ section[id],#topo{scroll-margin-top:80px}
 </section>
 </main>
 
-<footer><div class="wrap"><a class="mono" href="#topo" aria-label="Fornalha, início"><span>F</span><small>FORNALHA</small></a><p>© 2026 Fornalha Pizzeria. Assada na lenha, servida com amor. · <a href="admin/" rel="nofollow" style="opacity:.6">Área da loja</a></p></div></footer>
+<footer>
+  <div class="wrap fgrid">
+    <div class="fmarca"><a class="mono" href="#topo" aria-label="Fornalha, início"><span>F</span><small>FORNALHA</small></a><p>Pizzaria napolitana com massa de 48 horas, assada na lenha e servida com amor.</p></div>
+    <div><h4>Navegue</h4><a href="#ingredientes">A pizza</a><a href="#assinaturas">Assinaturas</a><a href="#cardapio">Cardápio</a><a href="#adega">Adega</a><a href="#combos">Noite da pizza</a></div>
+    <div><h4>A casa</h4><a href="#cozinha">Nossa cozinha</a><a href="#visite">Visite</a><a href="admin/" rel="nofollow">Área da loja</a></div>
+    <div><h4>Contato</h4><p id="fEnd">Rua Exemplo, 123, Centro</p><p id="fWhats">(00) 00000-0000</p><p>Terça a domingo, 18h às 23h30</p></div>
+  </div>
+  <p class="copy">© 2026 Fornalha Pizzeria. Proibida a venda de bebidas alcoólicas para menores de 18 anos.</p>
+</footer>
 
 <a class="fab" id="fab" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.2z"/></svg></a>
 
@@ -542,6 +638,7 @@ section[id],#topo{scroll-margin-top:80px}
     <input id="cFone" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="Seu WhatsApp com DDD" aria-label="Seu WhatsApp">
     <input id="cEnd" maxlength="160" autocomplete="street-address" placeholder="Endereço: rua, número e bairro" aria-label="Endereço de entrega">
     <div class="seg tres" role="radiogroup" aria-label="Forma de pagamento"><label><input type="radio" name="pag" value="Pix" checked> Pix</label><label><input type="radio" name="pag" value="Cartão"> Cartão</label><label><input type="radio" name="pag" value="Dinheiro"> Dinheiro</label></div>
+    <label class="maior" id="maiorLbl" hidden><input type="checkbox" id="maior18"> Confirmo que tenho 18 anos ou mais (pedido com bebida alcoólica).</label>
     <textarea id="obs" maxlength="300" aria-label="Observações do pedido" placeholder="Observações: meio a meio, sem cebola, troco para..."></textarea>
   </div>
   <div class="taxa" id="linhaTaxa" hidden><span>Entrega</span><span id="vTaxa"></span></div>
@@ -569,10 +666,10 @@ var EX=[{"n":"sal","x":140,"y":0,"w":460,"h":205},{"n":"azeitonas","x":140,"y":2
 
 /* ---- assinaturas ---- */
 var SIG=[
-  {n:"Margherita Verace",d:"Tomate San Marzano, fior di latte, manjericão e azeite extravirgem. A pizza que começou tudo.",p:64,pm:49,i:"patio-margherita"},
-  {n:"Calabresa Artesanal",d:"Calabresa curada da casa, tomate assado, azeitonas pretas e manjericão em folhas inteiras.",p:66,pm:51,i:"patio-calabresa"},
-  {n:"Burrata e Espinafre",d:"Espinafre salteado no alho, burrata cremosa, parmesão e um fio de azeite trufado.",p:78,pm:60,i:"patio-burrata"},
-  {n:"Búfala & Pomodorini",d:"Mozzarella de búfala, tomates-cereja assados na lenha e manjericão fresco.",p:74,pm:58,i:"bufala"}
+  {n:"Margherita Verace",d:"Tomate San Marzano, fior di latte, manjericão e azeite extravirgem. A pizza que começou tudo.",p:64,pm:49,i:"patio-margherita",h:"Sauvignon Blanc gelado"},
+  {n:"Calabresa Artesanal",d:"Calabresa curada da casa, tomate assado, azeitonas pretas e manjericão em folhas inteiras.",p:66,pm:51,i:"patio-calabresa",h:"Malbec Reserva"},
+  {n:"Burrata e Espinafre",d:"Espinafre salteado no alho, burrata cremosa, parmesão e um fio de azeite trufado.",p:78,pm:60,i:"patio-burrata",h:"Espumante Brut"},
+  {n:"Búfala & Pomodorini",d:"Mozzarella de búfala, tomates-cereja assados na lenha e manjericão fresco.",p:74,pm:58,i:"bufala",h:"Chianti Classico"}
 ];
 /* ---- cardápio ---- */
 var MENU={
@@ -603,11 +700,9 @@ var MENU={
 };
 var SIDES=[
   {n:"Borda recheada",d:"Catupiry ou cheddar, para qualquer pizza grande.",p:12,i:"montanara"},
-  {n:"Pizza doce de chocolate",d:"Brotinho com chocolate ao leite e morangos.",p:36,i:"bianca"},
-  {n:"Vinho tinto da casa",d:"Taça de 150 ml, harmoniza com as clássicas.",p:24,i:"marinara"},
-  {n:"Refrigerante 2 litros",d:"Gelado, para dividir.",p:15,i:"margherita"},
-  {n:"Água com gás",d:"Garrafa de 500 ml.",p:8,i:"margherita"},
-  {n:"Suco natural 500 ml",d:"Laranja, limão ou maracujá.",p:12,i:"margherita"}
+  {n:"Chocolate com morango",d:"Brotinho de chocolate ao leite e morangos frescos.",p:36,i:"bianca"},
+  {n:"Banana com canela",d:"Banana caramelizada, canela e açúcar.",p:32,i:"bianca"},
+  {n:"Romeu e Julieta",d:"Goiabada cremosa com queijo minas derretido.",p:34,i:"bianca"}
 ];
 var COMBOS=[
   {n:"Combo Casal",d:"1 pizza grande clássica e 1 refrigerante 2 litros.",p:72,i:"margherita",for:"Para dois"},
@@ -659,10 +754,10 @@ function layoutEx(){
 
 /* ---- assinaturas, ingredientes, cardápio e combos ---- */
 function botoesTam(it){return '<button type="button" '+attrs(tam(it,"Média",it.pm))+'><span>Média · 6 fatias</span><i></i><b>'+money(it.pm)+'</b></button><button type="button" '+attrs(tam(it,"Grande",it.p))+'><span>Grande · 8 fatias</span><i></i><b>'+money(it.p)+'</b></button>'}
-$("#assin").innerHTML=SIG.map(function(it,i){return '<article class="zz rv"><div class="zz-img" data-tilt><span class="vap" aria-hidden="true"><i></i><i></i><i></i></span><img data-rot="'+(i%2?-1:1)+'" src="'+esc(src(it.i))+'" alt="Pizza '+esc(it.n)+'" loading="lazy"></div><div class="zz-txt"><span class="num">N.º '+(i+1)+'</span><h3>'+esc(it.n)+'</h3><p>'+esc(it.d)+'</p><div class="tam">'+botoesTam(it)+'</div></div></article>'}).join("");
+$("#assin").innerHTML=SIG.map(function(it,i){return '<article class="zz rv"><div class="zz-img" data-tilt><span class="vap" aria-hidden="true"><i></i><i></i><i></i></span><img data-rot="'+(i%2?-1:1)+'" src="'+esc(src(it.i))+'" alt="Pizza '+esc(it.n)+'" loading="lazy"></div><div class="zz-txt"><span class="num">N.º '+(i+1)+'</span><h3>'+esc(it.n)+'</h3><p>'+esc(it.d)+'</p>'+(it.h?'<a class="harm" href="#adega"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10l-1 8a4 4 0 0 1-8 0zM12 14v7M8 21h8"/></svg>Harmoniza com <b>'+esc(it.h)+'</b></a>':'')+'<div class="tam">'+botoesTam(it)+'</div></div></article>'}).join("");
 $("#ings").innerHTML=ING.map(function(g){return '<div class="ing rv"><svg viewBox="0 0 84 84" aria-hidden="true">'+g[2]+'</svg><h3>'+esc(g[0])+'</h3><p>'+esc(g[1])+'</p></div>'}).join("");
 $$(".ing svg *").forEach(function(el){try{var L=Math.ceil(el.getTotalLength());el.style.setProperty("--len",L)}catch(e){}});
-var cur="Clássicas",tabs=$("#tabs"),menu=$("#menu"),TAB_DOCES="Doces e bebidas";
+var cur="Clássicas",tabs=$("#tabs"),menu=$("#menu"),TAB_DOCES="Pizzas doces";
 function abas(){var a=Object.keys(MENU);if(SIDES.length)a.push(TAB_DOCES);return a}
 function drawTabs(){tabs.innerHTML=abas().map(function(k){return '<button class="tab" role="tab" type="button" data-t="'+esc(k)+'" aria-selected="'+(k===cur)+'">'+esc(k)+'</button>'}).join("")}
 function linha(it,i){
@@ -675,6 +770,60 @@ function renderSides(){if(cur===TAB_DOCES)renderMenu();drawTabs()}
 function renderHot(){}
 function renderCombos(lista){$("#cgrid").innerHTML=lista.map(function(it){var u=esc(src(it.i));return '<div class="ard-wrap rv'+(it.tag?' star':'')+'" data-tilt><img class="pz" src="'+u+'" alt="" loading="lazy">'+'<article class="ard"><span class="cn a"></span><span class="cn b"></span><span class="cn c"></span><span class="cn d"></span>'+(it.tag?'<span class="flag">'+esc(it.tag)+'</span>':'')+(it.for?'<span class="for">'+esc(it.for)+'</span>':'')+'<h3>'+esc(it.n)+'</h3><p>'+esc(it.d)+'</p><div class="moeda"><span>'+money(it.p).replace("R$ ","")+'<small>REAIS</small></span></div><button class="btn" type="button" '+attrs(it)+'>Pedir combo</button></article></div>'}).join("")}
 drawTabs();renderMenu();renderCombos(COMBOS);
+/* ---- adega: vinhos, destilados e sem álcool ---- */
+var ACAT=[
+  {k:"Tintos",img:"img/adega-tinto.jpg",d:"Encorpados, para as pizzas de carne e queijos."},
+  {k:"Brancos e rosés",img:"img/adega-branco.jpg",d:"Leves e frescos, para margherita e vegetarianas."},
+  {k:"Espumantes",img:"img/adega-espumante.jpg",d:"Para brindar e para as pizzas cremosas."},
+  {k:"Destilados",art:"whisky",d:"Whisky, gin e licores italianos."},
+  {k:"Sem álcool",art:"sem",d:"Águas, refrigerantes, sucos e sodas."}
+];
+var ADEGA=[
+  {c:"Tintos",n:"Malbec Reserva",d:"Mendoza. Frutado e macio, ideal com calabresa.",p:89,cx:480,t:"vinho",cor:"#4b0f1c",al:1},
+  {c:"Tintos",n:"Chianti Classico",d:"Toscana. O par perfeito da pizza napolitana.",p:119,cx:640,t:"vinho",cor:"#3d0c16",al:1},
+  {c:"Tintos",n:"Cabernet Sauvignon",d:"Serra Gaúcha. Encorpado, para quatro queijos.",p:79,cx:420,t:"vinho",cor:"#4a1020",al:1},
+  {c:"Tintos",n:"Taça de tinto da casa",d:"150 ml, servida na temperatura certa.",p:24,t:"taca",cor:"#5a1222",al:1},
+  {c:"Brancos e rosés",n:"Sauvignon Blanc",d:"Chile. Cítrico e refrescante, para margherita.",p:74,cx:400,t:"vinho",cor:"#c8c27a",al:1},
+  {c:"Brancos e rosés",n:"Rosé de Provence",d:"França. Delicado, para pizzas leves.",p:98,cx:530,t:"vinho",cor:"#e9a3a8",al:1},
+  {c:"Brancos e rosés",n:"Pinot Grigio",d:"Itália. Seco e mineral, para aliche e frutos do mar.",p:86,cx:460,t:"vinho",cor:"#d6cf90",al:1},
+  {c:"Brancos e rosés",n:"Taça de branco da casa",d:"150 ml, bem gelada.",p:22,t:"taca",cor:"#e6dc8f",al:1},
+  {c:"Espumantes",n:"Espumante Brut",d:"Serra Gaúcha. Borbulhas finas, combina com burrata.",p:69,cx:370,t:"espumante",cor:"#1f3a24",al:1},
+  {c:"Espumantes",n:"Prosecco DOC",d:"Vêneto. Leve e frutado, o espumante italiano.",p:92,cx:500,t:"espumante",cor:"#2a4a2c",al:1},
+  {c:"Espumantes",n:"Moscatel",d:"Doce e aromático, para as pizzas doces.",p:59,cx:320,t:"espumante",cor:"#c9a44a",al:1},
+  {c:"Destilados",n:"Whisky 12 anos",d:"Dose de 50 ml. Ou a garrafa para a mesa.",p:32,cx:249,cxn:"Garrafa",t:"whisky",cor:"#b5651d",al:1},
+  {c:"Destilados",n:"Gin tônica",d:"Gin, tônica, limão siciliano e especiarias.",p:34,t:"taca",cor:"#cfe8ea",al:1},
+  {c:"Destilados",n:"Limoncello",d:"Licor de limão siciliano, dose gelada.",p:18,t:"licor",cor:"#f2d34a",al:1},
+  {c:"Destilados",n:"Grappa",d:"Destilado italiano para depois da pizza.",p:22,t:"licor",cor:"#f1ead6",al:1},
+  {c:"Sem álcool",n:"Água mineral",d:"Sem gás, 500 ml.",p:6,cx:30,t:"agua",cor:"#7fc4e8"},
+  {c:"Sem álcool",n:"Água com gás",d:"500 ml, bem gelada.",p:7,cx:36,t:"agua",cor:"#5aa9d6"},
+  {c:"Sem álcool",n:"Refrigerante lata",d:"350 ml. Cola, guaraná ou laranja.",p:7,cx:38,t:"lata",cor:"#c8102e"},
+  {c:"Sem álcool",n:"Refrigerante 2 litros",d:"Para dividir na mesa.",p:15,t:"pet",cor:"#3b1d12"},
+  {c:"Sem álcool",n:"Suco natural 500 ml",d:"Laranja, limão ou maracujá.",p:12,t:"suco",cor:"#f39a1e"},
+  {c:"Sem álcool",n:"Soda italiana",d:"Xarope de frutas vermelhas e água com gás.",p:14,t:"suco",cor:"#e0465e"}
+];
+var ALC={};ADEGA.forEach(function(x){if(x.al){ALC[x.n]=1;ALC[x.n+" (caixa 6)"]=1;ALC[x.n+" (Garrafa)"]=1}});
+function garrafa(tp,cor,id){var g='<defs><linearGradient id="v'+id+'" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset=".35" stop-color="#fff" stop-opacity=".18"/><stop offset=".5" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient></defs>';
+  var s='<svg viewBox="0 0 60 160" aria-hidden="true">'+g,L='<rect x="15" y="92" width="30" height="34" rx="2" fill="#efe6d2"/><rect x="18" y="98" width="24" height="2" fill="#c9a45c"/><rect x="21" y="104" width="18" height="10" fill="none" stroke="#7a5a26" stroke-width=".8"/><rect x="18" y="119" width="24" height="1.4" fill="#c9a45c"/>',sh=true;
+  if(tp==="vinho")s+='<path d="M24 8h12v30c0 8 11 12 11 26v86a4 4 0 0 1-4 4H17a4 4 0 0 1-4-4V64c0-14 11-18 11-26z" fill="'+cor+'"/><rect x="23" y="6" width="14" height="16" rx="2" fill="#2b1c10"/><rect x="23" y="18" width="14" height="3" fill="#c9a45c"/>'+L;
+  else if(tp==="espumante")s+='<path d="M25 6h10v28c0 9 12 13 12 28v88a4 4 0 0 1-4 4H17a4 4 0 0 1-4-4V62c0-15 12-19 12-28z" fill="'+cor+'"/><path d="M23 4h14v34c0 4-14 4-14 0z" fill="#c9a45c"/>'+L;
+  else if(tp==="whisky")s+='<rect x="25" y="8" width="10" height="12" fill="#1a1a1a"/><path d="M26 20h8v10l10 6v110a4 4 0 0 1-4 4H20a4 4 0 0 1-4-4V36l10-6z" fill="'+cor+'"/><rect x="18" y="82" width="24" height="30" fill="#1b1410"/><rect x="21" y="88" width="18" height="2" fill="#c9a45c"/><rect x="21" y="102" width="18" height="1.4" fill="#c9a45c"/>';
+  else if(tp==="licor")s+='<rect x="26" y="10" width="8" height="10" fill="#c9a45c"/><path d="M27 20h6v26c0 6 8 9 8 18v86a3 3 0 0 1-3 3H22a3 3 0 0 1-3-3V64c0-9 8-12 8-18z" fill="'+cor+'"/><rect x="21" y="96" width="18" height="24" fill="#efe6d2"/>';
+  else if(tp==="agua")s+='<rect x="25" y="10" width="10" height="9" rx="1.5" fill="#1e5a9e"/><path d="M26 19h8v12c0 6 10 9 10 18v98a4 4 0 0 1-4 4H20a4 4 0 0 1-4-4V49c0-9 10-12 10-18z" fill="'+cor+'" fill-opacity=".55"/><rect x="16" y="84" width="28" height="22" fill="#fff" fill-opacity=".85"/><path d="M20 95c4-4 8 4 12 0s6 4 8 0" stroke="#1e5a9e" fill="none"/>';
+  else if(tp==="lata")s+='<rect x="14" y="62" width="32" height="88" rx="6" fill="'+cor+'"/><rect x="15" y="58" width="30" height="8" rx="3" fill="#cfcfcf"/><path d="M14 96h32" stroke="#fff" stroke-width="3" opacity=".9"/><circle cx="30" cy="118" r="7" fill="none" stroke="#fff" stroke-width="2" opacity=".8"/>';
+  else if(tp==="pet")s+='<rect x="25" y="6" width="10" height="9" rx="1.5" fill="#d92b2b"/><path d="M26 15h8v10c0 6 12 10 12 20v102a5 5 0 0 1-5 5H19a5 5 0 0 1-5-5V45c0-10 12-14 12-20z" fill="'+cor+'" fill-opacity=".92"/><rect x="14" y="78" width="32" height="26" fill="#d92b2b"/><path d="M18 91h24" stroke="#fff" stroke-width="2"/>';
+  else if(tp==="suco"){sh=false;s+='<path d="M14 60h32l-4 92H18z" fill="#fff" fill-opacity=".1" stroke="#fff" stroke-opacity=".35"/><path d="M15.5 74h29l-3.4 76H18.9z" fill="'+cor+'"/><path d="M36 30l-6 70" stroke="#e9e6df" stroke-width="3"/><circle cx="20" cy="70" r="6" fill="#f6d36b"/>'}
+  else if(tp==="taca"){sh=false;s+='<path d="M14 40h32c0 22-6 36-16 38-10-2-16-16-16-38z" fill="#fff" fill-opacity=".08" stroke="#fff" stroke-opacity=".4"/><path d="M15 54h30c-1 14-7 23-15 24-8-1-14-10-15-24z" fill="'+cor+'"/><path d="M30 78v62M18 146h24" stroke="#e9e6df" stroke-opacity=".7" stroke-width="2"/>'}
+  if(sh)s+='<rect x="10" y="0" width="40" height="160" fill="url(#v'+id+')" opacity=".9"/>';
+  return s+'</svg>'}
+var acur="Tintos";
+$("#acats").innerHTML=ACAT.map(function(c){return '<button class="acat rv" type="button" data-ac="'+esc(c.k)+'">'+(c.img?'<img src="'+c.img+'" alt="" loading="lazy">':'<span class="aart">'+(c.art==="whisky"?garrafa("whisky","#b5651d","w0")+garrafa("licor","#f2d34a","w1"):garrafa("agua","#7fc4e8","s0")+garrafa("lata","#c8102e","s1")+garrafa("suco","#f39a1e","s2"))+'</span>')+'<span class="acat-t"><b>'+esc(c.k)+'</b><small>'+esc(c.d)+'</small></span></button>'}).join("");
+function aTabs(){$("#atabs").innerHTML=ACAT.map(function(c){return '<button class="tab" role="tab" type="button" data-at="'+esc(c.k)+'" aria-selected="'+(c.k===acur)+'">'+esc(c.k)+'</button>'}).join("")}
+function aGrid(){$("#agrid").innerHTML=ADEGA.filter(function(x){return x.c===acur}).map(function(x,i){
+  var cxn=x.cxn||"caixa 6",bt='<button type="button" '+attrs({n:x.n,p:x.p,i:""})+'>Unidade '+money(x.p)+'</button>'+(x.cx?'<button type="button" '+attrs({n:x.n+" ("+cxn+")",p:x.cx,i:""})+'>'+(x.cxn?x.cxn:"6 unidades")+' '+money(x.cx)+'</button>':'');
+  return '<article class="gcard" style="animation-delay:'+(i*70)+'ms"><div class="gimg">'+garrafa(x.t,x.cor,"g"+i)+'</div><div class="gtx"><h3>'+esc(x.n)+'</h3><p>'+esc(x.d)+'</p><div class="gbt">'+bt+'</div></div></article>'}).join("")}
+aTabs();aGrid();
+document.addEventListener("click",function(e){var b=e.target.closest("[data-at],[data-ac]");if(!b)return;acur=b.dataset.at||b.dataset.ac;aTabs();aGrid();if(b.dataset.ac){var l=$("#adegaLista");scrollTo({top:l.getBoundingClientRect().top+scrollY-90,behavior:reduce?"auto":"smooth"})}});
+
 tabs.addEventListener("click",function(e){var b=e.target.closest(".tab");if(!b)return;cur=b.dataset.t;drawTabs();renderMenu()});
 (function(){var i=0,q=$("#depQ"),pp=$("#depP");pp.innerHTML=DEP.map(function(_,k){return '<button type="button" aria-label="Depoimento '+(k+1)+'" data-d="'+k+'"></button>'}).join("");
   function mostra(k){i=k;q.classList.add("sai");setTimeout(function(){q.innerHTML='<q>'+esc(DEP[k][0])+'</q><cite>'+esc(DEP[k][1])+'</cite>';q.classList.remove("sai")},reduce?0:400);[].forEach.call(pp.children,function(b,j){b.setAttribute("aria-current",j===k)})}
@@ -691,7 +840,7 @@ function carregaLoja(){if(!LOJA_OK)return;
     if(zapNum(st.whatsapp).length>=12)WHATS=zapNum(st.whatsapp);
     TAXA=+st.delivery_fee||0;MINIMO=+st.min_order||0;ABERTA=st.accept_orders!==false;
     if(st.address)$("#vEnd").textContent=st.address;if(st.hours)$("#vHoras").textContent=st.hours;if(st.instagram)$("#vInsta").textContent=st.instagram;
-    if(st.whatsapp)$("#vWhats").textContent=st.whatsapp;
+    if(st.whatsapp){$("#vWhats").textContent=st.whatsapp;$("#fWhats").textContent=st.whatsapp}if(st.address)$("#fEnd").textContent=st.address;
     var conv=function(p){return {id:p.id,n:p.name,d:p.description,p:+p.price||0,i:p.image_url,tag:p.badge}},M={},S=[],CB=[];
     cs.forEach(function(c){var it=ps.filter(function(p){return p.category_id===c.id}).map(conv);if(!it.length)return;if(c.id==="acompanhamentos")S=it;else if(c.id==="combos")CB=it;else M[c.name]=it});
     if(Object.keys(M).length){MENU=M;if(!MENU[cur])cur=Object.keys(M)[0];drawTabs();renderMenu();if(window.armPics)armPics(menu)}
@@ -764,6 +913,10 @@ document.addEventListener("click",function(e){
   var q=e.target.closest(".q button");if(q){var k=q.dataset.k;if(!cart[k])return;cart[k].q=Math.min(99,cart[k].q+(+q.dataset.d));if(cart[k].q<=0)delete cart[k];renderCart()}
 });
 ["#openCart","#heroOrder","#visitOrder","#barraPedido"].forEach(function(id){$(id).addEventListener("click",openCart)});
+function temAlcool(){return Object.keys(cart).some(function(k){return ALC[k]})}
+function checaMaior(){$("#maiorLbl").hidden=!temAlcool()}
+$("#send").addEventListener("click",function(e){if(temAlcool()&&!$("#maior18").checked){e.stopImmediatePropagation();e.preventDefault();var l=$("#maiorLbl");l.classList.add("erro");setTimeout(function(){l.classList.remove("erro")},2200);$("#sendNote").textContent="Confirme que tem 18 anos ou mais para pedir bebida alcoólica."}},true);
+document.addEventListener("click",function(){setTimeout(checaMaior,0)});checaMaior();
 $("#closeCart").addEventListener("click",closeCart);scrim.addEventListener("click",closeCart);
 ["#obs","#cNome","#cFone","#cEnd"].forEach(function(id){$(id).addEventListener("input",renderCart)});
 [].forEach.call($$("input[name=tipo],input[name=pag]"),function(r){r.addEventListener("change",renderCart)});
