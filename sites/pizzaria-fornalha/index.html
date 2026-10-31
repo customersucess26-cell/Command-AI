@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-dZY6fyv70R5ASYDFp68YSeucfFHoo8HdtzITI3EqsWg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-zI6ZA1iXPwdl9i5FrjL2ZiHPITpf9OnknENyPOuAeL0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -479,6 +479,53 @@ footer{text-align:left;padding:60px 0 calc(30px + env(safe-area-inset-bottom,0px
 @media(max-width:640px){.acats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 @media(max-width:640px){.agrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gcard{grid-template-columns:1fr;padding:12px 10px;text-align:center}.gimg{height:150px}.gtx p{display:none}.gtx h3{font-size:1rem}.gbt button,.reservar{text-align:center;font-size:.58rem;letter-spacing:.08em}}
+
+/* ===== efeitos das seções e bebidas ===== */
+#bolhas{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.ah-txt,.selo-18{z-index:3}
+.selo-18{animation:pulsa 3s ease-in-out infinite}
+@keyframes pulsa{50%{box-shadow:inset 0 0 0 6px rgba(0,0,0,.4),inset 0 0 0 7px rgba(201,164,92,.35),0 0 40px rgba(201,164,92,.35)}}
+.adega-hero::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,230,180,.08) 50%,transparent 60%);background-size:250% 100%;animation:brilho 9s ease-in-out infinite}
+.acat{transform-style:preserve-3d}
+.acat::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,240,210,.22) 50%,transparent 65%);transform:translateX(-120%);transition:transform .9s cubic-bezier(.2,.85,.2,1)}
+.acat:hover::before{transform:translateX(120%)}
+.acat.rv.pre{transform:translateY(50px) rotateX(18deg)}
+.acat[aria-current="true"]{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 20px 40px -20px rgba(201,164,92,.5)}
+.gcard{position:relative;overflow:hidden;transition:border-color .3s,transform .5s cubic-bezier(.2,.85,.2,1),box-shadow .5s}
+.gcard::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(201,164,92,.16),transparent 65%);opacity:0;transition:opacity .3s}
+.gcard:hover::before{opacity:1}
+.gcard:hover{box-shadow:0 30px 50px -30px rgba(0,0,0,.9),0 0 0 1px rgba(201,164,92,.35)}
+.gimg{position:relative}
+.gimg::after{content:"";position:absolute;left:18%;right:18%;bottom:2px;height:10px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.7),transparent);transition:transform .7s}
+.gcard:hover .gimg::after{transform:scaleX(.7);opacity:.6}
+.gimg img{animation:balanca 6s ease-in-out infinite;animation-delay:calc(var(--d,0) * -1s)}
+@keyframes balanca{0%,100%{rotate:0deg}50%{rotate:1.4deg}}
+.gcard:hover .gimg img{animation-play-state:paused;transform:translateY(-12px) scale(1.06) rotate(-3deg)}
+.gimg::before{content:"";position:absolute;z-index:2;top:0;bottom:0;width:30%;left:-40%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-18deg);pointer-events:none;opacity:0}
+.gcard:hover .gimg::before{animation:reflexo .9s ease}
+@keyframes reflexo{0%{opacity:1}100%{left:120%;opacity:1}}
+.gotas{position:absolute;inset:8% 22%;pointer-events:none;z-index:3}
+.gotas i{position:absolute;width:3px;height:6px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:rgba(255,255,255,.75);box-shadow:0 0 2px rgba(255,255,255,.6);opacity:0;animation:gota 3.6s ease-in infinite}
+.gotas i:nth-child(1){left:18%;animation-delay:.2s}.gotas i:nth-child(2){left:42%;animation-delay:1.3s}.gotas i:nth-child(3){left:66%;animation-delay:2.1s}.gotas i:nth-child(4){left:30%;animation-delay:2.9s}.gotas i:nth-child(5){left:78%;animation-delay:.9s}
+@keyframes gota{0%{top:10%;opacity:0}15%{opacity:.9}100%{top:88%;opacity:0}}
+.gelada .gimg{background:radial-gradient(ellipse at 50% 100%,rgba(120,190,255,.18),transparent 70%)}
+.gelada:hover .gimg{box-shadow:inset 0 0 40px rgba(150,210,255,.12)}
+.gcard.reserva{isolation:isolate}
+.gcard.reserva::after{content:"";position:absolute;inset:-1px;z-index:-1;padding:1px;border-radius:inherit;background:conic-gradient(from var(--a,0deg),transparent 0 70%,var(--gold2) 85%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:giraBorda 6s linear infinite}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes giraBorda{to{--a:360deg}}
+.gcard.reserva .consulta{background:linear-gradient(90deg,var(--gold2),#fff6dc,var(--gold2));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:reluzTxt 3s linear infinite}
+@keyframes reluzTxt{to{background-position:-200% 0}}
+#atabs .tab{transition:color .3s,letter-spacing .4s}
+#atabs .tab:hover{letter-spacing:.36em}
+.vi svg{transition:transform .6s cubic-bezier(.2,.85,.2,1)}
+.vi:hover svg{transform:scale(1.15) rotate(-8deg);filter:drop-shadow(0 0 10px rgba(201,164,92,.6))}
+.vi.rv.pre{transform:translateY(30px) scale(.94)}
+.coz-foto.rv.pre,.vfoto.rv.pre{transform:translateY(60px) scale(.94) rotate(-1.5deg)}
+.ard-wrap.rv.pre{transform:translateY(70px) rotate(2deg)}
+.passos li{transition:transform .4s,border-color .4s}.passos li:hover{transform:translateX(10px);border-color:var(--gold)}
+.passos li:hover b{color:var(--gold2);text-shadow:0 0 18px rgba(201,164,92,.6)}
+@media(prefers-reduced-motion:reduce){.gimg img,.gotas i,.gcard.reserva::after{animation:none!important}}
 </style>
 </head>
 <body>
@@ -592,7 +639,7 @@ footer{text-align:left;padding:60px 0 calc(30px + env(safe-area-inset-bottom,0px
 <section class="sec" id="adega">
   <div class="wrap">
     <div class="adega-hero rv">
-      <img src="img/adega-cave.jpg" alt="" aria-hidden="true">
+      <img src="img/adega-cave.jpg" alt="" aria-hidden="true"><canvas id="bolhas" aria-hidden="true"></canvas>
       <div class="ah-txt"><span class="eyebrow">Legado da casa</span><h2>Adega <em>Fornalha</em></h2><div class="orn" style="justify-content:flex-start;margin-left:0"><i></i><b></b><i></i></div><p>Vinhos, espumantes e destilados escolhidos para acompanhar cada pizza. E, para quem não bebe, águas, refrigerantes e sucos sempre gelados.</p><a class="btn cheio" href="#adegaLista">Ver a adega ›</a></div>
       <div class="selo-18" aria-label="Proibido para menores de 18 anos"><b>18+</b><span>aprecie com<br>moderação</span></div>
     </div>
@@ -860,9 +907,26 @@ function aTabs(){$("#atabs").innerHTML=ACAT.map(function(c){return '<button clas
 function aGrid(){$("#agrid").innerHTML=ADEGA.filter(function(x){return x.c===acur}).map(function(x,i){
   var vis=x.img?'<img class="'+(/\.webp$/.test(x.img)?'png':'foto')+'" src="'+x.img+'" alt="'+esc(x.n)+'" loading="lazy">':garrafa(x.t,x.cor,"g"+i),bt;
   if(x.res)bt='<span class="consulta">Sob consulta</span><a class="reservar" target="_blank" rel="noopener" href="'+esc(wa("Olá, Fornalha! Gostaria de consultar o vinho "+x.n+" da carta de reserva."))+'">Consultar no WhatsApp ›</a>';
-  else{var cxn=x.cxn||"caixa 6";bt='<button type="button" '+attrs({n:x.un?x.n+" ("+x.un+")":x.n,p:x.p,i:x.img})+'>'+(x.un||"Unidade")+' '+money(x.p)+'</button>'+(x.cx?'<button type="button" '+attrs({n:x.n+" ("+cxn+")",p:x.cx,i:x.img})+'>'+(x.cxn?x.cxn:"6 unidades")+' '+money(x.cx)+'</button>':'')}
-  return '<article class="gcard'+(x.res?' reserva':'')+'" style="animation-delay:'+(Math.min(i,12)*60)+'ms"><div class="gimg">'+vis+'</div><div class="gtx"><h3>'+esc(x.n)+'</h3><p>'+esc(x.d)+'</p><div class="gbt">'+bt+'</div></div></article>'}).join("")}
+  else{var cxn=x.cxn||"caixa 6";bt='<button type="button" '+attrs({n:x.un?x.n+" ("+x.un+")":x.n,p:x.p,i:x.img})+'>'+(x.un||"Unidade")+' '+money(x.p)+'</button>'+(x.cx?'<button type="button" '+attrs({n:x.n+" ("+cxn+")",p:x.cx,i:x.img})+'>'+(x.cxn?x.cxn:"6 un.")+' '+money(x.cx)+'</button>':'')}
+  return '<article class="gcard'+(x.res?' reserva':'')+(/lata-/.test(x.img)?' gelada':'')+'" data-tilt style="animation-delay:'+(Math.min(i,12)*60)+'ms"><div class="gimg">'+vis+(/lata-/.test(x.img)?'<span class="gotas"><i></i><i></i><i></i><i></i><i></i></span>':'')+'</div><div class="gtx"><h3>'+esc(x.n)+'</h3><p>'+esc(x.d)+'</p><div class="gbt">'+bt+'</div></div></article>'}).join("")}
 aTabs();aGrid();
+
+/* ---- bolhas de espumante e brilhos dourados na adega ---- */
+(function(){var cv=$("#bolhas");if(!cv||reduce)return;var cx=cv.getContext("2d"),W,H,dpr=Math.min(2,devicePixelRatio||1),ps=[],vis=false;
+  function size(){var r=cv.parentNode.getBoundingClientRect();W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
+  function mk(i){var b=Math.random()<.65;return {b:b,x:W*(.35+Math.random()*.65),y:i?Math.random()*H:H+10,r:b?1+Math.random()*3.2:.8+Math.random()*1.6,v:b?.4+Math.random()*1.1:.15+Math.random()*.3,w:Math.random()*6.3,a:.25+Math.random()*.5}}
+  size();addEventListener("resize",size);for(var i=0;i<(fine?80:36);i++)ps.push(mk(1));
+  if("IntersectionObserver" in window)new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(cv.parentNode);
+  (function loop(){requestAnimationFrame(loop);if(!vis)return;cx.clearRect(0,0,W,H);
+    ps.forEach(function(p,i){p.y-=p.v;p.w+=.04;p.x+=Math.sin(p.w)*(p.b?.4:.2);if(p.y<-10){ps[i]=mk(0);return}
+      cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.283);
+      if(p.b){cx.strokeStyle="rgba(255,236,190,"+p.a+")";cx.lineWidth=.8;cx.stroke();cx.fillStyle="rgba(255,250,235,"+(p.a*.25)+")";cx.fill()}
+      else{cx.fillStyle="rgba(234,200,120,"+(p.a*(.5+.5*Math.sin(p.w*2)))+")";cx.shadowColor="#c9a45c";cx.shadowBlur=8;cx.fill();cx.shadowBlur=0}})})();
+})();
+/* ---- luz que segue o mouse nos cartões e categoria ativa ---- */
+document.addEventListener("pointermove",function(e){var g=e.target.closest&&e.target.closest(".gcard");if(!g)return;var r=g.getBoundingClientRect();g.style.setProperty("--mx",(e.clientX-r.left)+"px");g.style.setProperty("--my",(e.clientY-r.top)+"px")},{passive:true});
+function marcaCat(){[].forEach.call($$(".acat"),function(b){b.setAttribute("aria-current",b.dataset.ac===acur)})}
+var _aGrid=aGrid;aGrid=function(){_aGrid();marcaCat();[].forEach.call($$("#agrid .gimg img"),function(im,i){im.style.setProperty("--d",(i%7)*.9)})};aGrid();
 document.addEventListener("click",function(e){var b=e.target.closest("[data-at],[data-ac]");if(!b)return;acur=b.dataset.at||b.dataset.ac;aTabs();aGrid();if(b.dataset.ac){var l=$("#adegaLista");scrollTo({top:l.getBoundingClientRect().top+scrollY-90,behavior:reduce?"auto":"smooth"})}});
 
 tabs.addEventListener("click",function(e){var b=e.target.closest(".tab");if(!b)return;cur=b.dataset.t;drawTabs();renderMenu()});
