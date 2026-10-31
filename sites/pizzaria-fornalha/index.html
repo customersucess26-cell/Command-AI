@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-t1+DeJCIoYqnjvW4E9GtgDNmG1ZC5nG14qVWveIlREc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WgBaRLhvkA9TIpbI9sSuZWO133yacFpcJMpEmOLb28k='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -160,9 +160,11 @@ header.solid .mono small{opacity:0;height:0;overflow:hidden}
 .stage{position:relative;width:min(400px,38vw);aspect-ratio:736/1308;max-height:calc(100vh - 110px);margin-inline:auto}
 .stage .ly{position:absolute;mix-blend-mode:lighten;will-change:transform,opacity;transform-origin:50% 50%}
 .stage .ly img{width:100%;height:100%;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 8px,#000 calc(100% - 8px),transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 8px,#000 calc(100% - 8px),transparent);mask-composite:intersect}
-.stage .ly.base img{-webkit-mask-image:linear-gradient(180deg,transparent,#000 14%);mask-image:linear-gradient(180deg,transparent,#000 14%)}
+.stage .ly.base img{-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 46%,#000 62%,transparent 98%);mask-image:radial-gradient(ellipse 50% 50% at 50% 46%,#000 62%,transparent 98%)}
+.stage .ly.base::before{content:"";position:absolute;inset:6% 10% 12%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,150,60,.32),transparent);filter:blur(24px);opacity:0;transition:opacity .6s;z-index:-1}
+.stage .ly.base.pronta::before{opacity:1}
 .stage .ly.base{transition:filter .5s}
-.stage .ly.base.pronta{filter:brightness(1.12) saturate(1.15) drop-shadow(0 0 40px rgba(201,164,92,.35))}
+.stage .ly.base.pronta{filter:brightness(1.12) saturate(1.15)}
 .tag-ing{position:absolute;white-space:nowrap;display:flex;align-items:center;gap:12px;font:600 .95rem var(--f-d);letter-spacing:.2em;text-transform:uppercase;color:var(--cream);transition:opacity .4s,transform .4s;pointer-events:none}
 .tag-ing::before{content:"";width:48px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
 .tag-ing::after{content:"";position:absolute;left:44px;top:50%;width:5px;height:5px;margin-top:-2.5px;border-radius:50%;background:var(--gold)}
@@ -560,6 +562,8 @@ footer{text-align:left;padding:60px 0 calc(30px + env(safe-area-inset-bottom,0px
 .gbt button,.reservar{white-space:nowrap;text-align:center;padding:8px 10px}
 .consulta{display:block;width:100%}
 @media(max-width:640px){.gimg{height:160px}.gtx h3{min-height:0;font-size:1rem}.gbt button,.reservar{white-space:normal}}
+.cur,#corte{display:none!important}
+a,button,label,[data-ac],[data-at],.tab{cursor:pointer}
 </style>
 </head>
 <body>
@@ -844,11 +848,13 @@ function layoutEx(){
   var r=ex.getBoundingClientRect(),t=ex.offsetHeight-innerHeight,p=Math.min(1,Math.max(0,-r.top/Math.max(1,t)));
   if(reduce)p=0;
   var sc=stage.clientHeight/IH,n=EX.length-1,passo=PASSO.massa;
-  for(var i=n-1;i>=0;i--){var e=EX[i],k=n-1-i,a=.1+k*.105,b=a+.16,q=Math.min(1,Math.max(0,(p-a)/(b-a)));q=q*q*(3-2*q);
-    var dy=(LANDY-(e.y+e.h/2))*sc*q,s=1-.42*q,o=q<.82?1:Math.max(0,1-(q-.82)/.18);
+  /* a pilha desce inteira, sem buracos: cada camada encosta na pizza, encolhe e some dentro dela */
+  var dmax=(LANDY-(EX[0].y+EX[0].h/2))+80,P=Math.min(1,Math.max(0,(p-.08)/.8)),D=P*(2-P)*dmax;
+  for(var i=n-1;i>=0;i--){var e=EX[i],di=LANDY-(e.y+e.h/2),dy=Math.min(D,di)*sc,
+    q=Math.min(1,Math.max(0,(D-(di-90))/90)),q=q*q*(3-2*q),s=1-.55*q,o=q<.6?1:Math.max(0,1-(q-.6)/.4);
     lys[i].style.transform="translateY("+dy.toFixed(1)+"px) scale("+s.toFixed(3)+")";lys[i].style.opacity=o.toFixed(2);
-    var tg=stage.querySelector('[data-t="'+i+'"]');if(tg)tg.classList.toggle("off",q>.15);
-    if(q>.3)passo=PASSO[e.n]}
+    var tg=stage.querySelector('[data-t="'+i+'"]');if(tg){tg.style.transform="translateY(calc(-50% + "+dy.toFixed(1)+"px))";tg.classList.toggle("off",q>.15)}
+    if(q>.5)passo=PASSO[e.n]}
   base.classList.toggle("pronta",p>.86);
   if(passo!==ultimoPasso){ultimoPasso=passo;exStep.textContent=passo}
 }
@@ -1124,7 +1130,7 @@ function counters(){$$("[data-count]").forEach(function(el){var to=+el.dataset.c
 (function(){if(!fine||reduce)return;
   var cu=$("#cur"),roda=$("#roda"),cv=$("#corte"),cx=cv.getContext("2d"),dpr=Math.min(2,devicePixelRatio||1),mx=-100,my=-100,x=-100,y=-100,ang=0,pts=[];
   function size(){cv.width=innerWidth*dpr;cv.height=innerHeight*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}size();addEventListener("resize",size);
-  document.documentElement.classList.add("has-cursor");
+
   addEventListener("pointermove",function(e){mx=e.clientX;my=e.clientY;cu.classList.toggle("big",!!(e.target.closest&&e.target.closest("a,button,.it,.zz-img,.ard-wrap,.vfoto,.gcard")));cu.classList.toggle("vinho",!!(e.target.closest&&e.target.closest("#adega")));
     var t=e.target.closest&&e.target.closest("[data-tilt]");$$("[data-tilt].hot").forEach(function(z){if(z!==t){z.classList.remove("hot");z.style.transform=""}});
     if(t){t.classList.add("hot");var r=t.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;t.style.transform="perspective(1000px) rotateY("+((px-.5)*8).toFixed(2)+"deg) rotateX("+((.5-py)*8).toFixed(2)+"deg) translateY(-6px)"}},{passive:true});
