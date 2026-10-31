@@ -16,3 +16,8 @@ FOTOS: as fotos deste modelo foram recortadas de imagens de referência enviadas
 Connect e servem só para demonstração. Antes de publicar para um cliente, troque pelas fotos da
 pizzaria do cliente (ou fotos com licença de uso), mantendo os mesmos nomes de arquivo em img/.
 O efeito da pizza montando usa img/camada-*.jpg (recortes de uma foto vertical em fundo preto).
+
+ADEGA: as fotos das bebidas (img/beb-*, img/lata-*, img/res-*) mostram marcas reais e vieram de imagens de
+referência. Use somente as marcas que a pizzaria do cliente realmente vende, com preços dela, e prefira fotos
+próprias ou do fornecedor. Itens da "Carta de reserva" não entram no carrinho: abrem consulta no WhatsApp.
+Pedidos com bebida alcoólica exigem a confirmação de 18 anos.

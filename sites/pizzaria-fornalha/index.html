@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-lxopZN8S1WwQYE83wVmNbdnExOLdE56YV25p5/uxSjg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-k1qx0SoPGfEgATTgFHQ/7YxKjZIT8RBdGZ6Nch0V1U8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -458,6 +458,27 @@ footer{text-align:left;padding:60px 0 calc(30px + env(safe-area-inset-bottom,0px
 .fgrid a:not(.mono):hover{opacity:1;color:var(--gold2)}
 .copy{text-align:center;color:var(--muted);font-size:.76rem;margin-top:44px;padding-top:22px;border-top:1px solid var(--line)}
 @media(max-width:860px){.fgrid{grid-template-columns:1fr 1fr}}
+
+/* adega com fotos */
+.acats{grid-template-columns:repeat(6,minmax(0,1fr))}
+.acat img.fit{object-fit:contain;padding:14px 20% 34%;background:radial-gradient(circle at 50% 50%,#2a2420,#0e0c0b 70%)}
+.acat .aart{gap:0}.acat .aart img{position:static;width:30%;height:auto;object-fit:contain;filter:drop-shadow(0 12px 14px rgba(0,0,0,.7));margin:0 -3%}
+.acat .aart img:nth-child(2){transform:translateY(-10px) scale(1.08);z-index:1}
+.acat:hover .aart img{transform:translateY(-6px)}
+.gcard{grid-template-columns:104px minmax(0,1fr)}
+.gimg{height:200px;overflow:hidden;border-radius:4px}
+.gimg img{height:100%;width:100%;object-fit:contain;transition:transform .7s cubic-bezier(.2,.85,.2,1)}
+.gimg img.foto{object-fit:cover;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 80% 70% at 50% 50%,#000 60%,transparent 100%)}
+.gimg img.png{filter:drop-shadow(0 12px 14px rgba(0,0,0,.6));padding:10px 6px 4px}
+.gcard:hover .gimg img{transform:translateY(-8px) scale(1.04)}
+.gcard.reserva{border-color:rgba(201,164,92,.35);background:linear-gradient(180deg,rgba(201,164,92,.06),transparent)}
+.consulta{font:italic 500 1.05rem var(--f-d);color:var(--gold2)}
+.reservar{display:inline-block;margin-top:6px;border:1px solid var(--gold);color:var(--gold2);font:500 .62rem var(--f-b);letter-spacing:.14em;text-transform:uppercase;padding:8px 10px;text-decoration:none;transition:all .3s}
+.reservar:hover{background:var(--gold);color:#16120a}
+@media(max-width:1100px){.acats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){.acats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+@media(max-width:640px){.agrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gcard{grid-template-columns:1fr;padding:12px 10px;text-align:center}.gimg{height:150px}.gtx p{display:none}.gtx h3{font-size:1rem}.gbt button,.reservar{text-align:center;font-size:.58rem;letter-spacing:.08em}}
 </style>
 </head>
 <body>
@@ -775,33 +796,57 @@ var ACAT=[
   {k:"Tintos",img:"img/adega-tinto.jpg",d:"Encorpados, para as pizzas de carne e queijos."},
   {k:"Brancos e rosés",img:"img/adega-branco.jpg",d:"Leves e frescos, para margherita e vegetarianas."},
   {k:"Espumantes",img:"img/adega-espumante.jpg",d:"Para brindar e para as pizzas cremosas."},
-  {k:"Destilados",art:"whisky",d:"Whisky, gin e licores italianos."},
-  {k:"Sem álcool",art:"sem",d:"Águas, refrigerantes, sucos e sodas."}
+  {k:"Destilados",img:"img/beb-jw-black.jpg",fit:1,d:"Cachaça, vodka, rum, tequila, gin, whisky e vermute."},
+  {k:"Sem álcool",latas:["coca-cola","guarana-jesus","fanta-laranja"],d:"Refrigerantes, águas, sucos e sodas."},
+  {k:"Carta de reserva",img:"img/res-sassicaia.jpg",fit:1,d:"Grandes rótulos do mundo, sob consulta."}
 ];
+function B(c,n,d,p,img,o){var x={c:c,n:n,d:d,p:p,img:img,al:c!=="Sem álcool"?1:0};for(var k in o||{})x[k]=o[k];return x}
 var ADEGA=[
-  {c:"Tintos",n:"Malbec Reserva",d:"Mendoza. Frutado e macio, ideal com calabresa.",p:89,cx:480,t:"vinho",cor:"#4b0f1c",al:1},
-  {c:"Tintos",n:"Chianti Classico",d:"Toscana. O par perfeito da pizza napolitana.",p:119,cx:640,t:"vinho",cor:"#3d0c16",al:1},
-  {c:"Tintos",n:"Cabernet Sauvignon",d:"Serra Gaúcha. Encorpado, para quatro queijos.",p:79,cx:420,t:"vinho",cor:"#4a1020",al:1},
-  {c:"Tintos",n:"Taça de tinto da casa",d:"150 ml, servida na temperatura certa.",p:24,t:"taca",cor:"#5a1222",al:1},
-  {c:"Brancos e rosés",n:"Sauvignon Blanc",d:"Chile. Cítrico e refrescante, para margherita.",p:74,cx:400,t:"vinho",cor:"#c8c27a",al:1},
-  {c:"Brancos e rosés",n:"Rosé de Provence",d:"França. Delicado, para pizzas leves.",p:98,cx:530,t:"vinho",cor:"#e9a3a8",al:1},
-  {c:"Brancos e rosés",n:"Pinot Grigio",d:"Itália. Seco e mineral, para aliche e frutos do mar.",p:86,cx:460,t:"vinho",cor:"#d6cf90",al:1},
-  {c:"Brancos e rosés",n:"Taça de branco da casa",d:"150 ml, bem gelada.",p:22,t:"taca",cor:"#e6dc8f",al:1},
-  {c:"Espumantes",n:"Espumante Brut",d:"Serra Gaúcha. Borbulhas finas, combina com burrata.",p:69,cx:370,t:"espumante",cor:"#1f3a24",al:1},
-  {c:"Espumantes",n:"Prosecco DOC",d:"Vêneto. Leve e frutado, o espumante italiano.",p:92,cx:500,t:"espumante",cor:"#2a4a2c",al:1},
-  {c:"Espumantes",n:"Moscatel",d:"Doce e aromático, para as pizzas doces.",p:59,cx:320,t:"espumante",cor:"#c9a44a",al:1},
-  {c:"Destilados",n:"Whisky 12 anos",d:"Dose de 50 ml. Ou a garrafa para a mesa.",p:32,cx:249,cxn:"Garrafa",t:"whisky",cor:"#b5651d",al:1},
-  {c:"Destilados",n:"Gin tônica",d:"Gin, tônica, limão siciliano e especiarias.",p:34,t:"taca",cor:"#cfe8ea",al:1},
-  {c:"Destilados",n:"Limoncello",d:"Licor de limão siciliano, dose gelada.",p:18,t:"licor",cor:"#f2d34a",al:1},
-  {c:"Destilados",n:"Grappa",d:"Destilado italiano para depois da pizza.",p:22,t:"licor",cor:"#f1ead6",al:1},
-  {c:"Sem álcool",n:"Água mineral",d:"Sem gás, 500 ml.",p:6,cx:30,t:"agua",cor:"#7fc4e8"},
-  {c:"Sem álcool",n:"Água com gás",d:"500 ml, bem gelada.",p:7,cx:36,t:"agua",cor:"#5aa9d6"},
-  {c:"Sem álcool",n:"Refrigerante lata",d:"350 ml. Cola, guaraná ou laranja.",p:7,cx:38,t:"lata",cor:"#c8102e"},
-  {c:"Sem álcool",n:"Refrigerante 2 litros",d:"Para dividir na mesa.",p:15,t:"pet",cor:"#3b1d12"},
-  {c:"Sem álcool",n:"Suco natural 500 ml",d:"Laranja, limão ou maracujá.",p:12,t:"suco",cor:"#f39a1e"},
-  {c:"Sem álcool",n:"Soda italiana",d:"Xarope de frutas vermelhas e água com gás.",p:14,t:"suco",cor:"#e0465e"}
+  B("Tintos","Catena Malbec","Mendoza. Intenso e sofisticado, ideal com calabresa.",189,"img/beb-catena-malbec.jpg",{cx:1050}),
+  B("Tintos","Casillero del Diablo Cabernet","Chile. Equilibrado e marcante, para quatro queijos.",99,"img/beb-casillero.jpg",{cx:560}),
+  B("Tintos","Taça de tinto da casa","150 ml, servida na temperatura certa.",24,"",{t:"taca",cor:"#5a1222"}),
+  B("Brancos e rosés","Concha y Toro Sauvignon Blanc","Chile. Fresco e aromático, para margherita.",79,"img/beb-concha-y-toro.jpg",{cx:440}),
+  B("Brancos e rosés","Miolo Seleção Chardonnay","Brasil. Equilibrado e elegante, para pizzas brancas.",89,"img/beb-miolo-chardonnay.jpg",{cx:500}),
+  B("Brancos e rosés","Mateus Rosé","Portugal. Leve e refrescante.",95,"img/beb-mateus.jpg",{cx:530}),
+  B("Brancos e rosés","Salton Rosé","Brasil. Frutado e delicado.",69,"img/beb-salton-rose.jpg",{cx:390}),
+  B("Espumantes","Chandon Brut","Elegante e refrescante, combina com burrata.",159,"img/beb-chandon.jpg",{cx:890}),
+  B("Espumantes","Salton Brut","Leve e equilibrado, para brindar.",79,"img/beb-salton-brut.jpg",{cx:440}),
+  B("Destilados","Leblon","Cachaça premium, aromática e sofisticada.",18,"img/beb-leblon.jpg",{un:"Dose",cx:189,cxn:"Garrafa"}),
+  B("Destilados","Sagatiba Pura","Cachaça versátil e suave.",14,"img/beb-sagatiba.jpg",{un:"Dose",cx:119,cxn:"Garrafa"}),
+  B("Destilados","Absolut","Vodka pura e sofisticada.",22,"img/beb-absolut.jpg",{un:"Dose",cx:179,cxn:"Garrafa"}),
+  B("Destilados","Smirnoff","Vodka versátil, de alta qualidade.",16,"img/beb-smirnoff.jpg",{un:"Dose",cx:99,cxn:"Garrafa"}),
+  B("Destilados","Havana Club 3 Anos","Rum branco, leve e aromático.",20,"img/beb-havana-3.jpg",{un:"Dose",cx:149,cxn:"Garrafa"}),
+  B("Destilados","Bacardi Carta Blanca","Rum branco, suave e versátil.",16,"img/beb-bacardi-blanca.jpg",{un:"Dose",cx:99,cxn:"Garrafa"}),
+  B("Destilados","Havana Club 7 Anos","Rum escuro, encorpado e complexo.",26,"img/beb-havana-7.jpg",{un:"Dose",cx:219,cxn:"Garrafa"}),
+  B("Destilados","Bacardi Carta Oro","Rum escuro, equilibrado e saboroso.",18,"img/beb-bacardi-oro.jpg",{un:"Dose",cx:119,cxn:"Garrafa"}),
+  B("Destilados","Jose Cuervo Especial Silver","Tequila autêntica e tradicional.",24,"img/beb-jose-cuervo.jpg",{un:"Dose",cx:199,cxn:"Garrafa"}),
+  B("Destilados","El Jimador Blanco","Tequila pura e versátil.",22,"img/beb-el-jimador.jpg",{un:"Dose",cx:189,cxn:"Garrafa"}),
+  B("Destilados","Tanqueray","Gin elegante e aromático.",28,"img/beb-tanqueray.jpg",{un:"Dose",cx:229,cxn:"Garrafa"}),
+  B("Destilados","Gordon's","Gin clássico e versátil.",20,"img/beb-gordons.jpg",{un:"Dose",cx:129,cxn:"Garrafa"}),
+  B("Destilados","Johnnie Walker Black Label","Whisky 12 anos, sofisticado e equilibrado.",32,"img/beb-jw-black.jpg",{un:"Dose",cx:289,cxn:"Garrafa"}),
+  B("Destilados","Ballantine's Finest","Whisky suave e marcante.",22,"img/beb-ballantines.jpg",{un:"Dose",cx:139,cxn:"Garrafa"}),
+  B("Destilados","Carpano Classico","Vermute tradicional e sofisticado.",18,"img/beb-carpano.jpg",{un:"Dose",cx:159,cxn:"Garrafa"}),
+  B("Destilados","Martini Rosso","Vermute clássico e versátil.",14,"img/beb-martini-rosso.jpg",{un:"Dose",cx:79,cxn:"Garrafa"}),
+  B("Destilados","Limoncello","Licor de limão siciliano, dose gelada.",18,"",{t:"licor",cor:"#f2d34a"}),
+  B("Sem álcool","Coca-Cola","Lata 350 ml, bem gelada.",7,"img/lata-coca-cola.webp",{cx:38}),
+  B("Sem álcool","Coca-Cola Sem Açúcar","Lata 350 ml.",7,"img/lata-coca-zero.webp",{cx:38}),
+  B("Sem álcool","Pepsi","Lata 350 ml.",6,"img/lata-pepsi.webp",{cx:33}),
+  B("Sem álcool","Pepsi Black","Lata 350 ml, sem açúcar.",6,"img/lata-pepsi-black.webp",{cx:33}),
+  B("Sem álcool","Guaraná Jesus","Lata 350 ml, o sabor do Maranhão.",7,"img/lata-guarana-jesus.webp",{cx:38}),
+  B("Sem álcool","Fanta Laranja","Lata 350 ml.",6,"img/lata-fanta-laranja.webp",{cx:33}),
+  B("Sem álcool","Fanta Uva","Lata 350 ml.",6,"img/lata-fanta-uva.webp",{cx:33}),
+  B("Sem álcool","Fanta Guaraná","Lata 220 ml.",5,"img/lata-fanta-guarana.webp",{cx:27}),
+  B("Sem álcool","Fanta Berry","Lata 350 ml.",6,"img/lata-fanta-berry.webp",{cx:33}),
+  B("Sem álcool","Fanta Icy Lemon","Lata 350 ml.",6,"img/lata-fanta-icy-lemon.webp",{cx:33}),
+  B("Sem álcool","Sprite","Lata 350 ml.",6,"img/lata-sprite.webp",{cx:33}),
+  B("Sem álcool","Schweppes Citrus","Lata 350 ml.",7,"img/lata-schweppes.webp",{cx:38}),
+  B("Sem álcool","Água mineral","Sem gás, 500 ml.",6,"",{t:"agua",cor:"#7fc4e8",cx:30}),
+  B("Sem álcool","Água com gás","500 ml, bem gelada.",7,"",{t:"agua",cor:"#5aa9d6",cx:36}),
+  B("Sem álcool","Suco natural 500 ml","Laranja, limão ou maracujá.",12,"",{t:"suco",cor:"#f39a1e"}),
+  B("Sem álcool","Soda italiana","Xarope de frutas vermelhas e água com gás.",14,"",{t:"suco",cor:"#e0465e"})
 ];
-var ALC={};ADEGA.forEach(function(x){if(x.al){ALC[x.n]=1;ALC[x.n+" (caixa 6)"]=1;ALC[x.n+" (Garrafa)"]=1}});
+[["Château Lafite Rothschild 1999","Pauillac, Bordeaux.","lafite"],["Château Margaux 2004","Margaux, Bordeaux.","margaux"],["Moët MC III","Champagne de edição especial.","moet-mc3"],["Opus One 2013","Napa Valley, Califórnia.","opus-one"],["Château Latour 2004","Pauillac, Bordeaux.","latour"],["Armand de Brignac","Champagne Brut Gold.","armand-brignac"],["Les Forts de Latour 2009","Pauillac, Bordeaux.","forts-latour"],["Penfolds Grange 2005","Austrália do Sul.","penfolds-grange"],["Sassicaia 2012","Bolgheri, Toscana.","sassicaia"],["Seña 2009","Vale do Aconcágua, Chile.","sena"],["Masi Mazzano","Amarone della Valpolicella.","masi-mazzano"],["Tignanello 2013","Toscana, Antinori.","tignanello"],["Antinori Solaia 2011","Toscana.","solaia"],["Masi Campolongo","Amarone della Valpolicella.","masi-campolongo"],["Louis Roederer Cristal 2005","Champagne.","cristal"],["Almaviva 2012","Puente Alto, Chile.","almaviva"]].forEach(function(r){ADEGA.push(B("Carta de reserva",r[0],r[1],0,"img/res-"+r[2]+".jpg",{res:1}))});
+var ALC={};ADEGA.forEach(function(x){if(x.al){ALC[x.n]=1;ALC[x.n+" (caixa 6)"]=1;ALC[x.n+" (Garrafa)"]=1;ALC[x.n+" (Dose)"]=1}});
 function garrafa(tp,cor,id){var g='<defs><linearGradient id="v'+id+'" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".55"/><stop offset=".35" stop-color="#fff" stop-opacity=".18"/><stop offset=".5" stop-color="#fff" stop-opacity=".05"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient></defs>';
   var s='<svg viewBox="0 0 60 160" aria-hidden="true">'+g,L='<rect x="15" y="92" width="30" height="34" rx="2" fill="#efe6d2"/><rect x="18" y="98" width="24" height="2" fill="#c9a45c"/><rect x="21" y="104" width="18" height="10" fill="none" stroke="#7a5a26" stroke-width=".8"/><rect x="18" y="119" width="24" height="1.4" fill="#c9a45c"/>',sh=true;
   if(tp==="vinho")s+='<path d="M24 8h12v30c0 8 11 12 11 26v86a4 4 0 0 1-4 4H17a4 4 0 0 1-4-4V64c0-14 11-18 11-26z" fill="'+cor+'"/><rect x="23" y="6" width="14" height="16" rx="2" fill="#2b1c10"/><rect x="23" y="18" width="14" height="3" fill="#c9a45c"/>'+L;
@@ -816,11 +861,13 @@ function garrafa(tp,cor,id){var g='<defs><linearGradient id="v'+id+'" x1="0" x2=
   if(sh)s+='<rect x="10" y="0" width="40" height="160" fill="url(#v'+id+')" opacity=".9"/>';
   return s+'</svg>'}
 var acur="Tintos";
-$("#acats").innerHTML=ACAT.map(function(c){return '<button class="acat rv" type="button" data-ac="'+esc(c.k)+'">'+(c.img?'<img src="'+c.img+'" alt="" loading="lazy">':'<span class="aart">'+(c.art==="whisky"?garrafa("whisky","#b5651d","w0")+garrafa("licor","#f2d34a","w1"):garrafa("agua","#7fc4e8","s0")+garrafa("lata","#c8102e","s1")+garrafa("suco","#f39a1e","s2"))+'</span>')+'<span class="acat-t"><b>'+esc(c.k)+'</b><small>'+esc(c.d)+'</small></span></button>'}).join("");
+$("#acats").innerHTML=ACAT.map(function(c){var vis=c.img?'<img'+(c.fit?' class="fit"':'')+' src="'+c.img+'" alt="" loading="lazy">':'<span class="aart">'+c.latas.map(function(l){return '<img src="img/lata-'+l+'.webp" alt="">'}).join("")+'</span>';return '<button class="acat rv" type="button" data-ac="'+esc(c.k)+'">'+vis+'<span class="acat-t"><b>'+esc(c.k)+'</b><small>'+esc(c.d)+'</small></span></button>'}).join("");
 function aTabs(){$("#atabs").innerHTML=ACAT.map(function(c){return '<button class="tab" role="tab" type="button" data-at="'+esc(c.k)+'" aria-selected="'+(c.k===acur)+'">'+esc(c.k)+'</button>'}).join("")}
 function aGrid(){$("#agrid").innerHTML=ADEGA.filter(function(x){return x.c===acur}).map(function(x,i){
-  var cxn=x.cxn||"caixa 6",bt='<button type="button" '+attrs({n:x.n,p:x.p,i:""})+'>Unidade '+money(x.p)+'</button>'+(x.cx?'<button type="button" '+attrs({n:x.n+" ("+cxn+")",p:x.cx,i:""})+'>'+(x.cxn?x.cxn:"6 unidades")+' '+money(x.cx)+'</button>':'');
-  return '<article class="gcard" style="animation-delay:'+(i*70)+'ms"><div class="gimg">'+garrafa(x.t,x.cor,"g"+i)+'</div><div class="gtx"><h3>'+esc(x.n)+'</h3><p>'+esc(x.d)+'</p><div class="gbt">'+bt+'</div></div></article>'}).join("")}
+  var vis=x.img?'<img class="'+(/\.webp$/.test(x.img)?'png':'foto')+'" src="'+x.img+'" alt="'+esc(x.n)+'" loading="lazy">':garrafa(x.t,x.cor,"g"+i),bt;
+  if(x.res)bt='<span class="consulta">Sob consulta</span><a class="reservar" target="_blank" rel="noopener" href="'+esc(wa("Olá, Fornalha! Gostaria de consultar o vinho "+x.n+" da carta de reserva."))+'">Consultar no WhatsApp ›</a>';
+  else{var cxn=x.cxn||"caixa 6";bt='<button type="button" '+attrs({n:x.un?x.n+" ("+x.un+")":x.n,p:x.p,i:x.img})+'>'+(x.un||"Unidade")+' '+money(x.p)+'</button>'+(x.cx?'<button type="button" '+attrs({n:x.n+" ("+cxn+")",p:x.cx,i:x.img})+'>'+(x.cxn?x.cxn:"6 unidades")+' '+money(x.cx)+'</button>':'')}
+  return '<article class="gcard'+(x.res?' reserva':'')+'" style="animation-delay:'+(Math.min(i,12)*60)+'ms"><div class="gimg">'+vis+'</div><div class="gtx"><h3>'+esc(x.n)+'</h3><p>'+esc(x.d)+'</p><div class="gbt">'+bt+'</div></div></article>'}).join("")}
 aTabs();aGrid();
 document.addEventListener("click",function(e){var b=e.target.closest("[data-at],[data-ac]");if(!b)return;acur=b.dataset.at||b.dataset.ac;aTabs();aGrid();if(b.dataset.ac){var l=$("#adegaLista");scrollTo({top:l.getBoundingClientRect().top+scrollY-90,behavior:reduce?"auto":"smooth"})}});
 
