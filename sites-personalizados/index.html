@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-mDdEFgDLGx0f1rYwrBQIPVM2vmiLN4nhxNCPzSI16mo=' 'sha256-bnCJVYUO/sWwE/Mynw/eyyWfIPIPxuAWwDTg8hwx1DA=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-mDdEFgDLGx0f1rYwrBQIPVM2vmiLN4nhxNCPzSI16mo=' 'sha256-RCRdOLsTc3+ih/huyPzMTPdih04K4leKbXaPjKV0TF4=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1199,6 +1199,44 @@ header.nav .in{height:78px!important}
   .tpls.cf .tc-body li{display:none}.tpls.cf .tc-body ul{display:none}
   .cf-now{min-width:0}
 }
+
+/* ===== seções escuras só nas vitrines ===== */
+#templates .head h2,#modelos .head h2{color:#fff}
+#templates .head p,#modelos .head p,#templates .tpl-note{color:var(--on-navy-soft)}
+#templates .cf-stage{background:radial-gradient(70% 70% at 50% 30%,rgba(43,168,255,.14),transparent 70%);border:1px solid rgba(255,255,255,.08)}
+/* ===== celulares em carrossel 3D: um na frente, os outros atrás ===== */
+.pf-stage{position:relative;padding:20px 0 10px;overflow-x:clip}
+#modelos,#templates{overflow-x:clip}
+.pf-stage::before{content:"";position:absolute;left:50%;top:540px;width:460px;height:80px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(43,168,255,.35),transparent);filter:blur(24px)}
+.models.pf{display:block!important;position:relative;height:610px;overflow:visible!important;padding:0!important;perspective:1600px}
+.models.pf .model{position:absolute;left:50%;top:0;width:300px;transition:transform .9s cubic-bezier(.2,.85,.2,1),opacity .9s,filter .9s;will-change:transform}
+.models.pf .model .phone{max-width:300px;transform:none}
+.models.pf .model[data-pos="0"]{transform:translateX(-50%);z-index:5}
+.models.pf .model[data-pos="0"] .phone{box-shadow:0 60px 110px -40px rgba(0,0,0,.95),0 0 0 1px #2A3550 inset,0 0 70px -10px rgba(43,168,255,.45)}
+.models.pf .model[data-pos="1"]{transform:translateX(calc(-50% + 250px)) translateZ(-200px) rotateY(-28deg) scale(.92);z-index:4;filter:brightness(.62)}
+.models.pf .model[data-pos="-1"]{transform:translateX(calc(-50% - 250px)) translateZ(-200px) rotateY(28deg) scale(.92);z-index:4;filter:brightness(.62)}
+.models.pf .model[data-pos="2"]{transform:translateX(calc(-50% + 450px)) translateZ(-420px) rotateY(-38deg) scale(.84);z-index:3;filter:brightness(.4)}
+.models.pf .model[data-pos="-2"]{transform:translateX(calc(-50% - 450px)) translateZ(-420px) rotateY(38deg) scale(.84);z-index:3;filter:brightness(.4)}
+.models.pf .model:not([data-pos="0"]){cursor:pointer}
+.models.pf .model:not([data-pos="0"]) .phone{pointer-events:none}
+.models.pf .model>b,.models.pf .model>span{transition:opacity .5s}
+.models.pf .model:not([data-pos="0"])>b,.models.pf .model:not([data-pos="0"])>span{opacity:0}
+.models.pf .model>b,.models.pf .model>span{display:none}
+@media(max-width:760px){
+  .models.pf{height:560px}.models.pf .model{width:min(270px,72vw)}
+  .models.pf .model[data-pos="1"]{transform:translateX(calc(-50% + 62vw)) rotateY(-30deg) scale(.8)}
+  .models.pf .model[data-pos="-1"]{transform:translateX(calc(-50% - 62vw)) rotateY(30deg) scale(.8)}
+  .models.pf .model[data-pos="2"],.models.pf .model[data-pos="-2"]{opacity:0;pointer-events:none}
+}
+/* ===== efeitos de entrada e brilho (página clara continua clara) ===== */
+.fx{opacity:0;transform:translateY(40px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.85,.2,1)}
+.fx.in{opacity:1;transform:none}
+.btn-mint{position:relative;overflow:hidden}
+.btn-mint::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);animation:btnRefl 4.5s ease-in-out infinite;pointer-events:none}
+@keyframes btnRefl{0%,70%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.feat,.calc-box,.faq details,.plan{transition:transform .45s cubic-bezier(.2,.85,.2,1),box-shadow .45s,border-color .4s}
+.feat:hover,.calc-box:hover{transform:translateY(-4px);box-shadow:0 30px 60px -36px rgba(14,21,38,.45)}
+.faq{width:100%;align-items:stretch!important;margin-inline:auto}.faq details{width:100%}
 </style>
 </head>
 <body>
@@ -1269,7 +1307,7 @@ header.nav .in{height:78px!important}
 
   <div class="marquee" aria-hidden="true"><div class="track"><span>Padarias</span><span>Cafeterias</span><span>Hamburguerias</span><span>Restaurantes</span><span>Confeitarias</span><span>Pizzarias</span><span>Marmitarias</span><span>Docerias</span><span>Padarias</span><span>Cafeterias</span><span>Hamburguerias</span><span>Restaurantes</span><span>Confeitarias</span><span>Pizzarias</span><span>Marmitarias</span><span>Docerias</span></div></div>
 
-  <section id="templates">
+  <section class="dark" id="templates">
     <div class="in">
       <div class="head">
         <p class="eyebrow">Modelos de site</p>
@@ -1342,20 +1380,22 @@ header.nav .in{height:78px!important}
     </div>
   </section>
 
-  <section id="modelos">
+  <section class="dark" id="modelos">
     <div class="in">
       <div class="head">
         <p class="eyebrow">Dentro de todo site</p>
         <h2>Um cardápio que o cliente usa sozinho. Toque e teste.</h2>
         <p>Todo site vem com o cardápio interativo: o cliente escolhe, monta o pedido e envia pronto para o seu WhatsApp. São cinco estilos, todos funcionando aqui embaixo.</p>
       </div>
-      <div class="models">
+      <div class="pf-stage"><div class="models pf" id="pfModels">
         <div class="model"><div class="phone" data-mount="padaria" role="region" aria-label="Modelo padaria"></div><b>Padaria</b><span>Claro e artesanal, em grade</span></div>
         <div class="model"><div class="phone" data-mount="cafe" role="region" aria-label="Modelo café"></div><b>Café</b><span>Escuro e aconchegante, com vitrine</span></div>
         <div class="model"><div class="phone" data-mount="burger" role="region" aria-label="Modelo hamburgueria"></div><b>Hamburgueria</b><span>Preto e marcante, foto em destaque</span></div>
         <div class="model"><div class="phone" data-mount="rest" role="region" aria-label="Modelo restaurante"></div><b>Restaurante</b><span>Claro e elegante, prato em destaque</span></div>
         <div class="model"><div class="phone" data-mount="pizza" role="region" aria-label="Modelo pizzaria"></div><b>Pizzaria</b><span>Preto e dourado, pizza em destaque</span></div>
       </div>
+      <div class="cf-nav"><button type="button" class="cf-arr" id="pfPrev" aria-label="Estilo anterior">‹</button><div class="cf-now pf-now"><div><b id="pfName">Padaria</b><small id="pfDesc">Claro e artesanal, em grade</small></div></div><button type="button" class="cf-arr" id="pfNext" aria-label="Próximo estilo">›</button></div>
+      <div class="cf-dots" id="pfDots"></div></div>
     </div>
   </section>
 
@@ -1999,6 +2039,22 @@ var OFERTA={mes:'novembro',vagas:5,restantes:2,fimBonus:'2026-11-30T23:59:00-03:
   var x0=null;box.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
   box.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)vai(at+(dx<0?1:-1));x0=null});
   draw();reinicia()})();
+
+/* ===== carrossel 3D dos celulares ===== */
+(function(){var box=document.getElementById('pfModels');if(!box)return;var it=[].slice.call(box.querySelectorAll('.model')),n=it.length,at=0,tm=null,dots=document.getElementById('pfDots');
+  dots.innerHTML=it.map(function(_,i){return '<button type="button" aria-label="Estilo '+(i+1)+'"></button>'}).join('');
+  function pos(i){var d=((i-at)%n+n)%n;if(d>n/2)d-=n;return Math.abs(d)>2?'h':String(d)}
+  function draw(){it.forEach(function(m,i){m.setAttribute('data-pos',pos(i))});var c=it[at];document.getElementById('pfName').textContent=c.querySelector(':scope>b').textContent;document.getElementById('pfDesc').textContent=c.querySelector(':scope>span').textContent;[].forEach.call(dots.children,function(d,i){d.setAttribute('aria-current',i===at)})}
+  function vai(i){at=(i+n)%n;draw();clearInterval(tm);tm=setInterval(function(){if(!document.hidden&&!box.matches(':hover'))vai(at+1)},12000)}
+  document.getElementById('pfPrev').onclick=function(){vai(at-1)};document.getElementById('pfNext').onclick=function(){vai(at+1)};
+  dots.addEventListener('click',function(e){var b=e.target.closest('button');if(b)vai([].indexOf.call(dots.children,b))});
+  it.forEach(function(m,i){m.addEventListener('click',function(e){if(m.getAttribute('data-pos')!=='0'){e.preventDefault();e.stopPropagation();vai(i)}},true)});
+  var x0=null;box.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+  box.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50&&!e.target.closest('[data-pos="0"] .phone'))vai(at+(dx<0?1:-1));x0=null});
+  vai(0)})();
+/* ===== entrada ao rolar ===== */
+(function(){if(!('IntersectionObserver' in window))return;var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  [].forEach.call(document.querySelectorAll('section .head,.steps>*,.feats>*,.plans>*,.faq details,.os-item,.calc-box,.cf-stage,.pf-stage,form.lead,.of-gar>*'),function(el){if(el.getBoundingClientRect().top<innerHeight*.9)return;el.classList.add('fx');var k=el.parentNode?[].indexOf.call(el.parentNode.children,el):0;el.style.transitionDelay=(Math.max(0,k)%4)*110+'ms';io.observe(el)})})();
 </script>
 </body>
 </html>
