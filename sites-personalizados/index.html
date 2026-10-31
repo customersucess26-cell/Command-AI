@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-6NQnkCQAo/wLzzRZJeuaIVCBJQ12PjbZiruTItMwiGY=' 'sha256-iHP4sEDLuth1+/Fl487yESKJKGCGEOXqAyFmYp+nhV0=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-01eJB+EXCiftSglDM8AogHh8Hd8ncT2j55KdHewOJWY=' 'sha256-iHP4sEDLuth1+/Fl487yESKJKGCGEOXqAyFmYp+nhV0=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1138,6 +1138,7 @@ header.nav .in{height:78px!important}
 @keyframes tscroll{0%,14%{transform:translateY(0)}46%,60%{transform:translateY(-410px)}92%,100%{transform:translateY(0)}}
 @media (prefers-reduced-motion:reduce){.tscroll{animation:none}}
 @media(max-width:600px){.v-tabs{max-width:100%;flex-wrap:wrap;justify-content:center;border-radius:22px}.v-tabs label{white-space:nowrap;padding:8px 12px!important;font-size:13px!important}}
+.plans.plans2{grid-template-columns:repeat(2,minmax(0,1fr));max-width:860px;margin-inline:auto}@media(max-width:760px){.plans.plans2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1452,7 +1453,7 @@ header.nav .in{height:78px!important}
         <h2>Escolha o tamanho do seu site</h2>
         <p>Implantação no Pix (50% no aceite e 50% na entrega) ou parcelada no cartão. A mensalidade só começa depois que o site vai ao ar.</p>
       </div>
-      <div class="plans">
+      <div class="plans plans2">
         <div class="plan">
           <h3>Site Vitrine</h3>
           <p class="price">R$ 1.497<small> implantação</small></p>
@@ -1466,13 +1467,6 @@ header.nav .in{height:78px!important}
           <p class="setup">+ R$ 199/mês · menos de R$ 7 por dia</p>
           <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Tudo do Site Vitrine</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Painel de pedidos e rastreio</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Perfil do Google otimizado</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>500 cartões de volta + display</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Campanha de lançamento</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>30 dias de acompanhamento</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Garantia Pedido Direto</li></ul>
           <a class="btn btn-mint" href="#contato" data-plano="Casa Cheia">Escolher Casa Cheia</a>
-        </div>
-        <div class="plan">
-          <h3>Casa Cheia + Gestão</h3>
-          <p class="price">R$ 2.997<small> implantação</small></p>
-          <p class="setup">+ R$ 897/mês · verba de anúncios à parte</p>
-          <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Tudo do Casa Cheia</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Anúncios locais no Google e no Instagram</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>8 posts por mês</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Campanha mensal para trazer cliente de volta</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg>Relatório mensal de pedidos</li></ul>
-          <a class="btn btn-ghost" href="#contato" data-plano="Casa Cheia + Gestão">Escolher Casa Cheia + Gestão</a>
         </div>
       </div>
       <p class="plans-note">Só precisa do cardápio digital, sem site? A partir de R$ 149/mês + R$ 997. <a href="#contato" data-plano="Só cardápio digital">Fale com a gente</a>.</p>
@@ -1508,7 +1502,7 @@ header.nav .in{height:78px!important}
         <label for="lEst">Nome do estabelecimento<input id="lEst" name="estabelecimento" maxlength="100" required></label>
         <div class="row2">
           <label for="lTipo">Tipo<select id="lTipo" name="tipo"><option>Padaria</option><option>Cafeteria</option><option>Confeitaria</option><option>Restaurante</option><option>Hamburgueria</option><option>Pizzaria</option><option>Outro</option></select></label>
-          <label for="lPlano">Plano de interesse<select id="lPlano" name="plano"><option>Ainda não sei</option><option>Site Vitrine</option><option>Casa Cheia</option><option>Casa Cheia + Gestão</option><option>Só cardápio digital</option></select></label>
+          <label for="lPlano">Plano de interesse<select id="lPlano" name="plano"><option>Ainda não sei</option><option>Site Vitrine</option><option>Casa Cheia</option><option>Só cardápio digital</option></select></label>
         </div>
         <label for="lModelo">Modelo de site<select id="lModelo" name="modelo"><option>Ainda não sei</option><option>Restaurante</option><option>Hamburgueria</option><option>Cafeteria</option><option>Pizzaria</option></select></label>
         <label for="lWhats">Seu WhatsApp<input id="lWhats" name="whatsapp" inputmode="tel" autocomplete="tel" placeholder="(42) 9 9999-9999" maxlength="20" required></label>
@@ -1709,7 +1703,7 @@ header.nav .in{height:78px!important}
     var QR=['Como funciona?','Quanto custa?','Ver os modelos','Quero a prévia grátis'];
     var A={
       como:'Você escolhe um dos nossos modelos de site (restaurante, hamburgueria ou padaria e café), manda logo, fotos e cardápio, e em 2 dias úteis recebe a prévia com a sua marca.\n\nAprovou, em até 7 dias o site está no ar com domínio próprio, cardápio com pedido no WhatsApp e painel de pedidos. Sem comissão por pedido.',
-      preco:'Temos 3 planos de site:\n\n• Site Vitrine: R$ 1.497 + R$ 149/mês\n• Casa Cheia: R$ 2.997 + R$ 199/mês (o mais escolhido, com Google, cartões de volta, lançamento e garantia de pedidos)\n• Casa Cheia + Gestão: R$ 2.997 + R$ 897/mês, com anúncios e posts\n\nNenhum cobra comissão por pedido. E você vê a prévia do seu site antes de pagar. 😉',
+      preco:'Temos 2 planos de site:\n\n• Site Vitrine: R$ 1.497 + R$ 149/mês\n• Casa Cheia: R$ 2.997 + R$ 199/mês (o mais escolhido, com Google, cartões de volta, lançamento e garantia de pedidos)\n\nNenhum cobra comissão por pedido. E você vê a prévia do seu site antes de pagar. 😉',
       comissao:'Zero comissão. Você paga uma mensalidade fixa e vende quanto quiser. No app de delivery a comissão fica entre 12% e 23% de cada pedido.\n\nVocê não precisa sair do app: ele traz cliente novo, e o seu cardápio traz esse cliente de volta, sem taxa.',
       prazo:'A prévia sai em até 2 dias úteis e o site completo vai ao ar em até 7 dias úteis depois que você manda logo, fotos e cardápio. Os ajustes vão até você aprovar.',
       site:'O site é o nosso produto principal: modelo premium de gastronomia com a sua marca, história, fotos, horários, como chegar e o cardápio com pedido funcionando dentro. Dá uma olhada nos três modelos aqui da página, todos funcionam de verdade.',
