@@ -53,5 +53,9 @@ sobra = sorted(set(re.findall(r'["\'(]img/[\w.-]+', html.replace(js_mapa, ""))) 
 os.makedirs("modelos", exist_ok=True)
 out = os.path.join("modelos", pasta + ".html")
 open(out, "w", encoding="utf-8").write(html)
-subprocess.run(["python3", "ferramentas/csp.py", out], check=True)
+# demonstração: a hospedagem (LiteSpeed/CDN da Hostinger) pode reescrever ou adiar os scripts da página;
+# com a CSP por resumo (hash) o navegador bloquearia tudo. Aqui não há login nem dados, então libera os scripts da própria página.
+html = open(out, encoding="utf-8").read()
+html = re.sub(r"script-src [^;]*;", "script-src 'self' 'unsafe-inline' https:;", html, count=1)
+open(out, "w", encoding="utf-8").write(html)
 print(out, round(os.path.getsize(out) / 1e6, 1), "MB ·", len(mapa), "arquivos embutidos ·", "sobrou referência externa:" if sobra else "nenhuma referência externa", " ".join(sobra))
