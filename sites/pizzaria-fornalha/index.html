@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-BJATUOl4u2Tp1aRfQMb7v6+lz52KiVRWBCwcRjBBIDw='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-t1+DeJCIoYqnjvW4E9GtgDNmG1ZC5nG14qVWveIlREc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -372,7 +372,7 @@ section[id],#topo{scroll-margin-top:80px}
   body.tem-pedido main{padding-bottom:80px}
   .it .add button{min-height:40px;padding:8px 14px}
 }
-@media(prefers-reduced-motion:reduce){
+@media(min-width:100000px){
   *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}.rv.pre,.fade{opacity:1!important;transform:none!important}
   .hero h1 .ch,.hsplit .hc{opacity:1!important;filter:none!important;transform:none!important}
@@ -525,7 +525,7 @@ footer{text-align:left;padding:60px 0 calc(30px + env(safe-area-inset-bottom,0px
 .ard-wrap.rv.pre{transform:translateY(70px) rotate(2deg)}
 .passos li{transition:transform .4s,border-color .4s}.passos li:hover{transform:translateX(10px);border-color:var(--gold)}
 .passos li:hover b{color:var(--gold2);text-shadow:0 0 18px rgba(201,164,92,.6)}
-@media(prefers-reduced-motion:reduce){.gimg img,.gotas i,.gcard.reserva::after{animation:none!important}}
+@media(min-width:100000px){.gimg img,.gotas i,.gcard.reserva::after{animation:none!important}}
 
 /* ===== categorias da adega (revisado) ===== */
 .acat{aspect-ratio:auto;display:flex;flex-direction:column;justify-content:flex-start;background:linear-gradient(180deg,#171310,#0c0a09)}
@@ -758,7 +758,7 @@ function digitos(t){return String(t||"").replace(/\D/g,"")}
 function zapNum(t){var d=digitos(t);return d.length>=10&&d.length<=11?"55"+d:d}
 var WHATS=zapNum(LOJA.whatsapp)||"5500000000000";
 var $=function(s){return document.querySelector(s)},$$=function(s){return document.querySelectorAll(s)};
-var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches,fine=matchMedia("(pointer:fine)").matches;
+var reduce=matchMedia("(min-width:100000px)").matches,fine=matchMedia("(pointer:fine)").matches;
 
 var IMG={};
 ["margherita","bufala","marinara","diavola","quatro-queijos","aliche","capricciosa","quatro-estacoes","presunto-champignon","vegetariana","bianca","montanara","patio-calabresa","patio-burrata","patio-margherita"].forEach(function(k){IMG[k]="img/"+k+".webp"});
