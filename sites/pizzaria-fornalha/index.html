@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-r3NrKOEBadYE7Q9+Ep+1OO3XfykGT38FAFSieX765NI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LG/6nlk4KuSiAMcoueRmp8SKHbzo8T2ADG7dI3lRXpM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fornalha | Pizzeria napoletana no forno a lenha</title>
 <meta name="description" content="Pizzaria napolitana com massa de 48 horas, ingredientes italianos e forno a lenha. Peça pelo site e receba no WhatsApp.">
@@ -216,12 +216,13 @@ header.solid .mono small{opacity:0;height:0;overflow:hidden}
 
 /* cozinha animada */
 .coz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,7vw,100px);align-items:center}
-.coz-foto{position:relative;margin:0;aspect-ratio:736/1000;max-width:520px;width:100%;justify-self:center;transition:transform .5s cubic-bezier(.2,.85,.2,1)}
+.coz-foto{position:relative;margin:0;aspect-ratio:9/14;max-width:520px;width:100%;justify-self:center;transition:transform .5s cubic-bezier(.2,.85,.2,1)}
 .coz-foto::before{content:"";position:absolute;inset:-14px;border:1px solid var(--line);pointer-events:none}
 .coz-in{position:absolute;inset:0;overflow:hidden;box-shadow:0 50px 90px -40px rgba(0,0,0,.95)}
-.coz-in img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;animation:cozkb 18s ease-in-out infinite alternate;transform-origin:50% 45%;will-change:transform}
+.coz-in video{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block;transform:scale(1.02);transition:transform 1.2s cubic-bezier(.2,.85,.2,1)}
+.coz-foto:hover .coz-in video{transform:scale(1.07)}
 @keyframes cozkb{0%{transform:scale(1.02) translate(0,0)}50%{transform:scale(1.1) translate(-1.5%,1%)}100%{transform:scale(1.06) translate(1.5%,-1%)}}
-.coz-forno{position:absolute;right:6%;top:6%;width:42%;height:26%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,150,50,.55),transparent);mix-blend-mode:screen;filter:blur(18px);animation:tremula 1.8s ease-in-out infinite alternate;pointer-events:none}
+.coz-forno{position:absolute;right:4%;top:6%;width:44%;height:24%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,150,50,.3),transparent);mix-blend-mode:screen;filter:blur(18px);animation:tremula 1.8s ease-in-out infinite alternate;pointer-events:none}
 .coz-vapor{position:absolute;left:30%;top:6%;width:30%;height:26%;pointer-events:none}
 .coz-vapor i{position:absolute;bottom:0;width:50%;height:70%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.28),transparent);filter:blur(12px);opacity:0;animation:vapor 6s ease-in infinite}
 .coz-vapor i:nth-child(2){left:30%;animation-delay:2s}.coz-vapor i:nth-child(3){left:15%;animation-delay:4s}
@@ -448,8 +449,8 @@ section[id],#topo{scroll-margin-top:80px}
 <section class="sec cozinha" id="cozinha" style="padding-top:20px">
   <div class="wrap coz">
     <figure class="coz-foto rv" data-tilt>
-      <div class="coz-in"><img src="img/cozinha.jpg" alt="Equipe de cozinheiros montando uma pizza gigante: queijo derretido, calabresa, azeitonas e manjericão, com o forno a lenha ao fundo" loading="lazy"></div>
-      <span class="coz-forno" aria-hidden="true"></span><span class="coz-vapor" aria-hidden="true"><i></i><i></i><i></i></span><span class="coz-brilho" aria-hidden="true"></span>
+      <div class="coz-in"><video id="cozVid" muted loop playsinline preload="metadata" poster="img/cozinha-poster.jpg" aria-label="Mestres-cucas montando uma pizza gigante: um derrama queijo derretido, outros colocam calabresa, tomate e manjericão, com o forno a lenha aceso ao fundo"><source src="img/cozinha.mp4" type="video/mp4"><source src="img/cozinha.webm" type="video/webm"></video></div>
+      <span class="coz-forno" aria-hidden="true"></span><span class="coz-brilho" aria-hidden="true"></span>
       <span class="cn a"></span><span class="cn b"></span><span class="cn c"></span><span class="cn d"></span>
     </figure>
     <div class="coz-txt">
@@ -776,6 +777,11 @@ function counters(){$$("[data-count]").forEach(function(el){var to=+el.dataset.c
       if(c.nodeType===3){var f=document.createDocumentFragment();c.textContent.split(/( )/).forEach(function(wd){if(!wd)return;if(wd===" "){f.appendChild(document.createTextNode(" "));return}var w=document.createElement("span");w.style.cssText="display:inline-block;white-space:nowrap";wd.split("").forEach(function(ch){var s=document.createElement("span");s.className="hc";s.textContent=ch;s.style.transitionDelay=(n++*35)+"ms";w.appendChild(s)});f.appendChild(w)});node.replaceChild(f,c)}
       else if(c.nodeType===1&&!c.classList.contains("star"))walk(c)})})(h);
     h.classList.add("hsplit");hs.observe(h)})})();
+
+/* ---- vídeo da cozinha: toca quando aparece ---- */
+(function(){var v=$("#cozVid");if(!v)return;if(reduce){v.removeAttribute("loop");return}
+  function play(){var p=v.play();if(p&&p.catch)p.catch(function(){})}
+  if("IntersectionObserver" in window)new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)play();else v.pause()})},{threshold:.2}).observe(v);else play()})();
 
 /* ---- faíscas douradas no topo ---- */
 (function(){var cv=$("#faiscas");if(reduce)return;var cx=cv.getContext("2d"),W,H,ps=[],dpr=Math.min(2,devicePixelRatio||1),vis=true;
