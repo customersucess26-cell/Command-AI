@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-mDdEFgDLGx0f1rYwrBQIPVM2vmiLN4nhxNCPzSI16mo=' 'sha256-Pt94vrnEOXOC2v0GKkTpfI+EHoffb19z5qzs0VKOjsE=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-mDdEFgDLGx0f1rYwrBQIPVM2vmiLN4nhxNCPzSI16mo=' 'sha256-bnCJVYUO/sWwE/Mynw/eyyWfIPIPxuAWwDTg8hwx1DA=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1199,40 +1199,6 @@ header.nav .in{height:78px!important}
   .tpls.cf .tc-body li{display:none}.tpls.cf .tc-body ul{display:none}
   .cf-now{min-width:0}
 }
-
-/* ===== página toda escura + efeitos de movimento ===== */
-:root{--paper:#080D18;--white:#111A2C;--line:rgba(127,160,210,.16);--ink:#EEF2F6;--ink-soft:#A9B4C6;--mint-soft:rgba(43,168,255,.16);--mint-deep:#6CC4FF}
-body{background:#080D18;color:var(--ink)}
-body::before{content:"";position:fixed;inset:-20%;z-index:-2;pointer-events:none;background:radial-gradient(40% 35% at 15% 20%,rgba(43,168,255,.13),transparent 70%),radial-gradient(35% 30% at 85% 60%,rgba(124,92,255,.11),transparent 70%),radial-gradient(30% 30% at 40% 90%,rgba(201,162,74,.08),transparent 70%);animation:auroraBg 26s ease-in-out infinite alternate}
-@keyframes auroraBg{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(3%,-2%) rotate(4deg)}100%{transform:translate(-3%,2%) rotate(-3deg)}}
-body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:linear-gradient(rgba(127,160,210,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(127,160,210,.05) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 40%,#000,transparent);mask-image:radial-gradient(ellipse 80% 60% at 50% 40%,#000,transparent)}
-section{position:relative;background:transparent}
-.calc-box,.feat,.vs,.faq details,.os-item,.tpl-card,form.lead{box-shadow:0 30px 60px -40px rgba(0,0,0,.9);transition:transform .45s cubic-bezier(.2,.85,.2,1),border-color .4s,box-shadow .45s}
-.calc-box:hover,.os-item:hover,.faq details:hover{border-color:rgba(43,168,255,.45);box-shadow:0 30px 60px -36px rgba(0,0,0,.95),0 0 40px -14px rgba(43,168,255,.45)}
-.feat{position:relative;overflow:hidden}
-.feat::before{content:"";position:absolute;inset:0;background:radial-gradient(280px circle at var(--mx,50%) var(--my,0%),rgba(43,168,255,.16),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
-.feat:hover::before{opacity:1}
-form.lead input,form.lead select{background:#0B1322;color:var(--ink);border-color:var(--line)}
-form.lead input:focus,form.lead select:focus{border-color:#2BA8FF;box-shadow:0 0 0 3px rgba(43,168,255,.2)}
-.seg button{background:#0B1322;color:var(--ink)}
-.tpl-note{color:var(--ink-soft)}
-.cf-stage{background:radial-gradient(70% 70% at 50% 30%,rgba(34,50,79,.9) 0%,rgba(14,21,38,.6) 60%,transparent 100%);border:1px solid var(--line)}
-/* entrada ao rolar */
-.fx{opacity:0;transform:translateY(46px) scale(.98);filter:blur(6px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.85,.2,1),filter 1s ease}
-.fx.in{opacity:1;transform:none;filter:none}
-.fx-l{transform:translateX(-50px)}.fx-r{transform:translateX(50px)}
-/* títulos com brilho passando */
-h2 .hl,.head h2{background:linear-gradient(100deg,#EEF2F6 0%,#EEF2F6 42%,#9fd8ff 50%,#EEF2F6 58%,#EEF2F6 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:titBrilho 8s ease-in-out infinite}
-@keyframes titBrilho{0%,60%{background-position:120% 0}100%{background-position:-120% 0}}
-/* cursor de luz */
-.luz-cursor{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(43,168,255,.10),transparent 62%);transition:opacity .4s;opacity:0}
-.luz-cursor.on{opacity:1}
-/* botões com reflexo */
-.btn-mint{position:relative;overflow:hidden}
-.btn-mint::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);animation:btnRefl 4.5s ease-in-out infinite}
-@keyframes btnRefl{0%,70%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
-.faq{width:100%;align-items:stretch!important;margin-inline:auto}.faq details{width:100%}
-@media(prefers-reduced-motion:reduce){.fx{opacity:1!important;transform:none!important;filter:none!important}}
 </style>
 </head>
 <body>
@@ -2033,16 +1999,6 @@ var OFERTA={mes:'novembro',vagas:5,restantes:2,fimBonus:'2026-11-30T23:59:00-03:
   var x0=null;box.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
   box.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)vai(at+(dx<0?1:-1));x0=null});
   draw();reinicia()})();
-
-/* ===== efeitos: entrada ao rolar, luz do cursor e brilho nos cartões ===== */
-(function(){
-  var alvos=document.querySelectorAll('section .head, .steps>*, .feats>*, .plans>*, .faq details, .os-item, .calc-box, .vs, .models .model, .cf-stage, form.lead, .result>div, .of-gar>*');
-  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
-    [].forEach.call(alvos,function(el,i){if(el.getBoundingClientRect().top<innerHeight*.9)return;el.classList.add('fx');var irm=el.parentNode?[].indexOf.call(el.parentNode.children,el):0;el.style.transitionDelay=(Math.max(0,irm)%4)*110+'ms';io.observe(el)})}
-  if(matchMedia('(pointer:fine)').matches){var l=document.createElement('div');l.className='luz-cursor';document.body.appendChild(l);
-    addEventListener('pointermove',function(e){l.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)';l.classList.add('on');
-      var f=e.target.closest&&e.target.closest('.feat');if(f){var r=f.getBoundingClientRect();f.style.setProperty('--mx',(e.clientX-r.left)+'px');f.style.setProperty('--my',(e.clientY-r.top)+'px')}},{passive:true})}
-})();
 </script>
 </body>
 </html>
