@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-18+xKF98vUUTdg4nGFoB+3FoUazGlQk4aganta48gl0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>CRM · Mr. Connect</title>
+<link rel="icon" href="img/icone.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<link rel="stylesheet" href="painel.css">
+<script src="/assets/config.js"></script>
+<script>/* mesmo banco do site de vendas: usa a configuração do domínio */(function(){var B=window.BISTRO||{},C=window.BC||{};window.BISTRO={whatsapp:B.whatsapp||String(C.suporteWhatsapp||"").replace(/\D/g,""),supabaseUrl:B.supabaseUrl||C.supabaseUrl||"",supabaseKey:B.supabaseKey||C.supabaseKey||""}})();</script>
+<script src="vendor/supabase-2.45.4.js"></script>
+<script src="vendor/html2canvas-1.4.1.min.js" defer></script>
+<script src="vendor/jspdf-2.5.1.umd.min.js" defer></script>
+<script src="biblioteca.js" defer></script>
+<script src="painel.js" defer></script>
+</head>
+<body>
+
+<!-- ================= ENTRADA ================= -->
+<main class="auth" id="auth" hidden>
+  <div class="auth-card">
+    <div class="auth-brand mc-auth"><div><b class="mc-marca" aria-label="Mr. Connect"><span class="mr">Mr.</span><span class="cn">Connect</span></b><small class="mc-tag">A evolução digital da sua marca.</small><small>CRM da holding · Bistrô Connect</small></div></div>
+
+    <form id="fLogin" novalidate>
+      <h1>Acesso restrito</h1>
+      <label>E-mail<input id="lgEmail" type="email" autocomplete="username" maxlength="190" required></label>
+      <label>Senha<input id="lgSenha" type="password" autocomplete="current-password" maxlength="200" required></label>
+      <button class="btn primary big" type="submit">Entrar</button>
+      <button class="btn link" type="button" id="btnTrocaBanco" hidden>Trocar a conexão com o banco</button>
+    </form>
+
+    <form id="fCodigo" novalidate hidden>
+      <h1>Confirme que é você</h1>
+      <p class="muted">Digite o código de 6 números do seu aplicativo autenticador.</p>
+      <label>Código<input id="cdCodigo" class="codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required></label>
+      <button class="btn primary big" type="submit">Confirmar</button>
+      <button class="btn link" type="button" data-sair>Usar outra conta</button>
+    </form>
+
+    <form id="fCadastro2fa" novalidate hidden>
+      <h1>Ative o login em 2 etapas</h1>
+      <p class="muted">Obrigatório para abrir o painel. No celular, abra o Google Authenticator (ou Microsoft Authenticator) e leia o QR Code.</p>
+      <img id="qr2fa" class="qr" alt="QR Code para o aplicativo autenticador">
+      <p class="muted fino">Sem câmera? Digite esta chave no app: <code id="seg2fa"></code></p>
+      <label>Código que apareceu no app<input id="cdNovo" class="codigo" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required></label>
+      <button class="btn primary big" type="submit">Ativar e entrar</button>
+      <button class="btn link" type="button" data-sair>Cancelar</button>
+    </form>
+
+    <div id="semConfig" hidden>
+      <h1>Conectar o painel</h1>
+      <p class="muted">Falta ligar o painel ao banco de dados (Supabase). No Supabase, abra <b>Project Settings › API</b> e cole aqui as duas informações:</p>
+      <form id="fConecta" novalidate>
+        <label>Project URL<input id="cxUrl" type="url" inputmode="url" placeholder="https://xxxxxxxx.supabase.co" autocomplete="off" spellcheck="false" maxlength="120"></label>
+        <label>Chave anon public<textarea id="cxKey" rows="3" placeholder="eyJhbGciOi..." spellcheck="false" maxlength="600"></textarea></label>
+        <label>WhatsApp que recebe os leads do site (opcional)<input id="cxZap" inputmode="tel" placeholder="(42) 99999-9999" maxlength="20"></label>
+        <p class="muted fino">Nunca cole a chave <b>service_role</b>: ela é secreta e não deve ficar em nenhum site.</p>
+        <button class="btn primary big" type="submit">Testar e conectar</button>
+      </form>
+      <div id="cxOk" hidden>
+        <p class="auth-msg ok">Conectado! O banco respondeu e as tabelas estão prontas.</p>
+        <p class="muted">Este navegador já está ligado ao painel. Para o <b>formulário e a Bia do site</b> também gravarem os leads, baixe o <code>config.js</code> e envie para a pasta <code>assets/</code> na Hostinger, substituindo o antigo.</p>
+        <button class="btn big" type="button" id="btnBaixaCfg">Baixar config.js</button>
+        <button class="btn primary big" type="button" id="btnEntrarAgora">Entrar no painel</button>
+      </div>
+      <button class="btn link" type="button" id="btnDemo">Ver demonstração com dados fictícios</button>
+    </div>
+
+    <p class="auth-msg" id="authMsg" role="alert"></p>
+    <p class="auth-pe">Conexão protegida · login em 2 etapas · saída automática após 30 min parado</p>
+  </div>
+</main>
+
+<!-- ================= PAINEL ================= -->
+<div class="app" id="app" hidden>
+  <aside class="side" aria-label="Menu">
+    <div class="side-brand"><div><b class="mc-marca" aria-label="Mr. Connect"><span class="mr">Mr.</span><span class="cn">Connect</span></b><small>CRM · Sites personalizados</small></div></div>
+    <nav class="side-nav">
+      <span class="side-grupo">Operação</span>
+      <button type="button" data-aba="hoje"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H5z"/></svg><span>Hoje</span></button>
+      <button type="button" data-aba="leads"><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg><span>Leads</span><em id="cLeads"></em></button>
+      <button type="button" data-aba="orcamentos"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg><span>Orçamentos</span><em id="cOrc"></em></button>
+      <button type="button" data-aba="entregas"><svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg><span>Entregas</span><em id="cEntregas"></em></button>
+      <button type="button" data-aba="clientes"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11a3 3 0 0 0 0-6M21 20c0-2-1-4-3-4.5"/></svg><span>Clientes</span><em id="cClientes"></em></button>
+      <span class="side-grupo">Crescimento</span>
+      <button type="button" data-aba="resultados"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Plano de negócio e metas</span></button>
+      <span class="side-grupo">Biblioteca</span>
+      <button type="button" data-aba="materiais"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h7M8 11h5"/></svg><span>Materiais de venda</span></button>
+      <button type="button" data-aba="scripts"><svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><span>Scripts de venda</span></button>
+      <button type="button" data-aba="objecoes"><svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg><span>Objeções</span></button>
+      <button type="button" data-aba="ajuda"><svg viewBox="0 0 24 24"><path d="M12 6c-2-2-5-2-8-1v14c3-1 6-1 8 1 2-2 5-2 8-1V5c-3-1-6-1-8 1z"/><path d="M12 6v14"/></svg><span>Manual de operação</span></button>
+      <span class="side-grupo">Sistema</span>
+      <button type="button" data-aba="ajustes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Ajustes</span></button>
+    </nav>
+    <div class="side-pe">
+      <div class="quem"><span class="avatar" id="avatar">A</span><div><b id="quemNome">Administrador</b><small id="quemEmail"></small></div></div>
+      <div class="side-acoes">
+        <a class="btn ghost-escuro small" href="../" target="_blank" rel="noopener">Página de vendas ↗</a>
+        <button class="btn ghost-escuro small" type="button" id="btnTema">Tema</button>
+        <button class="btn ghost-escuro small" type="button" data-sair>Sair</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="faixa-demo" id="faixaDemo" hidden>Demonstração com dados fictícios: nada aqui é salvo.</div>
+    <div class="faixa-aviso" id="notice" role="alert" hidden></div>
+
+    <header class="topo">
+      <div><h1 id="titulo">Hoje</h1><p class="muted" id="subtitulo"></p></div>
+      <div class="topo-acoes">
+        <button class="btn busca-btn" type="button" id="btnPaleta"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Buscar ou agir</span><kbd>Ctrl K</kbd></button>
+        <button class="btn" type="button" id="btnOrcTop">+ Orçamento</button>
+        <button class="btn primary" type="button" id="btnNovo">+ Novo lead</button>
+      </div>
+    </header>
+
+    <!-- HOJE -->
+    <section class="panel" data-panel="hoje">
+      <div class="kpis">
+        <div class="kpi"><span class="lbl">Clientes ativos</span><span class="val" id="kAtivos">0</span><div class="meta-bar"><i id="kAtivosBar"></i></div><span class="sub" id="kAtivosSub"></span></div>
+        <div class="kpi"><span class="lbl">Receita mensal</span><span class="val" id="kMrr">R$ 0</span><div class="meta-bar"><i id="kMrrBar"></i></div><span class="sub" id="kMrrSub"></span></div>
+        <div class="kpi"><span class="lbl">Contatos hoje</span><span class="val" id="kHoje">0</span><div class="meta-bar"><i id="kHojeBar"></i></div><span class="sub" id="kHojeSub"></span></div>
+        <div class="kpi" id="kpiAtraso"><span class="lbl">Retornos atrasados</span><span class="val" id="kAtraso">0</span><span class="sub">leads com retorno vencido</span></div>
+        <div class="kpi"><span class="lbl">Orçamentos abertos</span><span class="val" id="kOrc">0</span><span class="sub" id="kOrcSub"></span></div>
+      </div>
+      <div class="grid-hoje">
+        <div class="box">
+          <div class="box-head"><h2>Retornos para hoje</h2><span class="chip" id="cRetornos">0</span></div>
+          <div class="list" id="listaRetornos"></div>
+        </div>
+        <div class="box">
+          <div class="box-head"><h2>Rotina do dia</h2><span class="anel" id="rotinaAnel" aria-hidden="true"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5"/><circle id="rotinaArco" cx="18" cy="18" r="15.5" pathLength="100" stroke-dasharray="0 100"/></svg><b id="rotinaPct">0%</b></span></div>
+          <div id="rotina"></div>
+          <p class="muted fino">A rotina zera todo dia e fica salva só neste navegador.</p>
+        </div>
+        <div class="box">
+          <div class="box-head"><h2>Cobranças, orçamentos e alertas</h2></div>
+          <div class="list" id="listaAlertas"></div>
+        </div>
+        <div class="box">
+          <div class="box-head"><h2>Funil deste mês</h2><button class="btn link small" type="button" data-ir="resultados">Ver resultados</button></div>
+          <div class="funil-mini" id="funilMini"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEADS -->
+    <section class="panel" data-panel="leads" hidden>
+      <div class="toolbar">
+        <input id="busca" type="search" placeholder="Buscar por nome, bairro ou WhatsApp" maxlength="80" aria-label="Buscar leads">
+        <select id="fTipoFiltro" aria-label="Filtrar por tipo"><option value="">Todos os tipos</option></select>
+        <select id="fOrigemFiltro" aria-label="Filtrar por origem"><option value="">Todas as origens</option></select>
+        <span class="grow"></span>
+        <div class="seg" role="group" aria-label="Visualização"><button type="button" data-modo="quadro" aria-pressed="true">Quadro</button><button type="button" data-modo="lista" aria-pressed="false">Lista</button></div>
+        <button class="btn small" type="button" id="btnPerdidos">Perdidos (0)</button>
+        <button class="btn small" type="button" id="btnCsvLeads">Exportar</button>
+      </div>
+      <div class="board" id="board"></div>
+      <div class="tablewrap" id="listaLeadsWrap" hidden><table class="data"><thead><tr><th>Estabelecimento</th><th>Etapa</th><th>Bairro</th><th>Próximo retorno</th><th>Origem</th><th>Entrou</th></tr></thead><tbody id="tbLeads"></tbody></table></div>
+      <div class="box" id="perdidosBox" hidden><div class="box-head"><h2>Perdidos</h2></div><div class="list" id="listaPerdidos"></div></div>
+    </section>
+
+    <!-- ORÇAMENTOS -->
+    <section class="panel" data-panel="orcamentos" hidden>
+      <div class="quote">
+        <form class="box" id="qForm" novalidate>
+          <div class="box-head"><h2 id="qTitulo">Novo orçamento</h2><button type="button" class="btn small" id="qLimpar">Limpar</button></div>
+          <div class="form">
+            <label class="full">Lead (opcional)<select id="qLead"><option value="">Digitar dados manualmente</option></select></label>
+            <label class="full">Estabelecimento<input id="qEst" maxlength="100" required></label>
+            <label>Responsável<input id="qResp" maxlength="80" placeholder="Nome do dono"></label>
+            <label>WhatsApp<input id="qWhats" maxlength="20" inputmode="tel"></label>
+            <label>Cidade / bairro<input id="qLocal" maxlength="80" placeholder="Ponta Grossa · Centro"></label>
+            <label>Plano<select id="qPlano"><option>Cardápio Digital</option><option selected>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option></select></label>
+            <div class="full"><span class="lbl-form">Itens da implantação</span><div class="items-ed" id="qItens"></div><button type="button" class="btn small" id="qAddItem">+ Adicionar item</button></div>
+            <label>Mensalidade (R$)<input id="qMens" inputmode="decimal" maxlength="10"></label>
+            <label>Desconto na implantação (%)<input id="qDesc" inputmode="numeric" maxlength="3" value="0"></label>
+            <label class="full inline"><input type="checkbox" id="qLanc"> Oferta de lançamento (50% na implantação, em troca de depoimento)</label>
+            <label>Validade (dias)<input id="qVal" inputmode="numeric" maxlength="3" value="7"></label>
+            <label>Prazo de entrega<input id="qPrazo" maxlength="120" value="5 dias úteis após o recebimento do material"></label>
+            <label class="full">Pagamento<input id="qPag" maxlength="160" value="50% no aceite e 50% na entrega · Pix ou cartão em até 3x"></label>
+            <label class="full">Observações<textarea id="qObs" maxlength="1000" placeholder="Algo combinado na visita"></textarea></label>
+          </div>
+          <div class="acoes-linha">
+            <button type="submit" class="btn primary" id="qSalvar">Salvar orçamento</button>
+            <button type="button" class="btn" id="qPdf">Baixar PDF</button>
+            <button type="button" class="btn zap" id="qZap">Enviar no WhatsApp</button>
+            <button type="button" class="btn link" id="qMsg">Copiar mensagem</button>
+          </div>
+          <p class="muted fino" id="qStatus">O PDF sai igual à folha ao lado.</p>
+        </form>
+        <div class="sheet-wrap" id="sheetWrap"><div class="sheet-scale" id="sheetScale"><div class="sheet" id="sheet"></div></div></div>
+      </div>
+      <div class="box">
+        <div class="box-head"><h2>Orçamentos enviados</h2><span class="muted" id="qResumo"></span></div>
+        <div class="tablewrap"><table class="data"><thead><tr><th>Nº</th><th>Estabelecimento</th><th>Plano</th><th>Implantação</th><th>Mensalidade</th><th>Validade</th><th>Status</th><th></th></tr></thead><tbody id="tbOrc"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- ENTREGAS -->
+    <section class="panel" data-panel="entregas" hidden>
+      <p class="muted">Roteiro padrão de 5 dias + acompanhamento no dia 15. Concluída a entrega, o cliente vira ativo e entra na receita mensal.</p>
+      <div class="deliv" id="entregas"></div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="panel" data-panel="clientes" hidden>
+      <div class="kpis" id="kpisClientes"></div>
+      <div class="toolbar"><span class="muted" id="resumoClientes"></span><span class="grow"></span><button class="btn small" type="button" id="btnCsvClientes">Exportar</button></div>
+      <div class="tablewrap"><table class="data">
+        <thead><tr><th>Cliente</th><th>Plano</th><th>Mensalidade</th><th>Vence dia</th><th>Pagamento</th><th>Último relatório</th><th></th></tr></thead>
+        <tbody id="tbClientes"></tbody></table></div>
+    </section>
+
+    <!-- RESULTADOS E PLANO -->
+    <section class="panel" data-panel="resultados" hidden>
+      <div class="plan-grid" id="planMetrics"></div>
+      <div class="grid2">
+        <div class="box"><div class="box-head"><h2>Funil do mês: real × meta</h2><span class="muted fino">registrado a partir das mudanças de etapa</span></div><div id="funilReal" class="funil-real"></div></div>
+        <div class="box"><div class="box-head"><h2>Receita recorrente</h2><span class="muted fino">clientes ativos por mês de ativação</span></div><div id="graficoMrr" class="grafico"></div></div>
+      </div>
+      <div class="box">
+        <div class="box-head"><h2>Plano de negócio · resumo</h2><a class="btn link small" href="https://claude.ai/code/artifact/1359ab99-430c-48d6-8ff9-c8713dba12dd" target="_blank" rel="noopener noreferrer">Abrir plano completo ↗</a></div>
+        <p id="planoResumo"></p>
+      </div>
+      <div class="tablewrap"><table class="data"><thead><tr><th>Plano</th><th>Implantação</th><th>Mensalidade</th><th>Prazo</th><th>Inclui</th></tr></thead><tbody id="tbPlanos"></tbody></table></div>
+      <h2 class="h-sec">Plano de 90 dias</h2>
+      <div class="steps90">
+        <div class="box"><span class="tag">Semana 1</span><b>Preparação</b><ul class="tight"><li>Conta separada para o negócio</li><li>Template do cardápio pronto</li><li>WhatsApp Business e Instagram</li><li>100 estabelecimentos listados</li><li>Contrato e orçamento modelo</li></ul></div>
+        <div class="box"><span class="tag">Dias 8 a 30</span><b>3 primeiros clientes</b><ul class="tight"><li>10 contatos por dia útil</li><li>Visitas no sábado</li><li>Oferta de lançamento (50%)</li><li>Colher depoimentos</li></ul></div>
+        <div class="box"><span class="tag">Dias 31 a 60</span><b>+5 clientes</b><ul class="tight"><li>Preço cheio</li><li>Usar os cases nas mensagens</li><li>Ativar indicação (1 mês grátis)</li></ul></div>
+        <div class="box"><span class="tag">Dias 61 a 90</span><b>+7 clientes</b><ul class="tight"><li>Primeiro relatório mensal</li><li>Upsells: fotos, Instagram, tráfego</li><li>Testar Meta Ads (R$ 300)</li></ul></div>
+      </div>
+      <div class="box"><div class="box-head"><h2>Rotina com o emprego</h2></div><table class="data compacta"><tbody>
+        <tr><td><b>Almoço (30 min)</b></td><td>10 mensagens de prospecção e respostas</td></tr>
+        <tr><td><b>Noite (1h30)</b></td><td>Demonstrações e entregas</td></tr>
+        <tr><td><b>Sábado manhã</b></td><td>5 a 10 visitas presenciais</td></tr>
+        <tr><td><b>Sábado tarde</b></td><td>Entregas, suporte e painel</td></tr>
+        <tr><td><b>Domingo</b></td><td>Descanso e família</td></tr></tbody></table></div>
+    </section>
+
+    <!-- SCRIPTS -->
+    <section class="panel" data-panel="scripts" hidden>
+      <div class="toolbar"><label class="inline-lbl">Preencher para<select id="scLead"><option value="">Nenhum lead (texto com campos)</option></select></label><input type="search" id="scBusca" placeholder="Buscar mensagem…" aria-label="Buscar mensagem" maxlength="60"></div>
+      <div class="bib-filtros" id="scCats" role="group" aria-label="Filtrar por etapa"></div>
+      <div class="deliv" id="scripts"></div>
+    </section>
+
+    <!-- MATERIAIS -->
+    <section class="panel" data-panel="materiais" hidden><div id="bibMateriais" class="bib-col"></div></section>
+
+    <!-- OBJEÇÕES -->
+    <section class="panel" data-panel="objecoes" hidden>
+      <div class="toolbar"><input type="search" id="objBusca" placeholder="Buscar objeção…" aria-label="Buscar objeção" maxlength="60"></div>
+      <p class="muted bib-dica">Valide ("faz sentido", "entendo"), responda com um fato ou um número e termine com uma pergunta que leva ao próximo passo.</p>
+      <div id="bibObjecoes"></div>
+    </section>
+
+    <!-- AJUDA -->
+    <section class="panel" data-panel="ajuda" hidden>
+      <div class="toolbar"><input type="search" id="hpBusca" placeholder="Buscar no manual…" aria-label="Buscar no manual" maxlength="60"><button type="button" class="btn small" id="hpAbrir">Abrir tudo</button></div>
+      <div id="hpLista">
+<h3 class="bib-grupo">Manual de operação</h3>
+<details class="hp" open><summary>1. Visão geral</summary><div class="hb"><p>A BistrôConnect vende presença digital para restaurantes: site com a marca da casa, cardápio digital, pedido direto no WhatsApp sem comissão, rastreio do pedido e painel de gestão. Este manual é o roteiro de quem vende, implanta e atende, do primeiro contato ao cliente rodando. Quem chega na equipe lê as seções 1 a 3 e depois a seção da sua função.</p>
+<h4>O que vendemos</h4>
+<div class="tablewrap"><table><thead><tr><th>Plano</th><th>Implantação</th><th>Mensalidade</th><th>Para quem</th><th>O que entra</th></tr></thead><tbody><tr><td>Cardápio Digital</td><td>R$ 997</td><td>a partir de R$ 149</td><td>Quem só precisa do cardápio, sem site</td><td>Cardápio interativo e pedido enviado ao WhatsApp</td></tr><tr><td>Site Gastronômico</td><td>R$ 1.497</td><td>R$ 149</td><td>Restaurante que quer site próprio</td><td>Modelo gastronômico com a identidade da casa, cardápio com pedido, domínio próprio com HTTPS, QR Code e link para as redes</td></tr><tr><td>Digital Experience</td><td>R$ 2.997</td><td>R$ 199</td><td>Quem quer canal próprio completo</td><td>Tudo do Site Gastronômico + painel de pedidos e rastreio, perfil no Google otimizado, 500 cartões de volta e display de balcão, campanha de lançamento, 30 dias de acompanhamento</td></tr><tr><td>Signature</td><td>sob orçamento</td><td>sob orçamento</td><td>Marcas que exigem exclusividade</td><td>Projeto criado do zero: direção criativa, design, navegação e integrações próprias</td></tr></tbody></table></div>
+<p>Valores de referência da página de vendas (bistroconnect.com.br/sites-personalizados). A mensalidade cobre hospedagem, uso do sistema e do painel, suporte no WhatsApp e ajustes de conteúdo e banners de datas comemorativas.</p>
+<p><b>Foco agora:</b> Site Gastronômico e Digital Experience, que têm o maior valor e geram caixa mais rápido. O Cardápio Digital avulso fica em segundo plano.</p>
+<h4>Como a tecnologia funciona, em uma frase</h4>
+<p>Cada cliente tem o próprio site no domínio dele, mas cardápio, pedidos, rastreio e painel rodam num <b>motor único</b>: um só banco de dados (Supabase) para todos os clientes, cada loja vendo apenas os próprios dados. O dono muda o cardápio no painel e o site mostra na hora; o pedido feito no site entra no painel e o cliente acompanha pelo link de rastreio.</p></div></details>
+<details class="hp"><summary>2. Papéis da equipe</summary><div class="hb"><p>Hoje o Adilson faz tudo. A ordem de contratação sugerida é: primeiro <b>Implantação</b> (libera o Adilson para vender), depois <b>Comercial</b>, depois <b>Suporte</b> quando houver mais de 20 clientes ativos.</p>
+<div class="tablewrap"><table><thead><tr><th>Função</th><th>Faz</th><th>Não faz</th><th>Perfil</th><th>Seções deste manual</th></tr></thead><tbody><tr><td>Gestão (Adilson)</td><td>Define preço e oferta, aprova propostas e contratos, cuida do dinheiro, das senhas mestras e do motor</td><td>Produção do dia a dia, depois que houver equipe</td><td>Dono</td><td>Todas</td></tr><tr><td>Comercial</td><td>Prospecta, atende leads no CRM, faz o diagnóstico, apresenta demonstrações, envia proposta e fecha</td><td>Promete prazo ou recurso que não está neste manual; dá desconto sem aprovação</td><td>Comunicação boa, conhece restaurante</td><td>1, 5, 6</td></tr><tr><td>Implantação</td><td>Recebe o briefing, monta o cardápio no painel, gera o site, publica, testa e treina o cliente</td><td>Mexe no código dos modelos ou no banco</td><td>Organizado, detalhista, básico de Hostinger</td><td>3, 6, 7, 8, 9, 10</td></tr><tr><td>Suporte</td><td>Atende os clientes no WhatsApp, faz ajustes de conteúdo e banners, resolve os problemas comuns</td><td>Alterações de código; fica com a senha de um cliente</td><td>Paciente, responde rápido</td><td>10, 11</td></tr><tr><td>Desenvolvimento (sob demanda)</td><td>Novos modelos, mudanças no motor e no painel, projetos Signature</td><td>Atendimento ao cliente</td><td>Freelancer ou parceiro técnico</td><td>4, 7 e o repositório</td></tr></tbody></table></div>
+<p><b>Regra de ouro para todos:</b> só prometa o que está construído. Se o cliente pedir algo que não está neste manual, anote e leve para a Gestão antes de responder.</p></div></details>
+<details class="hp"><summary>3. Ferramentas, acessos e segurança</summary><div class="hb"><p>Cada pessoa tem o próprio login em cada ferramenta. Nunca compartilhe senha nem use a conta de outra pessoa.</p>
+<div class="tablewrap"><table><thead><tr><th>Ferramenta</th><th>Para quê</th><th>Quem acessa</th></tr></thead><tbody><tr><td>CRM de sites (<code>/sites-personalizados/crm/</code>)</td><td>Leads, propostas, funil, scripts, objeções e materiais</td><td>Gestão, Comercial</td></tr><tr><td>Plataforma (<code>entrar.html</code>, <code>admin/</code>)</td><td>Criar a loja de cada cliente, convidar o dono, ver todas as lojas</td><td>Gestão, Implantação</td></tr><tr><td>Painel da loja (<code>/admin/</code> no site do cliente)</td><td>Cardápio, pedidos, bairros, pagamentos, cupons, mesas, equipe</td><td>Cliente; Implantação e Suporte quando convidados</td></tr><tr><td>Hostinger</td><td>Hospedagem e domínio dos sites</td><td>Gestão; Implantação com acesso de colaborador</td></tr><tr><td>Supabase</td><td>Banco do motor (todas as lojas)</td><td>Só Gestão e Desenvolvimento</td></tr><tr><td>GitHub (repositório Command-AI)</td><td>Código dos modelos, do motor e do gerador</td><td>Gestão, Desenvolvimento, Implantação (só para gerar)</td></tr><tr><td>WhatsApp Business da BistrôConnect</td><td>Comercial e suporte</td><td>Comercial, Suporte</td></tr></tbody></table></div>
+<h4>Regras de segurança</h4>
+<ol>
+<li>A <b>chave service_role</b> do Supabase nunca sai do painel do Supabase: não vai em site, arquivo, e-mail nem conversa. Nos sites só vai a chave <b>anon</b> (pública).</li>
+<li>Nunca sobrescreva o <code>assets/config.js</code> de um site que já está no ar sem antes baixar uma cópia dele.</li>
+<li>Senhas e tokens não são enviados por WhatsApp nem e-mail. O cliente cria a própria senha pelo convite do painel.</li>
+<li>Ative a verificação em duas etapas no Supabase, na Hostinger, no GitHub e no painel.</li>
+<li>Fotos de terceiros só aparecem em demonstração. No site do cliente, só fotos dele ou com licença.</li>
+<li>Depoimentos e números ("4,9 de nota", "35 min") só se forem reais e comprováveis. Senão, esconda o bloco.</li>
+<li>Quem sai da equipe perde todos os acessos no mesmo dia.</li>
+</ol></div></details>
+<details class="hp"><summary>4. Montar a base (uma vez só)</summary><div class="hb"><p>Antes do primeiro cliente, o motor precisa estar no ar. Responsável: Gestão, com apoio do Desenvolvimento. O detalhe técnico de cada passo está em <code>plataforma/LEIA-ME.md</code> no repositório.</p>
+<ol>
+<li><b>Supabase da plataforma.</b> Crie o projeto em supabase.com e rode, no SQL Editor, os arquivos de <code>plataforma/supabase/</code> em ordem numérica (01 a 14). Em Authentication, deixe a confirmação de e-mail ligada e configure a Site URL e as Redirect URLs com o endereço da plataforma.</li>
+<li><b>Hospedagem da plataforma.</b> Na Hostinger, crie o subdomínio <code>app.bistroconnect.com.br</code>, envie o conteúdo da pasta <code>plataforma/</code> (sem a pasta <code>supabase/</code>) e ative o SSL. Preencha <code>assets/config.js</code> com a URL e a chave anon.</li>
+<li><b>Sua conta de administrador.</b> Crie sua conta pelo <code>entrar.html</code> e torne-se administrador da plataforma com o comando SQL do LEIA-ME.</li>
+<li><b>Motor para o gerador.</b> No repositório, copie <code>clientes/motor.exemplo.json</code> para <code>clientes/motor.json</code> e preencha <code>supabaseUrl</code>, <code>supabaseKey</code> (anon) e <code>plataforma</code> (o endereço do app). Esse arquivo não vai para o Git.</li>
+<li><b>Teste do motor.</b> Gere e publique o pacote de teste ligado à loja "padaria" (<code>public_html/teste-motor/</code>) e faça um pedido de ponta a ponta: site, WhatsApp, painel, rastreio. Depois apague a pasta.</li>
+<li><b>CRM.</b> Rode <code>plataforma/supabase/03-crm.sql</code> (se ainda não rodou) e entre no CRM.</li>
+<li><b>WhatsApp integrado ao painel (quando houver CNPJ).</b> Siga <code>plataforma/supabase/functions/LEIA-ME-WHATSAPP.md</code>: app na Meta, as duas funções no Supabase e o webhook. Sem isso, o pedido continua chegando pelo WhatsApp comum, o que já funciona.</li>
+</ol>
+<p><b>Custo fixo:</b> um projeto Supabase para todos os clientes (gratuito no começo; plano pago quando crescer) + a hospedagem da Hostinger. Não há custo por cliente no banco.</p></div></details>
+<details class="hp"><summary>5. Venda: do contato ao contrato</summary><div class="hb"><p>Toda venda passa pelo CRM: lead sem registro é lead perdido. Responsável: Comercial. Os textos prontos estão na aba Scripts e as respostas às objeções na aba Objeções.</p>
+<ol>
+<li><b>Lead chega</b> pelo formulário da página de vendas, pelo WhatsApp ou por indicação. Registre no CRM no mesmo dia, com a origem.</li>
+<li><b>Primeiro contato em até 2 horas úteis.</b> Pergunte o tipo de casa, se já vende por aplicativo, quanto paga de comissão e o que mais incomoda hoje.</li>
+<li><b>Diagnóstico (15 a 20 minutos, vídeo ou presencial).</b> Entenda: cardápio, delivery ou retirada, bairros atendidos, volume de pedidos, identidade visual, domínio, redes. Use a calculadora da página para mostrar a comissão que ele paga hoje.</li>
+<li><b>Demonstração.</b> Abra a demonstração do tipo da casa (restaurante, hamburgueria, cafeteria ou pizzaria) e faça um pedido de teste junto com ele. Mostre o rastreio e o painel.</li>
+<li><b>Indique o plano.</b> Só cardápio → Cardápio Digital. Quer site → Site Gastronômico. Quer tirar pedidos do aplicativo e crescer o canal próprio → Digital Experience. Marca que exige exclusividade → Signature (passa para a Gestão orçar).</li>
+<li><b>Proposta por escrito</b> (gerada no CRM, aba Orçamentos), com plano, valores, prazo e condições. Validade de 7 dias.</li>
+<li><b>Aceite e pagamento da 1ª parte.</b> Só depois do aceite e do pagamento a implantação começa. Mova o lead para "Fechado" e passe para a Implantação com o briefing (seção 6).</li>
+</ol>
+<h4>Condições comerciais</h4>
+<ul>
+<li>Implantação: 50% no Pix no aceite e 50% na entrega, ou parcelada no cartão.</li>
+<li>Mensalidade: começa só depois que o site vai ao ar.</li>
+<li>Contrato mínimo de 6 meses de mensalidade; depois, cancelamento quando quiser.</li>
+<li>Prazo: até 7 dias úteis, contados a partir do recebimento de todos os materiais (logo, fotos, cardápio) e das aprovações.</li>
+<li>Os valores são de referência e podem ser atualizados. Desconto só com aprovação da Gestão.</li>
+</ul>
+<h4>O que não dizer</h4>
+<ul>
+<li>"Grátis" (não há nada grátis na oferta).</li>
+<li>Promessa de resultado de vendas ou de posição no Google.</li>
+<li>WhatsApp com robô e caixa de entrada no painel, enquanto essa parte não estiver ligada (depende do CNPJ e da aprovação da Meta).</li>
+<li>Prazo menor que 7 dias úteis ou recurso que não está neste manual.</li>
+</ul></div></details>
+<details class="hp"><summary>6. Briefing e materiais do cliente</summary><div class="hb"><p>O prazo de 7 dias úteis só começa quando tudo abaixo chegou. Envie esta lista ao cliente no dia do aceite (script "Pedido de materiais") e cobre o que faltar no 2º dia. Responsável: Implantação.</p>
+<h4>O que pedir</h4>
+<ul class="bib-tarefas">
+<li><label><input type="checkbox"> Nome da casa como deve aparecer, e o endereço curto desejado (vira o slug, ex.: <code>forno-do-ze</code>)</label></li>
+<li><label><input type="checkbox"> Logo em PNG com fundo transparente ou SVG</label></li>
+<li><label><input type="checkbox"> Cores da marca (se não tiver, usamos as do modelo)</label></li>
+<li><label><input type="checkbox"> Fotos: fachada ou salão, 3 a 5 pratos de destaque e foto de cada produto do cardápio</label></li>
+<li><label><input type="checkbox"> Cardápio em planilha: categoria, nome, descrição, preço, unidade, opcionais com preço de cada um</label></li>
+<li><label><input type="checkbox"> WhatsApp que recebe os pedidos</label></li>
+<li><label><input type="checkbox"> Endereço, horário de funcionamento e Instagram</label></li>
+<li><label><input type="checkbox"> Entrega: bairros atendidos e taxa de cada um (ou taxa única) e pedido mínimo</label></li>
+<li><label><input type="checkbox"> Retirada no balcão: sim ou não</label></li>
+<li><label><input type="checkbox"> Formas de pagamento aceitas</label></li>
+<li><label><input type="checkbox"> Domínio: se já tem, acesso ao painel do domínio; se não, o nome desejado</label></li>
+<li><label><input type="checkbox"> Textos: uma frase sobre a casa e o diferencial</label></li>
+<li><label><input type="checkbox"> Depoimentos reais com autorização (opcional)</label></li>
+<li><label><input type="checkbox"> E-mail do dono para o convite do painel</label></li>
+</ul>
+<h4>Como transformar em configuração</h4>
+<p>Copie <code>clientes/exemplo-briefing.json</code> para <code>clientes/&lt;slug&gt;.json</code> e preencha: nome, modelo, slug, WhatsApp, domínio, cores, logo, textos, fotos e contato. Campo vazio = texto ou foto do modelo. A lista de textos de cada modelo está em <code>clientes/LEIA-ME.md</code>. O cardápio, os bairros e os pagamentos vão no painel (seção 7).</p></div></details>
+<details class="hp"><summary>7. Produção do Site Gastronômico</summary><div class="hb"><p>Com os materiais em mãos, um site sai em 1 a 3 dias de trabalho, sem editar código. Responsável: Implantação.</p>
+<div class="tablewrap"><table><thead><tr><th>Dia útil</th><th>Etapa</th></tr></thead><tbody><tr><td>1</td><td>Loja criada no motor, cardápio cadastrado, site gerado</td></tr><tr><td>2</td><td>Prévia enviada ao cliente, ajustes</td></tr><tr><td>3 a 5</td><td>Domínio, publicação e teste de aceite</td></tr><tr><td>até 7</td><td>Treinamento e entrega formal</td></tr></tbody></table></div>
+<h4>Passo a passo</h4>
+<ol>
+<li><b>Escolha o modelo</b> pelo tipo da casa: <code>hamburgueria</code> (Bruto, pronto), <code>pizzaria</code> (Fornalha), <code>restaurante</code> (Âmbar) e <code>padaria</code> (Padaria e Café), estes três em adaptação.</li>
+<li><b>Crie a loja no motor.</b> Em <code>app.bistroconnect.com.br/entrar.html</code>, entre com a conta da BistrôConnect e crie a loja com o mesmo slug do briefing.</li>
+<li><b>Cadastre no painel da loja:</b> cardápio (categorias, produtos, fotos, opcionais), dados da loja, entrega (taxa única ou por bairro, pedido mínimo), retirada e formas de pagamento. Categorias com "Acompanhamentos", "Bebidas", "Porções" ou "Extras" no nome vão para a lista lateral; "Combos" vai para o bloco de combos; produtos em destaque vão para "Os mais pedidos".</li>
+<li><b>Preencha o JSON do cliente</b> (seção 6) e coloque as fotos de marca (logo, capa, fachada) numa pasta.</li>
+<li><b>Gere o site</b> no repositório: <code>python3 ferramentas/novo-cliente.py --dados clientes/forno-do-ze.json --fotos pasta-das-fotos</code>. Sai <code>entregas/forno-do-ze/site/</code> e <code>entregas/forno-do-ze.zip</code>, com o site, o rastreio (<code>/p/código</code>) e o painel em <code>/admin/</code>.</li>
+<li><b>Revise</b> abrindo o <code>index.html</code> gerado: nome, logo, cores, textos, fotos, cardápio. Confira no celular.</li>
+<li><b>Prévia ao cliente.</b> Publique numa pasta de prévia (gere com <code>--caminho /previa-forno/</code>) e mande o link. Anote os ajustes, corrija no JSON ou no painel e gere de novo.</li>
+</ol>
+<p><b>Nunca</b> edite o <code>index.html</code> de um cliente à mão: a próxima geração apaga a edição. Se precisar de algo que o JSON não permite, peça ao Desenvolvimento para incluir no modelo.</p></div></details>
+<details class="hp"><summary>8. Outros planos</summary><div class="hb"><h4>Digital Experience: o que entra além do site</h4>
+<ol>
+<li><b>Painel e rastreio para o dono.</b> Convide o dono no painel (Equipe › Convidar pessoa) e, se ele quiser, os funcionários. Ative os avisos de pedido novo no computador do balcão e o som.</li>
+<li><b>Perfil da empresa no Google.</b> Categoria certa, horários, endereço, telefone, 10 fotos ou mais, link do site e de pedido, produtos de destaque e resposta às avaliações.</li>
+<li><b>500 cartões de volta e display de balcão.</b> No painel, crie o cupom de volta e gere os cartões com QR. Envie o arquivo à gráfica e imprima o display de balcão com o QR do cardápio.</li>
+<li><b>Campanha de lançamento.</b> Posts e stories avisando que a casa tem site e pedido direto, adaptados à casa. O dono publica; nós preparamos.</li>
+<li><b>30 dias de acompanhamento.</b> Contato nos dias 1, 7, 15 e 30 (seção 10).</li>
+</ol>
+<h4>Cardápio Digital</h4>
+<p>Usa a plataforma, sem site próprio. Crie a loja em <code>entrar.html</code>, cadastre o cardápio no painel e entregue o link <code>app.bistroconnect.com.br/l/&lt;slug&gt;</code> e o QR para as mesas e o Instagram. Não usa o gerador.</p>
+<h4>Signature</h4>
+<p>Projeto criado do zero, orçado pela Gestão depois do diagnóstico, com prazo e valor individuais: imersão e estratégia; direção criativa e arquitetura; design e desenvolvimento; refinamento e publicação. Se tiver pedido, também usa o motor.</p></div></details>
+<details class="hp"><summary>9. Publicação, teste de aceite e entrega</summary><div class="hb"><p>O site só é entregue depois de passar em todos os itens abaixo, no celular e no computador. Responsável: Implantação.</p>
+<h4>Publicar</h4>
+<ol>
+<li>Na Hostinger, aponte o domínio e ative o SSL.</li>
+<li>Envie o conteúdo do zip para a <code>public_html</code>. Confira que o arquivo <code>.htaccess</code> subiu (ele é oculto).</li>
+<li>Confirme que o PHP está ativo no domínio: o link curto do rastreio depende dele.</li>
+</ol>
+<h4>Teste de aceite</h4>
+<ul class="bib-tarefas">
+<li><label><input type="checkbox"> O site abre com <code>https://</code> e cadeado, no celular e no computador</label></li>
+<li><label><input type="checkbox"> Nome, logo, cores e textos são os do cliente; nenhum texto do modelo sobrou</label></li>
+<li><label><input type="checkbox"> Cardápio, preços e fotos batem com o painel</label></li>
+<li><label><input type="checkbox"> Pedido de teste com entrega: bairro e taxa certos, opcionais pedidos, total certo</label></li>
+<li><label><input type="checkbox"> O WhatsApp abre com o resumo, o número do pedido e o link de acompanhamento</label></li>
+<li><label><input type="checkbox"> O pedido aparece no painel com aviso sonoro</label></li>
+<li><label><input type="checkbox"> Mudar o status no painel muda a página de acompanhamento</label></li>
+<li><label><input type="checkbox"> Pedido de teste com retirada e outra forma de pagamento</label></li>
+<li><label><input type="checkbox"> Mudar um preço no painel e ver o novo preço no site</label></li>
+<li><label><input type="checkbox"> Endereço, horário, Instagram e WhatsApp certos no rodapé</label></li>
+<li><label><input type="checkbox"> Pedidos de teste excluídos ou cancelados no painel</label></li>
+</ul>
+<h4>Entrega formal</h4>
+<p>Envie ao cliente o termo de entrega com: endereço do site, endereço do painel, o que foi entregue (conforme o plano), data de início da mensalidade e o canal de suporte. Com o aceite, cobre a 2ª parte da implantação e mova o cliente para "Cliente ativo" no CRM.</p></div></details>
+<details class="hp"><summary>10. Treinamento e pós-venda</summary><div class="hb"><p>O cliente que aprende a usar o painel na primeira semana tende a ficar; por isso o treinamento e o dia 7 não são opcionais. Responsável: Implantação até o dia 7, depois Suporte.</p>
+<h4>Treinamento (30 a 40 minutos, no dia da entrega)</h4>
+<ol>
+<li>Entrar no painel pelo convite e criar a senha.</li>
+<li>Receber um pedido: aviso, aceitar, mudar status até entregue, imprimir a comanda.</li>
+<li>Pausar e reabrir os pedidos.</li>
+<li>Mudar preço, desativar um produto esgotado, incluir um produto com foto.</li>
+<li>Ver o financeiro do dia e a lista de clientes.</li>
+<li>Onde pedir ajuda: o WhatsApp de suporte da BistrôConnect.</li>
+</ol>
+<h4>Contatos de acompanhamento</h4>
+<div class="tablewrap"><table><thead><tr><th>Quando</th><th>O que fazer</th></tr></thead><tbody><tr><td>Dia 1</td><td>Confirmar que os primeiros pedidos chegaram e que a equipe sabe aceitar</td></tr><tr><td>Dia 7</td><td>Ver no painel quantos pedidos entraram; ajustar cardápio e fotos; tirar dúvidas</td></tr><tr><td>Dia 15 (Digital Experience)</td><td>Conferir cartões de volta e perfil no Google; sugerir posts</td></tr><tr><td>Dia 30</td><td>Conversa de resultado: pedidos pelo canal próprio e comissão evitada; pedir depoimento e indicação</td></tr><tr><td>Todo mês</td><td>Banner de data comemorativa e ajustes de conteúdo incluídos na mensalidade</td></tr></tbody></table></div></div></details>
+<details class="hp"><summary>11. Suporte: problemas comuns</summary><div class="hb"><p>Responda no WhatsApp em até 1 hora útil; pedido parado é prioridade máxima. Responsável: Suporte.</p>
+<div class="tablewrap"><table><thead><tr><th>O cliente diz</th><th>Causa mais provável</th><th>O que fazer</th></tr></thead><tbody><tr><td>"O site mostra o cardápio de exemplo"</td><td><code>assets/config.js</code> sem a URL, a chave ou o slug certo</td><td>Conferir os 3 valores; gerar de novo se preciso</td></tr><tr><td>"O pedido não chega no painel"</td><td>Pedidos pausados, loja suspensa ou internet</td><td>Ver em Dados da loja se aceita pedidos; ver a situação da loja no admin</td></tr><tr><td>"Não toca o aviso de pedido"</td><td>Som desligado ou aba fechada</td><td>Ligar o som e os avisos; manter o painel aberto no balcão</td></tr><tr><td>"O cliente diz que o preço mudou"</td><td>Preço alterado enquanto ele montava o pedido</td><td>Normal: o site avisa e mostra o total novo</td></tr><tr><td>"Pede para escolher o bairro"</td><td>Taxa por bairro ligada e bairro faltando</td><td>Incluir o bairro em Dados da loja</td></tr><tr><td>"O link de acompanhamento não abre"</td><td>PHP desligado ou <code>.htaccess</code> não subiu</td><td>Ativar o PHP e reenviar o <code>.htaccess</code></td></tr><tr><td>"Esqueci a senha"</td><td>—</td><td>"Esqueci a senha" na tela de entrada; nunca envie senha</td></tr><tr><td>"Quero mudar texto, foto ou cor"</td><td>Ajuste de conteúdo (incluso)</td><td>Mudar no JSON do cliente, gerar e publicar de novo</td></tr><tr><td>"O site sumiu ou dá erro"</td><td>Hospedagem, domínio ou SSL vencidos</td><td>Ver na Hostinger; avisar a Gestão</td></tr><tr><td>Nenhum site carrega cardápio</td><td>Supabase pausado ou fora do ar</td><td>Avisar a Gestão na hora; reativar o projeto</td></tr></tbody></table></div>
+<p>O que não for resolvido em 24 horas sobe para a Gestão, com print e o endereço do site.</p></div></details>
+<details class="hp"><summary>12. Rotinas, indicadores e o que falta</summary><div class="hb"><h4>Rotinas</h4>
+<div class="tablewrap"><table><thead><tr><th>Quando</th><th>O quê</th><th>Quem</th></tr></thead><tbody><tr><td>Todo dia</td><td>Responder leads novos e mensagens de suporte; conferir pedido parado</td><td>Comercial, Suporte</td></tr><tr><td>Toda segunda</td><td>Reunião de 30 min: funil do CRM, implantações e prazos, pendências</td><td>Todos</td></tr><tr><td>Todo mês</td><td>Cobrar mensalidades, banners de datas, indicadores, vencimentos de hospedagem e domínio</td><td>Gestão, Suporte</td></tr><tr><td>Antes de cada atualização do motor</td><td>Testar no pacote <code>teste-motor</code> antes de gerar os clientes de novo</td><td>Desenvolvimento</td></tr></tbody></table></div>
+<h4>Indicadores</h4>
+<ul>
+<li>Leads por semana e por origem</li>
+<li>Taxa de fechamento (propostas aceitas ÷ propostas enviadas)</li>
+<li>Tempo do aceite até o site no ar (meta: 7 dias úteis)</li>
+<li>Clientes ativos e receita mensal recorrente</li>
+<li>Cancelamentos no mês</li>
+<li>Pedidos por cliente no mês</li>
+</ul>
+<h4>Decisões em aberto</h4>
+<ul>
+<li>No Site Gastronômico, o dono recebe acesso ao painel ou a equipe mantém o cardápio por ele?</li>
+<li>O domínio e a hospedagem ficam no nome do cliente ou na conta da BistrôConnect?</li>
+<li>Modelo de contrato e de termo de aceite revisados por advogado.</li>
+<li>Qual oferta vale nos materiais antigos (Casa Cheia, Loja no Ar, garantia de 30 pedidos): manter ou aposentar?</li>
+</ul></div></details>
+<h3 class="bib-grupo">Playbook de vendas · resumo</h3>
+<details class="hp"><summary>P1. Quem abordar: pontuação do lead</summary><div class="hb"><p>Some os pontos antes de abordar. Fonte: Playbook de Vendas, capítulo 05.</p>
+<div class="tablewrap"><table><thead><tr><th>Critério</th><th>Como verificar</th><th>Pontos</th></tr></thead><tbody><tr><td>Vende por aplicativo de delivery</td><td>Aparece no app ou tem o link no Instagram</td><td>+3</td></tr><tr><td>Nota 4,6 ou mais no Google</td><td>Ficha do Maps</td><td>+2</td></tr><tr><td>200 avaliações ou mais</td><td>Ficha do Maps (sinal de movimento)</td><td>+2</td></tr><tr><td>Sem site próprio ou só com link de plataforma</td><td>Ficha do Maps e bio do Instagram</td><td>+2</td></tr><tr><td>Instagram ativo (postou nos últimos 7 dias)</td><td>Perfil</td><td>+1</td></tr><tr><td>Dono aparece e responde</td><td>Stories, comentários, visita</td><td>+1</td></tr><tr><td>É franquia de rede</td><td>Site corporativo</td><td>−5</td></tr></tbody></table></div>
+<ul>
+<li><b>8 a 11 pontos · lista A:</b> visita presencial + prévia completa do site. Candidato a Digital Experience.</li>
+<li><b>5 a 7 pontos · lista B:</b> WhatsApp com prévia do cardápio. Candidato a Site Gastronômico ou Cardápio Digital.</li>
+<li><b>Até 4 pontos · lista C:</b> mensagem curta oferecendo o plano de entrada, sem prévia.</li>
+</ul>
+<p>Regras: aborde só contatos publicados como comerciais, uma pessoa por vez, nunca lista de transmissão. Se a pessoa disser não, agradeça e pare. Fale fora do pico: padaria e café das 14h às 16h, hamburgueria e pizzaria das 15h às 17h.</p></div></details>
+<details class="hp"><summary>P2. O método Prévia Primeiro e a cadência de 7 toques</summary><div class="hb"><ol>
+<li><b>Pesquise (10 min):</b> nome do dono, prato mais elogiado nas avaliações e quanto a loja depende do app.</li>
+<li><b>Monte a prévia (15 a 30 min):</b> lista A, página inicial do site com o modelo do nicho, o logo e fotos do Instagram; lista B, cardápio com os 3 produtos principais da loja.</li>
+<li><b>Grave um vídeo de 60 segundos</b> rolando a prévia no celular e falando o nome da loja.</li>
+<li><b>Envie pelo canal certo:</b> visita para a lista A, WhatsApp comercial para a B, direct do Instagram quando não houver telefone publicado.</li>
+<li><b>Siga a cadência:</b></li>
+</ol>
+<div class="tablewrap"><table><thead><tr><th>Dia</th><th>Canal</th><th>O que fazer</th></tr></thead><tbody><tr><td>1</td><td>WhatsApp ou visita</td><td>Prévia + vídeo de 60 s + pergunta fácil de responder</td></tr><tr><td>2</td><td>Instagram</td><td>Curtir 2 posts e comentar algo verdadeiro sobre um prato</td></tr><tr><td>3</td><td>WhatsApp</td><td>A conta da comissão com números redondos</td></tr><tr><td>5</td><td>Áudio de 30 s</td><td>Roteiro do áudio + "posso te mostrar em 10 minutos?"</td></tr><tr><td>7</td><td>Visita ou ligação</td><td>Passar no balcão com a prévia aberta no celular</td></tr><tr><td>10</td><td>WhatsApp</td><td>Prova social: print do site de outro cliente ou de um pedido recebido</td></tr><tr><td>14</td><td>WhatsApp</td><td>Encerramento elegante. Volta para a lista daqui a 60 dias</td></tr></tbody></table></div></div></details>
+<details class="hp"><summary>P3. A reunião que fecha (15 minutos)</summary><div class="hb"><div class="tablewrap"><table><thead><tr><th>Minuto</th><th>Etapa</th><th>O que dizer ou fazer</th></tr></thead><tbody><tr><td>0 a 2</td><td>Abertura</td><td>"Combinado de 15 minutos. Eu te mostro uma ideia, você me diz se faz sentido. Se não fizer, tudo bem dizer não."</td></tr><tr><td>2 a 5</td><td>Situação e problema</td><td>"Quantos pedidos por dia? Quantos pelo app? Qual o percentual? O que mais te irrita no app hoje?"</td></tr><tr><td>5 a 7</td><td>Implicação</td><td>Faça a conta anual na frente dele: "Se nada mudar, em 12 meses são R$ [X]. O que você faria com esse dinheiro?"</td></tr><tr><td>7 a 11</td><td>A solução com a cara dele</td><td>Abra a prévia do site e o cardápio com os produtos dele; ele faz um pedido de teste no próprio celular e ouve o alerta no painel</td></tr><tr><td>11 a 13</td><td>A oferta</td><td>As opções da maior para a menor, com o que entra em cada uma</td></tr><tr><td>13 a 15</td><td>Fechamento</td><td>"Pelo que você me contou, este plano resolve. Prefere começar esta semana ou na próxima?"</td></tr></tbody></table></div>
+<p>Depois de dizer o preço, <b>pare de falar</b>. Leve o contrato pronto e a chave Pix: "vou pensar" cresce quando a proposta vai por e-mail. Se ele precisar do sócio, marque a segunda reunião com o sócio antes de sair.</p></div></details>
+<details class="hp"><summary>P4. Rotina do dia e placar</summary><div class="hb"><div class="tablewrap"><table><thead><tr><th>Horário</th><th>Bloco</th></tr></thead><tbody><tr><td>8h às 10h</td><td>Prospecção: 20 abordagens com prévia, sem interrupção</td></tr><tr><td>10h às 11h30</td><td>Produção das prévias do dia seguinte</td></tr><tr><td>11h30 às 14h</td><td>Entregas e implantação (o cliente está no pico, não aborde)</td></tr><tr><td>14h às 17h</td><td>Visitas e demonstrações (horário calmo dos restaurantes)</td></tr><tr><td>17h às 18h</td><td>Follow-ups do dia, atualizar o CRM e planejar amanhã</td></tr></tbody></table></div>
+<p>Placar diário:</p>
+<ul class="bib-tarefas">
+<li><label><input type="checkbox"> 20 abordagens com prévia</label></li>
+<li><label><input type="checkbox"> 10 follow-ups da cadência</label></li>
+<li><label><input type="checkbox"> 3 visitas presenciais</label></li>
+<li><label><input type="checkbox"> 2 demonstrações realizadas</label></li>
+<li><label><input type="checkbox"> 1 pedido de indicação</label></li>
+<li><label><input type="checkbox"> CRM atualizado</label></li>
+</ul></div></details>
+<details class="hp"><summary>P5. Métricas: o número que caiu diz o que consertar</summary><div class="hb"><div class="tablewrap"><table><thead><tr><th>Etapa</th><th>Meta</th><th>Se ficar abaixo, o problema é…</th><th>O que fazer</th></tr></thead><tbody><tr><td>Taxa de resposta</td><td>25%</td><td>Mensagem genérica, horário errado ou lead frio</td><td>Mais personalização (prato, nome), enviar das 14h às 17h, priorizar a lista A</td></tr><tr><td>Resposta → demonstração</td><td>50%</td><td>Você está explicando demais por mensagem</td><td>Responder curto e sempre propor dois horários</td></tr><tr><td>Demonstração → venda</td><td>30%</td><td>Dor não apareceu ou a oferta não ficou clara</td><td>Mais perguntas de implicação, conta anual, pedido de teste no celular dele</td></tr><tr><td>Proposta → pagamento</td><td>80%</td><td>Fechamento fora da reunião</td><td>Contrato e link de pagamento na própria reunião</td></tr></tbody></table></div>
+<p>As metas são de referência para venda consultiva local. Meça as suas na primeira semana e ajuste o volume. Nunca invente depoimento, número ou logotipo de cliente: enquanto não houver case, diga "estamos abrindo as primeiras vagas".</p></div></details>
+
+      </div>
+      <p class="muted" id="hpVazio" hidden>Nada encontrado para essa busca.</p>
+    </section>
+
+    <!-- AJUSTES -->
+    <section class="panel" data-panel="ajustes" hidden>
+      <div class="grid2">
+        <form class="box" id="cfgForm" novalidate>
+          <div class="box-head"><h2>Dados que aparecem no orçamento</h2></div>
+          <div class="form">
+            <label>Marca<input id="cMarca" maxlength="40" placeholder="Bistrô Connect"></label>
+            <label>Seu nome<input id="cNome" maxlength="60"></label>
+            <label>WhatsApp<input id="cWhats" maxlength="20"></label>
+            <label>E-mail<input id="cEmail" type="email" maxlength="120"></label>
+            <label>Cidade<input id="cCidade" maxlength="60"></label>
+            <label>Site<input id="cSite" maxlength="80" placeholder="ebistro.com.br"></label>
+            <label>Chave Pix<input id="cPix" maxlength="120"></label>
+            <label>Documento (opcional)<input id="cDoc" maxlength="30" placeholder="CPF ou CNPJ"></label>
+          </div>
+          <div class="box-head"><h2>Metas</h2></div>
+          <div class="form">
+            <label>Clientes ativos (90 dias)<input id="mClientes" inputmode="numeric" maxlength="4"></label>
+            <label>Receita mensal (R$)<input id="mMrr" inputmode="decimal" maxlength="10"></label>
+            <label>Contatos por dia útil<input id="mContatos" inputmode="numeric" maxlength="3"></label>
+            <label>Fechamentos por mês<input id="mFechados" inputmode="numeric" maxlength="3"></label>
+          </div>
+          <div class="acoes-linha"><button type="submit" class="btn primary">Salvar ajustes</button></div>
+        </form>
+        <div class="col-ajustes">
+          <form class="box" id="senhaForm" novalidate>
+            <div class="box-head"><h2>Segurança da conta</h2><span class="chip ok" id="chip2fa">2 etapas ativas</span></div>
+            <label>Nova senha<input id="nsSenha" type="password" autocomplete="new-password" minlength="12" maxlength="200"></label>
+            <label>Repita a nova senha<input id="nsSenha2" type="password" autocomplete="new-password" minlength="12" maxlength="200"></label>
+            <p class="muted fino">Mínimo de 12 caracteres. Use uma frase que só você saiba.</p>
+            <div class="acoes-linha"><button type="submit" class="btn">Trocar senha</button><button type="button" class="btn perigo" id="btnSairTudo">Sair de todos os aparelhos</button></div>
+          </form>
+          <div class="box">
+            <div class="box-head"><h2>Aparência</h2></div>
+            <div class="seg" role="group" aria-label="Tema"><button type="button" data-tema="auto">Automático</button><button type="button" data-tema="light">Claro</button><button type="button" data-tema="dark">Escuro</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ================= FICHA DO LEAD ================= -->
+<div class="veu" id="veu" hidden></div>
+<aside class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="mTitulo" hidden>
+  <form id="form" novalidate>
+    <header class="ficha-topo">
+      <div><h2 id="mTitulo">Novo lead</h2><p class="muted fino" id="mSub"></p></div>
+      <button type="button" class="x" id="mFechar" aria-label="Fechar">×</button>
+    </header>
+    <div class="ficha-acoes" id="fichaAcoes">
+      <a class="btn zap small" id="mZap" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <button type="button" class="btn small" id="mContato">Contato feito</button>
+      <button type="button" class="btn small" id="mOrc">Orçamento</button>
+    </div>
+    <div class="ficha-corpo">
+      <div class="form">
+        <label class="full">Nome do estabelecimento<input id="fNome" maxlength="100" required></label>
+        <label>Tipo<select id="fTipo"><option>Padaria</option><option>Cafeteria</option><option>Confeitaria</option><option>Restaurante</option><option>Hamburgueria</option><option>Pizzaria</option><option>Marmitaria</option><option>Outro</option></select></label>
+        <label>Bairro<input id="fBairro" maxlength="60"></label>
+        <label>Responsável<input id="fResp" maxlength="80"></label>
+        <label>WhatsApp<input id="fWhats" inputmode="tel" maxlength="20"></label>
+        <label>Instagram<input id="fInsta" maxlength="60" placeholder="@perfil"></label>
+        <label>Nota no Google<input id="fNota" inputmode="decimal" maxlength="4" placeholder="4,8"></label>
+        <label>Nº de avaliações<input id="fAval" inputmode="numeric" maxlength="6"></label>
+        <label>Etapa<select id="fStage"></select></label>
+        <label>Próximo retorno<input id="fProx" type="date"></label>
+        <label>Plano<select id="fPlano"><option value="">—</option><option>Cardápio Digital</option><option>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option></select></label>
+        <label>Implantação (R$)<input id="fImpl" inputmode="decimal" maxlength="10"></label>
+        <label>Mensalidade (R$)<input id="fMens" inputmode="decimal" maxlength="10"></label>
+        <label>Dia de vencimento<input id="fVenc" inputmode="numeric" maxlength="2" placeholder="10"></label>
+        <label class="full">Anotações<textarea id="fNotas" maxlength="4000" placeholder="Quem é o dono, objeções, o que combinaram"></textarea></label>
+      </div>
+      <div class="historico" id="mHistWrap"><span class="lbl-form">Histórico</span><ol id="mHist"></ol></div>
+    </div>
+    <footer class="ficha-pe">
+      <button type="button" class="btn perigo small" id="mExcluir" hidden>Excluir lead</button>
+      <span class="grow"></span>
+      <button type="button" class="btn" id="mCancelar">Cancelar</button>
+      <button type="submit" class="btn primary">Salvar</button>
+    </footer>
+  </form>
+</aside>
+
+<!-- ================= BUSCA RÁPIDA ================= -->
+<div class="paleta-fundo" id="paleta" hidden>
+  <div class="paleta" role="dialog" aria-modal="true" aria-label="Busca rápida">
+    <input id="paletaInput" placeholder="Buscar lead, orçamento ou ação…" autocomplete="off" maxlength="80" aria-label="Buscar">
+    <ul id="paletaLista" role="listbox"></ul>
+    <p class="paleta-pe"><kbd>↑</kbd><kbd>↓</kbd> navegar · <kbd>Enter</kbd> abrir · <kbd>Esc</kbd> fechar</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+# Coloque este arquivo DENTRO da pasta admin/ do painel (Acesso restrito).
+# Ele soma proteções às do .htaccess da raiz.
+
+<IfModule mod_headers.c>
+# Painel nunca aparece no Google e nunca fica guardado em cache
+Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+Header always set Referrer-Policy "no-referrer"
+<FilesMatch ".">
+  Header set Cache-Control "no-store, max-age=0"
+</FilesMatch>
+</IfModule>
+
+# Segunda fechadura (recomendado): senha do servidor antes da tela de login.
+# No hPanel da Hostinger: Avançado > Proteger diretórios com senha > pasta admin.
+# Isso cria a senha sem expor o arquivo .htpasswd.
+
+# Opcional, mais forte: só o seu IP abre o painel. Troque o número e tire o "#".
+# <IfModule mod_rewrite.c>
+# RewriteEngine On
+# RewriteCond %{REMOTE_ADDR} !^200\.100\.50\.25$
+# RewriteRule ^ - [F]
+# </IfModule>

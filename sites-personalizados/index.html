@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-YD2C4GQDhsC22aAsSn6/gUoiBZUcXb7MxC+R5qBcQlU=' 'sha256-ukq7HsQTkuICfm9trFN8ig0oa/gUqX2ktS1C5FTkxVQ=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-G8QiQW1mBLbHZNdYwrSMLOxxn1kE/cmaeMZgyTJeMtY=' 'sha256-ukq7HsQTkuICfm9trFN8ig0oa/gUqX2ktS1C5FTkxVQ=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BistrôConnect | Sites e experiências digitais para restaurantes</title>
 <meta name="description" content="Sua marca merece um site do seu tamanho. Projetos digitais exclusivos (Signature) e soluções gastronômicas com cardápio digital, pedidos pelo WhatsApp e painel administrativo, para restaurantes que não abrem mão da excelência.">
@@ -3201,7 +3201,7 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
   /* grava o lead no painel (Supabase). keepalive garante o envio mesmo abrindo o WhatsApp */
   function salvarLead(d){var B=window.BISTRO||{};if(!B.supabaseUrl||!B.supabaseKey)return;
     var hoje=new Date();hoje.setMinutes(hoje.getMinutes()-hoje.getTimezoneOffset());var dia=hoje.toISOString().slice(0,10);
-    var c=function(v,n){return String(v||'').slice(0,n)};var doc={nome:c(d.nome,100),responsavel:c(d.responsavel,80),tipo:c(d.tipo,40),whatsapp:c(d.whatsapp,20),plano:c(d.plano,40),origem:c(d.origem,120),stage:'lead',proximoContato:dia,criadoEm:dia,checklist:{},notas:'Pediu contato pelo site ('+c(d.origem,120)+').'};
+    var c=function(v,n){return String(v||'').slice(0,n)};var doc={nome:c(d.nome,100),responsavel:c(d.responsavel,80),tipo:c(d.tipo,40),whatsapp:c(d.whatsapp,20),plano:c(d.plano,40),origem:c(d.origem,120),linha:'sites',stage:'lead',proximoContato:dia,criadoEm:dia,checklist:{},notas:'Pediu contato pelo site ('+c(d.origem,120)+').'};
     try{fetch(B.supabaseUrl.replace(/\/$/,'')+'/rest/v1/leads',{method:'POST',keepalive:true,headers:{'apikey':B.supabaseKey,'Authorization':'Bearer '+B.supabaseKey,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({doc:doc})}).catch(function(){})}catch(e){}}
   /* ===== formulário de lead ===== */
   var formT0=Date.now(),ultimoEnvio=0;
