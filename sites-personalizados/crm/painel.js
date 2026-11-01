@@ -239,8 +239,8 @@ function renderResultados(ativos,mrr){
   const serie=meses.map(m=>ativos.filter(l=>String(l.ativoEm||l.fechadoEm||l.criadoEm||'0000').slice(0,7)<=m).reduce((s,l)=>s+num(l.mensalidade),0));
   const mx=Math.max(1,...serie);
   $('#graficoMrr').innerHTML=serie.map((v,i)=>{const d=new Date(meses[i]+'-15T12:00:00');return `<div class="gb"><b>${brl0(v)}</b><i style="height:${Math.max(2,v/mx*100)}%"></i><span>${esc(d.toLocaleDateString('pt-BR',{month:'short'}).replace('.',''))}</span></div>`}).join('');
-  $('#planoResumo').innerHTML=`O ${esc(cfg.marca||'Bistrô Connect')} vende cardápio digital com pedido direto no WhatsApp para padarias, cafés e restaurantes de Ponta Grossa, cobrando implantação + mensalidade, sem comissão por pedido. Meta: <b>${esc(+M.clientes||15)} clientes ativos</b> e cerca de <b>${esc(brl0(+M.mrr||3000))}/mês recorrentes</b> em 90 dias.`;
-  $('#tbPlanos').innerHTML=Object.entries(PLANOS).map(([k,p])=>`<tr><td><b>${k}</b></td><td>${brl0(p.impl)}</td><td>${brl0(p.mens)}/mês</td><td>${p.prazo}</td><td class="muted">${esc(p.itens.map(i=>i[0]).slice(0,4).join(' · '))}</td></tr>`).join('')}
+  $('#planoResumo').innerHTML=`A Mr. Connect, holding da ${esc(cfg.marca||'Bistrô Connect')}, vende presença digital para restaurantes: Site Gastronômico, Digital Experience, projetos Signature e Cardápio Digital, cobrando implantação + mensalidade, sem comissão por pedido. Meta: <b>${esc(+M.clientes||15)} clientes ativos</b> e cerca de <b>${esc(brl0(+M.mrr||3000))}/mês recorrentes</b> em 90 dias.`;
+  $('#tbPlanos').innerHTML=Object.entries(PLANOS).map(([k,p])=>`<tr><td><b>${k}</b></td><td>${p.impl?brl0(p.impl):'Sob orçamento'}</td><td>${p.mens?brl0(p.mens)+'/mês':'Sob orçamento'}</td><td>${p.prazo}</td><td class="muted">${esc(p.itens.map(i=>i[0]).slice(0,4).join(' · '))}</td></tr>`).join('')}
 
 /* ================= scripts ================= */
 function preencher(txt,l){l=l||{};const o=l.id?orcs.filter(x=>mesmo(x.leadId,l.id)).sort((a,b)=>String(b.numero).localeCompare(String(a.numero)))[0]:null;

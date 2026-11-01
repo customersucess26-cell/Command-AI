@@ -243,5 +243,32 @@ css = r"""
 """
 open(os.path.join(DEST, "painel.css"), "a", encoding="utf-8").write(css)
 
+
+# ---------------------------------------------------------------- plano de negócio da holding (sem a oferta antiga)
+p2 = os.path.join(DEST, "index.html")
+h = open(p2, encoding="utf-8").read()
+h = re.sub(r'<a class="btn link small" href="https://claude\.ai/code/artifact/[^"]*" target="_blank" rel="noopener noreferrer">Abrir plano completo ↗</a>',
+           '<button class="btn link small" type="button" data-aba="ajuda">Abrir o manual de operação</button>', h)
+a = h.index('      <h2 class="h-sec">Plano de 90 dias</h2>'); b = h.index('    </section>', a)
+h = h[:a] + """      <h2 class="h-sec">Plano dos primeiros 30 dias</h2>
+      <div class="steps90">
+        <div class="box"><span class="tag">Dias 1 a 3</span><b>Preparação</b><ul class="tight"><li>Contrato de 1 página e link de pagamento</li><li>Calculadora da comissão impressa e no celular</li><li>3 modelos de prévia prontos</li><li>100 leads pontuados no CRM</li></ul></div>
+        <div class="box"><span class="tag">Semana 1</span><b>Lista A presencial</b><ul class="tight"><li>Leads da lista A com prévia e visita</li><li>20 abordagens por dia útil</li><li>8 demonstrações</li></ul></div>
+        <div class="box"><span class="tag">Semana 2</span><b>Volume</b><ul class="tight"><li>Mais 100 leads</li><li>Cadência de 7 toques rodando</li><li>12 demonstrações</li><li>Primeiros sites em produção</li></ul></div>
+        <div class="box"><span class="tag">Semanas 3 e 4</span><b>Prova e indicação</b><ul class="tight"><li>Primeiros sites no ar e print dos pedidos diretos</li><li>Pedido de indicação a cada cliente</li><li>Cidades vizinhas por videochamada</li><li>Fechar o mês e medir as taxas do funil</li></ul></div>
+      </div>
+      <div class="box"><div class="box-head"><h2>Rotina de um dia de vendas</h2></div><table class="data compacta"><tbody>
+        <tr><td><b>8h às 10h</b></td><td>Prospecção: 20 abordagens com prévia, sem interrupção</td></tr>
+        <tr><td><b>10h às 11h30</b></td><td>Produção das prévias do dia seguinte</td></tr>
+        <tr><td><b>11h30 às 14h</b></td><td>Entregas e implantação (o restaurante está no pico, não aborde)</td></tr>
+        <tr><td><b>14h às 17h</b></td><td>Visitas e demonstrações</td></tr>
+        <tr><td><b>17h às 18h</b></td><td>Follow-ups, CRM atualizado e plano de amanhã</td></tr></tbody></table></div>
+""" + h[b:]
+open(p2, "w", encoding="utf-8").write(h)
+j = open(os.path.join(DEST, "painel.js"), encoding="utf-8").read()
+j = troca(j, "O ${esc(cfg.marca||'Bistrô Connect')} vende cardápio digital com pedido direto no WhatsApp para padarias, cafés e restaurantes de Ponta Grossa, cobrando implantação + mensalidade, sem comissão por pedido.",
+          "A Mr. Connect, holding da ${esc(cfg.marca||'Bistrô Connect')}, vende presença digital para restaurantes: Site Gastronômico, Digital Experience, projetos Signature e Cardápio Digital, cobrando implantação + mensalidade, sem comissão por pedido.")
+j = troca(j, "<td>${brl0(p.impl)}</td><td>${brl0(p.mens)}/mês</td>", "<td>${p.impl?brl0(p.impl):'Sob orçamento'}</td><td>${p.mens?brl0(p.mens)+'/mês':'Sob orçamento'}</td>")
+open(os.path.join(DEST, "painel.js"), "w", encoding="utf-8").write(j)
 subprocess.run(["python3", "ferramentas/csp.py", os.path.join(DEST, "index.html")], check=True)
 print("CRM Mr. Connect montado em", os.path.relpath(DEST, RAIZ))
