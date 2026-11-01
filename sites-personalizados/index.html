@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-PJUys8FE/asoz+VNRLW5Li3DMuBcaowFT1X6rUosL/4=' 'sha256-U+2U1T0q/cg1wFXdjpJBx7hP2mytJWjsKt1Qhjv+Efg=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-PJUys8FE/asoz+VNRLW5Li3DMuBcaowFT1X6rUosL/4=' 'sha256-SfZO2z54A+d31g6rNB9JBqnnMjkHmAdWs6ljIxQdxaI=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1483,6 +1483,21 @@ section.cream .eyebrow{color:var(--mint-deep)}
 .pf-chip.c3{top:470px}
 .models.pf .model[data-pos="0"] .phone{-webkit-box-reflect:below 4px linear-gradient(transparent 84%,rgba(255,255,255,.2))}
 @media (max-width:900px){#pfStage .models.pf{height:640px!important}.pf-podium{top:540px}}
+
+/* ===== versão calma: menos movimento, transições lentas e suaves ===== */
+.pf-dust{display:none!important}
+.pf-spot{animation:none!important;opacity:.8}
+.pf-podium i{animation:none!important}
+.pf-podium i:nth-child(2){opacity:.6;transform:translate(-50%,-50%) scale(1)}
+.pf-podium i:nth-child(3){display:none}
+.pf-word{transition:none!important;transform:translate(-50%,-50%)!important;-webkit-text-stroke-color:rgba(168,126,47,.14)}
+.pf-chip{animation:none!important;opacity:0;transform:translateY(8px);transition:opacity 1.2s ease,transform 1.2s ease}
+.pf-chip.show{opacity:1;transform:none}
+.models.pf .model{transition:transform 1.4s cubic-bezier(.22,.8,.24,1),opacity 1.4s ease,filter 1.4s ease!important}
+.tpls.cf .tpl-card{transition-duration:1.4s!important;transition-timing-function:cubic-bezier(.22,.8,.24,1)!important}
+.pc-card{transition:transform 1.4s cubic-bezier(.22,.8,.24,1),filter 1.4s,opacity 1.4s!important}
+.pc-hand{transition:left 1.6s cubic-bezier(.4,0,.2,1),top 1.6s cubic-bezier(.4,0,.2,1),opacity .5s!important}
+.pc-phone,.v-card,.notif,.pill-card,.stage-phone,.track-phone{animation-duration:12s!important}
 </style>
 </head>
 <body>
@@ -2313,7 +2328,7 @@ var OFERTA={mes:'novembro',vagas:5,restantes:2,fimBonus:'2026-11-30T23:59:00-03:
     var im=c.querySelector('.tc-browser img');document.getElementById('cfThumb').style.backgroundImage=im?'url("'+im.src+'")':'';
     [].forEach.call(dots.children,function(d,i){d.setAttribute('aria-current',i===at)})}
   function vai(i){at=(i+n)%n;draw();reinicia()}
-  function reinicia(){clearInterval(tm);tm=setInterval(function(){if(!document.hidden&&!box.matches(':hover'))vai(at+1)},7000)}
+  function reinicia(){clearInterval(tm);tm=setInterval(function(){if(!document.hidden&&!box.matches(':hover'))vai(at+1)},10000)}
   document.getElementById('cfPrev').onclick=function(){vai(at-1)};document.getElementById('cfNext').onclick=function(){vai(at+1)};
   dots.addEventListener('click',function(e){var b=e.target.closest('button');if(b)vai([].indexOf.call(dots.children,b))});
   cards.forEach(function(c,i){c.addEventListener('click',function(e){if(c.getAttribute('data-pos')!=='0'){e.preventDefault();vai(i)}},true)});
@@ -2326,7 +2341,7 @@ var OFERTA={mes:'novembro',vagas:5,restantes:2,fimBonus:'2026-11-30T23:59:00-03:
   dots.innerHTML=it.map(function(_,i){return '<button type="button" aria-label="Estilo '+(i+1)+'"></button>'}).join('');
   function pos(i){var d=((i-at)%n+n)%n;if(d>n/2)d-=n;return Math.abs(d)>2?'h':String(d)}
   function draw(){it.forEach(function(m,i){m.setAttribute('data-pos',pos(i))});var c=it[at];document.getElementById('pfName').textContent=c.querySelector(':scope>b').textContent;document.getElementById('pfDesc').textContent=c.querySelector(':scope>span').textContent;[].forEach.call(dots.children,function(d,i){d.setAttribute('aria-current',i===at)})}
-  function vai(i){at=(i+n)%n;draw();clearInterval(tm);tm=setInterval(function(){if(!document.hidden&&!box.matches(':hover'))vai(at+1)},12000)}
+  function vai(i){at=(i+n)%n;draw();clearInterval(tm);tm=setInterval(function(){if(!document.hidden&&!box.matches(':hover'))vai(at+1)},15000)}
   document.getElementById('pfPrev').onclick=function(){vai(at-1)};document.getElementById('pfNext').onclick=function(){vai(at+1)};
   dots.addEventListener('click',function(e){var b=e.target.closest('button');if(b)vai([].indexOf.call(dots.children,b))});
   it.forEach(function(m,i){m.addEventListener('click',function(e){if(m.getAttribute('data-pos')!=='0'){e.preventDefault();e.stopPropagation();vai(i)}},true)});
@@ -2354,11 +2369,11 @@ var OFERTA={mes:'novembro',vagas:5,restantes:2,fimBonus:'2026-11-30T23:59:00-03:
       [].forEach.call(dots.children,function(d,i){d.setAttribute('aria-current',i===at)})}
     function vai(i){at=((i%n)+n)%n;draw()}
     function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
-    async function rola(c){var sc=c.querySelector('.pc-scr'),im=c.querySelector('img');var max=im.offsetHeight-sc.offsetHeight;if(max<20)return sleep(2600);
-      im.style.transition='transform 4.5s cubic-bezier(.45,0,.25,1)';im.style.transform='translateY(-'+max+'px)';await sleep(5200);im.style.transform='translateY(0)';await sleep(4700)}
+    async function rola(c){var sc=c.querySelector('.pc-scr'),im=c.querySelector('img');var max=im.offsetHeight-sc.offsetHeight;if(max<20)return sleep(4500);
+      im.style.transition='transform 7s cubic-bezier(.45,0,.25,1)';im.style.transform='translateY(-'+max+'px)';await sleep(8500);im.style.transform='translateY(0)';await sleep(7500)}
     async function clica(){var c=cards[at],nx=cards[(at+1)%n],sr=stage.getBoundingClientRect(),r=c.querySelector('.pc-scr').getBoundingClientRect(),k=r.width/1440;
       hand.style.transition='none';hand.style.left=(r.left-sr.left+r.width*.55)+'px';hand.style.top=(r.top-sr.top+r.height*.6)+'px';void hand.offsetWidth;hand.style.transition='';hand.classList.add('on');await sleep(150);
-      hand.style.left=(r.left-sr.left+80*k)+'px';hand.style.top=(r.top-sr.top+(+nx.dataset.y)*k-4)+'px';await sleep(1200);hand.classList.remove('tap');void hand.offsetWidth;hand.classList.add('tap');await sleep(380);hand.classList.remove('on');vai(at+1);await sleep(900)}
+      hand.style.left=(r.left-sr.left+80*k)+'px';hand.style.top=(r.top-sr.top+(+nx.dataset.y)*k-4)+'px';await sleep(1800);hand.classList.remove('tap');void hand.offsetWidth;hand.classList.add('tap');await sleep(500);hand.classList.remove('on');vai(at+1);await sleep(1600)}
     async function loop(){while(true){if(!vis||hover||busy){await sleep(500);continue}busy=true;try{await rola(cards[at]);if(vis&&!hover)await clica()}catch(e){}busy=false}}
     document.getElementById('pcPrev').addEventListener('click',function(){vai(at-1)});document.getElementById('pcNext').addEventListener('click',function(){vai(at+1)});
     [].forEach.call(dots.children,function(d,i){d.addEventListener('click',function(){vai(i)})});
@@ -2379,6 +2394,9 @@ var OFERTA={mes:'novembro',vagas:5,restantes:2,fimBonus:'2026-11-30T23:59:00-03:
 
   /* palavra de fundo acompanha o mouse */
   (function(){var st=document.getElementById('pfStage');if(!st)return;var w=st.querySelector('.pf-word');st.addEventListener('mousemove',function(e){var r=st.getBoundingClientRect();w.style.setProperty('--px',((e.clientX-r.left)/r.width-.5)*-60+'px')});st.addEventListener('mouseleave',function(){w.style.setProperty('--px','0px')})})();
+
+  /* selos do cardápio: um por vez, devagar */
+  (function(){var c=[].slice.call(document.querySelectorAll('.pf-chip'));if(!c.length)return;var i=0;function tic(){c.forEach(function(x,k){x.classList.toggle('show',k===i)});i=(i+1)%c.length}tic();setInterval(function(){if(!document.hidden)tic()},5000)})();
 </script>
 </body>
 </html>
