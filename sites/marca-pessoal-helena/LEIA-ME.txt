@@ -1,0 +1,3 @@
+Modelo "Marca pessoal / consultoria" (Helena Duarte, pessoa fictícia).
+Base: site criado para Bianca Machado, com nome, contatos, logo, fotos e vídeo trocados.
+Fotos geradas por IA (Higgsfield): img/hd-hero.jpg, img/hd-sofa.jpg, img/hd-pe.jpg — pendente baixar (rede bloqueou cloudfront).
