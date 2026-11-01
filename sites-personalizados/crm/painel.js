@@ -12,6 +12,8 @@ const PLANOS={
   'Cardápio Digital':{impl:997,mens:149,prazo:'até 7 dias úteis',itens:[['Cardápio digital interativo com fotos, categorias e opcionais',1,697],['Pedido enviado pronto ao WhatsApp da casa',1,0],['QR Code para mesas e balcão + link para a bio',1,150],['Cadastro do cardápio pela nossa equipe',1,150]],incl:['Hospedagem e certificado de segurança','Ajustes de conteúdo e banners de datas comemorativas','Suporte pelo WhatsApp','Treinamento da equipe']},
   'Site Gastronômico':{impl:1497,mens:149,prazo:'até 7 dias úteis',itens:[['Site com a identidade da casa (modelo gastronômico)',1,897],['Cardápio com pedido no WhatsApp',1,300],['Domínio próprio com HTTPS',1,150],['QR Code e link para as redes',1,150]],incl:['Hospedagem e certificado de segurança','Ajustes de conteúdo e banners de datas comemorativas','Suporte pelo WhatsApp','Treinamento da equipe']},
   'Digital Experience':{impl:2997,mens:199,prazo:'até 7 dias úteis',itens:[['Site com a identidade da casa e cardápio com pedido',1,1497],['Painel de pedidos e rastreio do pedido',1,500],['Perfil da empresa no Google otimizado',1,300],['500 cartões de volta + display de balcão',1,250],['Campanha de lançamento (mensagens, post e stories)',1,250],['30 dias de acompanhamento',1,200]],incl:['Hospedagem e certificado de segurança','Ajustes de conteúdo e banners de datas comemorativas','Suporte pelo WhatsApp','Treinamento da equipe','Relatório de pedidos do canal próprio']},
+  'Página comercial':{impl:2000,mens:149,prazo:'até 6 dias úteis',itens:[['Página comercial premium — Design, texto de vendas, versão celular e integrações',1,1500],['Painel de leads — Funil, agenda, histórico e login seguro',1,500]],incl:['Hospedagem e verificação mensal','Até 2 ajustes de conteúdo por mês','Suporte pelo WhatsApp']},
+  'Site institucional':{impl:0,mens:0,prazo:'até 10 dias úteis',itens:[['Site institucional sob medida — Design, textos, versão celular e integrações',1,0]],incl:['Hospedagem e verificação mensal','Até 2 ajustes de conteúdo por mês','Suporte pelo WhatsApp']},
   'Signature':{impl:0,mens:0,prazo:'definido no diagnóstico',itens:[['Imersão e estratégia',1,0],['Direção criativa e arquitetura',1,0],['Design e desenvolvimento exclusivos',1,0],['Refinamento e publicação',1,0]],incl:['Valores definidos depois do diagnóstico','Hospedagem e suporte conforme o projeto']}
 };
 const PASSOS=[['kickoff','Kickoff: materiais recebidos (logo, cardápio, fotos, horários, bairros)'],['montagem','Montagem: template, identidade, produtos'],['revisao','Revisão: link de teste enviado e ajustes feitos'],['publicacao','Publicação: no ar, QR Codes e arte do Instagram'],['treinamento','Treinamento de 30 min com o dono'],['acompanhamento','Dia 15: pedidos conferidos e depoimento pedido']];
@@ -21,6 +23,7 @@ const SCRIPT_DA_ETAPA={lead:0,contatado:1,respondeu:1,demo:1,proposta:3,fechado:
 const FUNIL_META=[['contato','Contatos feitos',200],['respondeu','Responderam',60],['demo','Demonstrações',25],['proposta','Propostas',12],['fechado','Fechados',5]];
 const INATIVO_MS=30*60*1000;
 
+let qPrev='';
 let db=null, demo=false, leads=[], orcs=[], editId=null, delArm=false, qEdit=null, qItems=[], modo='quadro', abaAtual='hoje';
 let cfg={marca:'Bistrô Connect',nome:'Adilson',whats:'(42) 99900-6578',email:'',cidade:'Ponta Grossa · PR',site:'',pix:'',doc:'',metas:{clientes:15,mrr:3000,contatos:10,fechados:5}};
 
@@ -138,7 +141,7 @@ function mudarEtapa(id,st){const patch={stage:st};const x=L(id);if(!x||x.stage==
   salvar('leads',id,patch);toast(st==='fechado'?'Fechado! Ele está na aba Entregas':(x.nome||'Lead')+': '+stageName(st))}
 
 /* ================= navegação ================= */
-const TITULOS={hoje:'Hoje',leads:'Funil de leads',orcamentos:'Orçamentos',entregas:'Entregas em andamento',clientes:'Clientes e manutenção',resultados:'Plano de negócio e metas',scripts:'Scripts de venda',materiais:'Materiais de venda',objecoes:'Objeções e respostas',ajuda:'Manual de operação',ajustes:'Ajustes'};
+const TITULOS={hoje:'Hoje',leads:'Funil de leads',orcamentos:'Propostas',entregas:'Entregas em andamento',clientes:'Clientes e manutenção',resultados:'Plano de negócio e metas',scripts:'Scripts de venda',materiais:'Materiais de venda',objecoes:'Objeções e respostas',ajuda:'Manual de operação',ajustes:'Ajustes'};
 function abrirAba(t){if(!TITULOS[t])t='hoje';abaAtual=t;
   document.querySelectorAll('[data-aba]').forEach(b=>{if(b.dataset.aba===t)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   document.querySelectorAll('section.panel').forEach(p=>p.hidden=p.dataset.panel!==t);
@@ -267,43 +270,69 @@ function fillLeadSelects(){
   [['#qLead','Digitar dados manualmente'],['#scLead','Nenhum lead (texto com campos)']].forEach(([s,t])=>{const sel=$(s),cur=sel.value;sel.innerHTML=`<option value="">${t}</option>`+ops;sel.value=cur;if(sel.value!==cur)sel.value=''})}
 
 /* ================= orçamentos (folha A4 + PDF) ================= */
-function setPlano(p){const P=PLANOS[p];qItems=P.itens.map(i=>({d:i[0],q:i[1],v:i[2]}));$('#qMens').value=P.mens;drawItems();drawSheet()}
+function setPlano(p){const P=PLANOS[p];qItems=P.itens.map(i=>({d:i[0],q:i[1],v:i[2]}));$('#qMens').value=P.mens;$('#qPrazo').value=P.prazo?P.prazo+' após o recebimento dos materiais':$('#qPrazo').value;const M=(window.MC_PROPOSTA||{}),D=(M.planos||{})[p]||{};$('#qTit').value=D.titulo||'';$('#qIntro').value=D.intro||'';$('#qIncl').value=D.incluido||'';$('#qEtapas').value=D.etapas||'';$('#qGar').value=M.garantia||'';$('#qMarca').value=(M.marcaDoPlano||{})[p]||'bistro';$('#qCuidOpc').checked=((M.marcaDoPlano||{})[p]==='mc');drawItems();drawSheet()}
 function drawItems(){const w=$('#qItens');w.innerHTML='';qItems.forEach((it,i)=>{const r=document.createElement('div');r.className='it';
   r.innerHTML=`<input aria-label="Descrição do item ${i+1}" maxlength="140"><input aria-label="Quantidade" inputmode="numeric" maxlength="4"><input aria-label="Valor" inputmode="decimal" maxlength="10"><button type="button" aria-label="Remover item">×</button>`;
   const [d,q,v,b]=r.children;d.value=it.d;q.value=it.q;v.value=it.v;
   d.oninput=()=>{it.d=d.value;drawSheet()};q.oninput=()=>{it.q=num(q.value);drawSheet()};v.oninput=()=>{it.v=num(v.value);drawSheet()};b.onclick=()=>{qItems.splice(i,1);drawItems();drawSheet()};w.appendChild(r)})}
 function qData(){const sub=qItems.reduce((s,i)=>s+(i.q||0)*(i.v||0),0),lanc=$('#qLanc').checked,pct=lanc?50:Math.min(100,Math.max(0,num($('#qDesc').value))),desc=Math.round(sub*pct)/100,val=Math.min(90,Math.max(1,num($('#qVal').value)||7));
   const base=qEdit?O(qEdit):null,data=base?base.data:hoje(),d=new Date(data+'T12:00:00');d.setDate(d.getDate()+val);
-  return {numero:base?base.numero:nextNumero(),data,validoAte:iso(d),est:$('#qEst').value.trim(),resp:$('#qResp').value.trim(),whats:$('#qWhats').value.trim(),local:$('#qLocal').value.trim(),plano:$('#qPlano').value,itens:qItems.map(i=>({d:i.d,q:i.q,v:i.v})),subtotal:Math.round(sub*100)/100,descPct:pct,lanc,desconto:desc,totalImpl:Math.round((sub-desc)*100)/100,mens:num($('#qMens').value),validade:val,prazo:$('#qPrazo').value.trim(),pag:$('#qPag').value.trim(),obs:$('#qObs').value.trim(),leadId:$('#qLead').value||''}}
-function nextNumero(){const y=hoje().slice(0,4),ns=orcs.filter(o=>String(o.numero||'').startsWith('BT-'+y)).map(o=>parseInt(String(o.numero).split('-')[2])||0);return 'BT-'+y+'-'+String((ns.length?Math.max(...ns):0)+1).padStart(3,'0')}
-function drawSheet(){if(!$('#sheet'))return;const o=qData(),P=PLANOS[o.plano]||PLANOS['Site Gastronômico'],mk=esc(cfg.marca||'Bistrô Connect');
+  return {numero:base?base.numero:nextNumero(),data,validoAte:iso(d),est:$('#qEst').value.trim(),resp:$('#qResp').value.trim(),whats:$('#qWhats').value.trim(),local:$('#qLocal').value.trim(),plano:$('#qPlano').value,itens:qItems.map(i=>({d:i.d,q:i.q,v:i.v})),subtotal:Math.round(sub*100)/100,descPct:pct,lanc,desconto:desc,totalImpl:Math.round((sub-desc)*100)/100,mens:num($('#qMens').value),validade:val,prazo:$('#qPrazo').value.trim(),pag:$('#qPag').value.trim(),obs:$('#qObs').value.trim(),leadId:$('#qLead').value||'',titulo:$('#qTit').value.trim(),intro:$('#qIntro').value.trim(),incluido:$('#qIncl').value.trim(),etapas:$('#qEtapas').value.trim(),garantia:$('#qGar').value.trim(),parcelas:Math.min(12,Math.max(1,num($('#qParc').value)||3)),cuidadoOpc:$('#qCuidOpc').checked,previa:qPrev||'',marca:$('#qMarca').value||'bistro'}}
+function nextNumero(){const y=hoje().slice(0,4),ns=orcs.filter(o=>/^(MC|BT)-/.test(String(o.numero||''))&&String(o.numero).slice(3,7)===y).map(o=>parseInt(String(o.numero).split('-')[2])||0);return 'MC-'+y+'-'+String((ns.length?Math.max(...ns):0)+1).padStart(3,'0')}
+function mcLinhas(t){return String(t||'').split('\n').map(x=>x.trim()).filter(Boolean)}
+function drawSheet(){if(!$('#sheet'))return;const o=qData(),P=PLANOS[o.plano]||PLANOS['Site Gastronômico'],M=window.MC_PROPOSTA||{},mk=esc(cfg.marca||'Bistrô Connect');
+  const est=o.est||'sua casa',quem=o.resp||o.est||'Cliente',intro=esc((o.intro||'').replace(/\{est\}/g,est));
+  const MK=((M.marcas||{})[o.marca]||(M.marcas||{}).mc||{nome:'Mr. Connect',slogan:'A evolução digital da sua marca.'}),nomeMk=esc(MK.nome);
+  const wm=(s)=>MK.logo?`<div class="wm wm-img"><img src="${esc(MK.logo)}" alt="${nomeMk}" style="height:${Math.round(s*1.6)}px"></div>`:`<div class="wm" style="font-size:${s}px"><span class="mr">Mr.</span><span class="cn">Connect</span><small>${esc(MK.slogan)}</small></div>`;
+  const cols=mcLinhas(o.incluido).slice(0,3).map(l=>{const k=l.indexOf(':'),t=k>0?l.slice(0,k):'',it=(k>0?l.slice(k+1):l).split(';').map(x=>x.trim()).filter(Boolean);return `<div><h3>${esc(t)}</h3><ul>${it.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`}).join('');
+  const etapas=mcLinhas(o.etapas).slice(0,4).map(l=>{const p=l.split('|').map(x=>x.trim());return `<div><small>${esc(p[0]||'')}</small><b>${esc(p[1]||'')}</b><span>${esc(p[2]||'')}</span></div>`}).join('');
+  const itens=o.itens.map(i=>{const k=String(i.d||'').split(' — '),q=i.q||0;return `<tr><td><b>${esc(k[0])}</b>${k[1]?`<small>${esc(k.slice(1).join(' — '))}</small>`:''}</td><td class="n">${esc(q)}</td><td class="n">${i.v?brl(i.v):'incluso'}</td><td class="n">${i.v?brl(q*i.v):'—'}</td></tr>`}).join('');
+  const tot=o.totalImpl,par=o.parcelas||3,sob=!tot;
+  const previa=o.previa?`<div class="previa"><div class="tela"><div class="bar"><i></i><i></i><i></i></div><div class="shot"><img src="${esc(o.previa)}" alt=""></div></div></div>`:'';
+  const rod=`<div class="rod"><span><b>${nomeMk}</b> · ${esc(MK.slogan)}</span><span>WhatsApp ${esc(cfg.whats)}${cfg.site?' · '+esc(cfg.site):''}</span></div>`;
   $('#sheet').innerHTML=`
-  <div class="sh-head"><div class="sh-brand"><img class="sh-logo" src="img/logo-bistro-connect-clara.png" alt="${mk}"></div>
-  <div class="sh-num"><div class="k">Orçamento</div><div class="n">${esc(o.numero)}</div><div class="d">Emitido em ${fmtDataLonga(o.data)}<br>Válido até ${fmtDataLonga(o.validoAte)}</div></div></div>
-  <div class="sh-body">
-    <div class="sh-cols">
-      <div class="sh-box"><div class="sh-lbl">Para</div><b>${esc(o.est||'Nome do estabelecimento')}</b>${o.resp?esc(o.resp)+'<br>':''}${o.whats?'WhatsApp '+esc(o.whats)+'<br>':''}${esc(o.local)}</div>
-      <div class="sh-box"><div class="sh-lbl">De</div><b>${esc(cfg.nome||'Adilson')} · ${mk}</b>WhatsApp ${esc(cfg.whats)}<br>${cfg.email?esc(cfg.email)+'<br>':''}${esc(cfg.cidade)}${cfg.doc?'<br>'+esc(cfg.doc):''}</div>
+  <div class="pg">
+    <div class="capa${previa?'':' sem-img'}">
+      <div class="topo">${wm(30)}<div class="num"><b>${esc(o.numero)}</b><span>Emitida em ${fmtDataLonga(o.data)}</span><span>Válida até ${fmtDataLonga(o.validoAte)}</span></div></div>
+      <div class="capa-txt"><div class="para">Proposta para ${esc(quem)}</div><h1>${esc(o.titulo||'Proposta '+o.plano)}</h1><p>${intro}</p></div>
+      ${previa}
     </div>
-    <div class="sh-intro"><h1>Cardápio digital com pedido direto no WhatsApp · Plano ${esc(o.plano)}</h1><p>Seus clientes escolhem pelo celular e o pedido chega pronto no seu WhatsApp, com itens, total e endereço. Sem comissão por pedido. Abaixo está tudo o que entregamos e quanto custa.</p></div>
-    <table class="sh-t"><thead><tr><th>Item</th><th class="n">Qtd.</th><th class="n">Valor</th><th class="n">Total</th></tr></thead><tbody>
-      ${o.itens.map(i=>`<tr><td>${esc(i.d)}</td><td class="n">${esc(i.q||0)}</td><td class="n">${i.v?brl(i.v):'incluso'}</td><td class="n">${i.v?brl((i.q||0)*i.v):'—'}</td></tr>`).join('')}
-    </tbody></table>
-    <div class="sh-sum">
-      <div class="sh-incl"><div class="sh-lbl">Incluso na mensalidade</div><ul>${P.incl.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
-      <div class="sh-tot"><div><span>Subtotal da implantação</span><span>${brl(o.subtotal)}</span></div>${o.desconto?`<div class="disc"><span>${o.lanc?'Oferta de lançamento (50%)':'Desconto ('+esc(o.descPct)+'%)'}</span><span>− ${brl(o.desconto)}</span></div>`:''}<div class="big"><span>Implantação</span><b>${brl(o.totalImpl)}</b></div><div class="mens"><span>Mensalidade</span><b>${brl(o.mens)}/mês</b></div></div>
+    <div class="corpo">
+      <div class="quem">
+        <div><div class="lbl">Para</div><b>${esc(o.resp||o.est||'Nome do cliente')}</b>${o.resp&&o.est?`<span>${esc(o.est)}</span>`:''}${o.whats?`<span>WhatsApp ${esc(o.whats)}</span>`:''}${o.local?`<span>${esc(o.local)}</span>`:''}</div>
+        <div><div class="lbl">De</div><b>${esc(cfg.nome||'Adilson')} · ${nomeMk}</b><span>WhatsApp ${esc(cfg.whats)}</span>${cfg.email?`<span>${esc(cfg.email)}</span>`:''}<span>${esc(cfg.cidade||'')}</span>${cfg.doc?`<span>${esc(cfg.doc)}</span>`:''}</div>
+      </div>
+      <div class="tit"><h2>O que está incluído</h2></div>
+      <div class="incl">${cols}</div>
     </div>
-    <div><div class="sh-lbl">Como funciona a entrega · ${esc(o.prazo)}</div><div class="sh-steps"><div><b>1 · MATERIAL</b>Você envia logo, cardápio, fotos e horários</div><div><b>2 · MONTAGEM</b>O ${mk} monta o cardápio</div><div><b>3 · REVISÃO</b>Você testa e pede ajustes</div><div><b>4 · NO AR</b>QR Codes, arte e treinamento</div></div></div>
-    <div class="sh-cond"><div class="sh-lbl">Condições</div><p><b>Pagamento:</b> ${esc(o.pag)}${cfg.pix?' · Chave Pix: '+esc(cfg.pix):''}</p><p><b>Mensalidade:</b> a partir do mês seguinte à publicação, com contrato mínimo de 6 meses.</p>${o.lanc?'<p><b>Oferta de lançamento:</b> desconto em troca de um depoimento em vídeo após 30 dias de uso.</p>':''}${o.obs?`<p><b>Observações:</b> ${esc(o.obs)}</p>`:''}</div>
-    <div class="sh-sign"><div>${esc(cfg.nome||'Adilson')} · ${mk}</div><div>Aceite do cliente · data</div></div>
+    ${rod}
   </div>
-  <div class="sh-foot"><span><b>${mk}</b> · A evolução digital da sua gastronomia</span><span>WhatsApp ${esc(cfg.whats)}${cfg.site?' · '+esc(cfg.site):''}${cfg.email?' · '+esc(cfg.email):''}</span></div>`;
+  <div class="pg">
+    <div class="faixa">${wm(22)}<div class="ref">Proposta<b>${esc(o.numero)}</b></div></div>
+    <div class="corpo">
+      <div class="tit" style="margin-top:6px"><h2>Investimento</h2></div>
+      <table class="itens"><thead><tr><th>Item</th><th class="n">Qtd.</th><th class="n">Valor</th><th class="n">Total</th></tr></thead><tbody>${itens}${o.desconto?`<tr class="desc"><td><b style="color:#2F7A55">Desconto (${esc(o.descPct)}%)</b></td><td></td><td></td><td class="n">− ${brl(o.desconto)}</td></tr>`:''}</tbody></table>
+      <div class="inv">
+        <div>
+          ${o.mens?`<div class="cuidado"><div class="cab"><b>${esc(M.cuidado||'Plano de cuidado')}${o.cuidadoOpc?' (opcional)':''}</b><strong>${brl(o.mens)}/mês</strong></div><ul>${P.incl.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="obs">${o.cuidadoOpc?'A mensalidade é opcional e começa no mês seguinte à publicação.':'Começa quando o projeto vai ao ar, com contrato mínimo de 6 meses.'}</div></div>`:''}
+          <div class="pag"><p><b>Pagamento:</b> ${esc(o.pag)}${cfg.pix?' · Chave Pix: '+esc(cfg.pix):''}</p><p class="m"><b>Prazo:</b> ${esc(o.prazo)}.</p>${o.obs?`<p class="m">${esc(o.obs)}</p>`:''}</div>
+        </div>
+        <div class="total"><div class="k">Investimento total</div><div class="v">${sob?'Sob orçamento':brl(tot)}</div>${sob?'':`<div class="l"><span>À vista no Pix</span><b>${brl(tot)}</b></div><div class="l"><span>Em duas partes</span><b>2 × ${brl(tot/2)}</b></div><div class="l"><span>No cartão</span><b>${par} × ${brl(tot/par)}</b></div>`}</div>
+      </div>
+      <div class="tit"><h2>Como acontece</h2></div>
+      <div class="etapas">${etapas}</div>
+      ${o.garantia?`<div class="garantia"><i>✓</i><div><b>Garantia de entrega</b><span>${esc(o.garantia)}</span></div></div>`:''}
+      <div class="assin"><div>${esc(cfg.nome||'Adilson')} · ${nomeMk}</div><div>${esc(o.resp||o.est||'Cliente')} · aceite e data</div></div>
+    </div>
+    ${rod}
+  </div>`;
   fitSheet()}
 function fitSheet(){const w=$('#sheetWrap'),s=$('#sheetScale');if(!w||w.offsetParent===null)return;const k=Math.min(1,(w.clientWidth-32)/794);s.style.transform='scale('+k+')';s.style.width='794px';s.style.height=($('#sheet').offsetHeight*k)+'px'}
 addEventListener('resize',fitSheet);
 function loadLead(id){const l=L(id);if(!l)return;$('#qEst').value=l.nome||'';$('#qResp').value=l.responsavel||'';$('#qWhats').value=l.whatsapp||'';$('#qLocal').value=['Ponta Grossa',l.bairro].filter(Boolean).join(' · ');if(l.plano&&PLANOS[l.plano]){$('#qPlano').value=l.plano;setPlano(l.plano)}else drawSheet()}
-function novoOrc(leadId){qEdit=null;$('#qForm').reset();$('#qTitulo').textContent='Novo orçamento';$('#qLead').value=leadId||'';$('#qPlano').value='Site Gastronômico';setPlano('Site Gastronômico');if(leadId)loadLead(leadId);abrirAba('orcamentos')}
-function abrirOrc(id){const o=O(id);if(!o)return;qEdit=o.id;$('#qTitulo').textContent='Orçamento '+o.numero;$('#qLead').value=o.leadId||'';$('#qEst').value=o.est||'';$('#qResp').value=o.resp||'';$('#qWhats').value=o.whats||'';$('#qLocal').value=o.local||'';$('#qPlano').value=o.plano||'Site Gastronômico';qItems=(o.itens||[]).map(i=>Object.assign({},i));$('#qMens').value=o.mens;$('#qDesc').value=o.lanc?0:o.descPct;$('#qLanc').checked=!!o.lanc;$('#qVal').value=o.validade||7;$('#qPrazo').value=o.prazo||'';$('#qPag').value=o.pag||'';$('#qObs').value=o.obs||'';drawItems();drawSheet();abrirAba('orcamentos')}
+function mcPrev(u){qPrev=u||'';const im=$('#qPrevImg');im.hidden=!qPrev;if(qPrev)im.src=qPrev;$('#qPrevTirar').hidden=!qPrev;$('#qPrevArq').value=''}
+function novoOrc(leadId){qEdit=null;$('#qForm').reset();mcPrev('');$('#qTitulo').textContent='Nova proposta';$('#qLead').value=leadId||'';$('#qPlano').value='Site Gastronômico';setPlano('Site Gastronômico');if(leadId)loadLead(leadId);abrirAba('orcamentos')}
+function abrirOrc(id){const o=O(id);if(!o)return;qEdit=o.id;$('#qTitulo').textContent='Proposta '+o.numero;$('#qLead').value=o.leadId||'';$('#qEst').value=o.est||'';$('#qResp').value=o.resp||'';$('#qWhats').value=o.whats||'';$('#qLocal').value=o.local||'';$('#qPlano').value=o.plano||'Site Gastronômico';qItems=(o.itens||[]).map(i=>Object.assign({},i));$('#qMens').value=o.mens;$('#qDesc').value=o.lanc?0:o.descPct;$('#qLanc').checked=!!o.lanc;$('#qVal').value=o.validade||7;$('#qPrazo').value=o.prazo||'';$('#qPag').value=o.pag||'';$('#qObs').value=o.obs||'';const D=((window.MC_PROPOSTA||{}).planos||{})[o.plano]||{};$('#qTit').value=o.titulo||D.titulo||'';$('#qIntro').value=o.intro||D.intro||'';$('#qIncl').value=o.incluido||D.incluido||'';$('#qEtapas').value=o.etapas||D.etapas||'';$('#qGar').value=o.garantia!=null?o.garantia:((window.MC_PROPOSTA||{}).garantia||'');$('#qParc').value=o.parcelas||3;$('#qCuidOpc').checked=!!o.cuidadoOpc;$('#qMarca').value=o.marca||(((window.MC_PROPOSTA||{}).marcaDoPlano||{})[o.plano])||'bistro';mcPrev(o.previa||'');drawItems();drawSheet();abrirAba('orcamentos')}
 async function salvarOrc(){const o=qData();if(!o.est){toast('Preencha o nome do estabelecimento');$('#qEst').focus();return null}
   if(qEdit){await salvar('orcamentos',qEdit,o);toast('Orçamento atualizado');return qEdit}
   o.status='enviado';o.criadoEm=hoje();const id=await salvar('orcamentos',null,o);
@@ -315,14 +344,15 @@ async function gerarPdf(){const st=$('#qStatus');
   const id=await salvarOrc();if(!id)return;
   st.textContent='Gerando PDF...';const btn=$('#qPdf');btn.disabled=true;
   try{const s=$('#sheetScale'),prev=s.style.transform;s.style.transform='none';
+    const pgs=[...document.querySelectorAll('#sheet .pg')];if(pgs.length){const {jsPDF}=window.jspdf,pdf=new jsPDF({unit:'mm',format:'a4'});for(let i=0;i<pgs.length;i++){const c=await html2canvas(pgs[i],{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});if(i)pdf.addPage();pdf.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',0,0,210,297)}s.style.transform=prev;const o=qData(),nome=('Proposta '+o.numero+' - '+(o.resp||o.est||'cliente')).replace(/[\\/:*?"<>|]/g,'')+'.pdf';pdf.save(nome);st.textContent='PDF baixado: '+nome;fitSheet();btn.disabled=false;return}
     const canvas=await html2canvas($('#sheet'),{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});s.style.transform=prev;
     const {jsPDF}=window.jspdf,pdf=new jsPDF({unit:'mm',format:'a4'}),W=210,H=canvas.height*W/canvas.width,img=canvas.toDataURL('image/jpeg',0.92);
     if(H<=297.5)pdf.addImage(img,'JPEG',0,0,W,H);else if(H<=345){const k=297/H;pdf.addImage(img,'JPEG',(W-W*k)/2,0,W*k,297)}else{let y=0;while(y<H){pdf.addImage(img,'JPEG',0,-y,W,H);y+=297;if(y<H)pdf.addPage()}}
-    const o=qData(),nome=('Orcamento '+o.numero+' - '+(o.est||'cliente')).replace(/[\\/:*?"<>|]/g,'')+'.pdf';
+    const o=qData(),nome=('Proposta '+o.numero+' - '+(o.resp||o.est||'cliente')).replace(/[\\/:*?"<>|]/g,'')+'.pdf';
     pdf.save(nome);st.textContent='PDF baixado: '+nome;fitSheet()}
   catch(e){console.error(e);st.textContent='Não foi possível gerar o PDF.';fitSheet()}
   btn.disabled=false}
-function msgEnvio(){const o=qData();return `Olá${o.resp?', '+primeiroNome(o.resp):''}! Segue o orçamento ${o.numero} do cardápio digital da ${o.est||'sua casa'} (plano ${o.plano}).\n\nImplantação: ${brl(o.totalImpl)}\nMensalidade: ${brl(o.mens)}/mês\nPrazo: ${o.prazo}\nVálido até ${fmtDataLonga(o.validoAte)}.\n\nQualquer dúvida, me chama aqui! ${cfg.nome||'Adilson'} · ${cfg.marca||'Bistrô Connect'}`}
+function msgEnvio(){const o=qData();return `Olá${o.resp?', '+primeiroNome(o.resp):''}! Segue a proposta ${o.numero} do projeto da ${o.est||'sua casa'} (${o.plano}).\n\nImplantação: ${brl(o.totalImpl)}\nMensalidade: ${brl(o.mens)}/mês\nPrazo: ${o.prazo}\nVálido até ${fmtDataLonga(o.validoAte)}.\n\nQualquer dúvida, me chama aqui! ${cfg.nome||'Adilson'} · '+((o.marca==='mc')?'Mr. Connect':'Bistrô Connect')+'`}
 function renderOrcList(){const t=hoje(),ord=orcs.slice().sort((a,b)=>String(b.numero||'').localeCompare(String(a.numero||'')));
   const acc=orcs.filter(o=>o.status==='aceito').length;$('#qResumo').textContent=`${orcs.length} orçamentos · ${acc} aceitos`;
   $('#tbOrc').innerHTML=ord.length?ord.map(o=>{const venc=o.status==='enviado'&&o.validoAte<t,cls={enviado:venc?'bad':'info',aceito:'ok',recusado:''}[o.status]||'',lbl=o.status==='enviado'?(venc?'Vencido':'Enviado'):o.status==='aceito'?'Aceito':'Recusado';
@@ -365,7 +395,11 @@ $('#board').addEventListener('drop',e=>{const col=e.target.closest('.col');if(!c
 document.querySelectorAll('[data-modo]').forEach(b=>b.addEventListener('click',()=>{modo=b.dataset.modo;lsSet('eb-modo',modo);document.querySelectorAll('[data-modo]').forEach(x=>x.setAttribute('aria-pressed',x===b));render()}));
 $('#btnPerdidos').addEventListener('click',()=>{$('#perdidosBox').hidden=!$('#perdidosBox').hidden});
 $('#btnOrcTop').addEventListener('click',()=>novoOrc());
-['qEst','qResp','qWhats','qLocal','qMens','qDesc','qVal','qPrazo','qPag','qObs'].forEach(id=>$('#'+id).addEventListener('input',drawSheet));
+['qEst','qResp','qWhats','qLocal','qMens','qDesc','qVal','qPrazo','qPag','qObs','qTit','qIntro','qIncl','qEtapas','qGar','qParc'].forEach(id=>$('#'+id).addEventListener('input',drawSheet));
+$('#qCuidOpc').addEventListener('change',drawSheet);
+$('#qMarca').addEventListener('change',drawSheet);
+$('#qPrevTirar').addEventListener('click',()=>{mcPrev('');drawSheet()});
+$('#qPrevArq').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(!/^image\//.test(f.type)){toast('Escolha uma imagem');return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=Math.min(1100,im.width),H=Math.round(im.height*W/im.width),c=document.createElement('canvas');c.width=W;c.height=H;c.getContext('2d').drawImage(im,0,0,W,H);mcPrev(c.toDataURL('image/jpeg',0.82));drawSheet()};im.src=r.result};r.readAsDataURL(f)});
 $('#qLanc').addEventListener('change',drawSheet);
 $('#qPlano').addEventListener('change',()=>setPlano($('#qPlano').value));
 $('#qLead').addEventListener('change',()=>{if($('#qLead').value)loadLead($('#qLead').value)});

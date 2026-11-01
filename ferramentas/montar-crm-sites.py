@@ -157,9 +157,9 @@ s = s.replace('placeholder="Buscar na ajuda…" aria-label="Buscar na ajuda"', '
 
 # planos atuais nos seletores
 s = troca(s, '<label>Plano<select id="qPlano"><option>Essencial</option><option selected>Profissional</option><option>Premium</option></select></label>',
-          '<label>Plano<select id="qPlano"><option>Cardápio Digital</option><option selected>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option></select></label>')
+          '<label>Plano<select id="qPlano"><optgroup label="Gastronomia · Bistrô Connect"><option>Cardápio Digital</option><option selected>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option></optgroup><optgroup label="Outros nichos · Mr. Connect"><option>Página comercial</option><option>Site institucional</option></optgroup></select></label>\n            <label>Marca da proposta<select id="qMarca"><option value="bistro">Bistrô Connect (gastronomia)</option><option value="mc">Mr. Connect (outros nichos)</option></select></label>')
 s = troca(s, '<select id="fPlano"><option value="">—</option><option>Essencial</option><option>Profissional</option><option>Premium</option></select>',
-          '<select id="fPlano"><option value="">—</option><option>Cardápio Digital</option><option>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option></select>')
+          '<select id="fPlano"><option value="">—</option><option>Cardápio Digital</option><option>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option><option>Página comercial</option><option>Site institucional</option></select>')
 open(p, "w", encoding="utf-8").write(s)
 
 # ---------------------------------------------------------------- painel.js
@@ -170,6 +170,8 @@ j = j[:a] + r"""const PLANOS={
   'Cardápio Digital':{impl:997,mens:149,prazo:'até 7 dias úteis',itens:[['Cardápio digital interativo com fotos, categorias e opcionais',1,697],['Pedido enviado pronto ao WhatsApp da casa',1,0],['QR Code para mesas e balcão + link para a bio',1,150],['Cadastro do cardápio pela nossa equipe',1,150]],incl:['Hospedagem e certificado de segurança','Ajustes de conteúdo e banners de datas comemorativas','Suporte pelo WhatsApp','Treinamento da equipe']},
   'Site Gastronômico':{impl:1497,mens:149,prazo:'até 7 dias úteis',itens:[['Site com a identidade da casa (modelo gastronômico)',1,897],['Cardápio com pedido no WhatsApp',1,300],['Domínio próprio com HTTPS',1,150],['QR Code e link para as redes',1,150]],incl:['Hospedagem e certificado de segurança','Ajustes de conteúdo e banners de datas comemorativas','Suporte pelo WhatsApp','Treinamento da equipe']},
   'Digital Experience':{impl:2997,mens:199,prazo:'até 7 dias úteis',itens:[['Site com a identidade da casa e cardápio com pedido',1,1497],['Painel de pedidos e rastreio do pedido',1,500],['Perfil da empresa no Google otimizado',1,300],['500 cartões de volta + display de balcão',1,250],['Campanha de lançamento (mensagens, post e stories)',1,250],['30 dias de acompanhamento',1,200]],incl:['Hospedagem e certificado de segurança','Ajustes de conteúdo e banners de datas comemorativas','Suporte pelo WhatsApp','Treinamento da equipe','Relatório de pedidos do canal próprio']},
+  'Página comercial':{impl:2000,mens:149,prazo:'até 6 dias úteis',itens:[['Página comercial premium — Design, texto de vendas, versão celular e integrações',1,1500],['Painel de leads — Funil, agenda, histórico e login seguro',1,500]],incl:['Hospedagem e verificação mensal','Até 2 ajustes de conteúdo por mês','Suporte pelo WhatsApp']},
+  'Site institucional':{impl:0,mens:0,prazo:'até 10 dias úteis',itens:[['Site institucional sob medida — Design, textos, versão celular e integrações',1,0]],incl:['Hospedagem e verificação mensal','Até 2 ajustes de conteúdo por mês','Suporte pelo WhatsApp']},
   'Signature':{impl:0,mens:0,prazo:'definido no diagnóstico',itens:[['Imersão e estratégia',1,0],['Direção criativa e arquitetura',1,0],['Design e desenvolvimento exclusivos',1,0],['Refinamento e publicação',1,0]],incl:['Valores definidos depois do diagnóstico','Hospedagem e suporte conforme o projeto']}
 };"""[0:] + j[b:]
 # scripts: os da Biblioteca (os 7 primeiros mantêm o papel de cada etapa do funil)
@@ -270,5 +272,123 @@ j = troca(j, "O ${esc(cfg.marca||'Bistrô Connect')} vende cardápio digital com
           "A Mr. Connect, holding da ${esc(cfg.marca||'Bistrô Connect')}, vende presença digital para restaurantes: Site Gastronômico, Digital Experience, projetos Signature e Cardápio Digital, cobrando implantação + mensalidade, sem comissão por pedido.")
 j = troca(j, "<td>${brl0(p.impl)}</td><td>${brl0(p.mens)}/mês</td>", "<td>${p.impl?brl0(p.impl):'Sob orçamento'}</td><td>${p.mens?brl0(p.mens)+'/mês':'Sob orçamento'}</td>")
 open(os.path.join(DEST, "painel.js"), "w", encoding="utf-8").write(j)
+# ---------------------------------------------------------------- PROPOSTA Mr. Connect + tema (acrescentado ao montador)
+shutil.copy("paineis/crm-sites/proposta.js", os.path.join(DEST, "proposta.js"))
+open(os.path.join(DEST, "painel.css"), "a", encoding="utf-8").write(open("paineis/crm-sites/tema.css", encoding="utf-8").read())
+p3 = os.path.join(DEST, "index.html")
+h = open(p3, encoding="utf-8").read()
+h = troca(h, '<script src="biblioteca.js" defer></script>', '<script src="proposta.js" defer></script>\n<script src="biblioteca.js" defer></script>')
+h = troca(h, '<h2 id="qTitulo">Novo orçamento</h2>', '<h2 id="qTitulo">Nova proposta</h2>')
+h = troca(h, '<label class="full inline"><input type="checkbox" id="qLanc"> Oferta de lançamento (50% na implantação, em troca de depoimento)</label>',
+          '<label class="full inline" hidden><input type="checkbox" id="qLanc"> Oferta de lançamento</label>')
+h = troca(h, 'value="5 dias úteis após o recebimento do material"', 'value="até 7 dias úteis após o recebimento dos materiais"')
+h = troca(h, '            <div class="full"><span class="lbl-form">Itens da implantação</span>',
+ '            <label class="full">Título da proposta<input id="qTit" maxlength="90"></label>\n'
+ '            <label class="full">Apresentação<textarea id="qIntro" maxlength="400"></textarea></label>\n'
+ '            <div class="full"><span class="lbl-form">Prévia do projeto na capa (opcional)</span><div class="q-prev"><input type="file" id="qPrevArq" accept="image/*" aria-label="Imagem da prévia"><img id="qPrevImg" alt="" hidden><button type="button" class="btn small" id="qPrevTirar" hidden>Tirar imagem</button></div></div>\n'
+ '            <label class="full">O que está incluído <span class="muted fino">(uma linha por coluna: Título: item; item; item)</span><textarea id="qIncl" maxlength="900"></textarea></label>\n'
+ '            <div class="full"><span class="lbl-form">Itens do investimento <span class="muted fino">(use " — " para pôr uma descrição embaixo do item)</span></span>')
+h = troca(h, '            <label>Validade (dias)<input id="qVal"',
+ '            <label>Parcelas no cartão<input id="qParc" inputmode="numeric" maxlength="2" value="3"></label>\n'
+ '            <label class="inline"><input type="checkbox" id="qCuidOpc"> Plano de cuidado opcional</label>\n'
+ '            <label>Validade (dias)<input id="qVal"')
+h = troca(h, '            <label class="full">Observações<textarea id="qObs"',
+ '            <label class="full">Como acontece <span class="muted fino">(uma linha por etapa: Quando | Etapa | Descrição)</span><textarea id="qEtapas" maxlength="600"></textarea></label>\n'
+ '            <label class="full">Garantia<input id="qGar" maxlength="220"></label>\n'
+ '            <label class="full">Observações<textarea id="qObs"')
+h = troca(h, '<button type="submit" class="btn primary" id="qSalvar">Salvar orçamento</button>', '<button type="submit" class="btn primary" id="qSalvar">Salvar proposta</button>')
+h = troca(h, '<div class="sheet" id="sheet"></div>', '<div class="sheet mc" id="sheet"></div>')
+h = h.replace('<h2>Orçamentos enviados</h2>', '<h2>Propostas enviadas</h2>')
+open(p3, "w", encoding="utf-8").write(h)
+
+j = open(os.path.join(DEST, "painel.js"), encoding="utf-8").read()
+j = troca(j, "function nextNumero(){const y=hoje().slice(0,4),ns=orcs.filter(o=>String(o.numero||'').startsWith('BT-'+y))",
+             "function nextNumero(){const y=hoje().slice(0,4),ns=orcs.filter(o=>/^(MC|BT)-/.test(String(o.numero||''))&&String(o.numero).slice(3,7)===y)")
+j = troca(j, "return 'BT-'+y+'-'+String(", "return 'MC-'+y+'-'+String(")
+# qData: campos novos da proposta
+j = troca(j, "obs:$('#qObs').value.trim(),leadId:$('#qLead').value||''}}",
+          "obs:$('#qObs').value.trim(),leadId:$('#qLead').value||'',titulo:$('#qTit').value.trim(),intro:$('#qIntro').value.trim(),incluido:$('#qIncl').value.trim(),etapas:$('#qEtapas').value.trim(),garantia:$('#qGar').value.trim(),parcelas:Math.min(12,Math.max(1,num($('#qParc').value)||3)),cuidadoOpc:$('#qCuidOpc').checked,previa:qPrev||'',marca:$('#qMarca').value||'bistro'}}")
+j = troca(j, "let db=null, demo=false,", "let qPrev='';\nlet db=null, demo=false,")
+# plano escolhido preenche os textos padrão da proposta
+j = troca(j, "function setPlano(p){const P=PLANOS[p];qItems=P.itens.map(i=>({d:i[0],q:i[1],v:i[2]}));$('#qMens').value=P.mens;drawItems();drawSheet()}",
+          "function setPlano(p){const P=PLANOS[p];qItems=P.itens.map(i=>({d:i[0],q:i[1],v:i[2]}));$('#qMens').value=P.mens;$('#qPrazo').value=P.prazo?P.prazo+' após o recebimento dos materiais':$('#qPrazo').value;const M=(window.MC_PROPOSTA||{}),D=(M.planos||{})[p]||{};$('#qTit').value=D.titulo||'';$('#qIntro').value=D.intro||'';$('#qIncl').value=D.incluido||'';$('#qEtapas').value=D.etapas||'';$('#qGar').value=M.garantia||'';$('#qMarca').value=(M.marcaDoPlano||{})[p]||'bistro';$('#qCuidOpc').checked=((M.marcaDoPlano||{})[p]==='mc');drawItems();drawSheet()}")
+# folha nova
+a = j.index("function drawSheet(){"); b = j.index("function fitSheet(){", a)
+j = j[:a] + r"""function mcLinhas(t){return String(t||'').split('\n').map(x=>x.trim()).filter(Boolean)}
+function drawSheet(){if(!$('#sheet'))return;const o=qData(),P=PLANOS[o.plano]||PLANOS['Site Gastronômico'],M=window.MC_PROPOSTA||{},mk=esc(cfg.marca||'Bistrô Connect');
+  const est=o.est||'sua casa',quem=o.resp||o.est||'Cliente',intro=esc((o.intro||'').replace(/\{est\}/g,est));
+  const MK=((M.marcas||{})[o.marca]||(M.marcas||{}).mc||{nome:'Mr. Connect',slogan:'A evolução digital da sua marca.'}),nomeMk=esc(MK.nome);
+  const wm=(s)=>MK.logo?`<div class="wm wm-img"><img src="${esc(MK.logo)}" alt="${nomeMk}" style="height:${Math.round(s*1.6)}px"></div>`:`<div class="wm" style="font-size:${s}px"><span class="mr">Mr.</span><span class="cn">Connect</span><small>${esc(MK.slogan)}</small></div>`;
+  const cols=mcLinhas(o.incluido).slice(0,3).map(l=>{const k=l.indexOf(':'),t=k>0?l.slice(0,k):'',it=(k>0?l.slice(k+1):l).split(';').map(x=>x.trim()).filter(Boolean);return `<div><h3>${esc(t)}</h3><ul>${it.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`}).join('');
+  const etapas=mcLinhas(o.etapas).slice(0,4).map(l=>{const p=l.split('|').map(x=>x.trim());return `<div><small>${esc(p[0]||'')}</small><b>${esc(p[1]||'')}</b><span>${esc(p[2]||'')}</span></div>`}).join('');
+  const itens=o.itens.map(i=>{const k=String(i.d||'').split(' — '),q=i.q||0;return `<tr><td><b>${esc(k[0])}</b>${k[1]?`<small>${esc(k.slice(1).join(' — '))}</small>`:''}</td><td class="n">${esc(q)}</td><td class="n">${i.v?brl(i.v):'incluso'}</td><td class="n">${i.v?brl(q*i.v):'—'}</td></tr>`}).join('');
+  const tot=o.totalImpl,par=o.parcelas||3,sob=!tot;
+  const previa=o.previa?`<div class="previa"><div class="tela"><div class="bar"><i></i><i></i><i></i></div><div class="shot"><img src="${esc(o.previa)}" alt=""></div></div></div>`:'';
+  const rod=`<div class="rod"><span><b>${nomeMk}</b> · ${esc(MK.slogan)}</span><span>WhatsApp ${esc(cfg.whats)}${cfg.site?' · '+esc(cfg.site):''}</span></div>`;
+  $('#sheet').innerHTML=`
+  <div class="pg">
+    <div class="capa${previa?'':' sem-img'}">
+      <div class="topo">${wm(30)}<div class="num"><b>${esc(o.numero)}</b><span>Emitida em ${fmtDataLonga(o.data)}</span><span>Válida até ${fmtDataLonga(o.validoAte)}</span></div></div>
+      <div class="capa-txt"><div class="para">Proposta para ${esc(quem)}</div><h1>${esc(o.titulo||'Proposta '+o.plano)}</h1><p>${intro}</p></div>
+      ${previa}
+    </div>
+    <div class="corpo">
+      <div class="quem">
+        <div><div class="lbl">Para</div><b>${esc(o.resp||o.est||'Nome do cliente')}</b>${o.resp&&o.est?`<span>${esc(o.est)}</span>`:''}${o.whats?`<span>WhatsApp ${esc(o.whats)}</span>`:''}${o.local?`<span>${esc(o.local)}</span>`:''}</div>
+        <div><div class="lbl">De</div><b>${esc(cfg.nome||'Adilson')} · ${nomeMk}</b><span>WhatsApp ${esc(cfg.whats)}</span>${cfg.email?`<span>${esc(cfg.email)}</span>`:''}<span>${esc(cfg.cidade||'')}</span>${cfg.doc?`<span>${esc(cfg.doc)}</span>`:''}</div>
+      </div>
+      <div class="tit"><h2>O que está incluído</h2></div>
+      <div class="incl">${cols}</div>
+    </div>
+    ${rod}
+  </div>
+  <div class="pg">
+    <div class="faixa">${wm(22)}<div class="ref">Proposta<b>${esc(o.numero)}</b></div></div>
+    <div class="corpo">
+      <div class="tit" style="margin-top:6px"><h2>Investimento</h2></div>
+      <table class="itens"><thead><tr><th>Item</th><th class="n">Qtd.</th><th class="n">Valor</th><th class="n">Total</th></tr></thead><tbody>${itens}${o.desconto?`<tr class="desc"><td><b style="color:#2F7A55">Desconto (${esc(o.descPct)}%)</b></td><td></td><td></td><td class="n">− ${brl(o.desconto)}</td></tr>`:''}</tbody></table>
+      <div class="inv">
+        <div>
+          ${o.mens?`<div class="cuidado"><div class="cab"><b>${esc(M.cuidado||'Plano de cuidado')}${o.cuidadoOpc?' (opcional)':''}</b><strong>${brl(o.mens)}/mês</strong></div><ul>${P.incl.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><div class="obs">${o.cuidadoOpc?'A mensalidade é opcional e começa no mês seguinte à publicação.':'Começa quando o projeto vai ao ar, com contrato mínimo de 6 meses.'}</div></div>`:''}
+          <div class="pag"><p><b>Pagamento:</b> ${esc(o.pag)}${cfg.pix?' · Chave Pix: '+esc(cfg.pix):''}</p><p class="m"><b>Prazo:</b> ${esc(o.prazo)}.</p>${o.obs?`<p class="m">${esc(o.obs)}</p>`:''}</div>
+        </div>
+        <div class="total"><div class="k">Investimento total</div><div class="v">${sob?'Sob orçamento':brl(tot)}</div>${sob?'':`<div class="l"><span>À vista no Pix</span><b>${brl(tot)}</b></div><div class="l"><span>Em duas partes</span><b>2 × ${brl(tot/2)}</b></div><div class="l"><span>No cartão</span><b>${par} × ${brl(tot/par)}</b></div>`}</div>
+      </div>
+      <div class="tit"><h2>Como acontece</h2></div>
+      <div class="etapas">${etapas}</div>
+      ${o.garantia?`<div class="garantia"><i>✓</i><div><b>Garantia de entrega</b><span>${esc(o.garantia)}</span></div></div>`:''}
+      <div class="assin"><div>${esc(cfg.nome||'Adilson')} · ${nomeMk}</div><div>${esc(o.resp||o.est||'Cliente')} · aceite e data</div></div>
+    </div>
+    ${rod}
+  </div>`;
+  fitSheet()}
+""" + j[b:]
+# abrir proposta salva: campos novos
+j = troca(j, "$('#qObs').value=o.obs||'';drawItems();drawSheet();abrirAba('orcamentos')}",
+          "$('#qObs').value=o.obs||'';const D=((window.MC_PROPOSTA||{}).planos||{})[o.plano]||{};$('#qTit').value=o.titulo||D.titulo||'';$('#qIntro').value=o.intro||D.intro||'';$('#qIncl').value=o.incluido||D.incluido||'';$('#qEtapas').value=o.etapas||D.etapas||'';$('#qGar').value=o.garantia!=null?o.garantia:((window.MC_PROPOSTA||{}).garantia||'');$('#qParc').value=o.parcelas||3;$('#qCuidOpc').checked=!!o.cuidadoOpc;$('#qMarca').value=o.marca||(((window.MC_PROPOSTA||{}).marcaDoPlano||{})[o.plano])||'bistro';mcPrev(o.previa||'');drawItems();drawSheet();abrirAba('orcamentos')}")
+j = troca(j, "function novoOrc(leadId){qEdit=null;$('#qForm').reset();$('#qTitulo').textContent='Novo orçamento';",
+          "function mcPrev(u){qPrev=u||'';const im=$('#qPrevImg');im.hidden=!qPrev;if(qPrev)im.src=qPrev;$('#qPrevTirar').hidden=!qPrev;$('#qPrevArq').value=''}\nfunction novoOrc(leadId){qEdit=null;$('#qForm').reset();mcPrev('');$('#qTitulo').textContent='Nova proposta';")
+j = troca(j, "$('#qTitulo').textContent='Orçamento '+o.numero;$('#qLead')", "$('#qTitulo').textContent='Proposta '+o.numero;$('#qLead')")
+j = troca(j, "['qEst','qResp','qWhats','qLocal','qMens','qDesc','qVal','qPrazo','qPag','qObs'].forEach(id=>$('#'+id).addEventListener('input',drawSheet));",
+          "['qEst','qResp','qWhats','qLocal','qMens','qDesc','qVal','qPrazo','qPag','qObs','qTit','qIntro','qIncl','qEtapas','qGar','qParc'].forEach(id=>$('#'+id).addEventListener('input',drawSheet));\n$('#qCuidOpc').addEventListener('change',drawSheet);\n$('#qMarca').addEventListener('change',drawSheet);\n"
+          "$('#qPrevTirar').addEventListener('click',()=>{mcPrev('');drawSheet()});\n"
+          "$('#qPrevArq').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(!/^image\\//.test(f.type)){toast('Escolha uma imagem');return}const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const W=Math.min(1100,im.width),H=Math.round(im.height*W/im.width),c=document.createElement('canvas');c.width=W;c.height=H;c.getContext('2d').drawImage(im,0,0,W,H);mcPrev(c.toDataURL('image/jpeg',0.82));drawSheet()};im.src=r.result};r.readAsDataURL(f)});")
+j = troca(j, "nome=('Orcamento '+o.numero+' - '+(o.est||'cliente'))", "nome=('Proposta '+o.numero+' - '+(o.resp||o.est||'cliente'))")
+j = troca(j, "return `Olá${o.resp?', '+primeiroNome(o.resp):''}! Segue o orçamento ${o.numero} do cardápio digital da ${o.est||'sua casa'} (plano ${o.plano}).",
+          "return `Olá${o.resp?', '+primeiroNome(o.resp):''}! Segue a proposta ${o.numero} do projeto da ${o.est||'sua casa'} (${o.plano}).")
+j = troca(j, "${cfg.nome||'Adilson'} · ${cfg.marca||'Bistrô Connect'}`}", "${cfg.nome||'Adilson'} · '+((o.marca==='mc')?'Mr. Connect':'Bistrô Connect')+'`}")
+open(os.path.join(DEST, "painel.js"), "w", encoding="utf-8").write(j)
+
+
+# PDF da proposta: uma imagem por página A4 (sem sobra de página em branco)
+j = open(os.path.join(DEST, "painel.js"), encoding="utf-8").read()
+j = troca(j, "const canvas=await html2canvas($('#sheet'),{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});s.style.transform=prev;",
+          "const pgs=[...document.querySelectorAll('#sheet .pg')];if(pgs.length){const {jsPDF}=window.jspdf,pdf=new jsPDF({unit:'mm',format:'a4'});for(let i=0;i<pgs.length;i++){const c=await html2canvas(pgs[i],{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});if(i)pdf.addPage();pdf.addImage(c.toDataURL('image/jpeg',0.92),'JPEG',0,0,210,297)}s.style.transform=prev;const o=qData(),nome=('Proposta '+o.numero+' - '+(o.resp||o.est||'cliente')).replace(/[\\\\/:*?\"<>|]/g,'')+'.pdf';pdf.save(nome);st.textContent='PDF baixado: '+nome;fitSheet();btn.disabled=false;return}\n    const canvas=await html2canvas($('#sheet'),{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});s.style.transform=prev;")
+j = j.replace("orcamentos:'Orçamentos'", "orcamentos:'Propostas'")
+open(os.path.join(DEST, "painel.js"), "w", encoding="utf-8").write(j)
+h = open(os.path.join(DEST, "index.html"), encoding="utf-8").read()
+h = troca(h, "<span>Orçamentos</span>", "<span>Propostas</span>")
+h = h.replace('>+ Orçamento<', '>+ Proposta<')
+open(os.path.join(DEST, "index.html"), "w", encoding="utf-8").write(h)
 subprocess.run(["python3", "ferramentas/csp.py", os.path.join(DEST, "index.html")], check=True)
 print("CRM Mr. Connect montado em", os.path.relpath(DEST, RAIZ))

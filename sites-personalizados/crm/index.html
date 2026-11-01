@@ -17,6 +17,7 @@
 <script src="vendor/supabase-2.45.4.js"></script>
 <script src="vendor/html2canvas-1.4.1.min.js" defer></script>
 <script src="vendor/jspdf-2.5.1.umd.min.js" defer></script>
+<script src="proposta.js" defer></script>
 <script src="biblioteca.js" defer></script>
 <script src="painel.js" defer></script>
 </head>
@@ -85,7 +86,7 @@
       <span class="side-grupo">Operação</span>
       <button type="button" data-aba="hoje"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H5z"/></svg><span>Hoje</span></button>
       <button type="button" data-aba="leads"><svg viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4-2v-4z"/></svg><span>Leads</span><em id="cLeads"></em></button>
-      <button type="button" data-aba="orcamentos"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg><span>Orçamentos</span><em id="cOrc"></em></button>
+      <button type="button" data-aba="orcamentos"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/></svg><span>Propostas</span><em id="cOrc"></em></button>
       <button type="button" data-aba="entregas"><svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg><span>Entregas</span><em id="cEntregas"></em></button>
       <button type="button" data-aba="clientes"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11a3 3 0 0 0 0-6M21 20c0-2-1-4-3-4.5"/></svg><span>Clientes</span><em id="cClientes"></em></button>
       <span class="side-grupo">Crescimento</span>
@@ -116,7 +117,7 @@
       <div><h1 id="titulo">Hoje</h1><p class="muted" id="subtitulo"></p></div>
       <div class="topo-acoes">
         <button class="btn busca-btn" type="button" id="btnPaleta"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><span>Buscar ou agir</span><kbd>Ctrl K</kbd></button>
-        <button class="btn" type="button" id="btnOrcTop">+ Orçamento</button>
+        <button class="btn" type="button" id="btnOrcTop">+ Proposta</button>
         <button class="btn primary" type="button" id="btnNovo">+ Novo lead</button>
       </div>
     </header>
@@ -171,35 +172,44 @@
     <section class="panel" data-panel="orcamentos" hidden>
       <div class="quote">
         <form class="box" id="qForm" novalidate>
-          <div class="box-head"><h2 id="qTitulo">Novo orçamento</h2><button type="button" class="btn small" id="qLimpar">Limpar</button></div>
+          <div class="box-head"><h2 id="qTitulo">Nova proposta</h2><button type="button" class="btn small" id="qLimpar">Limpar</button></div>
           <div class="form">
             <label class="full">Lead (opcional)<select id="qLead"><option value="">Digitar dados manualmente</option></select></label>
             <label class="full">Estabelecimento<input id="qEst" maxlength="100" required></label>
             <label>Responsável<input id="qResp" maxlength="80" placeholder="Nome do dono"></label>
             <label>WhatsApp<input id="qWhats" maxlength="20" inputmode="tel"></label>
             <label>Cidade / bairro<input id="qLocal" maxlength="80" placeholder="Ponta Grossa · Centro"></label>
-            <label>Plano<select id="qPlano"><option>Cardápio Digital</option><option selected>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option></select></label>
-            <div class="full"><span class="lbl-form">Itens da implantação</span><div class="items-ed" id="qItens"></div><button type="button" class="btn small" id="qAddItem">+ Adicionar item</button></div>
+            <label>Plano<select id="qPlano"><optgroup label="Gastronomia · Bistrô Connect"><option>Cardápio Digital</option><option selected>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option></optgroup><optgroup label="Outros nichos · Mr. Connect"><option>Página comercial</option><option>Site institucional</option></optgroup></select></label>
+            <label>Marca da proposta<select id="qMarca"><option value="bistro">Bistrô Connect (gastronomia)</option><option value="mc">Mr. Connect (outros nichos)</option></select></label>
+            <label class="full">Título da proposta<input id="qTit" maxlength="90"></label>
+            <label class="full">Apresentação<textarea id="qIntro" maxlength="400"></textarea></label>
+            <div class="full"><span class="lbl-form">Prévia do projeto na capa (opcional)</span><div class="q-prev"><input type="file" id="qPrevArq" accept="image/*" aria-label="Imagem da prévia"><img id="qPrevImg" alt="" hidden><button type="button" class="btn small" id="qPrevTirar" hidden>Tirar imagem</button></div></div>
+            <label class="full">O que está incluído <span class="muted fino">(uma linha por coluna: Título: item; item; item)</span><textarea id="qIncl" maxlength="900"></textarea></label>
+            <div class="full"><span class="lbl-form">Itens do investimento <span class="muted fino">(use " — " para pôr uma descrição embaixo do item)</span></span><div class="items-ed" id="qItens"></div><button type="button" class="btn small" id="qAddItem">+ Adicionar item</button></div>
             <label>Mensalidade (R$)<input id="qMens" inputmode="decimal" maxlength="10"></label>
             <label>Desconto na implantação (%)<input id="qDesc" inputmode="numeric" maxlength="3" value="0"></label>
-            <label class="full inline"><input type="checkbox" id="qLanc"> Oferta de lançamento (50% na implantação, em troca de depoimento)</label>
+            <label class="full inline" hidden><input type="checkbox" id="qLanc"> Oferta de lançamento</label>
+            <label>Parcelas no cartão<input id="qParc" inputmode="numeric" maxlength="2" value="3"></label>
+            <label class="inline"><input type="checkbox" id="qCuidOpc"> Plano de cuidado opcional</label>
             <label>Validade (dias)<input id="qVal" inputmode="numeric" maxlength="3" value="7"></label>
-            <label>Prazo de entrega<input id="qPrazo" maxlength="120" value="5 dias úteis após o recebimento do material"></label>
+            <label>Prazo de entrega<input id="qPrazo" maxlength="120" value="até 7 dias úteis após o recebimento dos materiais"></label>
             <label class="full">Pagamento<input id="qPag" maxlength="160" value="50% no aceite e 50% na entrega · Pix ou cartão em até 3x"></label>
+            <label class="full">Como acontece <span class="muted fino">(uma linha por etapa: Quando | Etapa | Descrição)</span><textarea id="qEtapas" maxlength="600"></textarea></label>
+            <label class="full">Garantia<input id="qGar" maxlength="220"></label>
             <label class="full">Observações<textarea id="qObs" maxlength="1000" placeholder="Algo combinado na visita"></textarea></label>
           </div>
           <div class="acoes-linha">
-            <button type="submit" class="btn primary" id="qSalvar">Salvar orçamento</button>
+            <button type="submit" class="btn primary" id="qSalvar">Salvar proposta</button>
             <button type="button" class="btn" id="qPdf">Baixar PDF</button>
             <button type="button" class="btn zap" id="qZap">Enviar no WhatsApp</button>
             <button type="button" class="btn link" id="qMsg">Copiar mensagem</button>
           </div>
           <p class="muted fino" id="qStatus">O PDF sai igual à folha ao lado.</p>
         </form>
-        <div class="sheet-wrap" id="sheetWrap"><div class="sheet-scale" id="sheetScale"><div class="sheet" id="sheet"></div></div></div>
+        <div class="sheet-wrap" id="sheetWrap"><div class="sheet-scale" id="sheetScale"><div class="sheet mc" id="sheet"></div></div></div>
       </div>
       <div class="box">
-        <div class="box-head"><h2>Orçamentos enviados</h2><span class="muted" id="qResumo"></span></div>
+        <div class="box-head"><h2>Propostas enviadas</h2><span class="muted" id="qResumo"></span></div>
         <div class="tablewrap"><table class="data"><thead><tr><th>Nº</th><th>Estabelecimento</th><th>Plano</th><th>Implantação</th><th>Mensalidade</th><th>Validade</th><th>Status</th><th></th></tr></thead><tbody id="tbOrc"></tbody></table></div>
       </div>
     </section>
@@ -530,7 +540,7 @@
         <label>Nº de avaliações<input id="fAval" inputmode="numeric" maxlength="6"></label>
         <label>Etapa<select id="fStage"></select></label>
         <label>Próximo retorno<input id="fProx" type="date"></label>
-        <label>Plano<select id="fPlano"><option value="">—</option><option>Cardápio Digital</option><option>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option></select></label>
+        <label>Plano<select id="fPlano"><option value="">—</option><option>Cardápio Digital</option><option>Site Gastronômico</option><option>Digital Experience</option><option>Signature</option><option>Página comercial</option><option>Site institucional</option></select></label>
         <label>Implantação (R$)<input id="fImpl" inputmode="decimal" maxlength="10"></label>
         <label>Mensalidade (R$)<input id="fMens" inputmode="decimal" maxlength="10"></label>
         <label>Dia de vencimento<input id="fVenc" inputmode="numeric" maxlength="2" placeholder="10"></label>
