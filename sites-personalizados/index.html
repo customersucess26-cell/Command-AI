@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-NNqcjzQ5IqWDwUrpfVrDKByKM3PV7g9fXrzmINXnx/k=' 'sha256-CGZfEqtJCte49cbsZfb4w8ZzxgBKHOOAJX6R0ibLmWs=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-NNqcjzQ5IqWDwUrpfVrDKByKM3PV7g9fXrzmINXnx/k=' 'sha256-Ac3XLaRyzmNi+i2O0aTeR2r3eiY0pUkx4MWDx+8Q5Ks=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BistrôConnect | Sites e experiências digitais para restaurantes</title>
 <meta name="description" content="Sua marca merece um site do seu tamanho. Projetos digitais exclusivos (Signature) e soluções gastronômicas com cardápio digital, pedidos pelo WhatsApp e painel administrativo, para restaurantes que não abrem mão da excelência.">
@@ -1616,6 +1616,54 @@ h1 em,h2 em{font-style:normal;color:var(--mint-deep)}
 
 .mf-in{padding-inline:max(32px,env(safe-area-inset-left,0px))}
 @media (max-width:640px){.mf-in{padding-inline:max(18px,env(safe-area-inset-left,0px))}}
+
+/* ===== manifesto com efeitos ligados à rolagem ===== */
+.mf-in{position:relative;isolation:isolate}
+.mf-glow{position:absolute;inset:-60px -20px;z-index:-1;pointer-events:none;background:radial-gradient(460px circle at var(--mx,72%) var(--my,28%),rgba(217,174,92,.18),transparent 62%);transition:background .2s}
+.mf-plate{position:absolute;right:-4%;top:-14%;width:min(640px,62vw);aspect-ratio:1;z-index:-1;pointer-events:none;transform:translateY(calc(var(--t,0)*-60px)) rotate(calc(var(--t,0)*50deg));will-change:transform}
+.mf-plate i{position:absolute;border-radius:50%;border:1px solid rgba(168,126,47,.30)}
+.mf-plate i:nth-child(1){inset:0}
+.mf-plate i:nth-child(2){inset:11%;border-color:rgba(168,126,47,.22)}
+.mf-plate i:nth-child(3){inset:24%;border-color:rgba(168,126,47,.18)}
+.mf-plate i:nth-child(4){inset:38%;border-color:rgba(168,126,47,.14)}
+.mf-plate i:nth-child(1)::after{content:"";position:absolute;left:50%;top:-5px;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:var(--mint)}
+.mf-grid{border-top:0!important;padding-top:clamp(20px,3vw,40px)!important}
+.mf-h .w{display:inline-block;opacity:.13;transform:translateY(10px);transition:opacity .6s ease,transform .6s ease}
+.mf-h .w.on{opacity:1;transform:none}
+.mf-text p{opacity:.16;transform:translateY(16px);transition:opacity .8s ease,transform .8s ease}
+.mf-text p.on{opacity:1;transform:none}
+.jr{list-style:none;margin:clamp(56px,6vw,96px) 0 0;padding:34px 0 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px;position:relative}
+.jr::before,.jr::after{content:"";position:absolute;left:0;top:8px;height:2px}
+.jr::before{right:0;background:var(--line)}
+.jr::after{width:calc(var(--q,0)*100%);background:linear-gradient(90deg,#D9AE5C,#B8862B);transition:width .25s linear}
+.jr li{position:relative;opacity:.4;transition:opacity .6s ease;display:flex;flex-direction:column;gap:6px}
+.jr li::before{content:"";position:absolute;left:0;top:-33px;width:16px;height:16px;border-radius:50%;background:var(--paper);border:2px solid #CDBF9E;transition:background .5s,border-color .5s,box-shadow .5s}
+.jr li.on{opacity:1}
+.jr li.on::before{background:var(--mint);border-color:var(--mint-deep);box-shadow:0 0 0 6px rgba(217,174,92,.2)}
+.jr small{font:700 12px var(--f-body);letter-spacing:.14em;color:var(--mint-deep)}
+.jr b{font:700 clamp(17px,1.5vw,21px)/1.2 var(--f-display);color:var(--ink)}
+.jr p{margin:0;font-size:14.5px;line-height:1.55;color:var(--ink-soft);max-width:24ch}
+.jr li.fin b{color:var(--mint-deep)}
+.jr li.fin.on::before{animation:jrPulse 3.6s ease-out infinite}
+@keyframes jrPulse{0%{box-shadow:0 0 0 0 rgba(217,174,92,.5)}70%,100%{box-shadow:0 0 0 14px rgba(217,174,92,0)}}
+@media (max-width:860px){
+  .mf-plate{right:-30%;top:-4%}
+  .jr{grid-template-columns:1fr;gap:26px;padding:0 0 0 38px;margin-top:44px}
+  .jr::before,.jr::after{left:7px;top:0;width:2px}
+  .jr::before{bottom:0;right:auto}
+  .jr::after{height:calc(var(--q,0)*100%);width:2px;transition:height .25s linear}
+  .jr li::before{left:-38px;top:4px}
+  .jr p{max-width:none}
+}
+@media (prefers-reduced-motion:reduce){.mf-h .w,.mf-text p{opacity:1!important;transform:none!important;transition:none}.mf-plate{transform:none!important}.jr li.fin.on::before{animation:none}}
+
+/* correção de contraste: títulos invisíveis */
+.steps .step h3{color:var(--on-navy)}
+#gastronomia .os-item{background:rgba(255,255,255,.04);border-color:var(--navy-3)}
+#gastronomia .os-item:hover{box-shadow:0 16px 30px -22px rgba(0,0,0,.9)}
+#gastronomia .os-item b{color:var(--on-navy)}
+#gastronomia .os-item span{color:var(--on-navy-soft)}
+#gastronomia .os-item svg{background:rgba(217,174,92,.14);color:var(--mint)}
 </style>
 </head>
 <body>
@@ -1679,10 +1727,12 @@ h1 em,h2 em{font-style:normal;color:var(--mint-deep)}
     </div>
   
     <div class="mf-in" id="manifesto">
+      <div class="mf-glow" aria-hidden="true"></div>
+      <div class="mf-plate" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
       <div class="mf-grid">
         <div>
           <p class="eyebrow">Manifesto</p>
-          <h2>A experiência do seu restaurante começa muito antes da <em>primeira mesa</em>.</h2>
+          <h2 class="mf-h">A experiência do seu restaurante começa muito antes da <em>primeira mesa</em>.</h2>
         </div>
         <div class="mf-text">
           <p class="mf-first">Ela começa quando alguém procura o seu nome, abre o seu site no celular e decide, em poucos segundos, se aquela casa merece uma reserva, um pedido ou uma visita.</p>
@@ -1690,6 +1740,13 @@ h1 em,h2 em{font-style:normal;color:var(--mint-deep)}
           <p>A BistrôConnect trabalha para levar o padrão da sua casa para o ambiente digital, com o mesmo cuidado que você dedica ao salão e à cozinha.</p>
         </div>
       </div>
+      <ol class="jr" aria-label="A jornada da experiência do restaurante">
+        <li><small>01</small><b>Identidade</b><p>O nome, a história e o jeito de receber.</p></li>
+        <li><small>02</small><b>Ambiente</b><p>A luz, o som e a mesa posta.</p></li>
+        <li><small>03</small><b>Atendimento</b><p>A cordialidade de quem serve.</p></li>
+        <li><small>04</small><b>Gastronomia</b><p>O prato que dá motivo a tudo.</p></li>
+        <li class="fin"><small>05</small><b>Presença digital</b><p>O primeiro encontro com o cliente. É aqui que a BistrôConnect atua.</p></li>
+      </ol>
     </div>
   </section>
 
@@ -2587,6 +2644,23 @@ var OFERTA={ativa:false,texto:'',ate:'',vagas:0,restantes:0};
 
   /* selos do cardápio: um por vez, devagar */
   (function(){var c=[].slice.call(document.querySelectorAll('.pf-chip'));if(!c.length)return;var i=0;function tic(){c.forEach(function(x,k){x.classList.toggle('show',k===i)});i=(i+1)%c.length}tic();setInterval(function(){if(!document.hidden)tic()},5000)})();
+
+  /* manifesto: palavras, parágrafos e jornada acendem conforme a rolagem */
+  (function(){var root=document.getElementById('manifesto');if(!root)return;
+    var h=root.querySelector('.mf-h'),jr=root.querySelector('.jr'),plate=root.querySelector('.mf-plate'),grid=root.querySelector('.mf-grid');if(!h||!jr)return;
+    function wrap(node){var out=[];[].slice.call(node.childNodes).forEach(function(n){if(n.nodeType===3){var fr=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(function(t){if(!t)return;if(/^\s+$/.test(t)){fr.appendChild(document.createTextNode(t))}else{var sp=document.createElement('span');sp.className='w';sp.textContent=t;fr.appendChild(sp);out.push(sp)}});n.parentNode.replaceChild(fr,n)}else if(n.nodeType===1){out=out.concat(wrap(n))}});return out}
+    var words=wrap(h),paras=[].slice.call(root.querySelectorAll('.mf-text p')),items=[].slice.call(jr.querySelectorAll('li'));
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches){words.forEach(function(w){w.classList.add('on')});paras.forEach(function(p){p.classList.add('on')});items.forEach(function(l){l.classList.add('on')});jr.style.setProperty('--q',1);return}
+    function cl(x){return Math.max(0,Math.min(1,x))}
+    function upd(){var vh=innerHeight,g=grid.getBoundingClientRect(),p=cl((vh*.82-g.top)/(g.height+vh*.2));
+      words.forEach(function(w,i){w.classList.toggle('on',p>(i/words.length)*.7+.04)});
+      paras.forEach(function(el,i){el.classList.toggle('on',p>.3+i*.15)});
+      var r=jr.getBoundingClientRect(),q=cl((vh*.86-r.top)/(r.height+vh*.15));jr.style.setProperty('--q',q.toFixed(3));
+      items.forEach(function(li,i){li.classList.toggle('on',q>(i+.35)/items.length*.92)});
+      var rr=root.getBoundingClientRect();plate.style.setProperty('--t',cl((vh-rr.top)/(vh+rr.height)).toFixed(3))}
+    var tk=false;addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(function(){upd();tk=false})}},{passive:true});addEventListener('resize',upd);
+    if(matchMedia('(pointer:fine)').matches)root.addEventListener('mousemove',function(e){var r=root.getBoundingClientRect();root.style.setProperty('--mx',(e.clientX-r.left)+'px');root.style.setProperty('--my',(e.clientY-r.top)+'px')});
+    upd()})();
 </script>
 </body>
 </html>
