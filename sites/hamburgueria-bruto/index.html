@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-/l1n0xw4TJ9L05fYB6IvPFcRdWn5/7aKr5Z1YW/y1RQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-XZmbDNkmXV3nRtS1AKc5WE4BfBencJAiKrB9JZvq2Bo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bruto Burger Co. | Hamburgueria artesanal na brasa</title>
 <meta name="description" content="Hamburgueria artesanal com blend de 160g grelhado na brasa, pão brioche e molho da casa. Peça pelo WhatsApp.">
@@ -58,6 +58,7 @@ header.solid{background:rgba(13,12,11,.86);backdrop-filter:blur(12px);-webkit-ba
 .logo{font-family:var(--f-display);font-size:1.8rem;text-decoration:none;letter-spacing:.04em;display:flex;align-items:baseline;gap:8px}
 .logo small{font-family:var(--f-script);color:var(--ember);font-size:.9rem;letter-spacing:0}
 .logo .logo-img{height:44px;width:auto;display:block}
+:root{--mot-bg:var(--bg2);--mot-txt:var(--cream);--mot-cor:var(--ember);--mot-cor-txt:#140b05}
 .opts select{width:100%;background:var(--bg);color:var(--cream);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:16px}
 .opts select.erro{border-color:#ff4d3d}
 .nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0}
@@ -733,7 +734,7 @@ renderHot();
 })();
 
 /* ---- loja online (motor Bistrô Connect): dados da casa, cardápio e pedidos. Sem configuração, vale o cardápio acima ---- */
-var MOT=window.MOTOR||{ok:false},LOJA_OK=!!MOT.ok,TAXA=0,MINIMO=0,ABERTA=true,BAIRROS=[];
+var MOT=window.MOTOR||{ok:false},LOJA_OK=!!MOT.ok,TAXA=0,MINIMO=0,ABERTA=true,BAIRROS=[],PID={};
 function foneTxt(f){var d=digitos(f).replace(/^55(?=\d{10,11}$)/,"");return d.length>=10?"("+d.slice(0,2)+") "+d.slice(2,d.length-4)+"-"+d.slice(-4):f}
 function montaOpcoes(st){
   /* formas de pagamento cadastradas no painel */
@@ -751,7 +752,7 @@ function montaOpcoes(st){
   sb.innerHTML='<option value="">Bairro da entrega</option>'+BAIRROS.map(function(b){return '<option value="'+esc(b.n)+'">'+esc(b.n)+" · "+(b.t?money(b.t):"grátis")+'</option>'}).join("");
 }
 function carregaLoja(){if(!LOJA_OK)return;
-  MOT.carrega().then(function(r){var st=r.loja,cs=r.cats,ps=r.prods;
+  MOT.carrega().then(function(r){var st=r.loja,cs=r.cats,ps=r.prods;PID={};ps.forEach(function(p){PID[p.id]=p});
     if(zapNum(st.whatsapp).length>=12)WHATS=zapNum(st.whatsapp);
     TAXA=st.delivery_fee;MINIMO=st.min_order;ABERTA=st.aberta;
     if(st.address)$("#vEnd").textContent=st.address;if(st.hours)$("#vHoras").textContent=st.hours;if(st.instagram)$("#vInsta").textContent=st.instagram;
@@ -766,7 +767,7 @@ function carregaLoja(){if(!LOJA_OK)return;
     if(CB.length){renderCombos(CB);if(window.armPics)armPics($("#cgrid"))}else{$("#combos").hidden=true}
     var hot=ps.filter(function(p){return p.featured}).slice(0,6).map(conv);if(hot.length){HOT=hot;renderHot()}else{$("#favoritos").hidden=true}
     var porNome={};ps.forEach(function(p){porNome[p.name]=p});
-    Object.keys(cart).forEach(function(k){var p=porNome[k];if(!p)delete cart[k];else{cart[k].p=p.price;cart[k].id=p.id;cart[k].i=p.image_url}});
+    Object.keys(cart).forEach(function(k){var c=cart[k],p=PID[c.id]||porNome[k];if(!p){delete cart[k];return}c.id=p.id;c.i=p.image_url;c.p=p.price+(+c.x||0)});
     $("#fab").href=wa("Olá! Quero fazer um pedido.");renderCart()})
   .catch(function(){/* sem conexão: segue com o cardápio do próprio arquivo, pedido só pelo WhatsApp */LOJA_OK=false;renderCart()})}
 
@@ -783,7 +784,9 @@ function fly(btn,img){
   requestAnimationFrame(function(){requestAnimationFrame(function(){f.style.transform="translate("+(b.left-a.left-a.width/2+20)+"px,"+(b.top-a.top-a.height/2+20)+"px) scale(.25)";f.style.opacity=".4"})});
   setTimeout(function(){f.remove();var n=$("#cartN");n.classList.remove("bump");void n.offsetWidth;n.classList.add("bump")},820);
 }
-function add(btn){var n=btn.dataset.n;if(!cart[n])cart[n]={p:+btn.dataset.p,q:0,i:btn.dataset.img,id:btn.dataset.id||""};cart[n].q=Math.min(99,cart[n].q+1);fly(btn,btn.dataset.img);renderCart();say(n+" adicionado ao pedido")}
+function add(btn){var pid=btn.dataset.id||"",pr=LOJA_OK&&PID[pid];
+  if(pr&&pr.opcoes&&pr.opcoes.length){MOT.opcoes(pr).then(function(r){if(!r)return;var n=pr.name+(r.rotulo?" ("+r.rotulo+")":"");if(!cart[n])cart[n]={p:pr.price+r.extra,q:0,i:btn.dataset.img,id:pid,ops:r.ops,x:r.extra};cart[n].q=Math.min(99,cart[n].q+r.qtd);fly(btn,btn.dataset.img);renderCart();say(n+" adicionado ao pedido")});return}
+  var n=btn.dataset.n;if(!cart[n])cart[n]={p:+btn.dataset.p,q:0,i:btn.dataset.img,id:btn.dataset.id||""};cart[n].q=Math.min(99,cart[n].q+1);fly(btn,btn.dataset.img);renderCart();say(n+" adicionado ao pedido")}
 function wa(text){return "https://wa.me/"+WHATS+"?text="+encodeURIComponent(text)}
 function dados(){var tipo=($("input[name=tipo]:checked")||{}).value||"entrega",sub=0,cnt=0;Object.keys(cart).forEach(function(k){sub+=cart[k].q*cart[k].p;cnt+=cart[k].q});sub=Math.round(sub*100)/100;
   var bairro=$("#cBairro").value,bx=BAIRROS.filter(function(b){return b.n===bairro})[0];
@@ -816,7 +819,7 @@ $("#send").addEventListener("click",function(){
   if(!registra){abre(w,wa(mensagem(d,null)));return}
   var btn=$("#send");
   enviando=true;btn.disabled=true;btn.textContent="Registrando pedido…";
-  MOT.pedido({customer_name:d.nome.slice(0,80),customer_phone:d.fone.slice(0,20),delivery_type:d.tipo,address:d.tipo==="entrega"?d.end.slice(0,160):"",neighborhood:d.tipo==="entrega"?d.bairro:"",notes:d.obs.slice(0,300),payment_method:d.pag,expected_total:d.total,items:keys.map(function(k){return {product_id:cart[k].id,qty:cart[k].q}})})
+  MOT.pedido({customer_name:d.nome.slice(0,80),customer_phone:d.fone.slice(0,20),delivery_type:d.tipo,address:d.tipo==="entrega"?d.end.slice(0,160):"",neighborhood:d.tipo==="entrega"?d.bairro:"",notes:d.obs.slice(0,300),payment_method:d.pag,expected_total:d.total,items:keys.map(function(k){var x={product_id:cart[k].id,qty:cart[k].q};if(cart[k].ops&&cart[k].ops.length)x.options=cart[k].ops;return x})})
   .then(function(o){var link=MOT.rastreio(o);if(o&&+o.total)d.total=+o.total;abre(w,wa(mensagem(d,o.code,link)));cart={};enviando=false;renderCart();closeCart();say("Pedido "+o.code+" registrado! Confirme no WhatsApp.")})
   .catch(function(err){if(w)w.close();enviando=false;renderCart();
     var m=err&&err.amigavel?String(err.message):"";$("#sendNote").textContent=(m&&m.length<160?m:"Não conseguimos registrar o pedido agora.")+" ";

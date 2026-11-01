@@ -52,6 +52,8 @@ palavras que passam na faixa), `camadas.selo`, `camadas.t1`, `camadas.t2`, `cama
 `combos.selo`, `combos.t1`, `combos.t2`, `combos.texto`, `depoimentos.selo`, `depoimentos.t1`, `depoimentos.t2`,
 `depoimento1.texto` / `depoimento1.nome` (até 3), `visite.t1`, `visite.t2`, `visite.texto`, `rodape.copy`, `rodape.frase`.
 
+Opcionais (tamanho, tipo de leite, adicionais) cadastrados no painel abrem uma janela de escolha no próprio site.
+
 Fotos (`imagens`): `hero`, `fogo` (foto do bloco "Visite"), `batata` (foto ao lado dos acompanhamentos).
 Cores (`marca.cores`): `ember` (destaque), `red`, `mustard`, `bg`, `bg2`, `cream` (texto), `muted`, `line`.
 

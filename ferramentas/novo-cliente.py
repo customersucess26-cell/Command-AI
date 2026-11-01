@@ -39,18 +39,19 @@ def le_motor():
     p = os.path.join(RAIZ, "clientes", "motor.json")
     if os.path.exists(p):
         m = json.load(open(p, encoding="utf-8"))
-        return m.get("supabaseUrl", ""), m.get("supabaseKey", "")
+        return m.get("supabaseUrl", ""), m.get("supabaseKey", ""), m.get("plataforma", "")
     txt = open(os.path.join(RAIZ, "plataforma/assets/config.js"), encoding="utf-8").read()
     u = re.search(r'supabaseUrl:\s*"([^"]*)"', txt)
     k = re.search(r'supabaseKey:\s*"([^"]*)"', txt)
-    return (u.group(1) if u else ""), (k.group(1) if k else "")
+    s = re.search(r'\bsite:\s*"([^"]*)"', txt)
+    return (u.group(1) if u else ""), (k.group(1) if k else ""), (s.group(1) if s else "")
 
 
 def js(v):
     return json.dumps(v, ensure_ascii=False, indent=2).replace("\n", "\n  ")
 
 
-def escreve_config(dest, d, url, chave):
+def escreve_config(dest, d, url, chave, plat=""):
     marca = {"titulo": "", "descricao": "", "logo": "", "corNavegador": "", "cores": {}, "fontes": {}}
     marca.update(d.get("marca") or {})
     contato = {"endereco": "", "horario": "", "instagram": "", "whatsappTexto": ""}
@@ -62,7 +63,8 @@ def escreve_config(dest, d, url, chave):
 window.BC = {{
   supabaseUrl: {json.dumps(url)},
   supabaseKey: {json.dumps(chave)},
-  site: {json.dumps(d.get("dominio", "").rstrip("/"))}
+  site: {json.dumps(d.get("dominio", "").rstrip("/"))},
+  plataforma: {json.dumps(plat.rstrip("/"))}   // endereço da plataforma (para fotos cadastradas com caminho dela)
 }};
 
 window.LOJA = {{
@@ -160,7 +162,7 @@ def main():
     if a.dominio: d["dominio"] = a.dominio
     caminho = "/" + a.caminho.strip("/") + "/" if a.caminho.strip("/") else "/"
 
-    url, chave = le_motor()
+    url, chave, plat = le_motor()
     saida = os.path.join(RAIZ, a.saida, d["slug"])
     dest = os.path.join(saida, "site")
     shutil.rmtree(saida, ignore_errors=True)
@@ -174,7 +176,7 @@ def main():
         for f in sorted(os.listdir(a.fotos)):
             if re.search(r"\.(jpe?g|png|webp|avif|svg)$", f, re.I):
                 shutil.copy(os.path.join(a.fotos, f), os.path.join(fd, slugify(os.path.splitext(f)[0]) + os.path.splitext(f)[1].lower()))
-    escreve_config(dest, d, url, chave)
+    escreve_config(dest, d, url, chave, plat)
     copia_rastreio(dest, d, caminho)
     copia_painel(dest, d)
     escreve_htaccess(dest)

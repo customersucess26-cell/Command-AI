@@ -5,7 +5,8 @@
 window.BC = {
   supabaseUrl: "",
   supabaseKey: "",
-  site: ""          // endereço do site do cliente, sem barra no fim (ex.: "https://brutoburger.com.br"). Vazio = o endereço atual
+  site: "",         // endereço do site do cliente, sem barra no fim (ex.: "https://brutoburger.com.br"). Vazio = o endereço atual
+  plataforma: ""    // endereço da plataforma (ex.: "https://app.bistroconnect.com.br"), para fotos cadastradas com caminho dela
 };
 
 window.LOJA = {
