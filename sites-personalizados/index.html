@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-v9BtdfslrHPNC9qsEwsuVEHxm1K3B/SzWvkhOl0eDqg=' 'sha256-CGZfEqtJCte49cbsZfb4w8ZzxgBKHOOAJX6R0ibLmWs=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-NNqcjzQ5IqWDwUrpfVrDKByKM3PV7g9fXrzmINXnx/k=' 'sha256-CGZfEqtJCte49cbsZfb4w8ZzxgBKHOOAJX6R0ibLmWs=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BistrôConnect | Sites e experiências digitais para restaurantes</title>
 <meta name="description" content="Sua marca merece um site do seu tamanho. Projetos digitais exclusivos (Signature) e soluções gastronômicas com cardápio digital, pedidos pelo WhatsApp e painel administrativo, para restaurantes que não abrem mão da excelência.">
@@ -1519,17 +1519,6 @@ h1 em,h2 em{font-style:normal;color:var(--mint-deep)}
 .mf-in h2{font-size:clamp(28px,3.3vw,46px);line-height:1.12;margin-top:14px;max-width:16ch}
 .mf-text p{font-size:18px;line-height:1.75;color:var(--ink-soft);margin:0 0 18px}
 .mf-text .mf-first{font-size:clamp(19px,1.7vw,22px);line-height:1.6;color:var(--ink);font-weight:500}
-.mf-photos{display:grid;grid-template-columns:1.25fr 1fr .72fr;gap:16px;margin-top:clamp(40px,5vw,64px);align-items:end}
-.mf-ph{margin:0;border-radius:22px;overflow:hidden;box-shadow:0 30px 60px -38px rgba(60,35,5,.55)}
-.mf-ph img{display:block;width:100%;height:100%;object-fit:cover}
-.mf-ph.a{aspect-ratio:4/3}.mf-ph.b{aspect-ratio:1/1}.mf-ph.c{aspect-ratio:3/4}
-.journey{list-style:none;margin:clamp(30px,4vw,52px) 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-.journey li{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
-.journey small{font:700 12px var(--f-body);color:var(--mint-deep);letter-spacing:.14em}
-.journey b{font:600 17px var(--f-display);color:var(--ink)}
-.journey li.on{background:var(--navy);border-color:var(--navy)}
-.journey li.on b{color:#fff}.journey li.on small{color:var(--mint)}
-.journey li.on em{font-style:normal;font-size:12.5px;color:var(--on-navy-soft)}
 
 /* duas linhas */
 .ln{display:grid;grid-template-columns:1fr 1fr;gap:20px}
@@ -1603,9 +1592,7 @@ h1 em,h2 em{font-style:normal;color:var(--mint-deep)}
 }
 @media (max-width:860px){
   .mf-grid,.ln,.mens,.fq-groups{grid-template-columns:1fr}
-  .mf-photos{grid-template-columns:1fr 1fr}.mf-ph.a{grid-column:1/-1}
-  .journey{grid-template-columns:1fr 1fr}
-  .nav-links a:not(.btn){display:none}
+      .nav-links a:not(.btn){display:none}
 }
 @media (max-width:640px){
   .plans.plans4,.steps.s5,.feats.f4{grid-template-columns:1fr}
@@ -1626,6 +1613,9 @@ h1 em,h2 em{font-style:normal;color:var(--mint-deep)}
 
 .hero .vitrine .phone-note{width:min(100%,calc(100vw - 40px - 616px));max-width:none!important;margin:22px auto 0!important;text-align:center!important;font-size:13px;box-sizing:border-box}
 @media (max-width:1100px){.hero .vitrine .phone-note{width:auto;max-width:100%!important}}
+
+.mf-in{padding-inline:max(32px,env(safe-area-inset-left,0px))}
+@media (max-width:640px){.mf-in{padding-inline:max(18px,env(safe-area-inset-left,0px))}}
 </style>
 </head>
 <body>
@@ -1700,18 +1690,6 @@ h1 em,h2 em{font-style:normal;color:var(--mint-deep)}
           <p>A BistrôConnect trabalha para levar o padrão da sua casa para o ambiente digital, com o mesmo cuidado que você dedica ao salão e à cozinha.</p>
         </div>
       </div>
-      <div class="mf-photos">
-        <figure class="mf-ph a"><img src="img/gastro/restaurante.webp" alt="Prato servido em frigideira de ferro, com taça de vinho e vela, em ambiente de restaurante" width="1376" height="768" loading="lazy" decoding="async"></figure>
-        <figure class="mf-ph b"><img src="img/gastro/forno.webp" alt="Pizza sendo retirada do forno a lenha" width="1400" height="788" loading="lazy" decoding="async"></figure>
-        <figure class="mf-ph c"><img src="img/gastro/burger.webp" alt="Hambúrguer artesanal servido em prato escuro" width="907" height="1369" loading="lazy" decoding="async"></figure>
-      </div>
-      <ol class="journey" aria-label="A jornada da experiência do restaurante">
-        <li><small>01</small><b>Identidade</b></li>
-        <li><small>02</small><b>Ambiente</b></li>
-        <li><small>03</small><b>Atendimento</b></li>
-        <li><small>04</small><b>Gastronomia</b></li>
-        <li class="on"><small>05</small><b>Presença digital</b><em>onde a BistrôConnect atua</em></li>
-      </ol>
     </div>
   </section>
 
@@ -2458,7 +2436,7 @@ h1 em,h2 em{font-style:normal;color:var(--mint-deep)}
     setInterval(function(){if(touched||document.hidden)return;var r=stage.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;show(cur==='t1'?'t2':'t1')},9000)})();
   /* ===== revelar blocos ao rolar ===== */
   if('IntersectionObserver' in window&&!REDUCED){document.documentElement.classList.add('js-rv');
-    var rvSel='main section:not(.hero) .head, .os-item, .os-show, .step, .feat, .plan, .model, .calc-box, .calc .copy, .tpl-card, .of-stack, .of-card, .of-gar > div, .vs, .faq details, .contact .in > *, .mf-text, .mf-ph, .journey li, .ln-card, .sg-p li, .pr-steps li, .gs-item, .pl-card, .mens > div, .fq-g, .bn-grid > div';
+    var rvSel='main section:not(.hero) .head, .os-item, .os-show, .step, .feat, .plan, .model, .calc-box, .calc .copy, .tpl-card, .of-stack, .of-card, .of-gar > div, .vs, .faq details, .contact .in > *, .mf-text, .ln-card, .sg-p li, .pr-steps li, .gs-item, .pl-card, .mens > div, .fq-g, .bn-grid > div';
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('rv-in');io.unobserve(e.target)}})},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
     document.querySelectorAll(rvSel).forEach(function(el){el.classList.add('rv');var sib=Array.prototype.indexOf.call(el.parentNode.children,el);el.style.transitionDelay=Math.min(sib,5)*70+'ms';io.observe(el)})}
 
