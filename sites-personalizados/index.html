@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-64lpSL2+hi8astRjYuRP5Eg5J1R+r9hc8SHTrwG5yFc=' 'sha256-qQ/wK1uR+8CE83rRHl3cFNb2GkFdfo0Gt/GyEWRi3QU=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-c7ApiRliS7hc02p5tVdmJ7hKjgSbjDfkBBdERHxgAis=' 'sha256-qQ/wK1uR+8CE83rRHl3cFNb2GkFdfo0Gt/GyEWRi3QU=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1379,6 +1379,12 @@ section.cream .eyebrow{color:var(--mint-deep)}
 
 .d-kpi .ks{display:block;font-style:normal;font-size:9px;color:#8A7A6C;margin-top:1px}
 .d-kpi:first-child{box-shadow:inset 0 2px 0 #C0703A,0 1px 0 #EDE5DB}
+
+/* painel real (modo demonstração) dentro da moldura */
+.dash{display:block!important}.dash>.d-side,.dash>.d-main,.dash>.os-cursor{display:none!important}
+.pframe{display:block;width:1100px;height:600px;border:0;background:#F4EFE8;pointer-events:none}
+.tscr.tscr-real{padding:0;display:block;background:#F3ECE2}
+.tscr-real .tscroll{padding-top:34px}
 </style>
 </head>
 <body>
@@ -1566,6 +1572,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
         <div class="stage-browser admin-browser browser glow-border">
           <div class="bar"><i></i><i></i><i></i><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>suapadaria.com.br/admin</span><em class="live"><b></b>Ao vivo</em></div>
           <div class="dash-wrap" id="dashWrap"><div class="dash" id="dash" role="img" aria-label="Painel administrativo recebendo pedidos ao vivo: contadores, gráfico e lista de pedidos atualizando">
+            <iframe class="pframe" id="pFrame" data-demo-frame src="demo/painel/index.html?demo=1&amp;embed=1&amp;aba=inicio&amp;nome=Padaria" title="Painel da loja com pedidos de exemplo" loading="lazy" tabindex="-1"></iframe>
             <aside class="d-side" id="dSide"></aside>
             <div class="d-main">
               <div class="d-top"><div><small id="dCrumb">PAINEL / INÍCIO</small><h5 id="dTitle">Visão geral</h5><p id="dSub">Resumo dos pedidos e do site.</p></div><div class="d-act"><span class="d-th2"><i class="on">☀ Claro</i><i>☾ Escuro</i></span><span class="d-live"><i></i>AO VIVO</span><span class="d-snd">🔔 Som ligado</span><span class="d-save s2">+ Produto</span></div></div>
@@ -1584,12 +1591,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
         </div>
           <div class="track-phone" aria-label="Tela do cliente acompanhando o pedido">
             <div class="notch"></div>
-            <div class="tscr">
-              <div class="t-head"><small>Acompanhe seu pedido</small><b>Sua Padaria</b></div>
-              <div class="t-card"><div class="t-top"><div><small>PEDIDO</small><b id="tNum">#125</b></div><span class="t-eta" id="tEta">~ 25 min</span></div><p class="t-msg" id="tMsg">Recebemos seu pedido!</p><div class="t-bar"><i id="tBar"></i></div>
-                <ul class="t-steps" id="tSteps"><li><span>🧾</span><div><b>Recebido</b><small>Pedido confirmado</small></div></li><li><span>👩‍🍳</span><div><b>Em preparo</b><small>Saindo do forno</small></div></li><li><span>🛵</span><div><b>Saiu p/ entrega</b><small>A caminho</small></div></li><li><span>✅</span><div><b>Entregue</b><small>Bom apetite!</small></div></li></ul></div>
-              <div class="t-items" id="tItems">1x Bolo de cenoura · 2x Café</div>
-              <div class="t-wa">Falar com a loja no WhatsApp</div>
+            <div class="tscr tscr-real"><div class="tscroll"><iframe class="tframe" id="tFrame" data-demo-frame src="demo/pedido.html?c=demo" title="Página de acompanhamento que o cliente recebe" loading="lazy" tabindex="-1"></iframe></div>
             </div>
           </div>
           <div class="fcard fa1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span><div><b>Tudo em tempo real</b><small>Um toque muda o status</small></div></div>
@@ -2062,10 +2064,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
     function top(){var e=Object.entries(S.top).sort(function(a,b){return b[1]-a[1]}).slice(0,4),mx=e[0][1];document.getElementById('dTop').innerHTML=e.map(function(x){return '<div><p><span>'+x[0]+'</span><b>'+x[1]+'</b></p><i style="width:'+(x[1]/mx*100)+'%"></i></div>'}).join('')}
     var ST={novo:['novo','Novo'],prep:['prep','Em preparo'],rota:['rota','Saiu p/ entrega'],ok:['ok','Entregue']};
     var TM=['Recebemos seu pedido!','Seu pedido está sendo preparado.','Saiu para entrega! Chega em poucos minutos.','Entregue. Bom apetite!'],TE=['~ 25 min','~ 18 min','~ 7 min','Entregue'];
-    function track(o,st,items){var p=document.querySelector('.track-phone');if(!p)return;
-      var g=function(i){return document.getElementById(i)};g('tNum').textContent='#'+o;g('tEta').textContent=TE[st];g('tEta').classList.toggle('done',st===3);g('tMsg').textContent=TM[st];g('tBar').style.width=((st+1)*25)+'%';if(items)g('tItems').textContent=items;
-      [].forEach.call(g('tSteps').children,function(li,i){li.className=i<st?'done':i===st?(st===3?'done':'cur'):''});
-      p.classList.remove('ping');void p.offsetWidth;p.classList.add('ping')}
+    function track(o,st,items){var p=document.querySelector('.track-phone');if(!p)return;var f=document.getElementById('tFrame');try{if(f&&f.contentWindow)f.contentWindow.postMessage({bcDemo:Math.min(4,st+1)},location.origin)}catch(e){}p.classList.remove('ping');void p.offsetWidth;p.classList.add('ping')}
     track(125,1,'1x Bolo de cenoura · 2x Café');
     function orders(){document.getElementById('dOrders').innerHTML=S.orders.slice(0,5).map(function(o){return '<div class="d-ord" data-n="'+o.n+'"><b>#'+o.n+'</b><span>'+o.c+' · '+o.it+'</span><span class="v">'+brl(o.v)+'</span><span class="d-st '+ST[o.s][0]+'">'+ST[o.s][1]+'</span></div>'}).join('')}
     S.orders=[{n:125,c:'Ana P.',it:'3 itens',v:52.7,s:'prep'},{n:124,c:'João M.',it:'1 item',v:14.9,s:'novo'},{n:123,c:'Carla R.',it:'2 itens',v:29.8,s:'novo'},{n:122,c:'Lucas F.',it:'4 itens',v:68.4,s:'ok'}];
@@ -2108,7 +2107,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
     function show(k){navs.forEach(function(e){e.classList.toggle('on',e.dataset.v===k)});var t=TT[k];document.getElementById('dCrumb').textContent='PAINEL / '+t[0];document.getElementById('dTitle').textContent=t[1];document.getElementById('dSub').textContent=t[2];
       var h=document.getElementById('vHome'),a=document.getElementById('vAlt');if(k==='home'){a.classList.remove('on');h.classList.add('on');return}a.innerHTML=V[k]();h.classList.remove('on');a.classList.remove('on');void a.offsetWidth;a.classList.add('on')}
     var tour=1;
-    async function passeio(){for(var j=0;j<KEYS.length-1;j++){var k=KEYS[tour];tour=tour%(KEYS.length-1)+1;var nv=navs[KEYS.indexOf(k)];point(nv);await sleep(900);click();await sleep(200);show(k);await sleep(3200)}
+    async function passeio(){var pf=document.getElementById('pFrame');if(pf){var AB=[['pedidos','quadro'],['pedidos','lista'],['financeiro'],['clientes'],['atendimento'],['cardapio'],['loja'],['equipe'],['ajustes'],['inicio']];for(var q=0;q<AB.length;q++){try{if(AB[q][1])pf.contentWindow.postMessage({bcVista:AB[q][1]},location.origin);pf.contentWindow.postMessage({bcAba:AB[q][0]},location.origin)}catch(e){}await sleep(4200)}return}for(var j=0;j<KEYS.length-1;j++){var k=KEYS[tour];tour=tour%(KEYS.length-1)+1;var nv=navs[KEYS.indexOf(k)];point(nv);await sleep(900);click();await sleep(200);show(k);await sleep(3200)}
       point(navs[0]);await sleep(800);click();await sleep(200);show('home');await sleep(600)}
     var first=true;
     async function loop(){while(true){if(!vis){await sleep(600);continue}

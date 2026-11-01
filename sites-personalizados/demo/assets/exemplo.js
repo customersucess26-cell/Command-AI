@@ -1,0 +1,1882 @@
+/* Gerado por ferramentas/montar-exemplos.py. Cardápio de exemplo por tipo de loja (usado no botão "Usar cardápio de exemplo" do painel). */
+window.BC_EXEMPLO = {
+ "padaria": [
+  {
+   "cat": "Pães",
+   "nome": "Croissant tradicional",
+   "desc": "Folhado, amanteigado, assado a cada hora.",
+   "preco": 9.5,
+   "unid": "Unidade",
+   "destaque": true,
+   "selo": "Mais pedido",
+   "pos": 1,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/croissant-tradicional.jpg"
+  },
+  {
+   "cat": "Pães",
+   "nome": "Pão trançado",
+   "desc": "Massa macia e brilhante, ótimo para o café da manhã.",
+   "preco": 18,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 2,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/pao-trancado-grego.jpg"
+  },
+  {
+   "cat": "Pães",
+   "nome": "Pão doce com creme",
+   "desc": "Recheado com creme de baunilha.",
+   "preco": 8,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 3,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/pao-doce-com-creme.jpg"
+  },
+  {
+   "cat": "Pães",
+   "nome": "Folhado dinamarquês",
+   "desc": "Massa folhada com geleia da casa.",
+   "preco": 12,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 4,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/folhado-dinamarques.jpg"
+  },
+  {
+   "cat": "Bolos",
+   "nome": "Bolo de cenoura",
+   "desc": "Com cobertura de chocolate, fatia generosa.",
+   "preco": 14,
+   "unid": "Fatia",
+   "destaque": true,
+   "selo": "",
+   "pos": 5,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-de-cenoura.jpg"
+  },
+  {
+   "cat": "Bolos",
+   "nome": "Bolo red velvet",
+   "desc": "Massa aveludada e cream cheese.",
+   "preco": 18,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "Novo",
+   "pos": 6,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-red-velvet.jpg"
+  },
+  {
+   "cat": "Bolos",
+   "nome": "Bolo de limão",
+   "desc": "Leve, cítrico e muito úmido.",
+   "preco": 14,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 7,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-de-limao.jpg"
+  },
+  {
+   "cat": "Bolos",
+   "nome": "Cuca de frutas vermelhas",
+   "desc": "Com farofa crocante por cima.",
+   "preco": 15,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 8,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cuca-de-frutas-vermelhas.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Pastel de nata",
+   "desc": "Casquinha crocante e creme na medida.",
+   "preco": 9,
+   "unid": "Unidade",
+   "destaque": true,
+   "selo": "",
+   "pos": 9,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/pastel-de-nata.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Rolinho de canela",
+   "desc": "Glaçado, macio e perfumado.",
+   "preco": 10,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 10,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/rolinho-de-canela.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Scones com geleia",
+   "desc": "Servidos com geleia de frutas vermelhas.",
+   "preco": 12,
+   "unid": "2 unidades",
+   "destaque": false,
+   "selo": "",
+   "pos": 11,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/scones-com-geleia.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Torta de limão",
+   "desc": "Base crocante e merengue maçaricado.",
+   "preco": 16,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 12,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/torta-de-limao.jpg"
+  },
+  {
+   "cat": "Salgados",
+   "nome": "Croissant de presunto e queijo",
+   "desc": "Quentinho, com queijo derretido.",
+   "preco": 14,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 13,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/croissant-de-presunto-e-queijo.jpg"
+  },
+  {
+   "cat": "Salgados",
+   "nome": "Croissant de salmão",
+   "desc": "Com cream cheese e ervas.",
+   "preco": 22,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 14,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/croissant-de-salmao.jpg"
+  },
+  {
+   "cat": "Bebidas",
+   "nome": "Café espresso",
+   "desc": "Grãos selecionados, tirado na hora.",
+   "preco": 7,
+   "unid": "Xícara",
+   "destaque": false,
+   "selo": "",
+   "pos": 15,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-espresso2.jpg"
+  },
+  {
+   "cat": "Bebidas",
+   "nome": "Cappuccino cremoso",
+   "desc": "Com cacau em pó por cima.",
+   "preco": 12,
+   "unid": "Xícara",
+   "destaque": false,
+   "selo": "",
+   "pos": 16,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-cappuccino-cacau.jpg"
+  },
+  {
+   "cat": "Bebidas",
+   "nome": "Latte",
+   "desc": "Espresso com leite vaporizado.",
+   "preco": 13,
+   "unid": "Xícara",
+   "destaque": false,
+   "selo": "",
+   "pos": 17,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-latte.jpg"
+  }
+ ],
+ "cafeteria": [
+  {
+   "cat": "Cafés",
+   "nome": "Espresso",
+   "desc": "Intenso e encorpado, tirado na hora.",
+   "preco": 7,
+   "unid": "Xícara",
+   "destaque": true,
+   "selo": "Clássico",
+   "pos": 1,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-item-espresso.jpg"
+  },
+  {
+   "cat": "Cafés",
+   "nome": "Americano",
+   "desc": "Espresso alongado com água quente.",
+   "preco": 8,
+   "unid": "Xícara",
+   "destaque": false,
+   "selo": "",
+   "pos": 2,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-americano.jpg"
+  },
+  {
+   "cat": "Cafés",
+   "nome": "Espresso duplo",
+   "desc": "Duas doses para quem precisa de energia.",
+   "preco": 11,
+   "unid": "Xícara",
+   "destaque": false,
+   "selo": "",
+   "pos": 3,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-espresso2.jpg"
+  },
+  {
+   "cat": "Cafés",
+   "nome": "Flat white",
+   "desc": "Espresso duplo com leite sedoso.",
+   "preco": 14,
+   "unid": "Xícara",
+   "destaque": false,
+   "selo": "",
+   "pos": 4,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-flat-white.jpg"
+  },
+  {
+   "cat": "Com leite",
+   "nome": "Cappuccino",
+   "desc": "Espuma cremosa e toque de cacau.",
+   "preco": 12,
+   "unid": "Xícara",
+   "destaque": true,
+   "selo": "Mais pedido",
+   "pos": 5,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-item-cappuccino.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Com leite",
+   "nome": "Latte",
+   "desc": "Suave, com leite vaporizado.",
+   "preco": 13,
+   "unid": "Xícara",
+   "destaque": false,
+   "selo": "",
+   "pos": 6,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-latte.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Com leite",
+   "nome": "Latte macchiato",
+   "desc": "Camadas de leite, espuma e espresso.",
+   "preco": 14,
+   "unid": "Copo",
+   "destaque": false,
+   "selo": "",
+   "pos": 7,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-latte-macchiato.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Com leite",
+   "nome": "Mocha com canela",
+   "desc": "Chocolate, espresso e canela.",
+   "preco": 16,
+   "unid": "Xícara",
+   "destaque": false,
+   "selo": "",
+   "pos": 8,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-mocha-canela.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Com leite",
+   "nome": "Latte com especiarias",
+   "desc": "Canela, cravo e noz-moscada.",
+   "preco": 15,
+   "unid": "Xícara",
+   "destaque": false,
+   "selo": "Da estação",
+   "pos": 9,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-latte-especiarias.jpg",
+   "opcoes": [
+    {
+     "id": "leite",
+     "nome": "Tipo de leite",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "leite1",
+       "nome": "Integral",
+       "preco": 0
+      },
+      {
+       "id": "leite2",
+       "nome": "Sem lactose",
+       "preco": 0
+      },
+      {
+       "id": "leite3",
+       "nome": "Vegetal (aveia)",
+       "preco": 3
+      }
+     ]
+    },
+    {
+     "id": "extra",
+     "nome": "Extras",
+     "min": 0,
+     "max": 2,
+     "itens": [
+      {
+       "id": "extra1",
+       "nome": "Chantilly",
+       "preco": 3
+      },
+      {
+       "id": "extra2",
+       "nome": "Calda de caramelo",
+       "preco": 2.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Gelados",
+   "nome": "Iced latte",
+   "desc": "Café com leite e muito gelo.",
+   "preco": 14,
+   "unid": "Copo",
+   "destaque": false,
+   "selo": "",
+   "pos": 10,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-iced-latte.jpg"
+  },
+  {
+   "cat": "Gelados",
+   "nome": "Iced caramel latte",
+   "desc": "Calda de caramelo e chantilly.",
+   "preco": 17,
+   "unid": "Copo",
+   "destaque": true,
+   "selo": "",
+   "pos": 11,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-iced-caramel-latte.jpg"
+  },
+  {
+   "cat": "Gelados",
+   "nome": "Frappé de chocolate",
+   "desc": "Cremoso, com raspas de chocolate.",
+   "preco": 18,
+   "unid": "Copo",
+   "destaque": false,
+   "selo": "",
+   "pos": 12,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-frappe-chocolate.jpg"
+  },
+  {
+   "cat": "Gelados",
+   "nome": "Dalgona",
+   "desc": "Café batido sobre leite gelado.",
+   "preco": 16,
+   "unid": "Copo",
+   "destaque": false,
+   "selo": "",
+   "pos": 13,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-dalgona.jpg"
+  },
+  {
+   "cat": "Comidinhas",
+   "nome": "Croissant tradicional",
+   "desc": "Folhado e amanteigado.",
+   "preco": 9.5,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 14,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/croissant-tradicional.jpg"
+  },
+  {
+   "cat": "Comidinhas",
+   "nome": "Croissant de presunto e queijo",
+   "desc": "Quentinho, com queijo derretido.",
+   "preco": 14,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 15,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/croissant-de-presunto-e-queijo.jpg"
+  },
+  {
+   "cat": "Comidinhas",
+   "nome": "Waffle belga",
+   "desc": "Com frutas e calda.",
+   "preco": 22,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 16,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/waffle-belga.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Cheesecake basco",
+   "desc": "Cremoso e levemente queimado.",
+   "preco": 19,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 17,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cheesecake-basco.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Pastel de nata",
+   "desc": "Casquinha crocante e creme na medida.",
+   "preco": 9,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 18,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/pastel-de-nata.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Madeleines",
+   "desc": "Macias e douradas, feitas na hora.",
+   "preco": 12,
+   "unid": "4 unidades",
+   "destaque": false,
+   "selo": "",
+   "pos": 19,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/madeleines.jpg"
+  }
+ ],
+ "doceria": [
+  {
+   "cat": "Bolos",
+   "nome": "Bolo de chocolate com chantilly",
+   "desc": "Massa úmida e cobertura generosa.",
+   "preco": 16,
+   "unid": "Fatia",
+   "destaque": true,
+   "selo": "Mais pedido",
+   "pos": 1,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-de-chocolate-com-chantilly.jpg"
+  },
+  {
+   "cat": "Bolos",
+   "nome": "Bolo de morango com chantilly",
+   "desc": "Recheio de morangos frescos.",
+   "preco": 17,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 2,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-de-morango-com-chantilly.jpg"
+  },
+  {
+   "cat": "Bolos",
+   "nome": "Bolo red velvet",
+   "desc": "Massa aveludada e cream cheese.",
+   "preco": 18,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 3,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-red-velvet.jpg"
+  },
+  {
+   "cat": "Bolos",
+   "nome": "Bolo ganache",
+   "desc": "Camadas de chocolate meio amargo.",
+   "preco": 18,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 4,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-ganache.jpg"
+  },
+  {
+   "cat": "Bolos",
+   "nome": "Bolo três chocolates",
+   "desc": "Branco, ao leite e meio amargo.",
+   "preco": 19,
+   "unid": "Fatia",
+   "destaque": true,
+   "selo": "",
+   "pos": 5,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-tres-chocolates.jpg"
+  },
+  {
+   "cat": "Bolos",
+   "nome": "Bolo de coco",
+   "desc": "Úmido, com coco fresco.",
+   "preco": 14,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 6,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-de-coco.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Profiteroles",
+   "desc": "Bomboniere de creme com calda de chocolate.",
+   "preco": 18,
+   "unid": "4 unidades",
+   "destaque": false,
+   "selo": "",
+   "pos": 7,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/profiteroles.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Petit gâteau",
+   "desc": "Casquinha firme e coração derretendo.",
+   "preco": 22,
+   "unid": "Unidade",
+   "destaque": true,
+   "selo": "",
+   "pos": 8,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/petit-gateau.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Cannoli sicilianos",
+   "desc": "Recheio de ricota e gotas de chocolate.",
+   "preco": 15,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 9,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cannoli-sicilianos.jpg"
+  },
+  {
+   "cat": "Doces",
+   "nome": "Baba ao rum",
+   "desc": "Molhadinho e perfumado.",
+   "preco": 14,
+   "unid": "Unidade",
+   "destaque": false,
+   "selo": "",
+   "pos": 10,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/baba-ao-rum.jpg"
+  },
+  {
+   "cat": "Tortas",
+   "nome": "Torta de limão",
+   "desc": "Base crocante e merengue maçaricado.",
+   "preco": 16,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 11,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/torta-de-limao.jpg"
+  },
+  {
+   "cat": "Tortas",
+   "nome": "Torta mousse de chocolate",
+   "desc": "Mousse aerado sobre base de biscoito.",
+   "preco": 18,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 12,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/torta-mousse-de-chocolate.jpg"
+  },
+  {
+   "cat": "Tortas",
+   "nome": "Torta della nonna",
+   "desc": "Creme de baunilha e pinhões.",
+   "preco": 18,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 13,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/torta-della-nonna.jpg"
+  },
+  {
+   "cat": "Tortas",
+   "nome": "Cheesecake de frutas vermelhas",
+   "desc": "Cremoso, com calda artesanal.",
+   "preco": 19,
+   "unid": "Fatia",
+   "destaque": false,
+   "selo": "",
+   "pos": 14,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cheesecake-de-frutas-vermelhas.jpg"
+  },
+  {
+   "cat": "Tortas",
+   "nome": "Tiramisu",
+   "desc": "Clássico italiano, com café de verdade.",
+   "preco": 18,
+   "unid": "Porção",
+   "destaque": false,
+   "selo": "",
+   "pos": 15,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/tiramisu.jpg"
+  },
+  {
+   "cat": "Encomendas",
+   "nome": "Bolo de festa",
+   "desc": "Escolha o sabor e o tamanho. Consulte prazos.",
+   "preco": 120,
+   "unid": "A partir de",
+   "destaque": false,
+   "selo": "Sob encomenda",
+   "pos": 16,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/bolo-floresta-negra.jpg"
+  }
+ ],
+ "hamburgueria": [
+  {
+   "cat": "Burgers",
+   "nome": "Clássico",
+   "desc": "Blend 160g, queijo, bacon, cebola e molho da casa.",
+   "preco": 32.9,
+   "unid": "",
+   "destaque": true,
+   "selo": "Mais pedido",
+   "pos": 1,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/classico.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Burgers",
+   "nome": "Barbecue",
+   "desc": "Blend 160g, onion rings, cheddar e barbecue defumado.",
+   "preco": 36.9,
+   "unid": "",
+   "destaque": true,
+   "selo": "",
+   "pos": 2,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/barbecue.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Burgers",
+   "nome": "Mexicano",
+   "desc": "Blend 160g, guacamole, jalapeño e cheddar.",
+   "preco": 38.9,
+   "unid": "",
+   "destaque": false,
+   "selo": "Picante",
+   "pos": 3,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/mexicano.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Burgers",
+   "nome": "Trufado",
+   "desc": "Pão preto, cogumelos, queijo e maionese trufada.",
+   "preco": 42.9,
+   "unid": "",
+   "destaque": false,
+   "selo": "Novo",
+   "pos": 4,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/trufado.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Burgers",
+   "nome": "Crispy",
+   "desc": "Frango empanado, picles, tomate e maionese.",
+   "preco": 34.9,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 5,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/crispy.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Burgers",
+   "nome": "Salmão",
+   "desc": "Salmão grelhado, guacamole e pão de milho.",
+   "preco": 44.9,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 6,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/salmao.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Burgers",
+   "nome": "Halloumi",
+   "desc": "Queijo halloumi grelhado e legumes. Vegetariano.",
+   "preco": 36.9,
+   "unid": "",
+   "destaque": false,
+   "selo": "Veggie",
+   "pos": 7,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/halloumi.jpg",
+   "opcoes": [
+    {
+     "id": "ponto",
+     "nome": "Ponto da carne",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "ponto1",
+       "nome": "Mal passado",
+       "preco": 0
+      },
+      {
+       "id": "ponto2",
+       "nome": "Ao ponto",
+       "preco": 0
+      },
+      {
+       "id": "ponto3",
+       "nome": "Bem passado",
+       "preco": 0
+      }
+     ]
+    },
+    {
+     "id": "add",
+     "nome": "Adicionais",
+     "min": 0,
+     "max": 3,
+     "itens": [
+      {
+       "id": "add1",
+       "nome": "Queijo extra",
+       "preco": 4.5
+      },
+      {
+       "id": "add2",
+       "nome": "Bacon",
+       "preco": 6
+      },
+      {
+       "id": "add3",
+       "nome": "Ovo",
+       "preco": 3
+      },
+      {
+       "id": "add4",
+       "nome": "Cebola caramelizada",
+       "preco": 3.5
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Combos",
+   "nome": "Combo Clássico",
+   "desc": "Clássico, batata e refrigerante.",
+   "preco": 49.9,
+   "unid": "",
+   "destaque": true,
+   "selo": "",
+   "pos": 8,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/combo.jpg"
+  },
+  {
+   "cat": "Acompanhamentos",
+   "nome": "Batata frita",
+   "desc": "Porção individual, crocante e sequinha.",
+   "preco": 16,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 9,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/fritas.jpg"
+  },
+  {
+   "cat": "Acompanhamentos",
+   "nome": "Batata com cheddar",
+   "desc": "Porção grande coberta de cheddar cremoso.",
+   "preco": 29,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 10,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/batata.jpg"
+  },
+  {
+   "cat": "Bebidas",
+   "nome": "Milkshake de chocolate",
+   "desc": "Cremoso, 400 ml.",
+   "preco": 24,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 11,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/cafe-menu-frappe-chocolate.jpg"
+  },
+  {
+   "cat": "Sobremesas",
+   "nome": "Petit gâteau",
+   "desc": "Com sorvete de creme.",
+   "preco": 24,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 12,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/petit-gateau.jpg"
+  }
+ ],
+ "pizzaria": [
+  {
+   "cat": "Pizzas salgadas",
+   "nome": "Margherita",
+   "desc": "Molho de tomate, muçarela, manjericão e azeite.",
+   "preco": 49,
+   "unid": "Grande",
+   "destaque": true,
+   "selo": "Clássica",
+   "pos": 1,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Pizzas salgadas",
+   "nome": "Calabresa",
+   "desc": "Calabresa fatiada, cebola e azeitonas.",
+   "preco": 52,
+   "unid": "Grande",
+   "destaque": false,
+   "selo": "",
+   "pos": 2,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Pizzas salgadas",
+   "nome": "Quatro queijos",
+   "desc": "Muçarela, provolone, gorgonzola e parmesão.",
+   "preco": 58,
+   "unid": "Grande",
+   "destaque": false,
+   "selo": "",
+   "pos": 3,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Pizzas salgadas",
+   "nome": "Portuguesa",
+   "desc": "Presunto, ovos, cebola, ervilha e azeitonas.",
+   "preco": 55,
+   "unid": "Grande",
+   "destaque": false,
+   "selo": "",
+   "pos": 4,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Pizzas doces",
+   "nome": "Chocolate com morango",
+   "desc": "Chocolate ao leite e morangos frescos.",
+   "preco": 54,
+   "unid": "Grande",
+   "destaque": false,
+   "selo": "",
+   "pos": 5,
+   "opcoes": [
+    {
+     "id": "tam",
+     "nome": "Tamanho",
+     "min": 1,
+     "max": 1,
+     "itens": [
+      {
+       "id": "tam1",
+       "nome": "Média (6 fatias)",
+       "preco": 0
+      },
+      {
+       "id": "tam2",
+       "nome": "Grande (8 fatias)",
+       "preco": 14
+      },
+      {
+       "id": "tam3",
+       "nome": "Família (12 fatias)",
+       "preco": 28
+      }
+     ]
+    },
+    {
+     "id": "borda",
+     "nome": "Borda",
+     "min": 0,
+     "max": 1,
+     "itens": [
+      {
+       "id": "borda1",
+       "nome": "Catupiry",
+       "preco": 8
+      },
+      {
+       "id": "borda2",
+       "nome": "Cheddar",
+       "preco": 8
+      },
+      {
+       "id": "borda3",
+       "nome": "Chocolate",
+       "preco": 9
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "cat": "Bebidas",
+   "nome": "Refrigerante 2 L",
+   "desc": "Gelado, na hora da entrega.",
+   "preco": 14,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 6
+  }
+ ],
+ "restaurante": [
+  {
+   "cat": "Entradas",
+   "nome": "Vieira selada",
+   "desc": "Com creme de ervas e azeite cítrico.",
+   "preco": 58,
+   "unid": "",
+   "destaque": true,
+   "selo": "Da casa",
+   "pos": 1,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/vieira.jpg"
+  },
+  {
+   "cat": "Entradas",
+   "nome": "Carpaccio",
+   "desc": "Lâminas de carne, rúcula, parmesão e alcaparras.",
+   "preco": 46,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 2,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/carpaccio.jpg"
+  },
+  {
+   "cat": "Entradas",
+   "nome": "Salada de burrata",
+   "desc": "Burrata, tomates, folhas e vinagrete de ervas.",
+   "preco": 42,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 3,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/salada-burrata.jpg"
+  },
+  {
+   "cat": "Entradas",
+   "nome": "Tábua de frios",
+   "desc": "Embutidos, queijos, geleia e castanhas.",
+   "preco": 78,
+   "unid": "Para dividir",
+   "destaque": false,
+   "selo": "",
+   "pos": 4,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/tabua.jpg"
+  },
+  {
+   "cat": "Entradas",
+   "nome": "Tartare",
+   "desc": "Carne bovina, gema e picles.",
+   "preco": 52,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 5,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/tartare.jpg"
+  },
+  {
+   "cat": "Pratos principais",
+   "nome": "Chateaubriand",
+   "desc": "Filé alto, purê de batata e legumes assados.",
+   "preco": 169,
+   "unid": "Para 2",
+   "destaque": true,
+   "selo": "Para dividir",
+   "pos": 6,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/chateaubriand.jpg"
+  },
+  {
+   "cat": "Pratos principais",
+   "nome": "Risoto de trufas",
+   "desc": "Parmesão e trufa negra.",
+   "preco": 118,
+   "unid": "",
+   "destaque": true,
+   "selo": "",
+   "pos": 7,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/risoto-trufas.jpg"
+  },
+  {
+   "cat": "Pratos principais",
+   "nome": "Confit de pato",
+   "desc": "Pato confitado com redução de vinho.",
+   "preco": 98,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 8,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/confit-pato.jpg"
+  },
+  {
+   "cat": "Pratos principais",
+   "nome": "Coq au vin",
+   "desc": "Frango no vinho tinto, cogumelos e bacon.",
+   "preco": 88,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 9,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/coq-au-vin.jpg"
+  },
+  {
+   "cat": "Pratos principais",
+   "nome": "Salmão en papillote",
+   "desc": "Salmão assado no papel com ervas e limão.",
+   "preco": 92,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 10,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/papillote.jpg"
+  },
+  {
+   "cat": "Pratos principais",
+   "nome": "Ratatouille",
+   "desc": "Legumes assados em molho de tomate. Vegano.",
+   "preco": 68,
+   "unid": "",
+   "destaque": false,
+   "selo": "Vegano",
+   "pos": 11,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/ratatouille.jpg"
+  },
+  {
+   "cat": "Sobremesas",
+   "nome": "Crème brûlée",
+   "desc": "Creme de baunilha com crosta de caramelo.",
+   "preco": 36,
+   "unid": "",
+   "destaque": true,
+   "selo": "",
+   "pos": 12,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/creme-brulee.jpg"
+  },
+  {
+   "cat": "Sobremesas",
+   "nome": "Pavlova",
+   "desc": "Merengue crocante com frutas vermelhas.",
+   "preco": 38,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 13,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/pavlova.jpg"
+  },
+  {
+   "cat": "Sobremesas",
+   "nome": "Tiramisu",
+   "desc": "Mascarpone, café e cacau.",
+   "preco": 34,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 14,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/tiramisu.jpg"
+  },
+  {
+   "cat": "Sobremesas",
+   "nome": "Torta de limão",
+   "desc": "Merengue maçaricado.",
+   "preco": 32,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 15,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/torta-limao.jpg"
+  },
+  {
+   "cat": "Bebidas",
+   "nome": "Espumante Chandon",
+   "desc": "Garrafa 750 ml.",
+   "preco": 190,
+   "unid": "Garrafa",
+   "destaque": false,
+   "selo": "",
+   "pos": 16,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/chandon.png",
+   "contem": true
+  },
+  {
+   "cat": "Bebidas",
+   "nome": "Malbec Catena",
+   "desc": "Garrafa 750 ml.",
+   "preco": 210,
+   "unid": "Garrafa",
+   "destaque": false,
+   "selo": "",
+   "pos": 17,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/catena.png",
+   "contem": true
+  },
+  {
+   "cat": "Bebidas",
+   "nome": "Chablis",
+   "desc": "Garrafa 750 ml.",
+   "preco": 240,
+   "unid": "Garrafa",
+   "destaque": false,
+   "selo": "",
+   "pos": 18,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/chablis.png",
+   "contem": true
+  }
+ ],
+ "outro": [
+  {
+   "cat": "Destaques",
+   "nome": "Risoto de trufas",
+   "desc": "Parmesão e trufa negra.",
+   "preco": 118,
+   "unid": "",
+   "destaque": true,
+   "selo": "Da casa",
+   "pos": 1,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/risoto-trufas.jpg"
+  },
+  {
+   "cat": "Destaques",
+   "nome": "Salada de burrata",
+   "desc": "Burrata, tomates, folhas e vinagrete de ervas.",
+   "preco": 42,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 2,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/salada-burrata.jpg"
+  },
+  {
+   "cat": "Cardápio",
+   "nome": "Carpaccio",
+   "desc": "Lâminas de carne, rúcula e parmesão.",
+   "preco": 46,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 3,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/carpaccio.jpg"
+  },
+  {
+   "cat": "Cardápio",
+   "nome": "Ratatouille",
+   "desc": "Legumes assados em molho de tomate. Vegano.",
+   "preco": 68,
+   "unid": "",
+   "destaque": false,
+   "selo": "Vegano",
+   "pos": 4,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/ratatouille.jpg"
+  },
+  {
+   "cat": "Cardápio",
+   "nome": "Crème brûlée",
+   "desc": "Creme de baunilha com crosta de caramelo.",
+   "preco": 36,
+   "unid": "",
+   "destaque": false,
+   "selo": "",
+   "pos": 5,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/creme-brulee.jpg"
+  },
+  {
+   "cat": "Bebidas",
+   "nome": "Espumante Chandon",
+   "desc": "Garrafa 750 ml.",
+   "preco": 190,
+   "unid": "Garrafa",
+   "destaque": false,
+   "selo": "",
+   "pos": 6,
+   "foto": (window.__BCROOT||"")+"assets/img/exemplo/chandon.png",
+   "contem": true
+  }
+ ]
+};
+window.BC_CAPAS = {
+ "padaria": (window.__BCROOT||"")+"assets/img/exemplo/cafe-hero.jpg",
+ "cafeteria": (window.__BCROOT||"")+"assets/img/exemplo/cafe-hero.jpg",
+ "doceria": (window.__BCROOT||"")+"assets/img/exemplo/bolo-de-chocolate-com-chantilly.jpg",
+ "hamburgueria": (window.__BCROOT||"")+"assets/img/exemplo/w2.jpg",
+ "restaurante": (window.__BCROOT||"")+"assets/img/exemplo/hero-bg.jpg"
+};
