@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-YD2C4GQDhsC22aAsSn6/gUoiBZUcXb7MxC+R5qBcQlU=' 'sha256-XH11/5HYDF/sdoKjMlbnWC+oTvK6bPfYVNBZM1osH5c=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-YD2C4GQDhsC22aAsSn6/gUoiBZUcXb7MxC+R5qBcQlU=' 'sha256-lTic7ZFkPnozSUMgC8AJp9rcclSLr5gORV8E5OmgCnw=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BistrôConnect | Sites e experiências digitais para restaurantes</title>
 <meta name="description" content="Sua marca merece um site do seu tamanho. Projetos digitais exclusivos (Signature) e soluções gastronômicas com cardápio digital, pedidos pelo WhatsApp e painel administrativo, para restaurantes que não abrem mão da excelência.">
@@ -1764,6 +1764,211 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
   .hero .in>div:first-child>*,.hero .vitrine,.fq-g .faq details[open] p,#contato::before,#contato::after{animation:none!important}
   .ln-card.sig::before{transform:scaleX(1)}
 }
+
+/* =====================================================================
+   REDESENHO: topo escuro, duas linhas, Signature (ateliê), gastronomia (mosaico)
+   ===================================================================== */
+[data-live]:not(.live) *,[data-live]:not(.live) *::before,[data-live]:not(.live) *::after{animation-play-state:paused!important}
+
+/* --- topo escuro --- */
+.hero.dark h1{color:#fff}
+.hero.dark .sub{color:var(--on-navy)}
+.hero.dark .lead{color:var(--on-navy-soft)}
+.hero.dark .eyebrow{color:var(--mint)}
+.hero.dark .btn-ghost{color:var(--on-navy);border-color:rgba(255,255,255,.3);background:transparent}
+.hero.dark .btn-ghost:hover{background:rgba(255,255,255,.06);border-color:#fff}
+.hero.dark .phone-note,.hero.dark .vitrine .phone-note{color:var(--on-navy-soft)!important}
+.hero.dark .phone-note a{color:var(--mint)}
+.mf-sec{padding-block:clamp(72px,9vw,128px)}
+.mf-sec .mf-in{margin:0 auto}
+
+/* --- duas linhas: dois painéis que se expandem --- */
+.ln.dx{display:grid;grid-template-columns:1fr 1fr;gap:0;position:relative;transition:grid-template-columns .9s cubic-bezier(.2,.8,.2,1)}
+.ln.dx:has(.sig:hover){grid-template-columns:1.32fr .88fr}
+.ln.dx:has(.gas:hover){grid-template-columns:.88fr 1.32fr}
+.ln.dx .ln-card{position:relative;overflow:visible;min-width:0;border:1px solid rgba(255,255,255,.1);padding:clamp(26px,3vw,46px);gap:20px;display:flex;flex-direction:column;box-shadow:none}
+.ln.dx .ln-card.sig{border-radius:30px 0 0 30px;background:radial-gradient(120% 90% at 0% 0%,#26262a 0%,#141416 60%);border-right:0}
+.ln.dx .ln-card.gas{border-radius:0 30px 30px 0;background:radial-gradient(120% 90% at 100% 0%,#2a5846 0%,#16322a 45%,#0f1f1a 100%);border-color:rgba(255,255,255,.1)}
+.ln.dx .ln-card.sig::before{left:36px;right:36px;top:0}
+.ln.dx .ln-card.sig::after{content:"ou";position:absolute;right:0;top:50%;transform:translate(50%,-50%);z-index:4;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--navy);border:1px solid rgba(217,174,92,.55);color:var(--mint);font:600 13px var(--f-display);letter-spacing:.06em;box-shadow:0 0 0 8px rgba(15,15,17,.8)}
+.ln.dx .ln-card.gas{border-left:1px solid rgba(255,255,255,.1)}
+.px-art{position:relative;height:clamp(170px,19vw,236px);border-radius:18px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08)}
+.px-art::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:22px 22px;mask-image:radial-gradient(70% 80% at 50% 50%,#000,transparent)}
+.art-tag{position:absolute;left:14px;bottom:10px;font:600 11px var(--f-body);letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.wf{position:relative;width:min(88%,380px);color:var(--mint)}
+.wf *{stroke-dasharray:1;stroke-dashoffset:1;animation:wfDraw 12s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes wfDraw{0%{stroke-dashoffset:1;opacity:1}24%{stroke-dashoffset:0}84%{stroke-dashoffset:0;opacity:1}94%{stroke-dashoffset:0;opacity:0}100%{stroke-dashoffset:1;opacity:0}}
+.ln.dx .ln-card.sig:hover .wf *{stroke:#F0D08A}
+.ln-ghost{clip-path:inset(0 0 0 0);position:absolute;right:-8px;bottom:-26px;font:800 clamp(70px,8.4vw,132px)/1 var(--f-display);letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.07);pointer-events:none;white-space:nowrap;transition:-webkit-text-stroke-color .6s,transform .9s}
+.ln-card:hover .ln-ghost{-webkit-text-stroke-color:rgba(217,174,92,.28);transform:translateX(-14px)}
+.ln.dx .ln-card ul,.ln.dx .ln-card .ln-for,.ln.dx .ln-cta{position:relative;z-index:2}
+.ln.dx .ln-card.gas .ln-tag{color:#BFE0CF;background:rgba(255,255,255,.08)}
+.ln.dx .ln-card.gas li svg{color:#BFE0CF}
+/* mini site que troca de identidade */
+.mini{--m1:#17130f;--m2:#C8B48E;--mt:#F4EFE6;width:min(78%,300px);border-radius:12px;overflow:hidden;background:var(--m1);color:var(--mt);box-shadow:0 20px 40px -18px rgba(0,0,0,.7);position:relative;transition:background .9s,color .9s}
+.mini[data-t="1"]{--m1:#161616;--m2:#E0452B;--mt:#fff}
+.mini[data-t="2"]{--m1:#F6EEE4;--m2:#B9764A;--mt:#2B1D14}
+.mini[data-t="3"]{--m1:#0F1A14;--m2:#D6483A;--mt:#F4EFE6}
+.mini-bar{display:flex;align-items:center;gap:5px;padding:7px 10px;background:rgba(0,0,0,.28)}
+.mini[data-t="2"] .mini-bar{background:rgba(0,0,0,.08)}
+.mini-bar i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.35}
+.mini-bar b{margin-left:8px;font:500 9.5px var(--f-body);opacity:.7}
+.mini-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:9px}
+.mini-brand{display:flex;align-items:center;gap:8px}.mini-brand i{width:16px;height:16px;border-radius:50%;background:var(--m2);transition:background .9s}
+.mini-brand b{font:700 12px var(--f-display)}
+.mini-hero{height:44px;border-radius:7px;background:linear-gradient(120deg,var(--m2),transparent 85%);opacity:.9;transition:background .9s}
+.mini-rows{display:flex;flex-direction:column;gap:5px}.mini-rows span{height:6px;border-radius:4px;background:currentColor;opacity:.2}.mini-rows span:nth-child(2){width:78%}.mini-rows span:nth-child(3){width:56%}
+.mini-btn{align-self:flex-start;padding:5px 12px;border-radius:99px;background:var(--m2);color:var(--m1);font:700 10px var(--f-body);transition:background .9s,color .9s}
+/* quadro de comparação */
+.cmp{margin-top:clamp(40px,5vw,72px);border-top:1px solid rgba(255,255,255,.18);opacity:0;transform:translateY(18px);transition:opacity .9s,transform .9s}
+.cmp.in-v{opacity:1;transform:none}
+.cmp-h,.cmp-r{display:grid;grid-template-columns:.8fr 1fr 1fr;gap:20px;padding:16px 4px;border-bottom:1px solid rgba(255,255,255,.1);align-items:baseline}
+.cmp-h span{font:700 12px var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--mint)}
+.cmp-h b{font:600 17px var(--f-display);color:#fff}
+.cmp-r span{font:600 13px var(--f-body);color:var(--on-navy-soft);letter-spacing:.04em}
+.cmp-r p{margin:0;font-size:15.5px;color:var(--on-navy);line-height:1.5}
+.cmp-r{transition:background .4s}.cmp-r:hover{background:rgba(255,255,255,.035)}
+
+/* --- Signature: ateliê --- */
+.sgx{position:relative;overflow:hidden}
+.sgx-bg{position:absolute;left:50%;top:6%;transform:translateX(-50%);font:800 clamp(120px,22vw,340px)/1 var(--f-display);letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1px rgba(168,126,47,.14);pointer-events:none;white-space:nowrap;z-index:0}
+.sgx>.in{position:relative;z-index:1}
+.sgx-top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(30px,5vw,80px);align-items:center}
+.sgx-top .head{margin-bottom:0}
+.sgx-cta{margin:8px 0 0}
+.sgx-board{position:relative;border-radius:24px;background:radial-gradient(120% 100% at 0% 0%,#26262a,#101112);color:#fff;padding:34px 30px 30px;display:flex;flex-direction:column;gap:20px;box-shadow:0 50px 90px -40px rgba(30,18,4,.65);transform:rotate(1.2deg);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.sgx-board:hover{transform:rotate(0deg) translateY(-6px)}
+.sgx-board .cr{position:absolute;width:16px;height:16px;border:0 solid var(--mint);opacity:.8}
+.cr.tl{left:12px;top:12px;border-width:1.5px 0 0 1.5px}.cr.tr{right:12px;top:12px;border-width:1.5px 1.5px 0 0}.cr.bl{left:12px;bottom:12px;border-width:0 0 1.5px 1.5px}.cr.br{right:12px;bottom:12px;border-width:0 1.5px 1.5px 0}
+.bd-row small{display:block;font:700 10.5px var(--f-body);letter-spacing:.2em;text-transform:uppercase;color:var(--mint);margin-bottom:9px}
+.bd-pal{display:flex;gap:10px}.bd-pal i{width:44px;height:44px;border-radius:50%;display:block;transition:transform .5s}.bd-pal i:hover{transform:translateY(-5px) scale(1.08)}
+.bd-type{display:flex;align-items:center;gap:16px}.bd-type b{font:300 58px/1 'Fraunces',Georgia,serif;color:var(--mint)}.bd-type span{font-size:13.5px;line-height:1.5;color:var(--on-navy-soft)}
+.wf-s{width:100%;max-width:300px;color:#C8B48E}
+.bd-note{position:absolute;right:22px;top:-16px;font:italic 400 18px 'Fraunces',Georgia,serif;color:var(--mint-deep);background:var(--paper);padding:4px 14px;border-radius:99px;box-shadow:0 8px 20px -10px rgba(60,35,5,.4);transform:rotate(3deg)}
+.sgx-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:clamp(52px,6vw,90px)}
+.sgx-c{position:relative;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px 26px 30px;min-height:262px;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(24px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1),background .5s,color .5s,border-color .5s,box-shadow .5s}
+.sgx-grid.in-v .sgx-c{opacity:1;transform:none}
+.sgx-grid.in-v .sgx-c:nth-child(4n+2){transition-delay:.1s}.sgx-grid.in-v .sgx-c:nth-child(4n+3){transition-delay:.2s}.sgx-grid.in-v .sgx-c:nth-child(4n){transition-delay:.3s}
+.sgx-n{position:absolute;right:16px;top:6px;font:800 76px/1 var(--f-display);color:transparent;-webkit-text-stroke:1px rgba(168,126,47,.22);transition:-webkit-text-stroke-color .5s,transform .6s}
+.sgx-c .ic{width:54px;height:54px;color:var(--mint-deep);margin-bottom:10px;transition:color .5s,transform .6s}
+.sgx-c .ic *{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s ease}
+.sgx-grid.in-v .sgx-c .ic *{stroke-dashoffset:0}
+.sgx-grid.in-v .sgx-c:nth-child(2n) .ic *{transition-delay:.25s}
+.sgx-c h3{font:700 19px/1.25 var(--f-display);margin:0;color:var(--ink);transition:color .5s}
+.sgx-c p{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-soft);transition:color .5s}
+.sgx-c:hover{background:var(--navy);border-color:var(--navy);box-shadow:0 40px 60px -34px rgba(20,12,2,.7);transform:translateY(-6px)}
+.sgx-c:hover h3{color:#fff}.sgx-c:hover p{color:var(--on-navy-soft)}.sgx-c:hover .ic{color:var(--mint);transform:scale(1.08) rotate(-4deg)}
+.sgx-c:hover .sgx-n{-webkit-text-stroke-color:rgba(217,174,92,.5);transform:translateX(-6px)}
+.sgx .steps .step{position:relative;overflow:hidden}
+.sgx .steps .step::before{content:attr(data-n);position:absolute;right:10px;bottom:-14px;font:800 92px/1 var(--f-display);color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.08);pointer-events:none}
+
+/* --- Soluções gastronômicas: mosaico vivo --- */
+.bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(214px,auto);gap:16px;opacity:0;transform:translateY(24px);transition:opacity .9s,transform .9s cubic-bezier(.2,.8,.2,1)}
+.bento.in-v{opacity:1;transform:none}
+.bento .b{position:relative;overflow:hidden;border-radius:26px;padding:26px;display:flex;flex-direction:column;gap:14px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.1);transition:border-color .5s,transform .6s cubic-bezier(.2,.8,.2,1)}
+.bento .b:hover{border-color:rgba(217,174,92,.5);transform:translateY(-4px)}
+.bento .b1{grid-column:span 2;grid-row:span 2}
+.bento .b6{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;gap:30px}
+.bento .bt h3{font:700 19px/1.25 var(--f-display);color:#fff;margin:0 0 8px}
+.bento .bt p{margin:0;font-size:14.5px;line-height:1.6;color:var(--on-navy-soft);max-width:44ch}
+.bv{margin-top:auto}
+/* b1 celular */
+.ph-m{margin:auto auto -34px;width:min(270px,86%);border-radius:30px 30px 0 0;background:#0B0B0C;border:1px solid rgba(255,255,255,.14);border-bottom:0;padding:16px 14px 52px;display:flex;flex-direction:column;gap:9px;position:relative;box-shadow:0 -20px 50px -20px rgba(217,174,92,.25)}
+.ph-top{font:700 12px var(--f-display);color:var(--mint);text-align:center;letter-spacing:.08em;padding-bottom:4px}
+.ph-it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:rgba(255,255,255,.05)}
+.ph-it i{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#6b4a2a,#d9ae5c);flex:none}
+.ph-it:nth-child(3) i{background:linear-gradient(135deg,#7a2b2b,#c8704a)}.ph-it:nth-child(4) i{background:linear-gradient(135deg,#2b4a6b,#7aa3c8)}
+.ph-it span{flex:1;display:flex;flex-direction:column}.ph-it em{font:600 12px var(--f-body);font-style:normal;color:#fff}.ph-it small{font-size:11px;color:var(--on-navy-soft)}
+.ph-it b{width:22px;height:22px;border-radius:50%;background:var(--mint);color:#111;display:grid;place-items:center;font:700 14px var(--f-body);animation:phPulse 7s ease-in-out infinite}
+.ph-it:nth-child(3) b{animation-delay:1.2s}.ph-it:nth-child(4) b{animation-delay:2.4s}
+@keyframes phPulse{0%,12%,100%{transform:scale(1)}6%{transform:scale(1.28)}}
+.ph-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:12px;background:var(--mint);color:#111;font:700 12px var(--f-body);margin-top:4px}
+.ph-wa{position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:12px;background:#143d2c;color:#d6f5e4;font:600 11.5px var(--f-body);box-shadow:0 10px 24px -8px rgba(0,0,0,.6);animation:phWa 9s ease-in-out infinite}
+.ph-wa i{width:18px;height:18px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;font-style:normal;font-size:11px}
+@keyframes phWa{0%,38%{opacity:0;transform:translateY(16px)}48%,86%{opacity:1;transform:none}96%,100%{opacity:0;transform:translateY(-6px)}}
+/* b2 identidade */
+.sw{display:flex;align-items:flex-end;gap:10px}.sw i{width:38px;height:38px;border-radius:50%;animation:swBob 6s ease-in-out infinite}
+.sw i:nth-child(1){background:#C8B48E}.sw i:nth-child(2){background:#1D3A30;animation-delay:.6s;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}.sw i:nth-child(3){background:#E0452B;animation-delay:1.2s}.sw i:nth-child(4){background:#F4F1EA;animation-delay:1.8s}
+.sw b{margin-left:auto;font:300 44px/1 'Fraunces',Georgia,serif;color:var(--mint);animation:swFont 9s steps(1) infinite}
+@keyframes swBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes swFont{0%{font-family:'Fraunces',Georgia,serif}33%{font-family:'Poppins',sans-serif;font-weight:600}66%{font-family:'Yellowtail',cursive;font-weight:400}}
+/* b3 domínio + qr */
+.qr{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.url{flex:1;min-width:0;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font:500 13px var(--f-body);color:#fff;overflow:hidden}
+.url span{display:inline-block;overflow:hidden;white-space:nowrap;border-right:2px solid var(--mint);animation:typeUrl 8s steps(15) infinite,blink .8s step-end infinite;max-width:100%}
+@keyframes typeUrl{0%{width:0}35%,90%{width:15ch}100%{width:0}}@keyframes blink{50%{border-color:transparent}}
+.qrbox{position:relative;width:62px;height:62px;flex:none;padding:6px;border-radius:10px;background:#fff;color:#111;overflow:hidden}
+.qrbox svg{width:100%;height:100%;display:block}
+.qrbox i{position:absolute;left:0;right:0;top:0;height:2px;background:var(--mint-deep);box-shadow:0 0 10px var(--mint);animation:scan 3.4s ease-in-out infinite}
+@keyframes scan{0%,100%{transform:translateY(0)}50%{transform:translateY(60px)}}
+/* b4 painel */
+.bars{display:flex;align-items:flex-end;gap:7px;height:78px;position:relative}
+.bars span{flex:1;height:var(--h);border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,var(--mint),#8A6A2C);transform-origin:bottom;animation:barUp 7s ease-in-out infinite}
+.bars span:nth-child(2){animation-delay:.3s}.bars span:nth-child(3){animation-delay:.6s}.bars span:nth-child(4){animation-delay:.9s}.bars span:nth-child(5){animation-delay:1.2s}.bars span:nth-child(6){animation-delay:1.5s}
+@keyframes barUp{0%{transform:scaleY(.15)}22%,84%{transform:scaleY(1)}100%{transform:scaleY(.15)}}
+.trk{position:absolute;left:0;right:0;top:-24px;display:flex;gap:6px;font-style:normal}.trk i{flex:1;height:3px;border-radius:3px;background:rgba(255,255,255,.14);overflow:hidden;position:relative}
+.trk i::after{content:"";position:absolute;inset:0;background:var(--mint);transform:scaleX(0);transform-origin:left;animation:trkFill 8s ease-in-out infinite}
+.trk i:nth-child(2)::after{animation-delay:.8s}.trk i:nth-child(3)::after{animation-delay:1.6s}.trk i:nth-child(4)::after{animation-delay:2.4s}
+@keyframes trkFill{0%{transform:scaleX(0)}16%,86%{transform:scaleX(1)}100%{transform:scaleX(0)}}
+/* b5 busca */
+.sr{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;gap:3px;position:relative;overflow:hidden}
+.sr small{font-size:11px;color:var(--on-navy-soft)}.sr b{font:600 14px var(--f-body);color:#9CC0FF}.sr span{font-size:12px;color:var(--on-navy-soft)}
+.sr::after{content:"";position:absolute;top:0;bottom:0;width:60px;left:-80px;background:linear-gradient(90deg,transparent,rgba(217,174,92,.28),transparent);animation:sweep 6s ease-in-out infinite}
+@keyframes sweep{0%,30%{left:-80px}70%,100%{left:110%}}
+/* b6 suporte */
+.chat{margin:0;display:flex;flex-direction:column;gap:8px;min-width:min(340px,100%)}
+.chat span{max-width:88%;padding:9px 14px;border-radius:16px;font-size:13.5px;opacity:0}
+.chat .c1{align-self:flex-start;background:rgba(255,255,255,.1);color:#fff;border-bottom-left-radius:4px;animation:chatIn 9s ease-in-out infinite}
+.chat .c2{align-self:flex-end;background:#143d2c;color:#d6f5e4;border-bottom-right-radius:4px;animation:chatIn 9s ease-in-out 1.6s infinite}
+@keyframes chatIn{0%,6%{opacity:0;transform:translateY(10px)}16%,82%{opacity:1;transform:none}94%,100%{opacity:0}}
+
+@media (max-width:1100px){
+  .sgx-top{grid-template-columns:1fr}.sgx-grid{grid-template-columns:1fr 1fr}
+  .bento{grid-template-columns:1fr 1fr}.bento .b1{grid-column:1/-1;grid-row:auto}.bento .b6{grid-column:1/-1}
+}
+@media (max-width:900px){
+  .ln.dx{grid-template-columns:1fr!important;gap:30px}
+  .ln.dx .ln-card.sig,.ln.dx .ln-card.gas{border-radius:26px;border:1px solid rgba(255,255,255,.1)}
+  .ln.dx .ln-card.sig::after{right:auto;left:50%;top:auto;bottom:-38px;transform:translate(-50%,50%)}
+  .cmp-h,.cmp-r{grid-template-columns:1fr 1fr;gap:6px 16px}.cmp-h span,.cmp-r span{grid-column:1/-1}
+}
+@media (max-width:640px){
+  .sgx-grid,.bento{grid-template-columns:1fr}
+  .bento .b6{flex-direction:column;align-items:flex-start}.chat{min-width:0;width:100%}
+  .sgx-c{min-height:0}.px-art{height:200px}
+}
+@media (prefers-reduced-motion:reduce){
+  .wf *{animation:none;stroke-dashoffset:0}.ph-wa{animation:none;opacity:1}.ph-it b,.sw i,.sw b,.bars span,.trk i::after,.qrbox i,.sr::after{animation:none}.url span{animation:none;width:auto}
+  .chat span{animation:none;opacity:1}.sgx-c,.bento,.cmp{opacity:1!important;transform:none!important}.sgx-c .ic *{stroke-dashoffset:0}.ln.dx{transition:none}
+}
+
+.mf-sec{position:relative;overflow:hidden}
+
+/* ajustes finos do redesenho */
+.bento .b4 .bv.bars{margin-top:auto;padding-top:26px}
+.bento .b4 .trk{top:0}
+.bento .b4 .bt p{font-size:14px}
+.ln.dx .ln-card.sig::after{z-index:6}
+.ln.dx{overflow:visible}
+.steps.prog .step{opacity:.55}
+.steps.prog .step:not(.on){background:rgba(26,26,29,.55)}
+.cream .steps.prog .step:not(.on){background:#26262a}
+.cream .steps.prog .step:not(.on) *{opacity:.7}
+.mini-body{min-height:150px}
+
+.ln.dx .ln-card.sig{overflow:visible}.ln.dx .ln-card .px-art{overflow:hidden}
+.ln.dx .ln-ghost{right:0;bottom:-2px;max-width:100%;overflow:hidden;line-height:.8}
+
+.ln.dx .ln-card.sig::after{display:none!important}
+.ln-or{position:absolute;left:50%;top:50%;z-index:7;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;display:grid;place-items:center;background:#0F0F11;border:1px solid rgba(217,174,92,.6);color:var(--mint);font:600 13px var(--f-display);letter-spacing:.06em;box-shadow:0 0 0 8px rgba(15,15,17,.85);pointer-events:none;transition:left .9s cubic-bezier(.2,.8,.2,1)}
+.ln.dx:has(.sig:hover) .ln-or{left:56.4%}
+.ln.dx:has(.gas:hover) .ln-or{left:43.6%}
+.ln.dx .ln-card{overflow:hidden!important}
+.ln.dx .ln-ghost{opacity:.55;z-index:0}
+.ln-cta{padding-bottom:clamp(18px,2.2vw,34px)}
+@media (max-width:900px){.ln-or{left:50%;top:auto;bottom:auto;position:relative;margin:-15px auto;grid-row:2;display:grid}.ln.dx:has(.sig:hover) .ln-or,.ln.dx:has(.gas:hover) .ln-or{left:auto}}
+
+@media (max-width:900px){.ln-or{position:static!important;margin:-6px auto -6px!important;left:auto!important;top:auto!important;width:46px;height:46px;transform:none}.ln.dx{align-items:center}}
 </style>
 </head>
 <body>
@@ -1783,7 +1988,7 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
 </header>
 
 <main id="topo">
-  <section class="hero cream">
+  <section class="hero dark">
     <canvas id="net" aria-hidden="true"></canvas>
     <div class="in">
       <div>
@@ -1825,7 +2030,9 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
         <p class="phone-note">Demonstração: site e cardápio de um restaurante, no computador e no celular. No celular, toque e teste. <a href="#templates">Ver as demonstrações</a>.</p>
       </div>
     </div>
-  
+  </section>
+
+  <section class="cream mf-sec">
     <div class="mf-in" id="manifesto">
       <div class="mf-glow" aria-hidden="true"></div>
       <div class="mf-plate" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
@@ -1859,51 +2066,67 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
         <h2>Cada restaurante tem uma necessidade. Por isso existem <em>dois caminhos</em>.</h2>
         <p>Deixamos a diferença clara desde o início: um projeto Signature não é um modelo com novas cores, e uma solução gastronômica não é desenvolvimento exclusivo.</p>
       </div>
-      <div class="ln">
+      <div class="ln dx" data-live><span class="ln-or" aria-hidden="true">ou</span>
         <article class="ln-card sig">
+          <div class="px-art art-sig" aria-hidden="true"><svg class="wf" viewBox="0 0 380 232" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="368" height="196" rx="10" pathLength="1" style="--d:0s"/><path d="M6 40h368" pathLength="1" style="--d:.5s"/><circle cx="30" cy="23" r="8" pathLength="1" style="--d:.8s"/><path d="M240 23h40M300 23h50" pathLength="1" style="--d:1s"/><rect x="24" y="62" width="180" height="22" rx="3" pathLength="1" style="--d:1.3s"/><path d="M24 102h150M24 116h120M24 130h140" pathLength="1" style="--d:1.7s"/><rect x="24" y="150" width="78" height="26" rx="13" pathLength="1" style="--d:2.1s"/><rect x="232" y="62" width="128" height="114" rx="8" pathLength="1" style="--d:2.4s"/><path d="M232 154l36-30 28 22 18-14 46 30" pathLength="1" style="--d:2.8s"/><path d="M6 218h368M6 213v10M374 213v10" pathLength="1" style="--d:3.2s"/></svg><span class="art-tag">1440 px · desenhado do zero</span></div>
           <span class="ln-tag">Projetos Signature</span>
           <h3>Uma experiência digital criada exclusivamente para sua marca.</h3>
           <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Layout desenvolvido do zero, a partir da identidade da casa</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Direção criativa e estrutura de navegação próprias</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Funcionalidades e integrações definidas conforme o projeto</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Orçamento personalizado, definido após a conversa</li></ul>
           <p class="ln-for">Indicado para casas que querem um site à altura de uma marca já construída.</p>
           <div class="ln-cta"><a class="btn btn-mint" href="#contato" data-plano="Site exclusivo e personalizado" data-track="cta-signature">Quero um projeto exclusivo</a><a class="ln-link" href="#signature">Como funciona</a></div>
+          <span class="ln-ghost" aria-hidden="true">Signature</span>
         </article>
         <article class="ln-card gas">
+          <div class="px-art art-gas" aria-hidden="true">
+            <div class="mini" data-t="0"><div class="mini-bar"><i></i><i></i><i></i><b>suacasa.com.br</b></div><div class="mini-body"><div class="mini-brand"><i></i><b class="mini-nm">Seu restaurante</b></div><div class="mini-hero"></div><div class="mini-rows"><span></span><span></span><span></span></div><div class="mini-btn">Pedir agora</div></div></div>
+            <span class="art-tag">estrutura pronta · identidade sua</span>
+          </div>
           <span class="ln-tag">Soluções gastronômicas</span>
           <h3>Tecnologia especializada para apresentar seu cardápio, receber pedidos e simplificar sua operação.</h3>
           <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Sites e cardápios digitais a partir de estruturas próprias, já desenvolvidas e testadas</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Personalização com logo, cores, fotos e textos do restaurante</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Pedido pelo WhatsApp e painel administrativo</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Implantação mais rápida e investimento definido</li></ul>
           <p class="ln-for">Indicado para casas que precisam de uma solução funcional e bem estruturada, sem começar do zero.</p>
           <div class="ln-cta"><a class="btn btn-ghost" href="#templates" data-track="cta-gastronomia">Conhecer as soluções</a><a class="ln-link" href="#planos">Ver investimento</a></div>
+          <span class="ln-ghost" aria-hidden="true">Gastronomia</span>
         </article>
+      </div>
+      <div class="cmp" role="table" aria-label="Como escolher entre Signature e soluções gastronômicas">
+        <div class="cmp-h" role="row"><span role="columnheader">Como escolher</span><b role="columnheader">Projeto Signature</b><b role="columnheader">Solução gastronômica</b></div>
+        <div class="cmp-r" role="row"><span role="rowheader">Ponto de partida</span><p role="cell">Uma folha em branco</p><p role="cell">Estrutura pronta e testada</p></div>
+        <div class="cmp-r" role="row"><span role="rowheader">Identidade</span><p role="cell">Criada a partir da sua marca</p><p role="cell">Aplicada à estrutura: logo, cores, fotos e textos</p></div>
+        <div class="cmp-r" role="row"><span role="rowheader">Prazo</span><p role="cell">Definido após o diagnóstico</p><p role="cell">Até sete dias úteis, a partir dos materiais e das aprovações</p></div>
+        <div class="cmp-r" role="row"><span role="rowheader">Investimento</span><p role="cell">Orçamento personalizado</p><p role="cell">Valores de referência definidos</p></div>
+        <div class="cmp-r" role="row"><span role="rowheader">Indicado para</span><p role="cell">Marcas que exigem exclusividade</p><p role="cell">Casas que precisam de agilidade e estrutura funcional</p></div>
       </div>
     </div>
   </section>
 
-  <section class="cream" id="signature">
+  <section class="cream sgx" id="signature">
+    <span class="sgx-bg" aria-hidden="true">Signature</span>
     <div class="in">
-      <div class="head">
-        <p class="eyebrow">Projetos Signature</p>
-        <h2>Começamos pela sua marca, não por um <em>modelo</em>.</h2>
-        <p>Um projeto Signature nasce da identidade, do ambiente e da proposta da sua casa. O resultado é uma experiência digital que só poderia pertencer ao seu restaurante. Prazo e investimento são definidos individualmente, depois do diagnóstico.</p>
+      <div class="sgx-top">
+        <div class="head">
+          <p class="eyebrow">Projetos Signature</p>
+          <h2>Começamos pela sua marca, não por um <em>modelo</em>.</h2>
+          <p>Um projeto Signature nasce da identidade, do ambiente e da proposta da sua casa. O resultado é uma experiência digital que só poderia pertencer ao seu restaurante. Prazo e investimento são definidos individualmente, depois do diagnóstico.</p>
+          <p class="sgx-cta"><a class="btn btn-navy" href="#contato" data-plano="Site exclusivo e personalizado" data-track="cta-signature-2">Quero um projeto exclusivo</a></p>
+        </div>
+        <div class="sgx-board" aria-hidden="true" data-live>
+          <i class="cr tl"></i><i class="cr tr"></i><i class="cr bl"></i><i class="cr br"></i>
+          <div class="bd-row"><small>Paleta</small><div class="bd-pal"><i style="background:#0F1011;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)"></i><i style="background:#F4F1EA"></i><i style="background:#C8B48E"></i><i style="background:#1D3A30"></i></div></div>
+          <div class="bd-row"><small>Tipografia</small><div class="bd-type"><b>Aa</b><span>Títulos editoriais<br>Leitura confortável</span></div></div>
+          <div class="bd-row"><small>Layout</small><svg class="wf wf-s" viewBox="0 0 380 232" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="368" height="196" rx="10" pathLength="1" style="--d:0s"/><path d="M6 40h368" pathLength="1" style="--d:.5s"/><circle cx="30" cy="23" r="8" pathLength="1" style="--d:.8s"/><path d="M240 23h40M300 23h50" pathLength="1" style="--d:1s"/><rect x="24" y="62" width="180" height="22" rx="3" pathLength="1" style="--d:1.3s"/><path d="M24 102h150M24 116h120M24 130h140" pathLength="1" style="--d:1.7s"/><rect x="24" y="150" width="78" height="26" rx="13" pathLength="1" style="--d:2.1s"/><rect x="232" y="62" width="128" height="114" rx="8" pathLength="1" style="--d:2.4s"/><path d="M232 154l36-30 28 22 18-14 46 30" pathLength="1" style="--d:2.8s"/><path d="M6 218h368M6 213v10M374 213v10" pathLength="1" style="--d:3.2s"/></svg></div>
+          <span class="bd-note">direção criativa</span>
+        </div>
       </div>
-      <div class="feats f4">
-        <div class="feat"><span class="num">01</span><h3>Imersão</h3><p>Entendemos a casa: história, público, cardápio, ambiente e o que a diferencia das demais.</p></div>
-        <div class="feat"><span class="num">02</span><h3>Direção criativa</h3><p>Definimos conceito, tom e linguagem visual antes de desenhar qualquer tela.</p></div>
-        <div class="feat"><span class="num">03</span><h3>Design exclusivo</h3><p>Layout desenhado do zero para a sua marca, sem adaptar modelos prontos.</p></div>
-        <div class="feat"><span class="num">04</span><h3>Arquitetura de informação</h3><p>Cardápio, reservas, localização e história organizados para o cliente decidir com facilidade.</p></div>
-        <div class="feat"><span class="num">05</span><h3>Desenvolvimento</h3><p>Código feito para o projeto, com atenção à velocidade, à acessibilidade e às boas práticas de busca.</p></div>
-        <div class="feat"><span class="num">06</span><h3>Responsividade</h3><p>A mesma qualidade no celular, no tablet e no computador.</p></div>
-        <div class="feat"><span class="num">07</span><h3>Integrações</h3><p>Conexão com as ferramentas que o restaurante já usa, avaliada caso a caso.</p></div>
-        <div class="feat"><span class="num">08</span><h3>Publicação</h3><p>Domínio, hospedagem e publicação acompanhados até o projeto estar no ar.</p></div>
-      </div>
+      <div class="sgx-grid"><div class="sgx-c"><span class="sgx-n">01</span><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 24s8-13 21-13 21 13 21 13-8 13-21 13S3 24 3 24z" pathLength="1"/><circle cx="24" cy="24" r="6" pathLength="1"/></svg><h3>Imersão</h3><p>Entendemos a casa: história, público, cardápio, ambiente e o que a diferencia das demais.</p></div><div class="sgx-c"><span class="sgx-n">02</span><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18" pathLength="1"/><path d="M30 18l-4 9-9 4 4-9z" pathLength="1"/></svg><h3>Direção criativa</h3><p>Definimos conceito, tom e linguagem visual antes de desenhar qualquer tela.</p></div><div class="sgx-c"><span class="sgx-n">03</span><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40l8-2L38 16l-6-6L10 32z" pathLength="1"/><path d="M28 14l6 6" pathLength="1"/></svg><h3>Design exclusivo</h3><p>Layout desenhado do zero para a sua marca, sem adaptar modelos prontos.</p></div><div class="sgx-c"><span class="sgx-n">04</span><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="17" y="5" width="14" height="9" rx="2" pathLength="1"/><rect x="4" y="34" width="14" height="9" rx="2" pathLength="1"/><rect x="30" y="34" width="14" height="9" rx="2" pathLength="1"/><path d="M24 14v10M11 34v-10h26v10" pathLength="1"/></svg><h3>Arquitetura de informação</h3><p>Cardápio, reservas, localização e história organizados para o cliente decidir com facilidade.</p></div><div class="sgx-c"><span class="sgx-n">05</span><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14L6 24l11 10M31 14l11 10-11 10M27 9l-6 30" pathLength="1"/></svg><h3>Desenvolvimento</h3><p>Código feito para o projeto, com atenção à velocidade, à acessibilidade e às boas práticas de busca.</p></div><div class="sgx-c"><span class="sgx-n">06</span><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="28" height="20" rx="3" pathLength="1"/><rect x="28" y="19" width="15" height="22" rx="3" pathLength="1"/><path d="M12 37h10" pathLength="1"/></svg><h3>Responsividade</h3><p>A mesma qualidade no celular, no tablet e no computador.</p></div><div class="sgx-c"><span class="sgx-n">07</span><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="4" pathLength="1"/><circle cx="38" cy="12" r="4" pathLength="1"/><circle cx="24" cy="38" r="4" pathLength="1"/><path d="M14 10h20M12 14l10 20M36 16l-10 18" pathLength="1"/></svg><h3>Integrações</h3><p>Conexão com as ferramentas que o restaurante já usa, avaliada caso a caso.</p></div><div class="sgx-c"><span class="sgx-n">08</span><svg class="ic" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18" pathLength="1"/><path d="M6 24h36" pathLength="1"/><path d="M24 6c9 8 9 28 0 36M24 6c-9 8-9 28 0 36" pathLength="1"/></svg><h3>Publicação</h3><p>Domínio, hospedagem e publicação acompanhados até o projeto estar no ar.</p></div></div>
       <h3 class="sub-h">O processo Signature</h3>
       <div class="steps s5">
-        <div class="step"><span class="n">1</span><h3>Diagnóstico</h3><p>Conversa e levantamento das necessidades, do público e das referências.</p></div>
-        <div class="step"><span class="n">2</span><h3>Direção criativa</h3><p>Conceito, estilo visual e estrutura de navegação.</p></div>
-        <div class="step"><span class="n">3</span><h3>Design e desenvolvimento</h3><p>Criação das telas e construção do projeto.</p></div>
-        <div class="step"><span class="n">4</span><h3>Apresentação e refinamento</h3><p>Apresentamos o resultado e ajustamos até a sua aprovação.</p></div>
-        <div class="step"><span class="n">5</span><h3>Publicação</h3><p>Colocamos o projeto no ar e acompanhamos a entrada.</p></div>
+        <div class="step" data-n="1"><span class="n">1</span><h3>Diagnóstico</h3><p>Conversa e levantamento das necessidades, do público e das referências.</p></div>
+        <div class="step" data-n="2"><span class="n">2</span><h3>Direção criativa</h3><p>Conceito, estilo visual e estrutura de navegação.</p></div>
+        <div class="step" data-n="3"><span class="n">3</span><h3>Design e desenvolvimento</h3><p>Criação das telas e construção do projeto.</p></div>
+        <div class="step" data-n="4"><span class="n">4</span><h3>Apresentação e refinamento</h3><p>Apresentamos o resultado e ajustamos até a sua aprovação.</p></div>
+        <div class="step" data-n="5"><span class="n">5</span><h3>Publicação</h3><p>Colocamos o projeto no ar e acompanhamos a entrada.</p></div>
       </div>
-      <p class="sg-cta"><a class="btn btn-navy" href="#contato" data-plano="Site exclusivo e personalizado" data-track="cta-signature-2">Quero um projeto exclusivo</a></p>
     </div>
   </section>
 
@@ -2098,7 +2321,15 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
         <h2>Do primeiro contato à publicação, um caminho <em>claro</em>.</h2>
         <p>Veja o que faz parte de uma solução gastronômica e como a implantação acontece.</p>
       </div>
-      <div class="os-grid"><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg><div><b>Identidade do restaurante</b><span>Logo, cores, fontes, fotos e textos da sua casa aplicados à estrutura escolhida.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg><div><b>Cardápio com pedido</b><span>O pedido chega ao WhatsApp da casa, com itens e total já calculados.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><path d="M14 14h6v6"/></svg><div><b>Domínio e QR Code</b><span>Endereço próprio e seguro (HTTPS), registrado no seu nome, e QR Code para mesa e balcão.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/></svg><div><b>Painel e rastreamento</b><span>Pedidos, cardápio, clientes, financeiro e equipe em um só lugar, e o cliente acompanha o pedido por um link. Disponível no Digital Experience.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg><div><b>Preparado para ser encontrado</b><span>Carregamento rápido no celular, horários e mapa, prontos para a busca e para anúncios.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg><div><b>Suporte na mensalidade</b><span>Hospedagem, ajustes, banners de datas comemorativas e atendimento no WhatsApp.</span></div></div></div>
+      <div class="bento" data-live>
+        <div class="b b1"><div class="bt"><h3>Cardápio com pedido</h3><p>O pedido chega ao WhatsApp da casa, com itens e total já calculados.</p></div>
+          <div class="ph-m" aria-hidden="true"><div class="ph-top">Cardápio</div><div class="ph-it"><i></i><span><em>Prato da casa</em><small>R$ 48,00</small></span><b>+</b></div><div class="ph-it"><i></i><span><em>Sobremesa</em><small>R$ 24,00</small></span><b>+</b></div><div class="ph-it"><i></i><span><em>Bebida</em><small>R$ 18,00</small></span><b>+</b></div><div class="ph-bar"><span>Finalizar pedido</span><b>R$ 90,00</b></div><div class="ph-wa"><i>✓</i><span>Novo pedido no WhatsApp</span></div></div></div>
+        <div class="b b2"><div class="bt"><h3>Identidade do restaurante</h3><p>Logo, cores, fontes, fotos e textos da sua casa aplicados à estrutura escolhida.</p></div><div class="bv sw" aria-hidden="true"><i></i><i></i><i></i><i></i><b>Aa</b></div></div>
+        <div class="b b3"><div class="bt"><h3>Domínio e QR Code</h3><p>Endereço próprio e seguro (HTTPS), registrado no seu nome, e QR Code para mesa e balcão.</p></div><div class="bv qr" aria-hidden="true"><div class="url"><span>suacasa.com.br</span></div><div class="qrbox"><svg viewBox="0 0 11 11" shape-rendering="crispEdges"><path d="M0 0h4v4H0zM7 0h4v4H7zM0 7h4v4H0zM5 1h1v1H5zM5 3h1v2H4V4h1zM1 5h2v1H1zM5 6h1v2H5zM7 5h1v2H7zM9 6h2v1H9zM8 8h1v3H8zM10 8h1v1h-1zM6 9h1v2H6z" fill="currentColor"/></svg><i></i></div></div></div>
+        <div class="b b4"><div class="bt"><h3>Painel e rastreamento</h3><p>Pedidos, cardápio, clientes, financeiro e equipe em um só lugar, e o cliente acompanha o pedido por um link. Disponível no Digital Experience.</p></div><div class="bv bars" aria-hidden="true"><span style="--h:46%"></span><span style="--h:72%"></span><span style="--h:38%"></span><span style="--h:88%"></span><span style="--h:60%"></span><span style="--h:78%"></span><em class="trk"><i></i><i></i><i></i><i></i></em></div></div>
+        <div class="b b5"><div class="bt"><h3>Preparado para ser encontrado</h3><p>Carregamento rápido no celular, horários e mapa, prontos para a busca e para anúncios.</p></div><div class="bv sr" aria-hidden="true"><small>suacasa.com.br › cardápio</small><b>Sua Casa · Cardápio e pedidos</b><span>Horários, mapa e cardápio completo</span></div></div>
+        <div class="b b6"><div class="bt"><h3>Suporte na mensalidade</h3><p>Hospedagem, ajustes, banners de datas comemorativas e atendimento no WhatsApp.</p></div><div class="bv chat" aria-hidden="true"><span class="c1">Preciso atualizar o banner da semana.</span><span class="c2">Combinado, nós cuidamos disso.</span></div></div>
+      </div>
       <h3 class="sub-h">O processo das soluções gastronômicas</h3>
       <div class="steps s5">
         <div class="step"><span class="n">1</span><h3>Escolha da solução</h3><p>Você escolhe a demonstração e a solução que combinam com a sua casa.</p></div>
@@ -2787,7 +3018,7 @@ var OFERTA={ativa:false,texto:'',ate:'',vagas:0,restantes:0};
     function viewOnce(sel,cls,th){var els=[].slice.call(document.querySelectorAll(sel));if(RM||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add(cls)});return}
       var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add(cls);o.unobserve(e.target)}})},{threshold:th||.2});els.forEach(function(e){o.observe(e)})}
     [].forEach.call(document.querySelectorAll('.feats,.os-grid'),function(g){g.classList.add('stg')});
-    viewOnce('.ln-card','in-v',.3);viewOnce('.feats.stg,.os-grid.stg','in-v',.15);viewOnce('.plans4','in-v',.15);viewOnce('.fq-g','in-v',.2);
+    viewOnce('.ln-card','in-v',.3);viewOnce('.sgx-grid,.bento,.cmp','in-v',.15);viewOnce('.feats.stg,.os-grid.stg','in-v',.15);viewOnce('.plans4','in-v',.15);viewOnce('.fq-g','in-v',.2);
     [].forEach.call(document.querySelectorAll('.feats.stg .feat,.os-grid.stg .os-item'),function(el,i){el.style.transitionDelay=((i%6)*90)+'ms'});
 
     /* processo: passos acendem conforme a rolagem */
@@ -2804,9 +3035,9 @@ var OFERTA={ativa:false,texto:'',ate:'',vagas:0,restantes:0};
 
     /* brilho que acompanha o mouse + inclinação */
     if(FINE&&!RM){
-      [].forEach.call(document.querySelectorAll('.ln-card,.plan,.step,.feat,.os-item,.mens>div,.calc-box'),function(c){c.classList.add('has-gl');var g=document.createElement('span');g.className='gl';g.setAttribute('aria-hidden','true');c.insertBefore(g,c.firstChild);
+      [].forEach.call(document.querySelectorAll('.ln-card,.plan,.step,.feat,.os-item,.mens>div,.calc-box,.sgx-c,.bento .b'),function(c){c.classList.add('has-gl');var g=document.createElement('span');g.className='gl';g.setAttribute('aria-hidden','true');c.insertBefore(g,c.firstChild);
         c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();c.style.setProperty('--gx',(e.clientX-r.left)+'px');c.style.setProperty('--gy',(e.clientY-r.top)+'px')})});
-      [].forEach.call(document.querySelectorAll('.ln-card,.plans4 .plan'),function(c){var max=c.classList.contains('ln-card')?4:3;
+      [].forEach.call(document.querySelectorAll('.plans4 .plan'),function(c){var max=3;
         c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform='perspective(1100px) rotateY('+(x*max*2)+'deg) rotateX('+(-y*max*2)+'deg) translateY(-4px)'});
         c.addEventListener('pointerleave',function(){c.style.transform=''})});
       /* botões atraídos pelo cursor */
@@ -2814,6 +3045,13 @@ var OFERTA={ativa:false,texto:'',ate:'',vagas:0,restantes:0};
         b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.12)+'px,'+((e.clientY-r.top-r.height/2)*.25)+'px)'});
         b.addEventListener('pointerleave',function(){b.style.transform=''})})}
   })();
+
+  /* seções vivas: animações só rodam quando visíveis; mini site troca de identidade */
+  (function(){var els=[].slice.call(document.querySelectorAll('[data-live]'));
+    if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('live',e.isIntersecting)})},{threshold:.08});els.forEach(function(e){o.observe(e)})}else els.forEach(function(e){e.classList.add('live')});
+    var mini=document.querySelector('.mini');if(!mini||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    var N=['Seu restaurante','Sua hamburgueria','Sua padaria','Sua pizzaria'],nm=mini.querySelector('.mini-nm'),i=0;
+    setInterval(function(){if(document.hidden||!mini.closest('.live'))return;i=(i+1)%4;mini.setAttribute('data-t',i);nm.textContent=N[i]},3600)})();
 </script>
 </body>
 </html>
