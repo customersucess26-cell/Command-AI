@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-PJUys8FE/asoz+VNRLW5Li3DMuBcaowFT1X6rUosL/4=' 'sha256-0jCcNSTp9Lw9sI50dT3ppHcMNNWPMl0hCdMo9xsYRNI=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-PJUys8FE/asoz+VNRLW5Li3DMuBcaowFT1X6rUosL/4=' 'sha256-QX9O8WWMVLa2Kc/VRDe7/mNcE001a9OSfWgkEdtgzY0=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1411,7 +1411,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
 .pc-phone{position:absolute;z-index:8;right:max(1%,calc(50% - min(860px,82vw)/2 - 125px));top:calc(clamp(300px,47vw,600px) - 300px);width:150px;aspect-ratio:9/19;background:#050505;border-radius:28px;padding:7px;box-shadow:0 40px 70px -20px rgba(0,0,0,.95),0 0 0 1px #38363A inset,0 0 50px -10px rgba(217,174,92,.35);animation:fl 7s ease-in-out infinite}
 .pc-phone .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:50px;height:14px;background:#050505;border-radius:99px;z-index:2}
 .pc-pscr{width:100%;height:100%;border-radius:22px;overflow:hidden;background:#F3ECE2}
-.pc-pscr img{display:block;width:100%;animation:pcRast 16s ease-in-out infinite alternate}
+.pc-pscr{position:relative}.pc-pscr img{position:absolute;left:0;top:0;display:block;width:100%;opacity:0;transform:translateY(0);transition:opacity .8s ease}.pc-pscr img.on{opacity:1}
 @keyframes pcRast{0%,8%{transform:translateY(0)}92%,100%{transform:translateY(calc(-100% + 296px))}}
 .pc-ptag{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);white-space:nowrap;background:var(--mint);color:#141008;font-size:11px;font-weight:700;padding:5px 10px;border-radius:99px;box-shadow:0 10px 20px -8px rgba(217,174,92,.7)}
 #pcStage .cf-nav{margin-top:26px}
@@ -1443,6 +1443,13 @@ section.cream .eyebrow{color:var(--mint-deep)}
 .rcpt .rt.low strong{color:var(--on-navy-soft)}
 .rcpt .fine{margin:0;text-align:left}
 #dirOut,#fatOut{font:700 20px var(--f-display);color:var(--ink)}
+
+.pc-wah{position:absolute;left:0;right:0;top:0;z-index:3;height:44px;padding:16px 8px 0;display:flex;align-items:center;gap:6px;background:#075E54;color:#fff;opacity:0;transition:opacity .8s}
+.pc-wah i{width:18px;height:18px;border-radius:50%;background:#C98B5A;display:grid;place-items:center;font:700 9px var(--f-body);font-style:normal}
+.pc-wah b{display:block;font-size:9px;line-height:1.1}.pc-wah small{font-size:7px;opacity:.8}
+.pc-pscr.wa{background:#E8DFD3 radial-gradient(rgba(0,0,0,.04) 1px,transparent 1px) 0 0/10px 10px}
+.pc-pscr.wa .pc-wah{opacity:1}
+.pc-pscr.wa img.pp:first-of-type{top:52px;left:7%;width:86%;border-radius:8px;box-shadow:0 6px 14px -6px rgba(0,0,0,.35);border:3px solid #DCF8C6}
 </style>
 </head>
 <body>
@@ -1627,7 +1634,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
       <div class="pc-stage" id="pcStage">
         <div class="pc-flow" id="pcFlow"><figure class="pc-card" data-y="143"><div class="pc-bar"><i></i><i></i><i></i><span>suapadaria.com.br/painel</span><em><b></b>Ao vivo</em></div><div class="pc-scr"><img src="img/painel/inicio.jpg" alt="Painel da loja: tela Visão geral" loading="lazy" width="1200"></div><figcaption><b>Visão geral</b><small>Pedidos do dia, vendas do mês e o que mais vende</small></figcaption></figure><figure class="pc-card" data-y="187"><div class="pc-bar"><i></i><i></i><i></i><span>suapadaria.com.br/painel</span><em><b></b>Ao vivo</em></div><div class="pc-scr"><img src="img/painel/pedidos.jpg" alt="Painel da loja: tela Pedidos" loading="lazy" width="1200"></div><figcaption><b>Pedidos</b><small>Quadro por etapa: um toque confirma e avisa o cliente</small></figcaption></figure><figure class="pc-card" data-y="231"><div class="pc-bar"><i></i><i></i><i></i><span>suapadaria.com.br/painel</span><em><b></b>Ao vivo</em></div><div class="pc-scr"><img src="img/painel/financeiro.jpg" alt="Painel da loja: tela Financeiro" loading="lazy" width="1200"></div><figcaption><b>Financeiro</b><small>Vendido, recebido, a receber e vendas por dia</small></figcaption></figure><figure class="pc-card" data-y="275"><div class="pc-bar"><i></i><i></i><i></i><span>suapadaria.com.br/painel</span><em><b></b>Ao vivo</em></div><div class="pc-scr"><img src="img/painel/clientes.jpg" alt="Painel da loja: tela Clientes" loading="lazy" width="1200"></div><figcaption><b>Clientes</b><small>Quem mais compra, quanto gasta e quando voltou</small></figcaption></figure><figure class="pc-card" data-y="319"><div class="pc-bar"><i></i><i></i><i></i><span>suapadaria.com.br/painel</span><em><b></b>Ao vivo</em></div><div class="pc-scr"><img src="img/painel/atendimento.jpg" alt="Painel da loja: tela Atendimento" loading="lazy" width="1200"></div><figcaption><b>Atendimento</b><small>WhatsApp com robô e equipe na mesma tela</small></figcaption></figure><figure class="pc-card" data-y="401"><div class="pc-bar"><i></i><i></i><i></i><span>suapadaria.com.br/painel</span><em><b></b>Ao vivo</em></div><div class="pc-scr"><img src="img/painel/cardapio.jpg" alt="Painel da loja: tela Cardápio" loading="lazy" width="1200"></div><figcaption><b>Cardápio</b><small>Fotos, preços e categorias; pause o que acabou</small></figcaption></figure><figure class="pc-card" data-y="482"><div class="pc-bar"><i></i><i></i><i></i><span>suapadaria.com.br/painel</span><em><b></b>Ao vivo</em></div><div class="pc-scr"><img src="img/painel/loja.jpg" alt="Painel da loja: tela Dados da loja" loading="lazy" width="1200"></div><figcaption><b>Dados da loja</b><small>WhatsApp, endereço, horário e taxa por bairro</small></figcaption></figure><figure class="pc-card" data-y="526"><div class="pc-bar"><i></i><i></i><i></i><span>suapadaria.com.br/painel</span><em><b></b>Ao vivo</em></div><div class="pc-scr"><img src="img/painel/equipe.jpg" alt="Painel da loja: tela Equipe" loading="lazy" width="1200"></div><figcaption><b>Equipe</b><small>Cada pessoa com o seu acesso e a sua senha</small></figcaption></figure><figure class="pc-card" data-y="570"><div class="pc-bar"><i></i><i></i><i></i><span>suapadaria.com.br/painel</span><em><b></b>Ao vivo</em></div><div class="pc-scr"><img src="img/painel/ajustes.jpg" alt="Painel da loja: tela Conta e ajustes" loading="lazy" width="1200"></div><figcaption><b>Conta e ajustes</b><small>Segurança, impressão da comanda e aparência</small></figcaption></figure></div>
         <div class="pc-hand" id="pcHand" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M10 4.5a2.5 2.5 0 0 1 5 0V12.3a2.3 2.3 0 0 1 4.6.2v1.2a2.3 2.3 0 0 1 4.6.3v1.3a2.2 2.2 0 0 1 4.4.2V22c0 4.4-3.4 7.5-7.8 7.5h-2.8c-2.4 0-4.6-1.2-6-3.2L4.6 19.6a2.3 2.3 0 0 1 3.7-2.7L10 19z" fill="#fff" stroke="#0F0F11" stroke-width="1.6" stroke-linejoin="round"/><path d="M15 12.6v4.6M19.6 13.8v3.6M24.2 15.2v2.8" stroke="#0F0F11" stroke-width="1.4" stroke-linecap="round"/></svg></div>
-        <div class="pc-phone" aria-label="Tela que o cliente recebe para acompanhar o pedido"><div class="notch"></div><div class="pc-pscr"><img src="img/painel/rastreio.jpg" alt="Página de rastreio do pedido no celular do cliente" loading="lazy"></div><span class="pc-ptag">Tela do cliente</span></div>
+        <div class="pc-phone" aria-label="Tela que o cliente recebe para acompanhar o pedido"><div class="notch"></div><div class="pc-pscr wa"><div class="pc-wah"><i>P</i><div><b>Padaria da Ana</b><small>WhatsApp · agora</small></div></div><img class="pp on" src="img/painel/pedido-whats.jpg" alt="Pedido feito pelo site chegando no WhatsApp da loja" loading="lazy"><img class="pp" src="img/painel/rastreio.jpg" alt="Página de rastreio do pedido no celular do cliente" loading="lazy"></div><span class="pc-ptag" id="pcTag">1. Pedido chega no WhatsApp</span></div>
         <div class="cf-nav"><button class="cf-arr" id="pcPrev" type="button" aria-label="Tela anterior">‹</button><div class="cf-now"><div><b id="pcName">Visão geral</b><small id="pcDesc"></small></div></div><button class="cf-arr" id="pcNext" type="button" aria-label="Próxima tela">›</button></div>
         <div class="cf-dots" id="pcDots"></div>
       </div>
@@ -2323,6 +2330,15 @@ var OFERTA={mes:'novembro',vagas:5,restantes:2,fimBonus:'2026-11-30T23:59:00-03:
     var x0=null;flow.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});flow.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40)vai(at+(dx<0?1:-1));x0=null});
     if('IntersectionObserver' in window)new IntersectionObserver(function(es){vis=es[0].isIntersecting},{threshold:.35}).observe(flow);else vis=true;
     draw();loop()})();
+
+  /* celular do Sistema: pedido no WhatsApp -> rastreio, cada um rolando */
+  (function(){var box=document.querySelector('.pc-pscr');if(!box)return;var im=box.querySelectorAll('img'),tag=document.getElementById('pcTag'),T=['1. Pedido chega no WhatsApp','2. Cliente acompanha o pedido'],i=0;
+    function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+    async function ciclo(){while(true){var a=im[i];im.forEach(function(x){x.classList.toggle('on',x===a)});box.classList.toggle('wa',i===0);if(tag)tag.textContent=T[i];
+      a.style.transition='opacity .8s ease';a.style.transform='translateY(0)';await sleep(1800);var max=a.offsetHeight-box.clientHeight;
+      if(max>0){a.style.transition='opacity .8s ease,transform 8s cubic-bezier(.45,0,.25,1)';a.style.transform='translateY(-'+max+'px)';await sleep(9000)}else await sleep(6000);
+      i=(i+1)%im.length;var b=im[i];b.style.transition='none';b.style.transform='translateY(0)';void b.offsetWidth}}
+    ciclo()})();
 </script>
 </body>
 </html>
