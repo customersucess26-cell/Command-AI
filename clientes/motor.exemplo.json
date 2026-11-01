@@ -1,0 +1,4 @@
+{
+  "supabaseUrl": "https://SEU-PROJETO.supabase.co",
+  "supabaseKey": "CHAVE ANON PUBLIC (Project Settings > API). Nunca a service_role."
+}

@@ -1,0 +1,49 @@
+{
+  "nome": "Forno do Zé",
+  "modelo": "hamburgueria",
+  "slug": "forno-do-ze",
+  "whatsapp": "42999998888",
+  "dominio": "https://fornodoze.com.br",
+  "cor": "#2BA84A",
+
+  "marca": {
+    "titulo": "Forno do Zé | Hambúrguer artesanal em Ponta Grossa",
+    "descricao": "Hambúrguer artesanal na brasa. Peça pelo site e acompanhe a entrega.",
+    "logo": "img/cliente/logo.png",
+    "cores": { "ember": "#2BA84A", "mustard": "#F4B63A" }
+  },
+
+  "textos": {
+    "carregando": "ACENDENDO O FORNO",
+    "logo": "FORNO",
+    "logoSub": "do Zé",
+    "hero.selo": "Hamburgueria artesanal · Ponta Grossa",
+    "hero.l1": "Carne na",
+    "hero.l2": "brasa.",
+    "hero.l3a": "Sabor",
+    "hero.l3b": "que",
+    "hero.l4": "fica.",
+    "hero.texto": "Blend de 180g na brasa, pão de fermentação natural e molho da casa.",
+    "hero.n1": "180", "hero.n1txt": "gramas de blend",
+    "hero.n2": "40",  "hero.n2txt": "min de entrega",
+    "hero.n3": "4.8", "hero.n3txt": "nota no Google",
+    "faixa": ["Brasa", "Cheddar", "Bacon", "Pão artesanal"],
+    "visite.texto": "Peça pelo site ou venha comer no balcão.",
+    "rodape.copy": "© 2026 Forno do Zé. Todos os direitos reservados.",
+    "rodape.frase": "Feito na brasa."
+  },
+
+  "imagens": {
+    "hero": "img/cliente/hero.jpg",
+    "fogo": "img/cliente/fachada.jpg"
+  },
+
+  "contato": {
+    "endereco": "Rua das Flores, 10, Centro",
+    "horario": "Terça a domingo, 18h às 23h",
+    "instagram": "@fornodoze",
+    "whatsappTexto": "(42) 99999-8888"
+  },
+
+  "ocultar": ["depoimentos"]
+}

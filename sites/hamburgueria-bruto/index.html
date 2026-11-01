@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ZCdMeyVkMJeFMp9ZRgbvRplT0tIBqt6/PiB33QgftGc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-/l1n0xw4TJ9L05fYB6IvPFcRdWn5/7aKr5Z1YW/y1RQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bruto Burger Co. | Hamburgueria artesanal na brasa</title>
 <meta name="description" content="Hamburgueria artesanal com blend de 160g grelhado na brasa, pão brioche e molho da casa. Peça pelo WhatsApp.">
@@ -10,6 +10,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Permanent+Marker&display=swap">
+<script src="assets/config.js"></script>
+<script src="assets/marca.js"></script>
+<script src="assets/motor.js"></script>
 <style>
 :root{
   --bg:#0d0c0b; --bg2:#151311; --line:#2b2723; --cream:#f3e9d8; --muted:#a69d8f;
@@ -54,6 +57,9 @@ header.solid{background:rgba(13,12,11,.86);backdrop-filter:blur(12px);-webkit-ba
 .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
 .logo{font-family:var(--f-display);font-size:1.8rem;text-decoration:none;letter-spacing:.04em;display:flex;align-items:baseline;gap:8px}
 .logo small{font-family:var(--f-script);color:var(--ember);font-size:.9rem;letter-spacing:0}
+.logo .logo-img{height:44px;width:auto;display:block}
+.opts select{width:100%;background:var(--bg);color:var(--cream);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:16px}
+.opts select.erro{border-color:#ff4d3d}
 .nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0}
 .nav ul a{text-decoration:none;font-weight:600;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);position:relative;transition:color .2s}
 .nav ul a::after{content:"";position:absolute;left:0;bottom:-6px;height:2px;width:100%;background:var(--ember);transform:scaleX(0);transform-origin:right;transition:transform .3s}
@@ -447,14 +453,14 @@ html.trava,html.trava body{overflow:hidden}
 </style>
 </head>
 <body>
-<div id="loader"><div class="ring"></div><span>ACENDENDO A BRASA</span></div>
+<div id="loader"><div class="ring"></div><span data-tx="carregando">ACENDENDO A BRASA</span></div>
 <div id="progress"></div>
 <div class="cur" id="cur"></div><div class="cdot" id="cdot"></div>
 <div class="glow" id="glow"></div>
 
 <header id="hdr">
   <div class="wrap nav">
-    <a class="logo" href="#topo">BRUTO <small>burger co.</small></a>
+    <a class="logo" href="#topo" data-logo><span data-tx="logo">BRUTO</span> <small data-tx="logoSub">burger co.</small></a>
     <ul>
       <li><a href="#ingredientes">Ingredientes</a></li>
       <li><a href="#cardapio">Cardápio</a></li>
@@ -473,22 +479,22 @@ html.trava,html.trava body{overflow:hidden}
 
   <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow fade">Hamburgueria artesanal · Feita na hora</span>
+      <span class="eyebrow fade" data-tx="hero.selo">Hamburgueria artesanal · Feita na hora</span>
       <h1>
-        <span class="ln"><span>Carne na</span></span>
-        <span class="ln"><span class="script fire">brasa.</span></span>
-        <span class="ln"><span><em>Sabor</em> que</span></span>
-        <span class="ln"><span>não sai.</span></span>
+        <span class="ln"><span data-tx="hero.l1">Carne na</span></span>
+        <span class="ln"><span class="script fire" data-tx="hero.l2">brasa.</span></span>
+        <span class="ln"><span><em data-tx="hero.l3a">Sabor</em> <span data-tx="hero.l3b">que</span></span></span>
+        <span class="ln"><span data-tx="hero.l4">não sai.</span></span>
       </h1>
-      <p class="lead fade">Blend de 160g grelhado na brasa, pão brioche tostado e molho da casa. Cada burger sai da chapa direto para o seu prato.</p>
+      <p class="lead fade" data-tx="hero.texto">Blend de 160g grelhado na brasa, pão brioche tostado e molho da casa. Cada burger sai da chapa direto para o seu prato.</p>
       <div class="cta fade">
         <a class="btn" href="#cardapio">Ver cardápio →</a>
         <button class="btn ghost" type="button" id="heroOrder">Pedir agora</button>
       </div>
       <div class="facts fade">
-        <div><b data-count="160">0</b><span>gramas de blend</span></div>
-        <div><b data-count="35">0</b><span>min de entrega</span></div>
-        <div><b data-count="4.9" data-dec="1">0</b><span>nota dos clientes</span></div>
+        <div><b data-count="160" data-tx="hero.n1">0</b><span data-tx="hero.n1txt">gramas de blend</span></div>
+        <div><b data-count="35" data-tx="hero.n2">0</b><span data-tx="hero.n2txt">min de entrega</span></div>
+        <div><b data-count="4.9" data-dec="1" data-tx="hero.n3">0</b><span data-tx="hero.n3txt">nota dos clientes</span></div>
       </div>
     </div>
 
@@ -499,7 +505,7 @@ html.trava,html.trava body{overflow:hidden}
       </div>
       <div class="heroart" id="heroart">
         <div class="hglow" aria-hidden="true"></div>
-        <img src="img/hero.jpg" alt="Hambúrguer com bacon, tomate, alface, cheddar, carne, picles e molho, com as camadas no ar">
+        <img src="img/hero.jpg" data-img="hero" alt="Hambúrguer com bacon, tomate, alface, cheddar, carne, picles e molho, com as camadas no ar">
       </div>
     </div>
   </div>
@@ -511,9 +517,9 @@ html.trava,html.trava body{overflow:hidden}
   <div class="stick">
     <div class="wrap ex-grid">
       <div class="ex-copy">
-        <span class="eyebrow">Camada por camada</span>
-        <h2 id="ingredientes">Nosso <span class="script">hambúrguer</span> por dentro</h2>
-        <p class="lead">Role a página e veja o burger se abrir. Oito camadas, nenhuma de enfeite.</p>
+        <span class="eyebrow" data-tx="camadas.selo">Camada por camada</span>
+        <h2 id="ingredientes"><span data-tx="camadas.t1">Nosso</span> <span class="script" data-tx="camadas.t2">hambúrguer</span> <span data-tx="camadas.t3">por dentro</span></h2>
+        <p class="lead" data-tx="camadas.texto">Role a página e veja o burger se abrir. Oito camadas, nenhuma de enfeite.</p>
         <a class="btn" href="#cardapio" style="margin-top:26px">Escolher o meu</a>
       </div>
       <div class="stage" id="stage" role="img" aria-label="Hambúrguer com as camadas separadas: pão, alface, cebola roxa, tomate, molho especial, queijo, carne e pão"></div>
@@ -524,14 +530,14 @@ html.trava,html.trava body{overflow:hidden}
 <section class="sec" id="cardapio">
   <div class="wrap">
     <div class="sec-head rv">
-      <div><span class="eyebrow">Cardápio</span><h2>Escolha o <span class="script">seu</span></h2></div>
-      <p>Toque em adicionar e monte o pedido. Ele sai pronto para o WhatsApp da casa.</p>
+      <div><span class="eyebrow" data-tx="cardapio.selo">Cardápio</span><h2><span data-tx="cardapio.t1">Escolha o</span> <span class="script" data-tx="cardapio.t2">seu</span></h2></div>
+      <p data-tx="cardapio.texto">Toque em adicionar e monte o pedido. Ele sai pronto para o WhatsApp da casa.</p>
     </div>
     <div class="tabs rv" role="tablist" id="tabs"></div>
     <div class="grid" id="menu"></div>
 
     <div class="sides rv" style="margin-top:60px">
-      <div class="ph" data-par="40"><img src="img/batata.jpg" alt="Batata frita coberta de cheddar derretido" loading="lazy"></div>
+      <div class="ph" data-par="40"><img src="img/batata.jpg" data-img="batata" alt="Batata frita coberta de cheddar derretido" loading="lazy"></div>
       <div class="list" id="sides"></div>
     </div>
   </div>
@@ -540,7 +546,7 @@ html.trava,html.trava body{overflow:hidden}
 <section class="hot" id="favoritos">
   <div class="wrap">
     <div class="sec-head rv">
-      <div><span class="eyebrow">Ranking da semana</span><h2>Os mais <span class="script">pedidos</span></h2></div>
+      <div><span class="eyebrow" data-tx="favoritos.selo">Ranking da semana</span><h2><span data-tx="favoritos.t1">Os mais</span> <span class="script" data-tx="favoritos.t2">pedidos</span></h2></div>
       <p id="dicaHot">Passe o mouse para ver cada um. Clique para colocar no pedido.</p>
     </div>
     <ol class="hlist" id="hlist"></ol>
@@ -551,8 +557,8 @@ html.trava,html.trava body{overflow:hidden}
 <section class="combos" id="combos">
   <div class="wrap">
     <div class="sec-head rv">
-      <div><span class="eyebrow">Combos</span><h2>Fome <span class="script">grande</span></h2></div>
-      <p>Burger, batata e bebida com preço fechado.</p>
+      <div><span class="eyebrow" data-tx="combos.selo">Combos</span><h2><span data-tx="combos.t1">Fome</span> <span class="script" data-tx="combos.t2">grande</span></h2></div>
+      <p data-tx="combos.texto">Burger, batata e bebida com preço fechado.</p>
     </div>
     <div class="cgrid" id="cgrid">
       <article class="combo rv" data-tilt><div class="pic" data-par="24"><img class="bf" src="img/w1.jpg" alt=""><img class="fg" src="img/w1.jpg" alt="Cheese salada com tomate, cebola e cheddar"></div><div class="in"><span class="for">Para um</span><h3>Combo Clássico</h3><p>Cheese Salada, batata frita e refrigerante lata.</p><div class="foot"><span class="price">R$ 46</span><button class="btn" type="button" data-n="Combo Clássico" data-p="46" data-img="w1">Pedir combo</button></div></div></article>
@@ -562,13 +568,13 @@ html.trava,html.trava body{overflow:hidden}
   </div>
 </section>
 
-<section class="sec">
+<section class="sec" data-bloco="depoimentos">
   <div class="wrap">
-    <div class="sec-head rv"><div><span class="eyebrow">Quem já provou</span><h2>Voltam <span class="script">sempre</span></h2></div></div>
+    <div class="sec-head rv"><div><span class="eyebrow" data-tx="depoimentos.selo">Quem já provou</span><h2><span data-tx="depoimentos.t1">Voltam</span> <span class="script" data-tx="depoimentos.t2">sempre</span></h2></div></div>
     <div class="quotes">
-      <div class="quote rv"><div class="stars">★★★★★</div><q>O Barbecue Onion chega com a cebola crocante e o queijo ainda escorrendo. Peço toda sexta.</q><cite>Exemplo de depoimento</cite></div>
-      <div class="quote rv"><div class="stars">★★★★★</div><q>Pão macio, carne no ponto e a batata chega quente mesmo na entrega.</q><cite>Exemplo de depoimento</cite></div>
-      <div class="quote rv"><div class="stars">★★★★★</div><q>O Trufado com pão preto é o melhor burger que comi na cidade.</q><cite>Exemplo de depoimento</cite></div>
+      <div class="quote rv"><div class="stars">★★★★★</div><q data-tx="depoimento1.texto">O Barbecue Onion chega com a cebola crocante e o queijo ainda escorrendo. Peço toda sexta.</q><cite data-tx="depoimento1.nome">Exemplo de depoimento</cite></div>
+      <div class="quote rv"><div class="stars">★★★★★</div><q data-tx="depoimento2.texto">Pão macio, carne no ponto e a batata chega quente mesmo na entrega.</q><cite data-tx="depoimento2.nome">Exemplo de depoimento</cite></div>
+      <div class="quote rv"><div class="stars">★★★★★</div><q data-tx="depoimento3.texto">O Trufado com pão preto é o melhor burger que comi na cidade.</q><cite data-tx="depoimento3.nome">Exemplo de depoimento</cite></div>
     </div>
   </div>
 </section>
@@ -576,24 +582,24 @@ html.trava,html.trava body{overflow:hidden}
 <section class="sec" id="visite" style="padding-top:0">
   <div class="wrap visit">
     <figure class="fireshot rv" data-tilt>
-      <img src="img/fogo.jpg" alt="Hambúrguer duplo com bacon e cheddar em chamas">
+      <img src="img/fogo.jpg" data-img="fogo" alt="Hambúrguer duplo com bacon e cheddar em chamas">
     </figure>
     <div class="vcopy">
-      <h2>A chapa já está <span class="script">quente.</span></h2>
-      <p class="vlead">Peça pelo site ou venha comer no balcão. Retirada em 15 minutos.</p>
+      <h2><span data-tx="visite.t1">A chapa já está</span> <span class="script" data-tx="visite.t2">quente.</span></h2>
+      <p class="vlead" data-tx="visite.texto">Peça pelo site ou venha comer no balcão. Retirada em 15 minutos.</p>
       <div class="vcta"><button class="btn" type="button" id="visitOrder">Fazer pedido</button><a class="btn ghost" href="#cardapio">Ver cardápio</a></div>
       <dl class="vinfo rv">
-        <div><dt>Endereço</dt><dd id="vEnd">Rua Exemplo, 123, Centro</dd></div>
-        <div><dt>Horário</dt><dd id="vHoras">Terça a domingo, 18h às 23h30<br>Segunda fechado</dd></div>
-        <div><dt>WhatsApp</dt><dd id="vWhats">(00) 00000-0000</dd></div>
-        <div><dt>Instagram</dt><dd id="vInsta">@brutoburger</dd></div>
+        <div><dt>Endereço</dt><dd id="vEnd" data-c="endereco">Rua Exemplo, 123, Centro</dd></div>
+        <div><dt>Horário</dt><dd id="vHoras" data-c="horario">Terça a domingo, 18h às 23h30<br>Segunda fechado</dd></div>
+        <div><dt>WhatsApp</dt><dd id="vWhats" data-c="whatsapp">(00) 00000-0000</dd></div>
+        <div><dt>Instagram</dt><dd id="vInsta" data-c="instagram">@brutoburger</dd></div>
       </dl>
     </div>
   </div>
 </section>
 </main>
 
-<footer><div class="wrap"><span>© 2026 Bruto Burger Co. Todos os direitos reservados.</span><span>Feito na brasa, servido com amor. · <a href="admin/" rel="nofollow" style="color:inherit;opacity:.6">Área da loja</a></span></div></footer>
+<footer><div class="wrap"><span data-tx="rodape.copy">© 2026 Bruto Burger Co. Todos os direitos reservados.</span><span><span data-tx="rodape.frase">Feito na brasa, servido com amor.</span> · <a href="admin/" rel="nofollow" style="color:inherit;opacity:.6">Área da loja</a></span></div></footer>
 
 <a class="fab" id="fab" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.2z"/></svg></a>
 
@@ -602,11 +608,12 @@ html.trava,html.trava body{overflow:hidden}
   <div class="drawer-head"><h3>Seu pedido</h3><button class="x" id="closeCart" type="button" aria-label="Fechar">✕</button></div>
   <div class="lines" id="lines"></div>
   <div class="opts">
-    <div class="seg" role="radiogroup" aria-label="Como receber"><label><input type="radio" name="tipo" value="entrega" checked> Entrega</label><label><input type="radio" name="tipo" value="retirada"> Retirada</label></div>
+    <div class="seg" role="radiogroup" aria-label="Como receber" id="tipoGrupo"><label><input type="radio" name="tipo" value="entrega" checked> Entrega</label><label><input type="radio" name="tipo" value="retirada"> Retirada</label></div>
     <input id="cNome" maxlength="80" autocomplete="name" placeholder="Seu nome" aria-label="Seu nome">
     <input id="cFone" maxlength="20" inputmode="tel" autocomplete="tel" placeholder="Seu WhatsApp com DDD" aria-label="Seu WhatsApp">
+    <select id="cBairro" hidden aria-label="Bairro da entrega"><option value="">Bairro da entrega</option></select>
     <input id="cEnd" maxlength="160" autocomplete="street-address" placeholder="Endereço: rua, número e bairro" aria-label="Endereço de entrega">
-    <div class="seg tres" role="radiogroup" aria-label="Forma de pagamento"><label><input type="radio" name="pag" value="Pix" checked> Pix</label><label><input type="radio" name="pag" value="Cartão"> Cartão</label><label><input type="radio" name="pag" value="Dinheiro"> Dinheiro</label></div>
+    <div class="seg tres" role="radiogroup" aria-label="Forma de pagamento" id="pagGrupo"><label><input type="radio" name="pag" value="Pix" checked> Pix</label><label><input type="radio" name="pag" value="Cartão"> Cartão</label><label><input type="radio" name="pag" value="Dinheiro"> Dinheiro</label></div>
     <textarea id="obs" maxlength="300" aria-label="Observações do pedido" placeholder="Observações: sem cebola, ponto da carne, troco para..."></textarea>
   </div>
   <div class="taxa" id="linhaTaxa" hidden><span>Entrega</span><span id="vTaxa"></span></div>
@@ -618,15 +625,15 @@ html.trava,html.trava body{overflow:hidden}
 <div class="toast" id="toast" role="status"></div>
 <noscript><p class="sem-js">Esta pré-visualização não mostra o cardápio. Abra o link no Safari ou no Chrome para ver tudo e fazer o pedido.</p></noscript>
 
-<script src="assets/config.js"></script>
 <script>
-/* ===== CONFIGURAÇÃO: WhatsApp e Supabase ficam em assets/config.js ===== */
+/* ===== CONFIGURAÇÃO: tudo que muda por cliente fica em assets/config.js (marca, textos, fotos, contato e o motor) ===== */
 var LOJA=window.LOJA||{};
 function digitos(t){return String(t||"").replace(/\D/g,"")}
 function zapNum(t){var d=digitos(t);return d.length>=10&&d.length<=11?"55"+d:d}
 var WHATS=zapNum(LOJA.whatsapp)||"5500000000000";
 
 var IMG = {"hero": "img/hero.jpg", "fogo": "img/fogo.jpg", "batata": "img/batata.jpg", "classico": "img/classico.jpg", "trufado": "img/trufado.jpg", "salmao": "img/salmao.jpg", "mexicano": "img/mexicano.jpg", "halloumi": "img/halloumi.jpg", "barbecue": "img/barbecue.jpg", "frango_top": "img/frango-top.jpg", "combo": "img/combo.jpg", "fritas": "img/fritas.jpg", "chicken_cheese": "img/chicken-cheese.jpg", "crispy": "img/crispy.jpg", "chick_cheddar": "img/chick-cheddar.jpg", "w1": "img/w1.jpg", "w2": "img/w2.jpg", "w3": "img/w3.jpg", "c1": "img/c1.jpg", "c2": "img/c2.jpg", "c3": "img/c3.jpg"};
+Object.keys(IMG).forEach(function(k){if(window.MARCA_IMG)IMG[k]=MARCA_IMG(k,IMG[k])});
 var EX = [{"y": 0, "h": 154, "src": "img/camada-1.jpg"}, {"y": 146, "h": 86, "src": "img/camada-2.jpg"}, {"y": 224, "h": 68, "src": "img/camada-3.jpg"}, {"y": 284, "h": 68, "src": "img/camada-4.jpg"}, {"y": 344, "h": 76, "src": "img/camada-5.jpg"}, {"y": 412, "h": 66, "src": "img/camada-6.jpg"}, {"y": 470, "h": 126, "src": "img/camada-7.jpg"}, {"y": 588, "h": 122, "src": "img/camada-8.jpg"}];
 
 /* ---- cardápio ---- */
@@ -660,6 +667,7 @@ var SIDES = [
   {n:"Refrigerante lata",d:"350 ml, gelado.",p:7,i:"w1"}
 ];
 
+function esc0(t){return String(t==null?"":t).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 var $=function(s){return document.querySelector(s)}, $$=function(s){return document.querySelectorAll(s)};
 var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches, fine=matchMedia("(pointer:fine)").matches;
 
@@ -670,8 +678,8 @@ var reduce=matchMedia("(prefers-reduced-motion:reduce)").matches, fine=matchMedi
 });
 
 /* ---- ticker ---- */
-var words=["Brasa","Smash","Cheddar","Bacon crocante","Pão brioche","Batata frita","Milkshake","Molho da casa"],h="";
-for(var k=0;k<4;k++)words.forEach(function(w){h+="<span>"+w+"</span>"});
+var TX=LOJA.textos||{},words=Array.isArray(TX.faixa)&&TX.faixa.length?TX.faixa.slice(0,12).map(String):["Brasa","Smash","Cheddar","Bacon crocante","Pão brioche","Batata frita","Milkshake","Molho da casa"],h="";
+for(var k=0;k<4;k++)words.forEach(function(w){h+="<span>"+esc0(w)+"</span>"});
 $("#tick").innerHTML=h;
 
 /* ---- burger explodido ---- */
@@ -724,27 +732,43 @@ renderHot();
     box.style.left=x+"px";box.style.top=y+"px";box.style.setProperty("--rot",(-4+v)+"deg");requestAnimationFrame(loop)})();
 })();
 
-/* ---- loja online (Supabase): cardápio, dados da casa e pedidos. Sem configuração, vale o cardápio acima ---- */
-var BASE=String(LOJA.supabaseUrl||"").replace(/\/$/,""),CHAVE=String(LOJA.supabaseKey||"");
-var LOJA_OK=/^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(BASE)&&!!CHAVE,TAXA=0,MINIMO=0,ABERTA=true;
-function api(caminho,opc){opc=opc||{};opc.headers=Object.assign({apikey:CHAVE,Authorization:"Bearer "+CHAVE},opc.headers||{});return fetch(BASE+"/rest/v1/"+caminho,opc)}
+/* ---- loja online (motor Bistrô Connect): dados da casa, cardápio e pedidos. Sem configuração, vale o cardápio acima ---- */
+var MOT=window.MOTOR||{ok:false},LOJA_OK=!!MOT.ok,TAXA=0,MINIMO=0,ABERTA=true,BAIRROS=[];
+function foneTxt(f){var d=digitos(f).replace(/^55(?=\d{10,11}$)/,"");return d.length>=10?"("+d.slice(0,2)+") "+d.slice(2,d.length-4)+"-"+d.slice(-4):f}
+function montaOpcoes(st){
+  /* formas de pagamento cadastradas no painel */
+  var pg=$("#pagGrupo"),atual=(($("input[name=pag]:checked")||{}).value)||"";
+  pg.innerHTML=st.pagamentos.slice(0,4).map(function(f,i){return '<label><input type="radio" name="pag" value="'+esc(f)+'"'+((atual?f===atual:i===0)?" checked":"")+'> '+esc(f)+'</label>'}).join("");
+  if(!$("input[name=pag]:checked")&&pg.querySelector("input"))pg.querySelector("input").checked=true;
+  pg.classList.toggle("tres",st.pagamentos.length>=3);
+  /* entrega e retirada conforme a loja */
+  var en=$("input[name=tipo][value=entrega]"),re=$("input[name=tipo][value=retirada]");
+  en.closest("label").hidden=st.faz_entrega===false;re.closest("label").hidden=st.faz_retirada===false;
+  if(st.faz_entrega===false){re.checked=true}else if(st.faz_retirada===false){en.checked=true}
+  $("#tipoGrupo").hidden=st.faz_entrega===false||st.faz_retirada===false;
+  /* taxa por bairro */
+  var sb=$("#cBairro");BAIRROS=st.bairros||[];
+  sb.innerHTML='<option value="">Bairro da entrega</option>'+BAIRROS.map(function(b){return '<option value="'+esc(b.n)+'">'+esc(b.n)+" · "+(b.t?money(b.t):"grátis")+'</option>'}).join("");
+}
 function carregaLoja(){if(!LOJA_OK)return;
-  Promise.all(["settings?select=*&id=eq.1","categories?select=*&active=eq.true&order=position","products?select=*&active=eq.true&order=position"].map(function(c){return api(c).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}))
-  .then(function(r){var st=r[0][0]||{},cs=r[1]||[],ps=r[2]||[];
+  MOT.carrega().then(function(r){var st=r.loja,cs=r.cats,ps=r.prods;
     if(zapNum(st.whatsapp).length>=12)WHATS=zapNum(st.whatsapp);
-    TAXA=+st.delivery_fee||0;MINIMO=+st.min_order||0;ABERTA=st.accept_orders!==false;
+    TAXA=st.delivery_fee;MINIMO=st.min_order;ABERTA=st.aberta;
     if(st.address)$("#vEnd").textContent=st.address;if(st.hours)$("#vHoras").textContent=st.hours;if(st.instagram)$("#vInsta").textContent=st.instagram;
-    if(st.whatsapp)$("#vWhats").textContent=st.whatsapp;
-    var conv=function(p){return {id:p.id,n:p.name,d:p.description,p:+p.price||0,i:p.image_url,tag:p.badge}},M={},S=[],CB=[];
-    cs.forEach(function(c){var it=ps.filter(function(p){return p.category_id===c.id}).map(conv);if(!it.length)return;if(c.id==="acompanhamentos")S=it;else if(c.id==="combos")CB=it;else M[c.name]=it});
+    if(st.whatsapp)$("#vWhats").textContent=foneTxt(st.whatsapp);
+    montaOpcoes(st);
+    var conv=function(p){return {id:p.id,n:p.name,d:p.description,p:p.price,i:p.image_url,tag:p.badge}},M={},S=[],CB=[];
+    cs.forEach(function(c){var it=ps.filter(function(p){return p.category_id===c.id}).map(conv);if(!it.length)return;
+      if(/acompanha|bebida|por[çc][õo]es|extras?/i.test(c.name))S=S.concat(it);else if(/combo/i.test(c.name))CB=CB.concat(it);else M[c.name]=it});
+    var sem=ps.filter(function(p){return !cs.some(function(c){return c.id===p.category_id})}).map(conv);if(sem.length)M["Outros"]=(M["Outros"]||[]).concat(sem);
     if(Object.keys(M).length){MENU=M;if(!MENU[cur])cur=Object.keys(M)[0];drawTabs();renderMenu();if(window.armPics)armPics(menu)}
-    if(S.length){SIDES=S;renderSides()}
-    if(CB.length){renderCombos(CB);if(window.armPics)armPics($("#cgrid"))}
-    var hot=ps.filter(function(p){return p.featured}).slice(0,6).map(conv);if(hot.length){HOT=hot;renderHot()}
+    SIDES=S;renderSides();$("#sides").closest(".sides").hidden=!S.length;
+    if(CB.length){renderCombos(CB);if(window.armPics)armPics($("#cgrid"))}else{$("#combos").hidden=true}
+    var hot=ps.filter(function(p){return p.featured}).slice(0,6).map(conv);if(hot.length){HOT=hot;renderHot()}else{$("#favoritos").hidden=true}
     var porNome={};ps.forEach(function(p){porNome[p.name]=p});
-    Object.keys(cart).forEach(function(k){var p=porNome[k];if(!p)delete cart[k];else{cart[k].p=+p.price||0;cart[k].id=p.id;cart[k].i=p.image_url}});
+    Object.keys(cart).forEach(function(k){var p=porNome[k];if(!p)delete cart[k];else{cart[k].p=p.price;cart[k].id=p.id;cart[k].i=p.image_url}});
     $("#fab").href=wa("Olá! Quero fazer um pedido.");renderCart()})
-  .catch(function(){/* sem conexão: segue com o cardápio do próprio arquivo */})}
+  .catch(function(){/* sem conexão: segue com o cardápio do próprio arquivo, pedido só pelo WhatsApp */LOJA_OK=false;renderCart()})}
 
 /* ---- carrinho ---- */
 var CART_KEY="bruto-pedido",cart={};try{cart=JSON.parse(localStorage.getItem(CART_KEY))||{}}catch(e){}
@@ -762,19 +786,18 @@ function fly(btn,img){
 function add(btn){var n=btn.dataset.n;if(!cart[n])cart[n]={p:+btn.dataset.p,q:0,i:btn.dataset.img,id:btn.dataset.id||""};cart[n].q=Math.min(99,cart[n].q+1);fly(btn,btn.dataset.img);renderCart();say(n+" adicionado ao pedido")}
 function wa(text){return "https://wa.me/"+WHATS+"?text="+encodeURIComponent(text)}
 function dados(){var tipo=($("input[name=tipo]:checked")||{}).value||"entrega",sub=0,cnt=0;Object.keys(cart).forEach(function(k){sub+=cart[k].q*cart[k].p;cnt+=cart[k].q});sub=Math.round(sub*100)/100;
-  var taxa=tipo==="entrega"?TAXA:0;return {tipo:tipo,nome:$("#cNome").value.trim(),fone:$("#cFone").value.trim(),end:$("#cEnd").value.trim(),pag:($("input[name=pag]:checked")||{}).value||"",obs:$("#obs").value.trim(),sub:sub,taxa:taxa,total:Math.round((sub+taxa)*100)/100,cnt:cnt}}
-function rastreio(tk){return new URL("pedido.html#"+tk,location.href).href}
-function novoToken(){var b=new Uint8Array(24);crypto.getRandomValues(b);return Array.prototype.map.call(b,function(x){return ("0"+x.toString(16)).slice(-2)}).join("")}
-function mensagem(d,code,tk){var m="Olá! Quero fazer um pedido"+(code?" (nº "+code+")":"")+":\n";
+  var bairro=$("#cBairro").value,bx=BAIRROS.filter(function(b){return b.n===bairro})[0];
+  var taxa=tipo!=="entrega"?0:BAIRROS.length?(bx?bx.t:0):TAXA;return {tipo:tipo,bairro:bx?bx.n:"",nome:$("#cNome").value.trim(),fone:$("#cFone").value.trim(),end:$("#cEnd").value.trim(),pag:($("input[name=pag]:checked")||{}).value||"",obs:$("#obs").value.trim(),sub:sub,taxa:taxa,total:Math.round((sub+taxa)*100)/100,cnt:cnt}}
+function mensagem(d,code,link){var m="Olá! Quero fazer um pedido"+(code?" (nº "+code+")":"")+":\n";
   Object.keys(cart).forEach(function(k){m+=cart[k].q+"x "+k+" ("+money(cart[k].q*cart[k].p)+")\n"});
   if(d.taxa)m+="Entrega: "+money(d.taxa)+"\n";
-  m+="\nTotal: "+money(d.total)+"\n"+(d.tipo==="entrega"?"Entrega"+(d.end?": "+d.end:""):"Retirada no balcão")+"\nPagamento: "+d.pag+(d.nome?"\nNome: "+d.nome:"")+(d.obs?"\nObs.: "+d.obs:"")+(tk?"\n\nAcompanhe o pedido: "+rastreio(tk):"");return m}
+  m+="\nTotal: "+money(d.total)+"\n"+(d.tipo==="entrega"?"Entrega"+(d.end?": "+d.end:"")+(d.bairro?" - "+d.bairro:""):"Retirada no balcão")+"\nPagamento: "+d.pag+(d.nome?"\nNome: "+d.nome:"")+(d.obs?"\nObs.: "+d.obs:"")+(link?"\n\nAcompanhe o pedido: "+link:"");return m}
 function renderCart(){
   var keys=Object.keys(cart),d=dados();
   $("#lines").innerHTML=keys.map(function(k){var c=cart[k];
     return '<div class="line"><img src="'+esc(src(c.i))+'" alt=""><b>'+esc(k)+'</b><span class="price">'+money(c.q*c.p)+'</span><div class="q"><button type="button" data-d="-1" data-k="'+esc(k)+'" aria-label="Menos">−</button><span>'+c.q+'</span><button type="button" data-d="1" data-k="'+esc(k)+'" aria-label="Mais">+</button></div></div>'}).join("")||'<p class="empty">Nenhum item ainda. Adicione um burger do cardápio.</p>';
   try{localStorage.setItem(CART_KEY,JSON.stringify(cart))}catch(e){}
-  $("#cEnd").hidden=d.tipo!=="entrega";$("#linhaTaxa").hidden=!d.taxa;$("#vTaxa").textContent=money(d.taxa);
+  $("#cEnd").hidden=d.tipo!=="entrega";$("#cBairro").hidden=d.tipo!=="entrega"||!BAIRROS.length;$("#linhaTaxa").hidden=!d.taxa;$("#vTaxa").textContent=money(d.taxa);
   $("#cartN").textContent=d.cnt;$("#total").textContent=money(d.total);document.body.classList.toggle("tem-pedido",d.cnt>0);$("#bpQtd").textContent=d.cnt;$("#bpTot").textContent=money(d.total);
   var btn=$("#send");btn.disabled=!d.cnt||!ABERTA;btn.textContent=ABERTA?(LOJA_OK?"Enviar pedido":"Enviar pelo WhatsApp"):"Pedidos pausados agora";
   if(!enviando)$("#sendNote").textContent=!ABERTA?"A casa não está recebendo pedidos pelo site agora. Chame no WhatsApp.":MINIMO&&d.sub<MINIMO?"Pedido mínimo: "+money(MINIMO)+".":LOJA_OK?"O pedido é registrado na hamburgueria e abre no WhatsApp já escrito.":"O pedido abre no WhatsApp da hamburgueria já escrito."}
@@ -785,18 +808,19 @@ $("#send").addEventListener("click",function(){
   if(enviando)return;var d=dados(),keys=Object.keys(cart);if(!keys.length||!ABERTA)return;
   if(d.nome.length<2)return marca($("#cNome"),"Informe seu nome.");
   if(d.tipo==="entrega"&&d.end.length<8)return marca($("#cEnd"),"Informe o endereço de entrega.");
+  if(LOJA_OK&&d.tipo==="entrega"&&BAIRROS.length&&!d.bairro)return marca($("#cBairro"),"Escolha o bairro da entrega.");
   if(MINIMO&&d.sub<MINIMO)return marca(null,"Pedido mínimo: "+money(MINIMO)+".");
   var registra=LOJA_OK&&keys.every(function(k){return cart[k].id});
   if(registra&&(digitos(d.fone).length<10||digitos(d.fone).length>13))return marca($("#cFone"),"Informe seu WhatsApp com DDD.");
   var w=window.open("about:blank","_blank");
   if(!registra){abre(w,wa(mensagem(d,null)));return}
-  var code="BR"+Date.now().toString(36).slice(-5).toUpperCase(),tk=novoToken(),btn=$("#send");
+  var btn=$("#send");
   enviando=true;btn.disabled=true;btn.textContent="Registrando pedido…";
-  api("orders",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({code:code,track_token:tk,status:"novo",customer_name:d.nome.slice(0,80),customer_phone:d.fone.slice(0,20),delivery_type:d.tipo,address:d.tipo==="entrega"?d.end.slice(0,160):"",notes:d.obs.slice(0,300),payment_method:d.pag,items:keys.map(function(k){return {product_id:cart[k].id,name:k,price:cart[k].p,qty:cart[k].q}}),subtotal:d.sub,delivery_fee:d.taxa,total:d.total})})
-  .then(function(r){if(r.ok)return;return r.json().catch(function(){return {}}).then(function(j){throw new Error(j.message||"")})})
-  .then(function(){abre(w,wa(mensagem(d,code,tk)));cart={};enviando=false;renderCart();closeCart();say("Pedido "+code+" registrado! Confirme no WhatsApp.")})
+  MOT.pedido({customer_name:d.nome.slice(0,80),customer_phone:d.fone.slice(0,20),delivery_type:d.tipo,address:d.tipo==="entrega"?d.end.slice(0,160):"",neighborhood:d.tipo==="entrega"?d.bairro:"",notes:d.obs.slice(0,300),payment_method:d.pag,expected_total:d.total,items:keys.map(function(k){return {product_id:cart[k].id,qty:cart[k].q}})})
+  .then(function(o){var link=MOT.rastreio(o);if(o&&+o.total)d.total=+o.total;abre(w,wa(mensagem(d,o.code,link)));cart={};enviando=false;renderCart();closeCart();say("Pedido "+o.code+" registrado! Confirme no WhatsApp.")})
   .catch(function(err){if(w)w.close();enviando=false;renderCart();
-    var m=String(err&&err.message||"");$("#sendNote").textContent=(/[a-zà-ú]{4}/i.test(m)&&m.length<140?m:"Não conseguimos registrar o pedido agora.")+" ";
+    var m=err&&err.amigavel?String(err.message):"";$("#sendNote").textContent=(m&&m.length<160?m:"Não conseguimos registrar o pedido agora.")+" ";
+    if(err&&err.hint==="PRICE_CHANGED")carregaLoja();
     var a=document.createElement("a");a.href=wa(mensagem(d,null));a.target="_blank";a.rel="noopener";a.textContent="Enviar só pelo WhatsApp";$("#sendNote").appendChild(a)})
   .then(function(){btn.textContent=ABERTA?"Enviar pedido":"Pedidos pausados agora"});
 });
@@ -809,7 +833,7 @@ document.addEventListener("click",function(e){
 ["#openCart","#heroOrder","#visitOrder","#barraPedido"].forEach(function(id){$(id).addEventListener("click",openCart)});
 $("#closeCart").addEventListener("click",closeCart);scrim.addEventListener("click",closeCart);
 ["#obs","#cNome","#cFone","#cEnd"].forEach(function(id){$(id).addEventListener("input",renderCart)});
-[].forEach.call($$("input[name=tipo],input[name=pag]"),function(r){r.addEventListener("change",renderCart)});
+drawer.addEventListener("change",function(e){if(e.target.matches("input[name=tipo],input[name=pag],#cBairro"))renderCart()});
 addEventListener("keydown",function(e){if(e.key==="Escape")closeCart();var r=e.target.closest&&e.target.closest(".hrow");if(r&&(e.key==="Enter"||e.key===" ")){e.preventDefault();add(r)}});
 carregaLoja();
 if(!fine){var dh=$("#dicaHot");if(dh)dh.textContent="Toque em um deles para colocar no pedido."}
