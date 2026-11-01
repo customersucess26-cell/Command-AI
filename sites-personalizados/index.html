@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-PJUys8FE/asoz+VNRLW5Li3DMuBcaowFT1X6rUosL/4=' 'sha256-QX9O8WWMVLa2Kc/VRDe7/mNcE001a9OSfWgkEdtgzY0=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-PJUys8FE/asoz+VNRLW5Li3DMuBcaowFT1X6rUosL/4=' 'sha256-U+2U1T0q/cg1wFXdjpJBx7hP2mytJWjsKt1Qhjv+Efg=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1450,6 +1450,39 @@ section.cream .eyebrow{color:var(--mint-deep)}
 .pc-pscr.wa{background:#E8DFD3 radial-gradient(rgba(0,0,0,.04) 1px,transparent 1px) 0 0/10px 10px}
 .pc-pscr.wa .pc-wah{opacity:1}
 .pc-pscr.wa img.pp:first-of-type{top:52px;left:7%;width:86%;border-radius:8px;box-shadow:0 6px 14px -6px rgba(0,0,0,.35);border:3px solid #DCF8C6}
+
+/* ===== celulares do cardápio: palco, reflexo, poeira dourada e selos ===== */
+#pfStage{isolation:isolate}
+#pfStage .models.pf{z-index:3}
+.pf-word{position:absolute;left:50%;top:44%;transform:translate(calc(-50% + var(--px,0px)),-50%);font:800 clamp(80px,15vw,230px)/1 var(--f-display);letter-spacing:.06em;color:transparent;-webkit-text-stroke:1.5px rgba(168,126,47,.22);white-space:nowrap;pointer-events:none;z-index:0;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.pf-spot{position:absolute;left:50%;top:-40px;width:720px;height:720px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(255,236,190,.85),rgba(240,208,138,.25) 45%,transparent 72%);z-index:0;pointer-events:none;animation:pfSpot 6s ease-in-out infinite}
+@keyframes pfSpot{50%{opacity:.75;transform:translateX(-50%) scale(1.06)}}
+.pf-podium{position:absolute;left:50%;top:560px;width:560px;height:150px;transform:translateX(-50%);z-index:1;pointer-events:none}
+.pf-podium i{position:absolute;left:50%;top:50%;border-radius:50%;transform:translate(-50%,-50%);border:1.5px solid rgba(184,134,43,.45)}
+.pf-podium i:nth-child(1){width:340px;height:70px;background:radial-gradient(closest-side,rgba(217,174,92,.45),rgba(217,174,92,.08) 70%,transparent);box-shadow:0 0 40px rgba(217,174,92,.35)}
+.pf-podium i:nth-child(2){width:460px;height:100px;border-color:rgba(184,134,43,.28);animation:pfRing 3.6s ease-out infinite}
+.pf-podium i:nth-child(3){width:560px;height:130px;border-color:rgba(184,134,43,.16);animation:pfRing 3.6s ease-out 1.8s infinite}
+@keyframes pfRing{0%{opacity:0;transform:translate(-50%,-50%) scale(.7)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.12)}}
+.pf-dust{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.pf-dust i{position:absolute;left:var(--x);bottom:-10px;width:var(--s);height:var(--s);border-radius:50%;background:radial-gradient(circle,#F0D08A,rgba(217,174,92,.0) 70%);box-shadow:0 0 8px rgba(217,174,92,.8);opacity:0;animation:pfDust var(--t) linear var(--d) infinite}
+@keyframes pfDust{0%{opacity:0;transform:translate(0,0)}15%{opacity:.9}80%{opacity:.6}100%{opacity:0;transform:translate(30px,-620px)}}
+.models.pf .model[data-pos="0"] .phone{-webkit-box-reflect:below 6px linear-gradient(transparent 78%,rgba(255,255,255,.22))}
+.pf-chip{position:absolute;z-index:6;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;border-radius:16px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(20,20,22,.06);box-shadow:0 24px 44px -22px rgba(60,35,5,.5);color:var(--ink);pointer-events:none;animation:pfChip 7s ease-in-out infinite}
+.pf-chip b{display:block;font-size:13.5px}.pf-chip small{display:block;font-size:11.5px;color:var(--ink-soft)}
+.pf-chip .ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#25D366;color:#fff;font-weight:800;font-size:15px;flex:none}
+.pf-chip .ic.st{background:linear-gradient(135deg,#F0D08A,#B8862B);color:#fff}.pf-chip .ic.gd{background:#141416;color:#F0D08A}
+.pf-chip.c1{left:calc(50% - 360px);top:120px}
+.pf-chip.c2{left:calc(50% + 180px);top:70px;animation-delay:-2.3s}
+.pf-chip.c3{left:calc(50% + 190px);top:430px;animation-delay:-4.6s}
+@keyframes pfChip{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@media (max-width:900px){.pf-chip,.pf-word{display:none}.pf-podium{width:320px;top:510px}.pf-podium i:nth-child(1){width:220px}.pf-podium i:nth-child(2){width:280px}.pf-podium i:nth-child(3){width:320px}.pf-spot{width:440px;height:440px}}
+
+#pfStage .models.pf{height:740px!important}
+.pf-podium{top:590px}
+.pf-chip.c1{left:calc(50% - 470px);top:80px}
+.pf-chip.c3{top:470px}
+.models.pf .model[data-pos="0"] .phone{-webkit-box-reflect:below 4px linear-gradient(transparent 84%,rgba(255,255,255,.2))}
+@media (max-width:900px){#pfStage .models.pf{height:640px!important}.pf-podium{top:540px}}
 </style>
 </head>
 <body>
@@ -1612,7 +1645,11 @@ section.cream .eyebrow{color:var(--mint-deep)}
         <h2>Um cardápio que o cliente usa sozinho. Toque e teste.</h2>
         <p>Todo site vem com o cardápio interativo: o cliente escolhe, monta o pedido e envia pronto para o seu WhatsApp. São cinco estilos, todos funcionando aqui embaixo.</p>
       </div>
-      <div class="pf-stage"><div class="models pf" id="pfModels">
+      <div class="pf-stage" id="pfStage"><div class="pf-word" aria-hidden="true">CARDÁPIO</div><div class="pf-spot" aria-hidden="true"></div><div class="pf-dust" aria-hidden="true"><i style="--x:8%;--d:0.0s;--t:11s;--s:4px"></i><i style="--x:16%;--d:3.2s;--t:13s;--s:3px"></i><i style="--x:24%;--d:6.1s;--t:10s;--s:5px"></i><i style="--x:33%;--d:1.4s;--t:12s;--s:3px"></i><i style="--x:41%;--d:8.3s;--t:14s;--s:4px"></i><i style="--x:58%;--d:2.2s;--t:11s;--s:3px"></i><i style="--x:66%;--d:5.5s;--t:13s;--s:5px"></i><i style="--x:74%;--d:0.8s;--t:12s;--s:3px"></i><i style="--x:83%;--d:7.1s;--t:10s;--s:4px"></i><i style="--x:91%;--d:4.4s;--t:14s;--s:3px"></i><i style="--x:50%;--d:9.6s;--t:12s;--s:4px"></i><i style="--x:28%;--d:10.2s;--t:11s;--s:3px"></i><i style="--x:70%;--d:11.4s;--t:13s;--s:4px"></i></div><div class="pf-podium" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="pf-chip c1" aria-hidden="true"><span class="ic">✓</span><div><b>Pedido enviado</b><small>direto no WhatsApp da casa</small></div></div>
+        <div class="pf-chip c2" aria-hidden="true"><span class="ic st">★</span><div><b>4,9 de 5</b><small>clientes que pediram pelo site</small></div></div>
+        <div class="pf-chip c3" aria-hidden="true"><span class="ic gd">%</span><div><b>0% de comissão</b><small>o pedido é todo seu</small></div></div>
+        <div class="models pf" id="pfModels">
         <div class="model"><div class="phone" data-mount="padaria" role="region" aria-label="Modelo padaria"></div><b>Padaria</b><span>Claro e artesanal, em grade</span></div>
         <div class="model"><div class="phone" data-mount="cafe" role="region" aria-label="Modelo café"></div><b>Café</b><span>Escuro e aconchegante, com vitrine</span></div>
         <div class="model"><div class="phone" data-mount="burger" role="region" aria-label="Modelo hamburgueria"></div><b>Hamburgueria</b><span>Preto e marcante, foto em destaque</span></div>
@@ -2339,6 +2376,9 @@ var OFERTA={mes:'novembro',vagas:5,restantes:2,fimBonus:'2026-11-30T23:59:00-03:
       if(max>0){a.style.transition='opacity .8s ease,transform 8s cubic-bezier(.45,0,.25,1)';a.style.transform='translateY(-'+max+'px)';await sleep(9000)}else await sleep(6000);
       i=(i+1)%im.length;var b=im[i];b.style.transition='none';b.style.transform='translateY(0)';void b.offsetWidth}}
     ciclo()})();
+
+  /* palavra de fundo acompanha o mouse */
+  (function(){var st=document.getElementById('pfStage');if(!st)return;var w=st.querySelector('.pf-word');st.addEventListener('mousemove',function(e){var r=st.getBoundingClientRect();w.style.setProperty('--px',((e.clientX-r.left)/r.width-.5)*-60+'px')});st.addEventListener('mouseleave',function(){w.style.setProperty('--px','0px')})})();
 </script>
 </body>
 </html>
