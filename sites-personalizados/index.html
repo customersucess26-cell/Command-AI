@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-EMjInv1iHeVq8RSZKya2akpAFuMKfZ9fBzJiCDPdzSU=' 'sha256-qQ/wK1uR+8CE83rRHl3cFNb2GkFdfo0Gt/GyEWRi3QU=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-64lpSL2+hi8astRjYuRP5Eg5J1R+r9hc8SHTrwG5yFc=' 'sha256-qQ/wK1uR+8CE83rRHl3cFNb2GkFdfo0Gt/GyEWRi3QU=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1376,6 +1376,9 @@ section.cream .eyebrow{color:var(--mint-deep)}
 .tpls.cf .tc-live{position:relative;overflow:hidden}
 .tpls.cf .tc-live iframe{position:absolute;left:0;top:0;width:1440px;height:var(--fh,10300px);border:0;pointer-events:none;transform-origin:0 0;transform:scale(var(--k,.28));background:#F6EFE7}
 @keyframes cfLive{0%,6%{transform:translateY(0) scale(var(--k,.28))}94%,100%{transform:translateY(var(--dy,-2400px)) scale(var(--k,.28))}}
+
+.d-kpi .ks{display:block;font-style:normal;font-size:9px;color:#8A7A6C;margin-top:1px}
+.d-kpi:first-child{box-shadow:inset 0 2px 0 #C0703A,0 1px 0 #EDE5DB}
 </style>
 </head>
 <body>
@@ -2047,7 +2050,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
     var S={novos:2,hoje:7,mes:4286.4,prod:55,days:[12,9,14,11,16,13,7],orders:[],top:{'Croissant de manteiga':38,'Cappuccino':31,'Bolo de cenoura':24,'Pão de fermentação':19}};
     var brl=function(n){return 'R$ '+n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})};
     var K=[['novos','PEDIDOS NOVOS',I.rec,'#FDE9DC','#C0703A'],['hoje','PEDIDOS HOJE',I.home,'#E3EEFB','#2E6DB0'],['mes','VENDAS NO MÊS',I.money,'#DFF3E8','#2D8A5E'],['prod','PRODUTOS NO SITE',I.bag,'#EFE6F8','#7E55B0']];
-    document.getElementById('dKpis').innerHTML=K.map(function(k){return '<div class="d-kpi" id="k-'+k[0]+'"><i style="background:'+k[3]+';color:'+k[4]+'">'+k[2]+'</i><div><small>'+k[1]+'</small><b id="kv-'+k[0]+'"></b></div></div>'}).join('');
+    document.getElementById('dKpis').innerHTML=K.map(function(k){return '<div class="d-kpi" id="k-'+k[0]+'"><i style="background:'+k[3]+';color:'+k[4]+'">'+k[2]+'</i><div><small>'+k[1]+'</small><b id="kv-'+k[0]+'"></b><em class="ks">'+({novos:'esperando você confirmar',hoje:'recebidos hoje',mes:'pedidos não cancelados',prod:'cadastrados'})[k[0]]+'</em></div></div>'}).join('');
     var shown={novos:0,hoje:0,mes:0,prod:0};
     function anim(key,to){var el=document.getElementById('kv-'+key),from=shown[key],t0=null;shown[key]=to;
       function f(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/700),v=from+(to-from)*(1-Math.pow(1-p,3));el.textContent=key==='mes'?brl(v):Math.round(v);if(p<1)requestAnimationFrame(f)}requestAnimationFrame(f);
@@ -2105,9 +2108,11 @@ section.cream .eyebrow{color:var(--mint-deep)}
     function show(k){navs.forEach(function(e){e.classList.toggle('on',e.dataset.v===k)});var t=TT[k];document.getElementById('dCrumb').textContent='PAINEL / '+t[0];document.getElementById('dTitle').textContent=t[1];document.getElementById('dSub').textContent=t[2];
       var h=document.getElementById('vHome'),a=document.getElementById('vAlt');if(k==='home'){a.classList.remove('on');h.classList.add('on');return}a.innerHTML=V[k]();h.classList.remove('on');a.classList.remove('on');void a.offsetWidth;a.classList.add('on')}
     var tour=1;
-    async function passeio(){for(var j=0;j<3;j++){var k=KEYS[tour];tour=tour%(KEYS.length-1)+1;var nv=navs[KEYS.indexOf(k)];point(nv);await sleep(900);click();await sleep(200);show(k);await sleep(3200)}
+    async function passeio(){for(var j=0;j<KEYS.length-1;j++){var k=KEYS[tour];tour=tour%(KEYS.length-1)+1;var nv=navs[KEYS.indexOf(k)];point(nv);await sleep(900);click();await sleep(200);show(k);await sleep(3200)}
       point(navs[0]);await sleep(800);click();await sleep(200);show('home');await sleep(600)}
+    var first=true;
     async function loop(){while(true){if(!vis){await sleep(600);continue}
+      if(first){first=false;await sleep(1500);await passeio();continue}
       var it=ITEMS[step%ITEMS.length],nm=NAMES[step%NAMES.length];step++;
       toast('🔔','Novo pedido #'+n,it[0]+' · '+brl(it[1]));
       S.orders.unshift({n:n,c:nm,it:it[3],v:it[1],s:'novo'});S.novos++;S.hoje++;S.days[6]++;S.mes+=it[1];Object.keys(it[2]).forEach(function(p){S.top[p]=(S.top[p]||0)+it[2][p]});n++;all();
