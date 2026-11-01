@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-Vg5B9xsXDD6cIkolOrhMV31qFwu8dbABsu2KxCALsDc=' 'sha256-RCRdOLsTc3+ih/huyPzMTPdih04K4leKbXaPjKV0TF4=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-Vg5B9xsXDD6cIkolOrhMV31qFwu8dbABsu2KxCALsDc=' 'sha256-vIXSXQucz76Z8PMyLR3Wwx1MAJ4XJM9e2ZCt/EUNG00=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bistrô Connect | Site para restaurante, café e hamburgueria no ar em 7 dias</title>
 <meta name="description" content="Site de marca para restaurantes, cafés, padarias e hamburguerias, feito a partir de modelos premium e no ar em 7 dias. Cardápio com pedido no WhatsApp, painel de pedidos e zero comissão.">
@@ -1230,7 +1230,7 @@ header.nav .in{height:78px!important}
 }
 /* ===== efeitos de entrada e brilho (página clara continua clara) ===== */
 .fx{opacity:0;transform:translateY(40px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.85,.2,1)}
-.fx.in{opacity:1;transform:none}
+.fx.fx-on{opacity:1;transform:none}
 .btn-mint{position:relative;overflow:hidden}
 .btn-mint::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);transform:translateX(-120%);animation:btnRefl 4.5s ease-in-out infinite;pointer-events:none}
 @keyframes btnRefl{0%,70%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
@@ -1302,6 +1302,32 @@ section.cream .eyebrow{color:var(--mint-deep)}
 .cream .plans-note{color:var(--ink-soft)}
 .cream .plans-note a{color:var(--mint-deep);font-weight:700}
 #planos.cream .head h2{color:var(--ink)}#planos.cream .head p{color:var(--ink-soft)}
+
+/* topo claro, dúvidas escuro, contato claro: nunca duas seções seguidas da mesma cor */
+.hero.cream .eyebrow{color:var(--mint-deep)}
+.hero.cream h1{color:var(--ink)}
+.hero.cream h1 em{background:linear-gradient(90deg,#C99A3E,#A87E2F 55%,#7E5A1C);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero.cream .typed{color:var(--ink)}
+.hero.cream .lead,.hero.cream .ctas+p,.hero.cream .phone-note{color:var(--ink-soft)!important}
+.hero.cream .phone-note a{color:var(--mint-deep);font-weight:700}
+.hero.cream .btn-ghost{color:var(--ink);border-color:rgba(20,20,22,.22)}
+.hero.cream .btn-ghost:hover{background:#fff}
+.hero.cream .proof{border-top-color:rgba(20,20,22,.12)}
+.hero.cream .proof strong{background:linear-gradient(180deg,#141416,#5A4320);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero.cream .proof span{color:var(--ink-soft)}
+.hero.cream .v-tabs{background:rgba(255,255,255,.75);border-color:rgba(20,20,22,.08);box-shadow:0 14px 30px -18px rgba(60,40,10,.4)}
+.hero.cream .v-tabs label{color:#6B655C}
+.hero.cream .v-tabs label:hover{color:var(--ink)}
+@keyframes vTabL{0%,22%{background:linear-gradient(180deg,#F0D08A,#D9AE5C);color:#141008;box-shadow:0 8px 20px -6px rgba(217,174,92,.8)}25%,97%{background:transparent;color:#6B655C;box-shadow:none}100%{background:linear-gradient(180deg,#F0D08A,#D9AE5C);color:#141008}}
+.hero.cream .v-tabs label{animation-name:vTabL}
+#faq .head h2{color:#fff}
+#faq .faq details{background:rgba(255,255,255,.04);border-color:var(--navy-3);color:var(--on-navy)}
+#faq .faq details[open]{border-color:rgba(217,174,92,.45);background:rgba(217,174,92,.06)}
+#faq .faq summary::after{color:var(--mint)}
+#faq .faq details p{color:var(--on-navy-soft)}
+#contato.cream h2{color:var(--ink)}
+#contato.cream p[style]{color:var(--ink-soft)!important}
+#contato.cream form.lead{box-shadow:0 40px 80px -40px rgba(60,40,10,.45);border:1px solid rgba(20,20,22,.06)}
 </style>
 </head>
 <body>
@@ -1321,7 +1347,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
 </header>
 
 <main id="topo">
-  <section class="hero dark">
+  <section class="hero cream">
     <canvas id="net" aria-hidden="true"></canvas>
     <div class="in">
       <div>
@@ -1370,7 +1396,6 @@ section.cream .eyebrow{color:var(--mint-deep)}
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true"><div class="track"><span>Padarias</span><span>Cafeterias</span><span>Hamburguerias</span><span>Restaurantes</span><span>Confeitarias</span><span>Pizzarias</span><span>Marmitarias</span><span>Docerias</span><span>Padarias</span><span>Cafeterias</span><span>Hamburguerias</span><span>Restaurantes</span><span>Confeitarias</span><span>Pizzarias</span><span>Marmitarias</span><span>Docerias</span></div></div>
 
   <section class="dark" id="templates">
     <div class="in">
@@ -1572,9 +1597,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
         <div class="feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-.5-.5-2.5z"/></svg><h3>Suporte todo mês</h3><p>Hospedagem, ajustes, banners de datas comemorativas e atendimento no WhatsApp.</p></div>
       </div>
     </div>
-  </section>
-
-  <section style="padding-top:0">
+  <div style="height:clamp(56px,7vw,96px)"></div>
     <div class="in">
       <div class="head">
         <p class="eyebrow">Lado a lado</p>
@@ -1655,7 +1678,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
     </div>
   </section>
 
-  <section>
+  <section class="dark" id="faq">
     <div class="in">
       <div class="head"><p class="eyebrow">Perguntas frequentes</p><h2>Antes de você perguntar</h2></div>
       <div class="faq">
@@ -1671,7 +1694,7 @@ section.cream .eyebrow{color:var(--mint-deep)}
     </div>
   </section>
 
-  <section class="dark contact" id="contato">
+  <section class="cream contact" id="contato">
     <div class="in">
       <div>
         <p class="eyebrow">Demonstração gratuita</p>
@@ -2157,7 +2180,7 @@ var OFERTA={mes:'novembro',vagas:5,restantes:2,fimBonus:'2026-11-30T23:59:00-03:
   box.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50&&!e.target.closest('[data-pos="0"] .phone'))vai(at+(dx<0?1:-1));x0=null});
   vai(0)})();
 /* ===== entrada ao rolar ===== */
-(function(){if(!('IntersectionObserver' in window))return;var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+(function(){if(!('IntersectionObserver' in window))return;var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('fx-on');io.unobserve(e.target)}})},{threshold:.12});
   [].forEach.call(document.querySelectorAll('section .head,.steps>*,.feats>*,.plans>*,.faq details,.os-item,.calc-box,.cf-stage,.pf-stage,form.lead,.of-gar>*'),function(el){if(el.getBoundingClientRect().top<innerHeight*.9)return;el.classList.add('fx');var k=el.parentNode?[].indexOf.call(el.parentNode.children,el):0;el.style.transitionDelay=(Math.max(0,k)%4)*110+'ms';io.observe(el)})})();
 </script>
 </body>
