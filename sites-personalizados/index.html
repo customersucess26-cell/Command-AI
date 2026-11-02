@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-BQ6B12eR9hve/LU0qYnF2SXM5J5+nsCKTZSkMHxEKIo=' 'sha256-Uc+CCmiMLEed670U8eaYsZO6VPpKaV7DWBJUCWjtSKw=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-BQ6B12eR9hve/LU0qYnF2SXM5J5+nsCKTZSkMHxEKIo=' 'sha256-S8NtNg2HLnS9Y+mRXsyDQkhPK+nnyAJNMW6H1c+DuzE=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#120d0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2408,6 +2408,39 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
   #pfModels .model[data-pos="0"] .phone::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.16) 48%,transparent 62%);background-size:250% 100%;animation:pfBrilho 6s ease-in-out infinite}
   @keyframes pfBrilho{0%,60%{background-position:120% 0}100%{background-position:-120% 0}}
 }
+
+/* v13: palco dos cardápios (fundo vivo atrás dos celulares) */
+.pf-fx{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.pf-aura{position:absolute;left:50%;top:44%;width:900px;height:640px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,var(--aura,rgba(217,174,92,.42)),transparent 72%);filter:blur(10px);transition:background 1.4s ease;animation:pfRespira 7s ease-in-out infinite}
+@keyframes pfRespira{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.9}50%{transform:translate(-50%,-50%) scale(1.08);opacity:1}}
+.pf-feixes{position:absolute;left:50%;top:44%;width:1100px;height:1100px;transform:translate(-50%,-50%);border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(201,163,91,.22) 0deg 5deg,transparent 5deg 20deg);-webkit-mask:radial-gradient(closest-side,#000 18%,transparent 70%);mask:radial-gradient(closest-side,#000 18%,transparent 70%);animation:pfGira 60s linear infinite}
+@keyframes pfGira{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.pf-palco{position:absolute;left:50%;top:505px;width:640px;height:150px;transform:translateX(-50%)}
+.pf-palco i{position:absolute;left:50%;top:50%;border-radius:50%;transform:translate(-50%,-50%);border:1.5px solid rgba(184,134,43,.5)}
+.pf-palco i:nth-child(1){width:360px;height:66px;background:radial-gradient(closest-side,rgba(217,174,92,.5),rgba(217,174,92,.06) 70%,transparent);box-shadow:0 0 50px rgba(217,174,92,.35)}
+.pf-palco i:nth-child(2){width:500px;height:100px;border-style:dashed;border-color:rgba(184,134,43,.35);animation:pfOnda 4s ease-out infinite}
+.pf-palco i:nth-child(3){width:640px;height:132px;border-color:rgba(184,134,43,.18);animation:pfOnda 4s ease-out 2s infinite}
+@keyframes pfOnda{0%{opacity:0;transform:translate(-50%,-50%) scale(.75)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.12)}}
+.pf-linhas{position:absolute;inset:0;width:100%;height:100%}
+.pf-linhas path{fill:none;stroke:rgba(184,134,43,.35);stroke-width:1.4;stroke-dasharray:6 14;animation:pfTraco 18s linear infinite}
+.pf-linhas path+path{animation-direction:reverse;stroke:rgba(184,134,43,.22)}
+@keyframes pfTraco{to{stroke-dashoffset:-400}}
+.pf-ing{position:absolute;font-size:26px;filter:drop-shadow(0 8px 12px rgba(60,35,5,.25));opacity:.85;animation:pfIng 9s ease-in-out infinite}
+.pf-ing.g1{left:calc(50% - 560px);top:300px}.pf-ing.g2{left:calc(50% + 520px);top:160px;animation-delay:-1.5s}
+.pf-ing.g3{left:calc(50% - 470px);top:500px;animation-delay:-3s}.pf-ing.g4{left:calc(50% + 560px);top:420px;animation-delay:-4.5s}
+.pf-ing.g5{left:calc(50% - 300px);top:40px;animation-delay:-6s;font-size:22px}.pf-ing.g6{left:calc(50% + 330px);top:560px;animation-delay:-7.5s;font-size:22px}
+@keyframes pfIng{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-22px) rotate(8deg)}}
+.pf-notif{position:absolute;z-index:2;display:flex;flex-direction:column;padding:10px 14px 10px 40px;border-radius:14px;background:rgba(23,19,15,.9);color:#F3EEE6;box-shadow:0 18px 36px -18px rgba(0,0,0,.6);border:1px solid rgba(201,163,91,.35);opacity:0;animation:pfNotif 12s ease-in-out infinite}
+.pf-notif::before{content:"";position:absolute;left:14px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#25D366;box-shadow:0 0 0 4px rgba(37,211,102,.2)}
+.pf-notif b{font:600 13px var(--f-body)}.pf-notif small{font-size:11.5px;color:#CFC3AE}
+.pf-notif.n1{left:calc(50% - 600px);top:575px}
+.pf-notif.n2{left:calc(50% + 390px);top:575px;animation-delay:-4s}.pf-notif.n2::before{background:#D9AE5C;box-shadow:0 0 0 4px rgba(217,174,92,.25)}
+.pf-notif.n3{left:calc(50% - 600px);top:575px;animation-delay:-8s}.pf-notif.n3::before{background:#5BA8FF;box-shadow:0 0 0 4px rgba(91,168,255,.22)}
+@keyframes pfNotif{0%,6%{opacity:0;transform:translateY(12px) scale(.96)}12%,30%{opacity:1;transform:none}36%,100%{opacity:0;transform:translateY(-10px) scale(.98)}}
+#pfStage .models.pf{position:relative;z-index:3}
+@media (max-width:1180px){.pf-notif{display:none}}
+@media (max-width:900px){.pf-ing,.pf-notif,.pf-linhas{display:none}.pf-feixes{width:700px;height:700px}.pf-aura{width:420px;height:420px}.pf-palco{top:520px;width:340px}.pf-palco i:nth-child(1){width:220px}.pf-palco i:nth-child(2){width:290px}.pf-palco i:nth-child(3){width:340px}}
+@media (prefers-reduced-motion:reduce){.pf-aura,.pf-feixes,.pf-palco i,.pf-linhas path,.pf-ing,.pf-notif{animation:none!important}.pf-notif{opacity:1}}
 </style>
 </head>
 <body>
@@ -2680,6 +2713,16 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
         <div class="head-cta"><a class="btn btn-navy" href="#pfStage" data-track="cta-cardapio-demo">Ver demonstração</a><a class="btn btn-ghost" href="#contato" data-plano="Cardápio digital" data-track="cta-cardapio">Quero um cardápio digital</a></div>
       </div>
       <div class="pf-stage" id="pfStage"><div class="pf-word" aria-hidden="true">CARDÁPIO</div><div class="pf-spot" aria-hidden="true"></div><div class="pf-dust" aria-hidden="true"><i style="--x:8%;--d:0.0s;--t:11s;--s:4px"></i><i style="--x:16%;--d:3.2s;--t:13s;--s:3px"></i><i style="--x:24%;--d:6.1s;--t:10s;--s:5px"></i><i style="--x:33%;--d:1.4s;--t:12s;--s:3px"></i><i style="--x:41%;--d:8.3s;--t:14s;--s:4px"></i><i style="--x:58%;--d:2.2s;--t:11s;--s:3px"></i><i style="--x:66%;--d:5.5s;--t:13s;--s:5px"></i><i style="--x:74%;--d:0.8s;--t:12s;--s:3px"></i><i style="--x:83%;--d:7.1s;--t:10s;--s:4px"></i><i style="--x:91%;--d:4.4s;--t:14s;--s:3px"></i><i style="--x:50%;--d:9.6s;--t:12s;--s:4px"></i><i style="--x:28%;--d:10.2s;--t:11s;--s:3px"></i><i style="--x:70%;--d:11.4s;--t:13s;--s:4px"></i></div><div class="pf-podium" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="pf-fx" aria-hidden="true">
+          <div class="pf-aura"></div>
+          <div class="pf-feixes"></div>
+          <div class="pf-palco"><i></i><i></i><i></i></div>
+          <svg class="pf-linhas" viewBox="0 0 1200 640" preserveAspectRatio="none"><path d="M40 520 C 300 380, 420 600, 600 470 S 930 300, 1160 430"/><path d="M60 180 C 320 60, 500 260, 640 160 S 960 40, 1140 150"/></svg>
+          <span class="pf-ing g1">🍕</span><span class="pf-ing g2">☕</span><span class="pf-ing g3">🍔</span><span class="pf-ing g4">🥐</span><span class="pf-ing g5">🍷</span><span class="pf-ing g6">🧁</span>
+          <div class="pf-notif n1"><b>Novo pedido · #48</b><small>2 itens · R$ 54,90</small></div>
+          <div class="pf-notif n2"><b>Pix confirmado</b><small>pagamento recebido</small></div>
+          <div class="pf-notif n3"><b>Saiu para entrega</b><small>cliente avisado no link</small></div>
+        </div>
         <div class="pf-chip c1" aria-hidden="true"><span class="ic">✓</span><div><b>Pedido enviado</b><small>direto no WhatsApp da casa</small></div></div>
         <div class="pf-chip c3" aria-hidden="true"><span class="ic gd">%</span><div><b>Sem comissão por pedido</b><small>o canal é seu</small></div></div>
         <div class="models pf" id="pfModels">
@@ -2920,7 +2963,7 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
 <footer>
   <div class="in">
     <span>© <span id="ano"></span> BistrôConnect · Experiências digitais para restaurantes</span> <span class="ft-redes"><a href="https://www.instagram.com/bistro_connect/" target="_blank" rel="noopener" aria-label="Instagram da BistrôConnect" data-track="instagram-rodape"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>@bistro_connect</span></a></span>
-    <span class="ft-ver">Versão 02/11/2026-n</span>
+    <span class="ft-ver">Versão 02/11/2026-o</span>
     <span>Ponta Grossa-PR · <a href="crm/" rel="nofollow" style="color:inherit;opacity:.6;text-decoration:none">Acesso restrito</a></span>
   </div>
 </footer>
@@ -3383,7 +3426,7 @@ var OFERTA={ativa:false,texto:'',ate:'',vagas:0,restantes:0};
 (function(){var box=document.getElementById('pfModels');if(!box)return;var it=[].slice.call(box.querySelectorAll('.model')),n=it.length,at=0,tm=null,dots=document.getElementById('pfDots');
   dots.innerHTML=it.map(function(_,i){return '<button type="button" aria-label="Estilo '+(i+1)+'"></button>'}).join('');
   function pos(i){var d=((i-at)%n+n)%n;if(d>n/2)d-=n;return Math.abs(d)>2?'h':String(d)}
-  function draw(){it.forEach(function(m,i){m.setAttribute('data-pos',pos(i))});var c=it[at];document.getElementById('pfName').textContent=c.querySelector(':scope>b').textContent;document.getElementById('pfDesc').textContent=c.querySelector(':scope>span').textContent;var ix=document.getElementById('pfIdx');if(ix)ix.innerHTML=('0'+(at+1)).slice(-2)+'<small>/'+('0'+n).slice(-2)+'</small>';var nm=document.getElementById('pfName');nm.classList.remove('sw');void nm.offsetWidth;nm.classList.add('sw');pfRs();[].forEach.call(dots.children,function(d,i){d.setAttribute('aria-current',i===at)})}
+  function draw(){it.forEach(function(m,i){m.setAttribute('data-pos',pos(i))});var c=it[at];document.getElementById('pfName').textContent=c.querySelector(':scope>b').textContent;document.getElementById('pfDesc').textContent=c.querySelector(':scope>span').textContent;var AURA={'Padaria':'rgba(214,160,92,.62)','Café':'rgba(150,100,60,.55)','Hamburgueria':'rgba(235,110,40,.5)','Restaurante':'rgba(170,70,60,.45)','Pizzaria':'rgba(215,80,40,.48)'},pfx=document.querySelector('.pf-aura'),nmA=c.querySelector(':scope>b').textContent;if(pfx)pfx.style.setProperty('--aura',AURA[nmA]||'rgba(217,174,92,.42)');var ix=document.getElementById('pfIdx');if(ix)ix.innerHTML=('0'+(at+1)).slice(-2)+'<small>/'+('0'+n).slice(-2)+'</small>';var nm=document.getElementById('pfName');nm.classList.remove('sw');void nm.offsetWidth;nm.classList.add('sw');pfRs();[].forEach.call(dots.children,function(d,i){d.setAttribute('aria-current',i===at)})}
   function pfRs(){var pg=document.querySelector('#pfStage .pf-prog');if(!pg)return;pg.classList.remove('run');void pg.offsetWidth;pg.classList.add('run')}
   function vai(i){at=(i+n)%n;draw();clearInterval(tm);tm=setInterval(function(){if(!document.hidden&&!box.matches(':hover'))vai(at+1);else pfRs()},6000)}
   document.getElementById('pfPrev').onclick=function(){vai(at-1)};document.getElementById('pfNext').onclick=function(){vai(at+1)};
