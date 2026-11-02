@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-uYjR+iW5p0oCfhgv4X4e/H0TuizhqAP+a1yxPo86Eqg=' 'sha256-ukq7HsQTkuICfm9trFN8ig0oa/gUqX2ktS1C5FTkxVQ=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#120d0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BistrôConnect">
+<meta name="format-detection" content="telephone=no">
 <title>BistrôConnect | Sites e experiências digitais para restaurantes</title>
 <meta name="description" content="Sua marca merece um site do seu tamanho. Projetos digitais exclusivos (Signature) e soluções gastronômicas com cardápio digital, pedidos pelo WhatsApp e painel administrativo, para restaurantes que não abrem mão da excelência.">
 <meta property="og:title" content="BistrôConnect | Sua marca merece um site do seu tamanho">
@@ -2338,13 +2343,54 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
   /* títulos de seção um pouco mais compactos e com respiro */
   section h2{letter-spacing:-.015em}
 }
+
+/* ===== v11: acabamento iOS e Android ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
+@media (max-width:640px){
+  /* topo de vidro, respeitando o recorte da câmera */
+  header.nav{background:rgba(18,13,10,.9)!important;-webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);padding-top:env(safe-area-inset-top,0px);box-shadow:0 1px 0 rgba(201,162,74,.28)!important}
+  header.nav .in{min-height:58px}
+  header.nav .bc-logo{height:34px!important;width:auto!important}
+  /* tipografia: títulos mais firmes, textos com leitura de app */
+  h1{letter-spacing:-.025em!important;line-height:1.06!important}
+  section h2{letter-spacing:-.02em;line-height:1.12}
+  p{line-height:1.62}
+  .eyebrow,.dx-sec .eyebrow{letter-spacing:.2em!important;font-size:11.5px!important}
+  /* botões no padrão de toque (48px+), cantos de app */
+  .btn{min-height:52px;border-radius:16px!important;font-size:15.5px!important;justify-content:center}
+  .hero .btn,.dx-cta .btn,.head-cta .btn{width:100%}
+  .hero .cta,.hero .hero-cta{display:flex;flex-direction:column;gap:10px}
+  .btn:active{transform:scale(.98)}
+  /* formulário: 16px evita o zoom do iPhone; campos com cara de app */
+  form input,form select,form textarea{font-size:16px!important;min-height:52px;border-radius:14px!important}
+  form label{font-size:13px;letter-spacing:.01em}
+  /* cartões: cantos e sombras mais suaves */
+  .plan,.dxc,.dx-pil,.box,.ln-card,.feat{border-radius:22px!important}
+  /* botões flutuantes mais discretos e sem cobrir o conteúdo */
+  .wa-float{width:52px!important;height:52px!important;right:max(14px,env(safe-area-inset-right,0px))!important;bottom:calc(14px + env(safe-area-inset-bottom,0px))!important;box-shadow:0 10px 24px -10px rgba(37,211,102,.75)!important}
+  .wa-float svg{width:26px;height:26px}
+  .ai-fab{right:max(14px,env(safe-area-inset-right,0px))!important;bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;transform:scale(.86);transform-origin:right bottom}
+  .ai-fab .t{display:none!important}
+  main{padding-bottom:env(safe-area-inset-bottom,0px)}
+  /* rodapé centralizado e organizado */
+  footer{padding:40px 0 calc(110px + env(safe-area-inset-bottom,0px))!important;text-align:center;border-top:1px solid rgba(201,162,74,.22)}
+  footer .in{flex-direction:column;gap:10px!important;justify-content:center!important}
+  footer .in>span{display:block;font-size:13px;line-height:1.6}
+  .ft-ver{opacity:.4;font-size:11px!important}
+  /* rolagem lateral suave nos carrosséis */
+  .v-tabs,.cf-dots{scroll-behavior:smooth}
+}
+@media (max-width:640px) and (prefers-reduced-motion:no-preference){
+  .btn{transition:transform .15s ease,box-shadow .2s ease,background-position .5s ease}
+}
 </style>
 </head>
 <body>
 
 <header class="nav">
   <div class="in">
-    <a class="logo" href="#topo" aria-label="Bistrô Connect, início"><img decoding="async" loading="lazy" class="bc-logo" src="img/7709fa4f7ccd.webp" alt="Bistrô Connect · A evolução digital da sua gastronomia" width="722" height="143"></a>
+    <a class="logo" href="#topo" aria-label="Bistrô Connect, início"><img decoding="async" fetchpriority="high" class="bc-logo" src="img/7709fa4f7ccd.webp" alt="Bistrô Connect · A evolução digital da sua gastronomia" width="722" height="143"></a>
     <nav class="nav-links" aria-label="Seções">
       <a href="#solucoes">Soluções</a>
       <a href="#signature">Signature</a>
@@ -2849,7 +2895,7 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
 
 <footer>
   <div class="in">
-    <span>© <span id="ano"></span> BistrôConnect · Experiências digitais para restaurantes</span> <span style="opacity:.55">· Versão 02/11/2026-i · imagens WebP</span>
+    <span>© <span id="ano"></span> BistrôConnect · Experiências digitais para restaurantes</span> <span class="ft-ver">Versão 02/11/2026-j</span>
     <span>Ponta Grossa-PR · <a href="crm/" rel="nofollow" style="color:inherit;opacity:.6;text-decoration:none">Acesso restrito</a></span>
   </div>
 </footer>
