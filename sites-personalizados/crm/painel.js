@@ -17,7 +17,7 @@ const PLANOS={
   'Signature':{impl:0,mens:0,prazo:'definido no diagnóstico',itens:[['Imersão e estratégia',1,0],['Direção criativa e arquitetura',1,0],['Design e desenvolvimento exclusivos',1,0],['Refinamento e publicação',1,0]],incl:['Valores definidos depois do diagnóstico','Hospedagem e suporte conforme o projeto']}
 };
 const PASSOS=[['kickoff','Kickoff: materiais recebidos (logo, cardápio, fotos, horários, bairros)'],['montagem','Montagem: template, identidade, produtos'],['revisao','Revisão: link de teste enviado e ajustes feitos'],['publicacao','Publicação: no ar, QR Codes e arte do Instagram'],['treinamento','Treinamento de 30 min com o dono'],['acompanhamento','Dia 15: pedidos conferidos e depoimento pedido']];
-const ROTINA=['10 mensagens de prospecção enviadas','Retornos do dia respondidos','1 demonstração personalizada montada','Orçamentos pendentes cobrados','Entregas em andamento avançadas','Painel atualizado'];
+const ROTINA=['20 abordagens com prévia','10 follow-ups da cadência','3 visitas presenciais','2 demonstrações realizadas','1 pedido de indicação','CRM atualizado'];
 const SCRIPTS=(window.BC_SCRIPTS||[]).map(s=>[s.t,s.x,s.c||'',s.aviso||s.nota||'',s.tag||'']);
 const SCRIPT_DA_ETAPA={lead:0,contatado:1,respondeu:1,demo:1,proposta:3,fechado:4,ativo:5};
 const FUNIL_META=[['contato','Contatos feitos',200],['respondeu','Responderam',60],['demo','Demonstrações',25],['proposta','Propostas',12],['fechado','Fechados',5]];
@@ -250,18 +250,29 @@ function preencher(txt,l){l=l||{};const o=l.id?orcs.filter(x=>mesmo(x.leadId,l.i
   const r={nome:primeiroNome(l.responsavel)||'',estabelecimento:l.nome||'',data:o?fmtDataLonga(o.validoAte):'[data]',dia:l.vencimento||'[dia]',chave:cfg.pix||'[chave]',marca:cfg.marca||'Bistrô Connect',eu:primeiroNome(cfg.nome)||'Adilson'};
   return txt.replace(/\[(nome|estabelecimento|loja|pizzaria|data|dia|chave|marca|eu)\]/gi,(m,k)=>{k=k.toLowerCase();if(k==='loja'||k==='pizzaria')k='estabelecimento';return r[k]||m})}
 function scriptPara(l){const i=SCRIPT_DA_ETAPA[l.stage||'lead'];return i==null?'':preencher(SCRIPTS[i][1],l)}
-let scCat='';
+let scCat='',scSel=-1;
 function renderScripts(){const sel=$('#scLead'),l=L(sel.value),q=String(($('#scBusca')||{}).value||'').trim().toLowerCase();
-  const cats=[...new Set(SCRIPTS.map(s=>s[2]))];
-  $('#scCats').innerHTML=['',...cats].map(c=>`<button type="button" class="chip${c===scCat?' info':''}" data-cat="${esc(c)}">${esc(c||'Todas')}</button>`).join('');
-  let html='',grupo=null;
-  SCRIPTS.forEach((s,i)=>{if(scCat&&s[2]!==scCat)return;if(q&&!(s[0]+' '+s[1]).toLowerCase().includes(q))return;
-    if(s[2]!==grupo){grupo=s[2];html+=`<h3 class="bib-grupo">${esc(grupo)}</h3>`}
-    const txt=preencher(s[1],l),z=l?zapUrl(l.whatsapp,txt):'';
-    html+=`<div class="box script"><div class="box-head"><b>${esc(s[0])}</b>${s[4]?`<span class="chip">${esc(s[4])}</span>`:''}</div>${s[3]?`<p class="bib-aviso">${esc(s[3])}</p>`:''}<pre id="sc${i}">${esc(txt)}</pre><div class="acoes-linha"><button class="btn small" data-copy="${i}" type="button">Copiar</button>${z?`<a class="btn zap small" href="${esc(z)}" target="_blank" rel="noopener noreferrer">Enviar para ${esc(primeiroNome(l.responsavel)||l.nome)}</a>`:''}</div></div>`});
-  $('#scripts').innerHTML=html||'<p class="muted">Nenhuma mensagem com esse termo.</p>'}
+  const cats=[...new Set(SCRIPTS.map(s=>s[2]))],cont=c=>SCRIPTS.filter(s=>s[2]===c).length;
+  $('#scCats').innerHTML=['',...cats].map(c=>`<button type="button" class="chip${c===scCat?' info':''}" data-cat="${esc(c)}">${esc(c||'Todas')} <i>${c?cont(c):SCRIPTS.length}</i></button>`).join('');
+  const vis=[];SCRIPTS.forEach((s,i)=>{if(scCat&&s[2]!==scCat)return;if(q&&!(s[0]+' '+s[1]+' '+s[4]).toLowerCase().includes(q))return;vis.push(i)});
+  if(!vis.includes(scSel))scSel=vis.length?vis[0]:-1;
+  let lista='',grupo=null;
+  vis.forEach(i=>{const s=SCRIPTS[i];if(s[2]!==grupo){grupo=s[2];lista+=`<div class="sc-grupo">${esc(grupo)}</div>`}
+    lista+=`<button type="button" class="sc-item${i===scSel?' on':''}" data-sc="${i}"><b>${esc(s[0])}</b><span>${esc(s[1].replace(/\s+/g,' ').slice(0,80))}…</span>${s[3]?'<em class="sc-alerta" title="Tem aviso">!</em>':''}</button>`});
+  let leitor='<div class="sc-vazio">Nenhuma mensagem com esse termo.</div>';
+  if(scSel>=0){const s=SCRIPTS[scSel],txt=preencher(s[1],l),z=l?zapUrl(l.whatsapp,txt):'',pos=vis.indexOf(scSel);
+    leitor=`<div class="sc-cab"><div><span class="sc-cat">${esc(s[2])}</span><h3>${esc(s[0])}</h3></div>${s[4]?`<span class="chip">${esc(s[4])}</span>`:''}</div>
+      ${s[3]?`<p class="bib-aviso">${esc(s[3])}</p>`:''}
+      <pre class="sc-texto" id="sc${scSel}">${esc(txt)}</pre>
+      <div class="sc-acoes"><button class="btn primary" data-copy="${scSel}" type="button">Copiar mensagem</button>${z?`<a class="btn zap" href="${esc(z)}" target="_blank" rel="noopener noreferrer">Enviar para ${esc(primeiroNome(l.responsavel)||l.nome)}</a>`:'<span class="muted fino">Escolha um lead em “Preencher para” para enviar direto no WhatsApp.</span>'}
+      <span class="grow"></span><button class="btn small" type="button" data-scnav="-1"${pos<=0?' disabled':''}>‹ Anterior</button><button class="btn small" type="button" data-scnav="1"${pos>=vis.length-1?' disabled':''}>Próxima ›</button></div>
+      <p class="muted fino">Troque o que estiver entre [colchetes] antes de enviar. ${l?'Nome e loja já foram preenchidos com '+esc(l.nome)+'.':''}</p>`}
+  $('#scripts').innerHTML=`<div class="sc-split"><nav class="sc-lista" aria-label="Mensagens">${lista||'<p class="muted fino" style="padding:12px">Nada encontrado.</p>'}</nav><div class="sc-leitor box">${leitor}</div></div>`;
+  $('#scripts').dataset.vis=vis.join(',')}
 $('#scBusca').addEventListener('input',renderScripts);
-$('#scCats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;scCat=b.dataset.cat;renderScripts()});
+$('#scCats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;scCat=b.dataset.cat;scSel=-1;renderScripts()});
+$('#scripts').addEventListener('click',e=>{const it=e.target.closest('[data-sc]');if(it){scSel=+it.dataset.sc;renderScripts();return}
+  const nv=e.target.closest('[data-scnav]');if(nv){const vis=($('#scripts').dataset.vis||'').split(',').map(Number),p=vis.indexOf(scSel)+(+nv.dataset.scnav);if(p>=0&&p<vis.length){scSel=vis[p];renderScripts()}}});
 $('#scLead').addEventListener('change',renderScripts);
 $('#scripts').addEventListener('click',async e=>{const b=e.target.closest('[data-copy]');if(!b)return;const txt=$('#sc'+b.dataset.copy).textContent;
   try{await navigator.clipboard.writeText(txt);toast('Copiado')}catch(_){const r=document.createRange();r.selectNodeContents($('#sc'+b.dataset.copy));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Texto selecionado: copie com Ctrl+C')}});

@@ -55,7 +55,7 @@ def md_html(md):
             while i < len(linhas) and linhas[i].startswith("|"):
                 rows.append([c.strip() for c in linhas[i].strip().strip("|").split("|")]); i += 1
             cab, dados = rows[0], [r for r in rows[1:] if not set("".join(r)) <= set("-: ")]
-            corpo.append('<div class="tablewrap"><table><thead><tr>' + "".join("<th>" + inline(c) + "</th>" for c in cab) +
+            corpo.append('<div class="tablewrap"><table class="data compacta"><thead><tr>' + "".join("<th>" + inline(c) + "</th>" for c in cab) +
                          "</tr></thead><tbody>" + "".join("<tr>" + "".join("<td>" + inline(c) + "</td>" for c in r) + "</tr>" for r in dados) +
                          "</tbody></table></div>")
             continue
@@ -140,7 +140,6 @@ s = troca(s, '    <!-- AJUDA -->',
           '    <!-- MATERIAIS -->\n    <section class="panel" data-panel="materiais" hidden><div id="bibMateriais" class="bib-col"></div></section>\n\n'
           '    <!-- OBJEÇÕES -->\n    <section class="panel" data-panel="objecoes" hidden>\n'
           '      <div class="toolbar"><input type="search" id="objBusca" placeholder="Buscar objeção…" aria-label="Buscar objeção" maxlength="60"></div>\n'
-          '      <p class="muted bib-dica">Valide ("faz sentido", "entendo"), responda com um fato ou um número e termine com uma pergunta que leva ao próximo passo.</p>\n'
           '      <div id="bibObjecoes"></div>\n    </section>\n\n    <!-- AJUDA -->')
 s = troca(s, '<div class="toolbar"><label class="inline-lbl">Preencher para<select id="scLead"><option value="">Nenhum lead (texto com campos)</option></select></label></div>',
           '<div class="toolbar"><label class="inline-lbl">Preencher para<select id="scLead"><option value="">Nenhum lead (texto com campos)</option></select></label>'
@@ -182,18 +181,29 @@ j = troca(j, "const r={nome:primeiroNome(l.responsavel)||'[nome]',estabeleciment
 j = troca(j, "return txt.replace(/\\[(nome|estabelecimento|data|dia|chave|marca|eu)\\]/g,(m,k)=>r[k])}",
           "return txt.replace(/\\[(nome|estabelecimento|loja|pizzaria|data|dia|chave|marca|eu)\\]/gi,(m,k)=>{k=k.toLowerCase();if(k==='loja'||k==='pizzaria')k='estabelecimento';return r[k]||m})}")
 a = j.index("function renderScripts(){"); b = j.index("$('#scLead').addEventListener('change',renderScripts);", a)
-j = j[:a] + r"""let scCat='';
+j = j[:a] + r"""let scCat='',scSel=-1;
 function renderScripts(){const sel=$('#scLead'),l=L(sel.value),q=String(($('#scBusca')||{}).value||'').trim().toLowerCase();
-  const cats=[...new Set(SCRIPTS.map(s=>s[2]))];
-  $('#scCats').innerHTML=['',...cats].map(c=>`<button type="button" class="chip${c===scCat?' info':''}" data-cat="${esc(c)}">${esc(c||'Todas')}</button>`).join('');
-  let html='',grupo=null;
-  SCRIPTS.forEach((s,i)=>{if(scCat&&s[2]!==scCat)return;if(q&&!(s[0]+' '+s[1]).toLowerCase().includes(q))return;
-    if(s[2]!==grupo){grupo=s[2];html+=`<h3 class="bib-grupo">${esc(grupo)}</h3>`}
-    const txt=preencher(s[1],l),z=l?zapUrl(l.whatsapp,txt):'';
-    html+=`<div class="box script"><div class="box-head"><b>${esc(s[0])}</b>${s[4]?`<span class="chip">${esc(s[4])}</span>`:''}</div>${s[3]?`<p class="bib-aviso">${esc(s[3])}</p>`:''}<pre id="sc${i}">${esc(txt)}</pre><div class="acoes-linha"><button class="btn small" data-copy="${i}" type="button">Copiar</button>${z?`<a class="btn zap small" href="${esc(z)}" target="_blank" rel="noopener noreferrer">Enviar para ${esc(primeiroNome(l.responsavel)||l.nome)}</a>`:''}</div></div>`});
-  $('#scripts').innerHTML=html||'<p class="muted">Nenhuma mensagem com esse termo.</p>'}
+  const cats=[...new Set(SCRIPTS.map(s=>s[2]))],cont=c=>SCRIPTS.filter(s=>s[2]===c).length;
+  $('#scCats').innerHTML=['',...cats].map(c=>`<button type="button" class="chip${c===scCat?' info':''}" data-cat="${esc(c)}">${esc(c||'Todas')} <i>${c?cont(c):SCRIPTS.length}</i></button>`).join('');
+  const vis=[];SCRIPTS.forEach((s,i)=>{if(scCat&&s[2]!==scCat)return;if(q&&!(s[0]+' '+s[1]+' '+s[4]).toLowerCase().includes(q))return;vis.push(i)});
+  if(!vis.includes(scSel))scSel=vis.length?vis[0]:-1;
+  let lista='',grupo=null;
+  vis.forEach(i=>{const s=SCRIPTS[i];if(s[2]!==grupo){grupo=s[2];lista+=`<div class="sc-grupo">${esc(grupo)}</div>`}
+    lista+=`<button type="button" class="sc-item${i===scSel?' on':''}" data-sc="${i}"><b>${esc(s[0])}</b><span>${esc(s[1].replace(/\s+/g,' ').slice(0,80))}…</span>${s[3]?'<em class="sc-alerta" title="Tem aviso">!</em>':''}</button>`});
+  let leitor='<div class="sc-vazio">Nenhuma mensagem com esse termo.</div>';
+  if(scSel>=0){const s=SCRIPTS[scSel],txt=preencher(s[1],l),z=l?zapUrl(l.whatsapp,txt):'',pos=vis.indexOf(scSel);
+    leitor=`<div class="sc-cab"><div><span class="sc-cat">${esc(s[2])}</span><h3>${esc(s[0])}</h3></div>${s[4]?`<span class="chip">${esc(s[4])}</span>`:''}</div>
+      ${s[3]?`<p class="bib-aviso">${esc(s[3])}</p>`:''}
+      <pre class="sc-texto" id="sc${scSel}">${esc(txt)}</pre>
+      <div class="sc-acoes"><button class="btn primary" data-copy="${scSel}" type="button">Copiar mensagem</button>${z?`<a class="btn zap" href="${esc(z)}" target="_blank" rel="noopener noreferrer">Enviar para ${esc(primeiroNome(l.responsavel)||l.nome)}</a>`:'<span class="muted fino">Escolha um lead em “Preencher para” para enviar direto no WhatsApp.</span>'}
+      <span class="grow"></span><button class="btn small" type="button" data-scnav="-1"${pos<=0?' disabled':''}>‹ Anterior</button><button class="btn small" type="button" data-scnav="1"${pos>=vis.length-1?' disabled':''}>Próxima ›</button></div>
+      <p class="muted fino">Troque o que estiver entre [colchetes] antes de enviar. ${l?'Nome e loja já foram preenchidos com '+esc(l.nome)+'.':''}</p>`}
+  $('#scripts').innerHTML=`<div class="sc-split"><nav class="sc-lista" aria-label="Mensagens">${lista||'<p class="muted fino" style="padding:12px">Nada encontrado.</p>'}</nav><div class="sc-leitor box">${leitor}</div></div>`;
+  $('#scripts').dataset.vis=vis.join(',')}
 $('#scBusca').addEventListener('input',renderScripts);
-$('#scCats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;scCat=b.dataset.cat;renderScripts()});
+$('#scCats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;scCat=b.dataset.cat;scSel=-1;renderScripts()});
+$('#scripts').addEventListener('click',e=>{const it=e.target.closest('[data-sc]');if(it){scSel=+it.dataset.sc;renderScripts();return}
+  const nv=e.target.closest('[data-scnav]');if(nv){const vis=($('#scripts').dataset.vis||'').split(',').map(Number),p=vis.indexOf(scSel)+(+nv.dataset.scnav);if(p>=0&&p<vis.length){scSel=vis[p];renderScripts()}}});
 """ + j[b:]
 # só a linha de sites: carrega filtrando e grava marcando
 j = troca(j, "if(col==='leads')leads=arr;else orcs=arr;", "const minha=arr.filter(x=>x.linha==='sites');if(col==='leads')leads=minha;else orcs=minha;")
@@ -390,5 +400,20 @@ h = open(os.path.join(DEST, "index.html"), encoding="utf-8").read()
 h = troca(h, "<span>Orçamentos</span>", "<span>Propostas</span>")
 h = h.replace('>+ Orçamento<', '>+ Proposta<')
 open(os.path.join(DEST, "index.html"), "w", encoding="utf-8").write(h)
+
+j = open(os.path.join(DEST, "painel.js"), encoding="utf-8").read()
+a = j.index("const ROTINA=["); b = j.index("];", a) + 2
+j = j[:a] + "const ROTINA=['20 abordagens com prévia','10 follow-ups da cadência','3 visitas presenciais','2 demonstrações realizadas','1 pedido de indicação','CRM atualizado'];" + j[b:]
+open(os.path.join(DEST, "painel.js"), "w", encoding="utf-8").write(j)
+h = open(os.path.join(DEST, "index.html"), encoding="utf-8").read()
+h = troca(h, '<div class="deliv" id="scripts"></div>', '<div id="scripts"></div>')
+h = troca(h, '      <div id="hpLista">', '      <div class="hp-layout"><nav class="hp-indice" id="hpIndice" aria-label="Índice do manual"></nav>\n      <div id="hpLista">')
+h = troca(h, '      <p class="muted" id="hpVazio" hidden>Nada encontrado para essa busca.</p>', '      </div>\n      <p class="muted" id="hpVazio" hidden>Nada encontrado para essa busca.</p>')
+open(os.path.join(DEST, "index.html"), "w", encoding="utf-8").write(h)
+# capas dos PDFs (primeira página) para a aba Materiais
+for f in sorted(os.listdir(os.path.join(DEST, "materiais"))):
+    if f.endswith(".pdf"):
+        base = os.path.join(DEST, "materiais", "capa-" + f[:-4])
+        subprocess.run(["pdftoppm", "-jpeg", "-jpegopt", "quality=82", "-f", "1", "-l", "1", "-scale-to", "420", "-singlefile", os.path.join(DEST, "materiais", f), base], check=True)
 subprocess.run(["python3", "ferramentas/csp.py", os.path.join(DEST, "index.html")], check=True)
 print("CRM Mr. Connect montado em", os.path.relpath(DEST, RAIZ))

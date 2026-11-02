@@ -98,27 +98,50 @@ window.BC_PLANOS_ATUAIS = [
 /* ---------- desenho das abas novas ---------- */
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function $(s){return document.querySelector(s)}
+var ICO_PDF='<svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/></svg>';
 
 function desenhaMateriais(){
   var el=$('#bibMateriais');if(!el)return;
-  var tb='<div class="box"><div class="box-head"><h2>Tabela de preços vigente</h2><span class="chip ok">Use esta na conversa</span></div>'+
-    '<div class="tablewrap"><table><thead><tr><th>Plano</th><th>Implantação</th><th>Mensalidade</th><th>O que entra</th></tr></thead><tbody>'+
-    window.BC_PLANOS_ATUAIS.map(function(p){return '<tr><td><b>'+esc(p[0])+'</b></td><td>'+esc(p[1])+'</td><td>'+esc(p[2])+'</td><td class="muted">'+esc(p[3])+'</td></tr>'}).join('')+
-    '</tbody></table></div><p class="muted fino">Pagamento: 50% no aceite e 50% na entrega, ou parcelado no cartão. Mensalidade começa quando o site vai ao ar, com contrato mínimo de 6 meses. Prazo: até 7 dias úteis depois de receber os materiais.</p></div>';
-  var cards=window.BC_MATERIAIS.map(function(m){
-    var url='materiais/'+m.arq;
-    return '<div class="box bib-doc"><div class="box-head"><b class="bib-tit">'+esc(m.titulo)+'</b><span class="chip '+(m.tipo==='Para o cliente'?'info':'')+'">'+esc(m.tipo)+'</span></div>'+
-      '<p class="muted">'+esc(m.desc)+'</p>'+
-      (m.aviso?'<p class="bib-aviso">'+esc(m.aviso)+'</p>':'')+
-      '<div class="acoes-linha"><span class="muted fino">PDF · '+m.pags+' páginas</span><a class="btn small" href="'+esc(url)+'" target="_blank" rel="noopener">Abrir</a><a class="btn small" href="'+esc(url)+'" download>Baixar</a>'+
-      (m.tipo==='Para o cliente'?'<button class="btn small" type="button" data-copiar-link="'+esc(url)+'">Copiar link</button>':'')+'</div></div>'}).join('');
-  el.innerHTML=tb+'<div class="deliv">'+cards+'</div>';
+  var planos='<section class="bib-sec"><div class="bib-sec-cab"><div><span class="bib-kicker">Use esta na conversa</span><h2>Tabela de preços vigente</h2></div><p class="muted fino">Pagamento 50% no aceite e 50% na entrega, ou parcelado no cartão. Mensalidade a partir da publicação, contrato mínimo de 6 meses. Prazo de até 7 dias úteis depois dos materiais.</p></div>'+
+    '<div class="bib-planos">'+window.BC_PLANOS_ATUAIS.map(function(p,i){return '<article class="bib-plano'+(i===2?' destaque':'')+'">'+(i===2?'<span class="bib-selo">Mais completo</span>':'')+
+      '<h3>'+esc(p[0])+'</h3><div class="bib-preco"><b>'+esc(p[1])+'</b><span>'+(/orçamento/i.test(p[1])?'':'implantação')+'</span></div><div class="bib-mens">'+esc(p[2])+'</div><p>'+esc(p[3])+'</p></article>'}).join('')+'</div></section>';
+  var grupos=[['Uso interno','Para a equipe estudar e consultar'],['Para o cliente','Pode enviar ou apresentar']];
+  var docs=grupos.map(function(g){var lista=window.BC_MATERIAIS.filter(function(m){return m.tipo===g[0]});
+    return '<section class="bib-sec"><div class="bib-sec-cab"><div><span class="bib-kicker">'+esc(g[1])+'</span><h2>'+esc(g[0])+'</h2></div></div><div class="bib-docs">'+lista.map(function(m){
+      var url='materiais/'+m.arq,capa='materiais/capa-'+m.arq.replace(/\.pdf$/,'')+'.jpg';
+      return '<article class="bib-doc"><a class="bib-capa" href="'+esc(url)+'" target="_blank" rel="noopener" aria-label="Abrir '+esc(m.titulo)+'"><img src="'+esc(capa)+'" alt="" loading="lazy"><span>'+ICO_PDF+' '+m.pags+' páginas</span></a>'+
+        '<div class="bib-doc-txt"><h3>'+esc(m.titulo)+'</h3><p class="muted">'+esc(m.desc)+'</p>'+(m.aviso?'<details class="bib-aviso-d"><summary>Atenção antes de usar</summary><p>'+esc(m.aviso)+'</p></details>':'')+
+        '<div class="acoes-linha"><a class="btn small primary" href="'+esc(url)+'" target="_blank" rel="noopener">Abrir</a><a class="btn small" href="'+esc(url)+'" download>Baixar</a>'+
+        (m.tipo==='Para o cliente'?'<button class="btn small" type="button" data-copiar-link="'+esc(url)+'">Copiar link</button>':'')+'</div></div></article>'}).join('')+'</div></section>'}).join('');
+  el.innerHTML=planos+docs;
 }
+
+var objSel=0;
 function desenhaObjecoes(){
-  var el=$('#bibObjecoes');if(!el)return;var b=String(($('#objBusca')||{}).value||'').toLowerCase();
-  var lista=window.BC_OBJECOES.filter(function(o){return !b||(o.q+' '+o.r).toLowerCase().indexOf(b)>=0});
-  el.innerHTML=lista.map(function(o,i){return '<details class="hp"'+(b?' open':'')+'><summary>'+esc(o.q)+' <span class="chip">'+esc(o.f)+'</span></summary><div class="hb">'+
-    (o.aviso?'<p class="bib-aviso">'+esc(o.aviso)+'</p>':'')+'<pre class="bib-pre" id="obj'+i+'">'+esc(o.r)+'</pre><div class="acoes-linha"><button class="btn small" type="button" data-copiar="obj'+i+'">Copiar</button></div></div></details>'}).join('')||'<p class="muted">Nenhuma objeção com esse termo.</p>';
+  var el=$('#bibObjecoes');if(!el)return;var b=String(($('#objBusca')||{}).value||'').toLowerCase().trim();
+  var vis=[];window.BC_OBJECOES.forEach(function(o,i){if(!b||(o.q+' '+o.r).toLowerCase().indexOf(b)>=0)vis.push(i)});
+  if(vis.indexOf(objSel)<0)objSel=vis.length?vis[0]:-1;
+  var lista=vis.map(function(i){var o=window.BC_OBJECOES[i];return '<button type="button" class="sc-item'+(i===objSel?' on':'')+'" data-obj="'+i+'"><b>'+esc(o.q)+'</b><span>'+esc(o.f)+(o.aviso?' · confira a oferta':'')+'</span></button>'}).join('');
+  var o=objSel>=0?window.BC_OBJECOES[objSel]:null;
+  var leitor=o?'<div class="sc-cab"><div><span class="sc-cat">Cliente diz</span><h3>'+esc(o.q)+'</h3></div><span class="chip">'+esc(o.f)+'</span></div>'+
+    (o.aviso?'<p class="bib-aviso">'+esc(o.aviso)+'</p>':'')+'<pre class="sc-texto" id="objTxt">'+esc(o.r)+'</pre>'+
+    '<div class="sc-acoes"><button class="btn primary" type="button" data-copiar="objTxt">Copiar resposta</button></div>'+
+    '<div class="obj-formula"><b>A fórmula</b><ol><li>Valide: “faz sentido”, “entendo”.</li><li>Responda com um fato ou um número, nunca com opinião.</li><li>Termine com uma pergunta que leva ao próximo passo.</li></ol></div>'
+    :'<div class="sc-vazio">Nenhuma objeção com esse termo.</div>';
+  el.innerHTML='<div class="sc-split"><nav class="sc-lista" aria-label="Objeções">'+(lista||'<p class="muted fino" style="padding:12px">Nada encontrado.</p>')+'</nav><div class="sc-leitor box">'+leitor+'</div></div>';
+}
+
+/* manual: índice lateral com os títulos, rolagem até a seção e destaque da seção aberta */
+function montaIndice(){
+  var nav=$('#hpIndice'),lista=$('#hpLista');if(!nav||!lista)return;var html='',n=0;
+  [].forEach.call(lista.children,function(el){
+    if(el.tagName==='H3'){html+='<span class="hp-ind-grupo">'+esc(el.textContent)+'</span>'}
+    else if(el.matches&&el.matches('details.hp')){var id='hp'+(n++);el.id=id;html+='<a href="#'+id+'" data-hp="'+id+'">'+esc(el.querySelector('summary').textContent)+'</a>'}
+  });
+  nav.innerHTML=html;
+  nav.addEventListener('click',function(e){var a=e.target.closest('[data-hp]');if(!a)return;e.preventDefault();var d=document.getElementById(a.dataset.hp);if(!d)return;d.open=true;d.hidden=false;d.scrollIntoView({behavior:'smooth',block:'start'});marca(a.dataset.hp)});
+  lista.addEventListener('toggle',function(e){if(e.target.open)marca(e.target.id)},true);
+  function marca(id){[].forEach.call(nav.querySelectorAll('a'),function(x){x.classList.toggle('on',x.dataset.hp===id)})}
 }
 function copiar(txt){
   if(navigator.clipboard)return navigator.clipboard.writeText(txt).then(function(){aviso('Copiado')},function(){aviso('Selecione e copie com Ctrl+C')});
@@ -127,9 +150,10 @@ function copiar(txt){
 function aviso(t){var x=$('#toast');if(!x)return;x.textContent=t;x.hidden=false;clearTimeout(aviso.t);aviso.t=setTimeout(function(){x.hidden=true},2600)}
 document.addEventListener('click',function(e){
   var c=e.target.closest('[data-copiar]');if(c){var p=document.getElementById(c.dataset.copiar);if(p)copiar(p.textContent);return}
-  var l=e.target.closest('[data-copiar-link]');if(l){copiar(new URL(l.dataset.copiarLink,location.href).href)}
+  var l=e.target.closest('[data-copiar-link]');if(l){copiar(new URL(l.dataset.copiarLink,location.href).href);return}
+  var ob=e.target.closest('[data-obj]');if(ob){objSel=+ob.dataset.obj;desenhaObjecoes()}
 });
 document.addEventListener('input',function(e){if(e.target&&e.target.id==='objBusca')desenhaObjecoes()});
-function inicia(){desenhaMateriais();desenhaObjecoes()}
+function inicia(){desenhaMateriais();desenhaObjecoes();montaIndice()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inicia);else inicia();
 })();

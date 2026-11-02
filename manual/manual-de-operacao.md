@@ -82,7 +82,7 @@ Toda venda passa pelo CRM: lead sem registro é lead perdido. Responsável: Come
 3. **Diagnóstico (15 a 20 minutos, vídeo ou presencial).** Entenda: cardápio, delivery ou retirada, bairros atendidos, volume de pedidos, identidade visual, domínio, redes. Use a calculadora da página para mostrar a comissão que ele paga hoje.
 4. **Demonstração.** Abra a demonstração do tipo da casa (restaurante, hamburgueria, cafeteria ou pizzaria) e faça um pedido de teste junto com ele. Mostre o rastreio e o painel.
 5. **Indique o plano.** Só cardápio → Cardápio Digital. Quer site → Site Gastronômico. Quer tirar pedidos do aplicativo e crescer o canal próprio → Digital Experience. Marca que exige exclusividade → Signature (passa para a Gestão orçar).
-6. **Proposta por escrito** (gerada no CRM, aba Orçamentos), com plano, valores, prazo e condições. Validade de 7 dias.
+6. **Proposta por escrito** (gerada no CRM, aba Propostas), com plano, valores, prazo e condições. Validade de 7 dias.
 7. **Aceite e pagamento da 1ª parte.** Só depois do aceite e do pagamento a implantação começa. Mova o lead para "Fechado" e passe para a Implantação com o briefing (seção 6).
 
 ### Condições comerciais
