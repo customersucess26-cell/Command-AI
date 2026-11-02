@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-BQ6B12eR9hve/LU0qYnF2SXM5J5+nsCKTZSkMHxEKIo=' 'sha256-ukq7HsQTkuICfm9trFN8ig0oa/gUqX2ktS1C5FTkxVQ=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-BQ6B12eR9hve/LU0qYnF2SXM5J5+nsCKTZSkMHxEKIo=' 'sha256-Uc+CCmiMLEed670U8eaYsZO6VPpKaV7DWBJUCWjtSKw=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#120d0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2309,7 +2309,7 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
 .pf-idx small{font:500 12px var(--f-body);color:#8F877A;margin-left:2px}
 .pf-prog{position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(243,239,230,.08)}
 .pf-prog i{display:block;height:100%;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,#B8862B,#F0D08A)}
-.pf-prog.run i{animation:pfProg 15s linear forwards}
+.pf-prog.run i{animation:pfProg 6s linear forwards}
 @keyframes pfProg{to{transform:scaleX(1)}}
 #pfStage:has(.models.pf:hover) .pf-prog i{animation-play-state:paused}
 @media (max-width:560px){#pfStage .pf-now{min-width:0;flex:1;padding-right:16px}#pfStage .cf-nav{gap:10px;padding:0 12px}#pfStage .cf-arr{width:42px;height:42px;flex:none}.pf-idx{font-size:22px;padding-right:12px}}
@@ -2397,6 +2397,17 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
 .ft-redes a:hover{background:rgba(201,162,74,.12);border-color:rgba(201,162,74,.7)}
 .ft-redes svg{width:17px;height:17px}
 @media (max-width:640px){.ft-redes{justify-content:center;margin:4px 0}}
+
+/* v12: cardápios em movimento contínuo no computador (flutuam, giram e o palco acompanha o mouse) */
+@media (min-width:901px) and (prefers-reduced-motion:no-preference){
+  #pfModels .model .phone{animation:pfFlutua 6s ease-in-out infinite}
+  #pfModels .model[data-pos="1"] .phone,#pfModels .model[data-pos="-1"] .phone{animation-delay:-2s}
+  #pfModels .model[data-pos="2"] .phone,#pfModels .model[data-pos="-2"] .phone{animation-delay:-4s}
+  @keyframes pfFlutua{0%,100%{transform:translateY(0) rotateZ(0)}50%{transform:translateY(-14px) rotateZ(.6deg)}}
+  #pfModels{transition:transform .8s cubic-bezier(.2,.8,.2,1);transform:rotateX(calc(var(--my,0)*-4deg)) rotateY(calc(var(--mx,0)*6deg))}
+  #pfModels .model[data-pos="0"] .phone::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.16) 48%,transparent 62%);background-size:250% 100%;animation:pfBrilho 6s ease-in-out infinite}
+  @keyframes pfBrilho{0%,60%{background-position:120% 0}100%{background-position:-120% 0}}
+}
 </style>
 </head>
 <body>
@@ -2909,7 +2920,7 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
 <footer>
   <div class="in">
     <span>© <span id="ano"></span> BistrôConnect · Experiências digitais para restaurantes</span> <span class="ft-redes"><a href="https://www.instagram.com/bistro_connect/" target="_blank" rel="noopener" aria-label="Instagram da BistrôConnect" data-track="instagram-rodape"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>@bistro_connect</span></a></span>
-    <span class="ft-ver">Versão 02/11/2026-m</span>
+    <span class="ft-ver">Versão 02/11/2026-n</span>
     <span>Ponta Grossa-PR · <a href="crm/" rel="nofollow" style="color:inherit;opacity:.6;text-decoration:none">Acesso restrito</a></span>
   </div>
 </footer>
@@ -3374,7 +3385,7 @@ var OFERTA={ativa:false,texto:'',ate:'',vagas:0,restantes:0};
   function pos(i){var d=((i-at)%n+n)%n;if(d>n/2)d-=n;return Math.abs(d)>2?'h':String(d)}
   function draw(){it.forEach(function(m,i){m.setAttribute('data-pos',pos(i))});var c=it[at];document.getElementById('pfName').textContent=c.querySelector(':scope>b').textContent;document.getElementById('pfDesc').textContent=c.querySelector(':scope>span').textContent;var ix=document.getElementById('pfIdx');if(ix)ix.innerHTML=('0'+(at+1)).slice(-2)+'<small>/'+('0'+n).slice(-2)+'</small>';var nm=document.getElementById('pfName');nm.classList.remove('sw');void nm.offsetWidth;nm.classList.add('sw');pfRs();[].forEach.call(dots.children,function(d,i){d.setAttribute('aria-current',i===at)})}
   function pfRs(){var pg=document.querySelector('#pfStage .pf-prog');if(!pg)return;pg.classList.remove('run');void pg.offsetWidth;pg.classList.add('run')}
-  function vai(i){at=(i+n)%n;draw();clearInterval(tm);tm=setInterval(function(){if(!document.hidden&&!box.matches(':hover'))vai(at+1);else pfRs()},15000)}
+  function vai(i){at=(i+n)%n;draw();clearInterval(tm);tm=setInterval(function(){if(!document.hidden&&!box.matches(':hover'))vai(at+1);else pfRs()},6000)}
   document.getElementById('pfPrev').onclick=function(){vai(at-1)};document.getElementById('pfNext').onclick=function(){vai(at+1)};
   dots.addEventListener('click',function(e){var b=e.target.closest('button');if(b)vai([].indexOf.call(dots.children,b))});
   it.forEach(function(m,i){m.addEventListener('click',function(e){if(e.isTrusted&&m.getAttribute('data-pos')!=='0'){e.preventDefault();e.stopPropagation();vai(i)}},true)});
@@ -3543,6 +3554,11 @@ var OFERTA={ativa:false,texto:'',ate:'',vagas:0,restantes:0};
     addEventListener('resize',function(){go(i)});go(0);
     if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
     setInterval(function(){if(hold||document.hidden)return;var r=box.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||!box.classList.contains('dx-on'))return;go((i+1)%st.length)},3800)})();
+
+  /* v12: palco dos cardápios acompanha o mouse */
+  (function(){var st=document.getElementById('pfStage'),m=document.getElementById('pfModels');if(!st||!m||!matchMedia('(pointer:fine)').matches||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    st.addEventListener('mousemove',function(e){var r=st.getBoundingClientRect();m.style.setProperty('--mx',((e.clientX-r.left)/r.width-.5).toFixed(3));m.style.setProperty('--my',((e.clientY-r.top)/r.height-.5).toFixed(3))});
+    st.addEventListener('mouseleave',function(){m.style.setProperty('--mx',0);m.style.setProperty('--my',0)})})();
 </script>
 </body>
 </html>
