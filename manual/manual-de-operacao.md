@@ -13,7 +13,7 @@ A BistrôConnect vende presença digital para restaurantes: site com a marca da 
 | Digital Experience | R$ 2.997 | R$ 199 | Quem quer canal próprio completo | Tudo do Site Gastronômico + painel de pedidos e rastreio, perfil no Google otimizado, 500 cartões de volta e display de balcão, campanha de lançamento, 30 dias de acompanhamento |
 | Signature | sob orçamento | sob orçamento | Marcas que exigem exclusividade | Projeto criado do zero: direção criativa, design, navegação e integrações próprias |
 
-Valores de referência da página de vendas (bistroconnect.com.br/sites-personalizados). A mensalidade cobre hospedagem, uso do sistema e do painel, suporte no WhatsApp e ajustes de conteúdo e banners de datas comemorativas.
+Valores de referência da página de vendas (bistroconnect.com.br/gastronomia). A mensalidade cobre hospedagem, uso do sistema e do painel, suporte no WhatsApp e ajustes de conteúdo e banners de datas comemorativas.
 
 **Foco agora:** Site Gastronômico e Digital Experience, que têm o maior valor e geram caixa mais rápido. O Cardápio Digital avulso fica em segundo plano.
 
@@ -41,7 +41,7 @@ Cada pessoa tem o próprio login em cada ferramenta. Nunca compartilhe senha nem
 
 | Ferramenta | Para quê | Quem acessa |
 | --- | --- | --- |
-| CRM de sites (`/sites-personalizados/crm/`) | Leads, propostas, funil, scripts, objeções e materiais | Gestão, Comercial |
+| CRM da Mr. Connect (`/gastronomia/crm/`) | Leads, propostas, funil, scripts, objeções e materiais | Gestão, Comercial |
 | Plataforma (`entrar.html`, `admin/`) | Criar a loja de cada cliente, convidar o dono, ver todas as lojas | Gestão, Implantação |
 | Painel da loja (`/admin/` no site do cliente) | Cardápio, pedidos, bairros, pagamentos, cupons, mesas, equipe | Cliente; Implantação e Suporte quando convidados |
 | Hostinger | Hospedagem e domínio dos sites | Gestão; Implantação com acesso de colaborador |
