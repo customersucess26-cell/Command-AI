@@ -2307,6 +2307,35 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
 #pfStage:has(.models.pf:hover) .pf-prog i{animation-play-state:paused}
 @media (max-width:560px){#pfStage .pf-now{min-width:0;flex:1;padding-right:16px}#pfStage .cf-nav{gap:10px;padding:0 12px}#pfStage .cf-arr{width:42px;height:42px;flex:none}.pf-idx{font-size:22px;padding-right:12px}}
 @media (prefers-reduced-motion:reduce){.pf-prog{display:none}}
+
+/* ===== v10: computador mais leve no cartão Gastronomia + celular mais moderno ===== */
+/* só a demonstração da vez é desenhada (evita telas pretas em computadores que não aguentam 8 imagens sobrepostas) */
+.dx-rot .dx-lscr img,.dx-rot .dx-ph img{display:none;opacity:1!important;transform:none!important;transition:none!important}
+.dx-rot .dx-lscr img.on,.dx-rot .dx-ph img.on{display:block;animation:rotFade .9s ease both}
+@keyframes rotFade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.dx-rot .dx-lscr img.on,.dx-rot .dx-ph img.on{animation:none}}
+
+@media (max-width:640px){
+  /* respiro nas laterais */
+  .in{padding-left:22px!important;padding-right:22px!important}
+  /* vitrine do topo: maior, de borda a borda, com moldura */
+  .hero .vitrine{margin:-28px -10px 0;padding:34px 10px 16px;border-radius:26px;background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,0));border:1px solid rgba(203,166,91,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+  .hero .v-stage{padding:6px 7% 34px 0!important}
+  .hero .v-phone{right:-3%!important;width:31%!important;bottom:-2%!important}
+  .hero .v-c1{left:6px!important;top:-44px!important;padding:6px 10px!important;transform:scale(.9);transform-origin:left top}
+  .hero .v-c2{left:4px!important;bottom:-14px!important;transform:scale(.9);transform-origin:left bottom}
+  /* abas dos modelos numa linha só, deslizando */
+  .hero .v-tabs{display:flex!important;flex-wrap:nowrap!important;justify-content:flex-start!important;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-radius:99px!important;max-width:100%;scroll-snap-type:x proximity}
+  .hero .v-tabs::-webkit-scrollbar{display:none}
+  .hero .v-tabs label{flex:none;scroll-snap-align:start}
+  .hero .phone-note{font-size:13px;line-height:1.55;margin-top:14px}
+  /* cartões e blocos com cantos e bordas mais finos */
+  .dx-sol,.dx-flowbox,.dx-tlbox,.dx-cmp{border-radius:22px!important}
+  .dx-sol .dx-body{padding-left:22px!important;padding-right:22px!important}
+  .dx-vis{height:clamp(250px,68vw,320px)!important}
+  /* títulos de seção um pouco mais compactos e com respiro */
+  section h2{letter-spacing:-.015em}
+}
 </style>
 </head>
 <body>
@@ -2818,7 +2847,7 @@ form.lead label{transition:color .3s}form.lead label:focus-within{color:var(--mi
 
 <footer>
   <div class="in">
-    <span>© <span id="ano"></span> BistrôConnect · Experiências digitais para restaurantes</span> <span style="opacity:.55">· Versão 01/11/2026-e · arquivo único, imagens embutidas</span>
+    <span>© <span id="ano"></span> BistrôConnect · Experiências digitais para restaurantes</span> <span style="opacity:.55">· Versão 02/11/2026-f · arquivo único, imagens embutidas</span>
     <span>Ponta Grossa-PR · <a href="crm/" rel="nofollow" style="color:inherit;opacity:.6;text-decoration:none">Acesso restrito</a></span>
   </div>
 </footer>
