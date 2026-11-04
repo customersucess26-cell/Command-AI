@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-BQ6B12eR9hve/LU0qYnF2SXM5J5+nsCKTZSkMHxEKIo=' 'sha256-S8NtNg2HLnS9Y+mRXsyDQkhPK+nnyAJNMW6H1c+DuzE=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jXqOxj7pvY1a9BzngKVn8sGa2TyICxBd8jCPCHKL9XI=' 'sha256-6paIJ0ADFQTmJy9pYsJlIX7adNFjk0NnPlXSZ2Cnp0A=' 'sha256-9lp3n5n0nsz6lm7XH9D9KR443eugSjqATuS0t/XcRWo=' 'sha256-BQ6B12eR9hve/LU0qYnF2SXM5J5+nsCKTZSkMHxEKIo=' 'sha256-71dyNtVmFVdq5zVAKAos3LsbV2s0vlweVw/lE/Ud5OU=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com https://*.supabase.co wss://*.supabase.co; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#120d0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2441,6 +2441,19 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
 @media (max-width:1180px){.pf-notif{display:none}}
 @media (max-width:900px){.pf-ing,.pf-notif,.pf-linhas{display:none}.pf-feixes{width:700px;height:700px}.pf-aura{width:420px;height:420px}.pf-palco{top:520px;width:340px}.pf-palco i:nth-child(1){width:220px}.pf-palco i:nth-child(2){width:290px}.pf-palco i:nth-child(3){width:340px}}
 @media (prefers-reduced-motion:reduce){.pf-aura,.pf-feixes,.pf-palco i,.pf-linhas path,.pf-ing,.pf-notif{animation:none!important}.pf-notif{opacity:1}}
+
+/* v14: briefing do projeto Signature */
+.sig-brief{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(28px,4vw,64px);align-items:start;margin-top:clamp(56px,6vw,96px);scroll-margin-top:110px}
+.sig-brief h2{font:600 clamp(28px,3vw,42px)/1.12 var(--f-display,sans-serif);letter-spacing:-.02em;margin:10px 0 14px}
+.sig-brief-txt p{color:#4A4339;max-width:46ch}
+.sig-passos{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.sig-passos li{display:flex;gap:12px;align-items:center;color:#2A241C;font-size:15px}
+.sig-passos b{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#E3C68E,#B8924D);color:#1A1409;font-size:13px;flex:none}
+.sig-form{position:relative;background:#fff;box-shadow:0 34px 70px -40px rgba(60,35,5,.45);border:1px solid #EFE7D9;padding:32px}
+.sig-form textarea{font:inherit;font-size:16px;padding:13px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);width:100%;resize:vertical}
+.sig-form label{font-size:14px}
+.sig-form .btn{width:100%}
+@media (max-width:900px){.sig-brief{grid-template-columns:1fr}.sig-form{padding:22px}.sig-form .row2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -2599,7 +2612,7 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
           <h2>Começamos pela sua marca. Não por um <em>modelo</em>.</h2>
           <p>Cada projeto Signature nasce de uma compreensão profunda do negócio, da sua identidade e da experiência que ele precisa transmitir.</p>
           <p class="dx-small">Prazo e investimento são definidos individualmente, depois do diagnóstico.</p>
-          <p class="dx-cta"><a class="btn btn-mint" href="#contato" data-plano="Site exclusivo e personalizado" data-track="cta-signature-2">Quero desenvolver meu projeto Signature<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+          <p class="dx-cta"><a class="btn btn-mint" href="#briefing-signature" data-track="cta-signature-2">Quero desenvolver meu projeto Signature<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
         </div>
         <div class="dx-board dx-rv" aria-hidden="true" data-live>
           <i class="cr tl"></i><i class="cr tr"></i><i class="cr bl"></i><i class="cr br"></i>
@@ -2614,6 +2627,38 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
       <div class="dx-flowbox dx-rv">
         <p class="dx-lab">O processo Signature</p>
         <ol class="dx-rail" style="--n:4"><li class="dx-st"><span class="dx-nd">1</span><span class="dx-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2v.1h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></svg></span><h3>Imersão e estratégia</h3><p class="dx-ssub">Entendemos a casa antes de desenhar qualquer coisa.</p><ul><li><b>Imersão</b><span>Entendemos a casa: história, público, cardápio, ambiente e o que a diferencia das demais.</span></li><li><b>Diagnóstico</b><span>Conversa e levantamento das necessidades, do público e das referências.</span></li></ul></li><li class="dx-st"><span class="dx-nd">2</span><span class="dx-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-1L19 8l-3-3L5 16z"/><path d="M14 7l3 3"/></svg></span><h3>Direção criativa e arquitetura</h3><p class="dx-ssub">Definimos o conceito e a estrutura da experiência.</p><ul><li><b>Direção criativa</b><span>Conceito, tom e linguagem visual definidos antes de desenhar qualquer tela.</span></li><li><b>Arquitetura de informação</b><span>Cardápio, reservas, localização e história organizados para o cliente decidir com facilidade.</span></li></ul></li><li class="dx-st"><span class="dx-nd">3</span><span class="dx-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 8l-5 4 5 4M16 8l5 4-5 4M14 5l-4 14"/></svg></span><h3>Design e desenvolvimento</h3><p class="dx-ssub">Criamos as telas e construímos o projeto.</p><ul><li><b>Design exclusivo</b><span>Layout desenhado do zero para a sua marca, sem adaptar modelos prontos.</span></li><li><b>Desenvolvimento</b><span>Código feito para o projeto, com atenção à velocidade, à acessibilidade e às boas práticas de busca.</span></li><li><b>Responsividade</b><span>A mesma qualidade no celular, no tablet e no computador.</span></li><li><b>Integrações</b><span>Conexão com as ferramentas que o restaurante já usa, avaliada caso a caso.</span></li></ul></li><li class="dx-st"><span class="dx-nd">4</span><span class="dx-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg></span><h3>Refinamento e publicação</h3><p class="dx-ssub">Ajustamos até a sua aprovação e colocamos no ar.</p><ul><li><b>Apresentação e refinamento</b><span>Apresentamos o resultado e ajustamos até a sua aprovação.</span></li><li><b>Publicação</b><span>Domínio, hospedagem e publicação acompanhados até o projeto estar no ar.</span></li></ul></li></ol>
+      </div>
+
+      <div class="sig-brief dx-rv" id="briefing-signature">
+        <div class="sig-brief-txt">
+          <p class="eyebrow">Projeto Signature · briefing</p>
+          <h2>Conte um pouco sobre a sua marca.</h2>
+          <p>Com essas informações montamos a primeira ideia do seu site e retornamos com o diagnóstico, sem compromisso.</p>
+          <ul class="sig-passos">
+            <li><b>1</b> Você preenche o briefing ao lado</li>
+            <li><b>2</b> Entramos em contato pelo WhatsApp</li>
+            <li><b>3</b> Fazemos o diagnóstico e apresentamos a proposta</li>
+          </ul>
+        </div>
+        <form class="lead sig-form" id="sigForm" novalidate>
+          <div class="row2">
+            <label for="sNome">Seu nome<input id="sNome" autocomplete="name" maxlength="80" required></label>
+            <label for="sMarca">Nome da marca ou restaurante<input id="sMarca" maxlength="100" required></label>
+          </div>
+          <div class="row2">
+            <label for="sSeg">Segmento<select id="sSeg"><option>Restaurante</option><option>Hamburgueria</option><option>Pizzaria</option><option>Cafeteria</option><option>Padaria ou confeitaria</option><option>Bar ou cervejaria</option><option>Outro</option></select></label>
+            <label for="sCidade">Cidade e bairro<input id="sCidade" maxlength="80" placeholder="Ponta Grossa · Centro"></label>
+          </div>
+          <label for="sSobre">O que torna a sua marca única?<textarea id="sSobre" maxlength="400" rows="3" placeholder="História, ambiente, cozinha, o jeito de receber o cliente…"></textarea></label>
+          <label for="sRef">Sites, perfis ou lugares que você admira<input id="sRef" maxlength="200" placeholder="Links do Instagram, sites ou nomes de casas"></label>
+          <div class="row2">
+            <label for="sQuando">Quando pretende começar?<select id="sQuando"><option>Este mês</option><option>Em 2 a 3 meses</option><option>Ainda estou pesquisando</option></select></label>
+            <label for="sWhats">Seu WhatsApp<input id="sWhats" inputmode="tel" autocomplete="tel" placeholder="(42) 9 9999-9999" maxlength="20" required></label>
+          </div>
+          <input name="site" id="sSite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          <button class="btn btn-mint" type="submit">Quero receber a primeira ideia</button>
+          <p class="fine" id="sigMsg">Usamos seus dados apenas para retornar este contato.</p>
+        </form>
       </div>
     </div>
   </section>
@@ -2963,7 +3008,7 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
 <footer>
   <div class="in">
     <span>© <span id="ano"></span> BistrôConnect · Experiências digitais para restaurantes</span> <span class="ft-redes"><a href="https://www.instagram.com/bistro_connect/" target="_blank" rel="noopener" aria-label="Instagram da BistrôConnect" data-track="instagram-rodape"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>@bistro_connect</span></a></span>
-    <span class="ft-ver">Versão 02/11/2026-o</span>
+    <span class="ft-ver">Versão 02/11/2026-p</span>
     <span>Ponta Grossa-PR · <a href="crm/" rel="nofollow" style="color:inherit;opacity:.6;text-decoration:none">Acesso restrito</a></span>
   </div>
 </footer>
@@ -3602,6 +3647,29 @@ var OFERTA={ativa:false,texto:'',ate:'',vagas:0,restantes:0};
   (function(){var st=document.getElementById('pfStage'),m=document.getElementById('pfModels');if(!st||!m||!matchMedia('(pointer:fine)').matches||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
     st.addEventListener('mousemove',function(e){var r=st.getBoundingClientRect();m.style.setProperty('--mx',((e.clientX-r.left)/r.width-.5).toFixed(3));m.style.setProperty('--my',((e.clientY-r.top)/r.height-.5).toFixed(3))});
     st.addEventListener('mouseleave',function(){m.style.setProperty('--mx',0);m.style.setProperty('--my',0)})})();
+
+  /* briefing do Signature: grava no CRM (linha sites) e mostra a confirmação */
+  (function(){var f=document.getElementById('sigForm');if(!f)return;var t0=Date.now(),ultimo=0;
+    f.addEventListener('submit',function(e){e.preventDefault();
+      var g=function(id){return document.getElementById(id).value.trim()};var msg=document.getElementById('sigMsg');
+      var dig=g('sWhats').replace(/\D/g,'');
+      if(!g('sNome')||!g('sMarca')||dig.length<10||dig.length>13){msg.style.color='#B4372F';msg.textContent='Preencha seu nome, o nome da marca e um WhatsApp com DDD.';return}
+      if(document.getElementById('sSite').value||Date.now()-t0<2500)return;
+      if(Date.now()-ultimo<30000){msg.style.color='';msg.textContent='Já recebemos seu briefing. Em breve entramos em contato.';return}
+      ultimo=Date.now();
+      var B=window.BISTRO||{};if(!B.supabaseUrl||!B.supabaseKey){msg.style.color='#B4372F';msg.textContent='Não conseguimos registrar agora. Tente de novo em instantes.';return}
+      var hoje=new Date();hoje.setMinutes(hoje.getMinutes()-hoje.getTimezoneOffset());var dia=hoje.toISOString().slice(0,10);
+      var c=function(v,n){return String(v||'').slice(0,n)};
+      var notas='Briefing Signature · segmento: '+g('sSeg')+' · cidade: '+c(g('sCidade'),60)+' · quer começar: '+g('sQuando')+' · diferencial: '+c(g('sSobre'),220)+' · referências: '+c(g('sRef'),120);
+      var doc={nome:c(g('sMarca'),100),responsavel:c(g('sNome'),80),tipo:c(g('sSeg'),40),whatsapp:c(g('sWhats'),20),plano:'Signature',origem:'site · signature',linha:'sites',stage:'lead',proximoContato:dia,criadoEm:dia,checklist:{},notas:notas.slice(0,900)};
+      msg.style.color='';msg.textContent='Enviando…';
+      fetch(B.supabaseUrl.replace(/\/$/,'')+'/rest/v1/leads',{method:'POST',keepalive:true,headers:{'apikey':B.supabaseKey,'Authorization':'Bearer '+B.supabaseKey,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({doc:doc})})
+        .then(function(r){if(!r.ok)throw new Error(r.status);
+          var ok=document.createElement('div');ok.className='lead-ok';ok.setAttribute('role','status');
+          ok.innerHTML='<span class="lead-ok-ic" aria-hidden="true">✓</span><h3>Recebemos, '+c(g('sNome').split(' ')[0],30).replace(/[<>&"]/g,'')+'!</h3><p>Em até 1 dia útil entramos em contato pelo WhatsApp com a primeira ideia da sua marca.</p>';
+          f.hidden=true;f.parentNode.insertBefore(ok,f);ok.scrollIntoView({behavior:'smooth',block:'center'})})
+        .catch(function(){ultimo=0;msg.style.color='#B4372F';msg.textContent='Não conseguimos registrar agora. Você pode tentar de novo ou chamar pelo WhatsApp flutuante.'});
+    })})();
 </script>
 </body>
 </html>
