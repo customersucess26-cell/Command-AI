@@ -38,8 +38,8 @@ window.MC_PROPOSTA = {
     'Digital Experience': {
       titulo: 'Canal próprio de pedidos completo',
       intro: 'Site, painel de pedidos e lançamento para que quem já conhece a {est} passe a pedir direto, com a operação organizada do pedido à entrega.',
-      incluido: 'O site: Design com a identidade visual da casa; Cardápio com pedido no WhatsApp; Publicação no seu domínio com HTTPS\nPedidos e painel: Painel com alerta e quadro por etapa; Rastreio do pedido para o cliente; 500 cartões de volta e display de balcão\nLançamento: Perfil da empresa no Google otimizado; Campanha de lançamento para a sua lista; 30 dias de acompanhamento',
-      etapas: 'Dia 1 | Aceite | Assinatura e primeira parcela\nDia 2 a 4 | Montagem | Site, cardápio e painel prontos\nDia 5 a 6 | Revisão | Você testa e pede ajustes\nAté o dia 7 | Lançamento | No ar, equipe treinada e campanha'
+      incluido: 'O site: Design com a identidade visual da casa; Cardápio com pedido no WhatsApp; Publicação no seu domínio com HTTPS\nPedidos e painel: Painel com alerta e quadro por etapa; Rastreio do pedido para o cliente; 500 cartões de volta e display de balcão\nLançamento: Perfil da empresa no Google ajustado, com o seu acesso; Peças de lançamento para redes e WhatsApp; 30 dias de acompanhamento',
+      etapas: 'Dia 1 | Aceite | Assinatura e primeira parcela\nDia 2 a 4 | Montagem | Site, cardápio e painel prontos\nDia 5 a 6 | Revisão | Você testa e pede ajustes\nAté o dia 7 | Lançamento | No ar, equipe treinada e peças de lançamento'
     },
     'Signature': {
       titulo: 'Projeto digital exclusivo',
