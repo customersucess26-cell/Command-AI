@@ -2454,6 +2454,27 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
 .sig-form label{font-size:14px}
 .sig-form .btn{width:100%}
 @media (max-width:900px){.sig-brief{grid-template-columns:1fr}.sig-form{padding:22px}.sig-form .row2{grid-template-columns:1fr}}
+
+.dx-cmp-dica{display:none}
+/* v15 · celular: seções mais curtas e carrosséis de deslizar (etapas Signature, comparação e planos) */
+@media (max-width:640px){
+  section{padding-block:56px}
+  .dx-rail,.plans,.plans4,.dx-cmp{display:flex!important;grid-template-columns:none!important;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;gap:12px!important;margin-left:-20px;margin-right:-20px;padding:6px 20px 14px;scroll-padding-inline:20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .dx-rail::-webkit-scrollbar,.plans::-webkit-scrollbar,.dx-cmp::-webkit-scrollbar{display:none}
+  .dx-rail>.dx-st,.plans>.plan,.dx-cmp>.dx-ci{flex:0 0 84%;min-width:0;scroll-snap-align:start;margin:0!important}
+  .dx-rail::before,.dx-rail::after,.dx-rail .rl-dot{display:none!important}
+  .dx-rail>.dx-st{padding:22px 20px 22px!important}
+  .dx-rail .dx-nd{position:static!important;transform:none!important;margin:0 0 12px}
+  .dx-cmp>.dx-ci{border:1px solid rgba(203,166,91,.28);border-radius:18px;padding:18px 16px}
+  .dx-flowbox .dx-lab::after,#planos .head::after,.dx-cmp-dica::before{content:"Deslize para o lado  →";display:block;margin-top:10px;font:600 11px/1 var(--f-display,Poppins,sans-serif);letter-spacing:.14em;text-transform:uppercase;color:#B08A3E}
+  .dx-cmp-dica{display:block;margin:18px 0 0}
+  #planos .head{margin-bottom:18px}
+  .dx-flowbox .dx-lab{display:block!important;margin-bottom:18px}
+  .plans>.plan.hot{order:-1}
+  .plans,.plans4{padding-top:18px}
+  #planos .plans>.plan:first-child{scroll-snap-align:start}
+}
+@media (max-width:640px) and (prefers-reduced-motion:reduce){.dx-rail,.plans,.dx-cmp{scroll-behavior:auto}}
 </style>
 </head>
 <body>
@@ -2590,7 +2611,7 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
           </div>
         </article>
       </div>
-      <div class="dx-cmp dx-rv" role="list" aria-label="Como escolher entre as duas soluções">
+      <p class="dx-cmp-dica" aria-hidden="true"></p><div class="dx-cmp dx-rv" role="list" aria-label="Como escolher entre as duas soluções">
         <div class="dx-ci" role="listitem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg><div><b>Ponto de partida</b>
           <p><i class="dot sg"></i><span>Signature</span> Sua marca e suas necessidades, sem partir de modelo.</p>
           <p><i class="dot gs"></i><span>Gastronomia</span> Estrutura especializada, já desenvolvida e testada.</p></div></div>
@@ -2798,7 +2819,7 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
         <div class="cf-dots" id="pcDots"></div>
       </div>
       <p class="dash-note">Telas reais do painel, com dados de exemplo. No celular, o que o cliente recebe: o pedido no WhatsApp do seu negócio e, depois, a página de rastreio.</p>
-      <div class="os-grid"><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg><div><b>Pedidos</b><span>Cada pedido aparece na hora e avança por etapas. O cliente acompanha pelo link de rastreio.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/></svg><div><b>Cardápio</b><span>Preços, fotos, categorias e itens pausados alterados em minutos, sem chamar ninguém.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11a3 3 0 0 0 0-6M21 20c0-2-1-4-3-4.5"/></svg><div><b>Clientes</b><span>Histórico de quem compra, quanto gasta e quando voltou, para a sua marca se relacionar melhor.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg><div><b>Financeiro</b><span>Vendido, recebido e a receber, por forma de pagamento e por dia. É um controle gerencial e não substitui a contabilidade.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg><div><b>Atendimento</b><span>Central de conversas no painel, com respostas rápidas. A ativação do WhatsApp é combinada na implantação.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><div><b>Equipe</b><span>Cada pessoa com login próprio e acesso conforme a função.</span></div></div></div>
+      <div class="os-grid"><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg><div><b>Pedidos</b><span>Cada pedido aparece na hora e avança por etapas. O cliente acompanha pelo link de rastreio.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/></svg><div><b>Cardápio</b><span>Preços, fotos, categorias e itens pausados alterados em minutos, sem chamar ninguém.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5M16 11a3 3 0 0 0 0-6M21 20c0-2-1-4-3-4.5"/></svg><div><b>Clientes</b><span>Histórico de quem compra, quanto gasta e quando voltou, para a sua marca se relacionar melhor.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg><div><b>Financeiro</b><span>Vendido, recebido e a receber, por forma de pagamento e por dia. É um controle gerencial e não substitui a contabilidade.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg><div><b>Atendimento</b><span>Central de conversas no painel, com respostas rápidas. Módulo opcional, fora do pacote, ativado após a aprovação da Meta.</span></div></div><div class="os-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><div><b>Equipe</b><span>Cada pessoa com login próprio e acesso conforme a função.</span></div></div></div>
     </div>
   </section>
 
@@ -2920,7 +2941,7 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
           <p class="pl-for">Site, painel e canal próprio de pedidos, com lançamento acompanhado.</p>
           <p class="price" style="color:var(--mint)">R$ 2.997<small> implantação</small></p>
           <p class="setup">+ R$ 199/mês de hospedagem, sistema e suporte</p>
-          <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Tudo do Site Gastronômico</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Painel de pedidos e rastreio</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Perfil da empresa no Google otimizado</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>500 cartões de volta e display de balcão</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Campanha de lançamento</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>30 dias de acompanhamento</li></ul>
+          <ul><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Tudo do Site Gastronômico</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Painel de pedidos e rastreio</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Perfil da empresa no Google otimizado</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>500 cartões de volta e display de balcão</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Peças de lançamento</li><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>30 dias de acompanhamento</li></ul>
           <a class="btn btn-mint" href="#contato" data-plano="Sistema de pedidos" data-track="plano-experience">Quero este plano</a>
         </div>
       </div>
@@ -3008,7 +3029,7 @@ body{-webkit-tap-highlight-color:transparent;text-rendering:optimizeLegibility}
 <footer>
   <div class="in">
     <span>© <span id="ano"></span> BistrôConnect · Experiências digitais para restaurantes</span> <span class="ft-redes"><a href="https://www.instagram.com/bistro_connect/" target="_blank" rel="noopener" aria-label="Instagram da BistrôConnect" data-track="instagram-rodape"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg><span>@bistro_connect</span></a></span>
-    <span class="ft-ver">Versão 07/11/2026-q</span>
+    <span class="ft-ver">Versão 07/11/2026-r</span>
     <span>Ponta Grossa-PR · <a href="crm/" rel="nofollow" style="color:inherit;opacity:.6;text-decoration:none">Acesso restrito</a></span>
   </div>
 </footer>
