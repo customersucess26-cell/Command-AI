@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>BistrôConnect | Proposta Comercial Digital Experience</title>
+<!-- Proposta Digital Experience (V14). Gerar o PDF: node ferramentas/gerar-proposta-pdf.js
+     Ordem: capa > site premium > cardápio > pedidos > painel > rastreio > a conta > planos > oferta.
+     Regra de copy: o cliente é "sua marca", "seu negócio"; nunca "casa". Só prometer o que está construído. -->
+<style>
+@font-face{font-family:Poppins;font-weight:500;src:url(fonts/poppins-latin-500-normal.woff2)}
+@font-face{font-family:Poppins;font-weight:600;src:url(fonts/poppins-latin-600-normal.woff2)}
+@font-face{font-family:Poppins;font-weight:700;src:url(fonts/poppins-latin-700-normal.woff2)}
+@font-face{font-family:Fraunces;font-style:italic;font-weight:400;src:url(fonts/fraunces-latin-400-italic.woff2)}
+@font-face{font-family:Fraunces;font-style:italic;font-weight:500;src:url(fonts/fraunces-latin-500-italic.woff2)}
+@font-face{font-family:Fraunces;font-style:normal;font-weight:400;src:url(fonts/fraunces-latin-400-normal.woff2)}
+@font-face{font-family:'DM Sans';font-weight:400;src:url(fonts/dm-sans-latin-400-normal.woff2)}
+@font-face{font-family:'DM Sans';font-weight:500;src:url(fonts/dm-sans-latin-500-normal.woff2)}
+@font-face{font-family:'DM Sans';font-weight:700;src:url(fonts/dm-sans-latin-700-normal.woff2)}
+@page{size:A4;margin:0}
+:root{--bg:#211812;--bg2:#2c2119;--ouro:#D9AE5C;--ouro2:#E8CD95;--txt:#F4EFE6;--txt2:#DCD3C4;--txt3:#ADA190;--linha:rgba(217,174,92,.32)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{font-family:'DM Sans',Arial,sans-serif;color:var(--txt2);font-size:10.5pt;line-height:1.45}
+a{color:inherit;text-decoration:none}
+.pg{width:210mm;height:297mm;position:relative;overflow:hidden;padding:11mm 12mm 0;page-break-after:always;
+  background:radial-gradient(120% 70% at 100% 0%,#3a2b1f 0%,rgba(58,43,31,0) 55%),radial-gradient(90% 60% at 0% 100%,#2d2118 0%,rgba(45,33,24,0) 60%),var(--bg)}
+.pg:last-child{page-break-after:auto}
+.curva{position:absolute;right:-8mm;top:-6mm;width:58mm;height:80mm;pointer-events:none;opacity:.22}
+/* topo */
+.topo{display:flex;justify-content:space-between;align-items:center;height:13mm;position:relative;z-index:2}
+.topo img{height:9.5mm}
+.trilha{display:flex;gap:3.2mm;font:600 6.6pt/1 Poppins,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8a7e6e}
+.trilha span{display:flex;align-items:center;gap:1.4mm}
+.trilha i{font-style:normal;font-weight:500;color:#6a5f52}
+.trilha .ok{color:#a8987f}
+.trilha .at{color:var(--ouro)}
+.trilha .at i{color:var(--ouro)}
+.trilha .at::after{content:"";width:6mm;height:1px;background:var(--ouro);margin-left:1mm}
+.rot{font:600 6.8pt/1 Poppins,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro)}
+/* títulos */
+.kick{font:700 7.2pt/1 'DM Sans',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--ouro);margin:9mm 0 3.6mm}
+h1,h2{font-family:Poppins,sans-serif;font-weight:600;color:var(--txt);letter-spacing:-.025em}
+h2{font-size:26pt;line-height:1.1}
+h1{font-size:37pt;line-height:1.06}
+h1 em,h2 em{display:block;font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:400;color:var(--ouro2);letter-spacing:-.015em;font-size:1.06em;line-height:1.12}
+.lead{font-size:11.5pt;line-height:1.5;color:var(--txt2);margin-top:4mm;max-width:168mm}
+.lead b{color:var(--txt);font-weight:500}
+/* rodapé */
+.rodape{position:absolute;left:12mm;right:12mm;bottom:7mm;display:flex;justify-content:space-between;border-top:1px solid rgba(217,174,92,.22);padding-top:3mm;font:600 6.4pt/1 Poppins,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8d806f}
+.rodape b{color:var(--ouro);font-weight:600}
+/* peças */
+.card{border:1px solid var(--linha);border-radius:4.5mm;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.018))}
+.dest{border-color:rgba(232,205,149,.75);background:linear-gradient(180deg,rgba(217,174,92,.16),rgba(217,174,92,.04))}
+.rt{font:700 6.8pt/1 'DM Sans',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+.mini{font-size:7.6pt;line-height:1.45;color:var(--txt3)}
+.cel{border-radius:7mm;padding:1.6mm;background:#0b0806;border:1px solid rgba(232,205,149,.55);box-shadow:0 6mm 12mm rgba(0,0,0,.5)}
+.cel img{display:block;width:100%;border-radius:5.6mm}
+.tela{border-radius:3mm;overflow:hidden;border:1px solid rgba(232,205,149,.45);box-shadow:0 4mm 10mm rgba(0,0,0,.4);background:#f6f1e8}
+.tela img{display:block;width:100%}
+.leg{text-align:center;margin-top:3mm}
+.leg b{display:block;font:700 7pt/1.2 'DM Sans',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+.leg span{font-size:8.6pt;color:var(--txt3)}
+.lst{list-style:none}
+.lst li{position:relative;padding-left:5mm;margin:0 0 2.2mm;font-size:9.8pt;color:var(--txt2)}
+.lst li::before{content:"";position:absolute;left:0;top:1.9mm;width:1.7mm;height:1.7mm;border-radius:50%;background:var(--ouro)}
+.lst li b{color:var(--txt);font-weight:500}
+.num{font:400 22pt/1 Fraunces,Georgia,serif;color:var(--ouro2)}
+.sec-titulo{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 2.4mm}
+.sec-titulo span{font-size:8.4pt;color:var(--txt3)}
+</style>
+</head>
+<body>
+
+<!-- ============ 1. CAPA ============ -->
+<section class="pg" style="background:#120d0a">
+  <img src="img/capa-fundo.jpeg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:30% 60%;opacity:.92">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,13,10,.94) 0%,rgba(18,13,10,.82) 34%,rgba(18,13,10,.15) 58%,rgba(18,13,10,.35) 78%,rgba(18,13,10,.97) 93%)"></div>
+  <div style="position:relative;z-index:2">
+    <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><span class="rot">Proposta comercial · Digital Experience</span></div>
+    <p class="kick" style="margin-top:12mm">Para restaurantes que querem vender com a própria marca</p>
+    <h1>A primeira prova<br>da sua cozinha<em>acontece no celular.</em></h1>
+    <p class="lead" style="max-width:118mm">Antes de pedir, seu cliente abre o celular e decide em segundos. Esta proposta mostra como ele vai <b>ver a sua marca, escolher no seu cardápio e pedir direto para você</b>, sem comissão por pedido.</p>
+  </div>
+  <a href="https://bistroconnect.com.br/restaurante/" style="position:absolute;right:46mm;top:150mm;width:43mm;z-index:2"><div class="cel"><img src="img/capa-cel-1.jpeg"></div></a>
+  <a href="https://bistroconnect.com.br/restaurante/" style="position:absolute;right:11mm;top:128mm;width:53mm;z-index:3"><div class="cel"><img src="img/cel-ambar.jpeg"></div></a>
+  <p style="position:absolute;right:12mm;top:250mm;z-index:3" class="rt">Toque e abra a demonstração</p>
+  <div style="position:absolute;left:12mm;right:12mm;bottom:19mm;display:grid;grid-template-columns:repeat(3,1fr);gap:7mm;z-index:3">
+    <div style="border-top:1px solid var(--linha);padding-top:3.5mm"><div class="num" style="font-size:25pt">R$ 0</div><p class="mini" style="color:var(--txt2);margin-top:1.6mm">de comissão por pedido cobrada pela BistrôConnect</p></div>
+    <div style="border-top:1px solid var(--linha);padding-top:3.5mm"><div class="num" style="font-size:25pt">2 dias úteis</div><p class="mini" style="color:var(--txt2);margin-top:1.6mm">para você ver a prévia da sua página inicial</p></div>
+    <div style="border-top:1px solid var(--linha);padding-top:3.5mm"><div class="num" style="font-size:25pt">7 dias úteis</div><p class="mini" style="color:var(--txt2);margin-top:1.6mm">para publicar, depois de materiais e aprovações</p></div>
+  </div>
+  <div class="rodape" style="z-index:3"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>01 / 11</b></div>
+</section>
+
+<!-- ============ 2. SITE PREMIUM ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><div class="trilha"><span class="at"><i>01</i>Site</span><span><i>02</i>Cardápio</span><span><i>03</i>Pedidos</span><span><i>04</i>Painel</span><span><i>05</i>Rastreio</span></div></div>
+  <p class="kick">01 · Site premium</p>
+  <h2>Sua marca já é reconhecida pelo sabor.<em>Agora, também pela tela.</em></h2>
+  <p class="lead">A estrutura é nossa. A identidade é sua: logo, fotos, cores e textos feitos para o seu negócio. <b>Cada modelo é usado por uma só marca do mesmo ramo em cada cidade.</b></p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-top:7mm">
+    <a class="card" href="https://bistroconnect.com.br/restaurante/" style="overflow:hidden"><img src="img/site-ambar.jpeg" style="width:100%;display:block;border-bottom:1px solid var(--linha)"><div style="padding:3.6mm 4.5mm 4mm"><p class="rt">Restaurante</p><h3 style="font:600 14pt/1.25 Poppins;color:var(--txt);margin-top:1.6mm">Âmbar</h3><p style="font-size:9pt;margin-top:.8mm">Cardápio, carta de vinhos e reserva de mesa.</p><p class="rt" style="margin-top:2.6mm;color:var(--ouro2)">Ver demonstração →</p></div></a>
+    <a class="card" href="https://bistroconnect.com.br/hamburgueria/" style="overflow:hidden"><img src="img/site-bruto.jpeg" style="width:100%;display:block;border-bottom:1px solid var(--linha)"><div style="padding:3.6mm 4.5mm 4mm"><p class="rt">Hamburgueria</p><h3 style="font:600 14pt/1.25 Poppins;color:var(--txt);margin-top:1.6mm">Bruto Burger</h3><p style="font-size:9pt;margin-top:.8mm">Combos, adicionais e pedido em um caminho claro.</p><p class="rt" style="margin-top:2.6mm;color:var(--ouro2)">Ver demonstração →</p></div></a>
+    <a class="card" href="https://bistroconnect.com.br/cafeteria/" style="overflow:hidden"><img src="img/site-padaria.jpeg" style="width:100%;display:block;border-bottom:1px solid var(--linha)"><div style="padding:3.6mm 4.5mm 4mm"><p class="rt">Padaria e cafeteria</p><h3 style="font:600 14pt/1.25 Poppins;color:var(--txt);margin-top:1.6mm">Padaria &amp; Café</h3><p style="font-size:9pt;margin-top:.8mm">Vitrine de produtos, cafés e encomendas.</p><p class="rt" style="margin-top:2.6mm;color:var(--ouro2)">Ver demonstração →</p></div></a>
+    <a class="card" href="https://bistroconnect.com.br/pizzaria/" style="overflow:hidden"><img src="img/site-fornalha.jpeg" style="width:100%;display:block;border-bottom:1px solid var(--linha)"><div style="padding:3.6mm 4.5mm 4mm"><p class="rt">Pizzaria</p><h3 style="font:600 14pt/1.25 Poppins;color:var(--txt);margin-top:1.6mm">Fornalha Pizzaria</h3><p style="font-size:9pt;margin-top:.8mm">Sabores, tamanhos e um caminho simples para pedir.</p><p class="rt" style="margin-top:2.6mm;color:var(--ouro2)">Ver demonstração →</p></div></a>
+  </div>
+  <p class="mini" style="margin-top:4mm;text-align:center">Demonstrações com marcas de exemplo. Toque em um card e navegue como o seu cliente.</p>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>02 / 11</b></div>
+</section>
+
+<!-- ============ 3. SITE PREMIUM NO CELULAR ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><div class="trilha"><span class="at"><i>01</i>Site</span><span><i>02</i>Cardápio</span><span><i>03</i>Pedidos</span><span><i>04</i>Painel</span><span><i>05</i>Rastreio</span></div></div>
+  <p class="kick">01 · Site premium no celular</p>
+  <h2>É no celular que ele decide.<em>É lá que sua marca precisa brilhar.</em></h2>
+  <p class="lead">O mesmo site, na tela que o cliente tem na mão. A marca aparece primeiro, o cardápio fica a um toque e ninguém precisa baixar aplicativo.</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7mm;margin:8mm 0 0">
+    <a href="https://bistroconnect.com.br/restaurante/"><div class="cel"><img src="img/cel-ambar.jpeg"></div><div class="leg"><b>Âmbar</b><span>A apresentação da marca</span></div></a>
+    <a href="https://bistroconnect.com.br/hamburgueria/"><div class="cel"><img src="img/cel-bruto.jpeg"></div><div class="leg"><b>Bruto Burger</b><span>O cardápio com pedido</span></div></a>
+    <a href="https://bistroconnect.com.br/l/padaria"><div class="cel"><img src="img/cel-padaria.jpeg"></div><div class="leg"><b>Padaria</b><span>O cardápio digital</span></div></a>
+  </div>
+  <div class="card" style="position:absolute;left:12mm;right:12mm;bottom:19mm;padding:4.5mm 6mm;display:grid;grid-template-columns:repeat(4,1fr);gap:5mm">
+    <div><p class="rt">Seu domínio</p><p style="font-size:9pt;margin-top:1.4mm">Endereço próprio com HTTPS e hospedagem inclusa.</p></div>
+    <div><p class="rt">Sua história</p><p style="font-size:9pt;margin-top:1.4mm">Fotos, horários, mapa e o que torna sua marca única.</p></div>
+    <div><p class="rt">Feito para celular</p><p style="font-size:9pt;margin-top:1.4mm">Versão mobile desenhada à parte, não encolhida.</p></div>
+    <div><p class="rt">Fácil de achar</p><p style="font-size:9pt;margin-top:1.4mm">Link para a bio, QR Code no balcão e pronto para o Google.</p></div>
+  </div>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>03 / 11</b></div>
+</section>
+
+<!-- ============ 4. CARDÁPIO DIGITAL ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><div class="trilha"><span class="ok"><i>01</i>Site</span><span class="at"><i>02</i>Cardápio</span><span><i>03</i>Pedidos</span><span><i>04</i>Painel</span><span><i>05</i>Rastreio</span></div></div>
+  <p class="kick">02 · Cardápio digital</p>
+  <h2>Foto, preço e adicionais à vista.<em>O cliente escolhe sem perguntar.</em></h2>
+  <p class="lead">Seu cardápio deixa de ser um PDF perdido no destaque do Instagram. Cada prato ganha foto, descrição e preço. <b>Acabou um item? Você pausa no painel e ele sai do cardápio na hora.</b></p>
+  <div style="display:grid;grid-template-columns:58mm 1fr;gap:9mm;margin-top:7mm;align-items:start">
+    <a href="https://bistroconnect.com.br/hamburgueria/"><div class="cel"><img src="img/cel-bruto.jpeg"></div><div class="leg"><b>O cliente vê</b><span>Cardápio real da demonstração</span></div></a>
+    <div style="padding-top:2mm">
+      <ul class="lst">
+        <li><b>Categorias, fotos e opcionais.</b> Ponto da carne, tamanhos, adicionais e observações.</li>
+        <li><b>Link próprio</b> para a bio do Instagram e para o WhatsApp.</li>
+        <li><b>QR Code nas mesas e no balcão.</b> No salão, o pedido já chega com o número da mesa.</li>
+        <li><b>Taxa de entrega por bairro</b>, calculada no pedido.</li>
+        <li><b>Cadastro pela nossa equipe.</b> Você envia os materiais e nós montamos.</li>
+      </ul>
+      <div class="sec-titulo" style="margin-top:6mm"><p class="rt">Você controla</p><span>Produtos • valores • disponibilidade</span></div>
+      <div class="tela"><img src="img/painel-cardapio.jpeg"></div>
+    </div>
+  </div>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>04 / 11</b></div>
+</section>
+
+<!-- ============ 5. PEDIDOS ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><div class="trilha"><span class="ok"><i>01</i>Site</span><span class="ok"><i>02</i>Cardápio</span><span class="at"><i>03</i>Pedidos</span><span><i>04</i>Painel</span><span><i>05</i>Rastreio</span></div></div>
+  <p class="kick">03 · Pedidos</p>
+  <h2>Não faça o cliente reconstruir<em>o pedido em uma conversa.</em></h2>
+  <p class="lead">Ele monta o pedido, escolhe entrega ou retirada e envia. <b>Sua equipe recebe tudo pronto no WhatsApp:</b> itens, adicionais, endereço, forma de pagamento e total calculado.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14mm;margin:7mm 22mm 0">
+    <div><div class="cel"><img src="img/cel-padaria.jpeg" style="height:110mm;object-fit:cover;object-position:top"></div><div class="leg"><b>Ele escolhe</b><span>Cardápio real da demonstração</span></div></div>
+    <div><div class="cel"><img src="img/cel-pedido.jpeg" style="height:110mm;object-fit:cover;object-position:top"></div><div class="leg"><b>Você recebe pronto</b><span>Itens, valores, entrega e pagamento</span></div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4mm;margin-top:6mm">
+    <div class="card" style="padding:4mm 4.5mm"><div class="num">01</div><p class="rt" style="margin-top:2mm">Escolhe</p><p style="font-size:9pt;margin-top:1.2mm">Categorias, produtos, quantidades e adicionais.</p></div>
+    <div class="card" style="padding:4mm 4.5mm"><div class="num">02</div><p class="rt" style="margin-top:2mm">Confirma</p><p style="font-size:9pt;margin-top:1.2mm">Entrega ou retirada, endereço e pagamento.</p></div>
+    <div class="card" style="padding:4mm 4.5mm"><div class="num">03</div><p class="rt" style="margin-top:2mm">Envia</p><p style="font-size:9pt;margin-top:1.2mm">O resumo chega direto ao WhatsApp do seu negócio.</p></div>
+  </div>
+  <div class="card dest" style="position:absolute;left:12mm;right:12mm;bottom:19mm;padding:4mm 5.5mm">
+    <p class="rt">Canal próprio: sem comissão por pedido cobrada pela BistrôConnect</p>
+    <p style="font-size:8.8pt;margin-top:1.6mm">Os apps de delivery continuam ajudando novos clientes a encontrar você. O canal próprio é para quem já conhece a sua marca pedir direto.</p>
+    <p class="mini" style="margin-top:1.2mm">Taxas de pagamento online, entrega e custos de terceiros não estão incluídos. Pedido de exemplo.</p>
+  </div>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>05 / 11</b></div>
+</section>
+
+<!-- ============ 6. PAINEL: PEDIDOS ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><div class="trilha"><span class="ok"><i>01</i>Site</span><span class="ok"><i>02</i>Cardápio</span><span class="ok"><i>03</i>Pedidos</span><span class="at"><i>04</i>Painel</span><span><i>05</i>Rastreio</span></div></div>
+  <p class="kick">04 · Painel administrativo</p>
+  <h2>Horário de pico não é hora<em>de procurar pedido em anotação.</em></h2>
+  <p class="lead">No painel, sua equipe vê o que entrou, em que etapa está cada pedido e o que fazer em seguida.</p>
+  <div class="sec-titulo" style="margin-top:6mm"><p class="rt">Visão geral</p><span>Pedidos novos • vendas • produtos</span></div>
+  <div class="tela"><img src="img/painel-visao.jpeg" style="height:74mm;object-fit:cover;object-position:top"></div>
+  <div class="sec-titulo" style="margin-top:5mm"><p class="rt">Pedidos e etapas</p><span>Novos • confirmados • em preparo • prontos</span></div>
+  <div class="tela"><img src="img/painel-etapas.jpeg" style="height:62mm;object-fit:cover;object-position:top"></div>
+  <div class="card" style="position:absolute;left:12mm;right:12mm;bottom:19mm;padding:4.5mm 5.5mm;display:grid;grid-template-columns:repeat(3,1fr);gap:6mm">
+    <div><p class="rt">Alerta de pedido novo</p><p style="font-size:9pt;margin-top:1.4mm">Som e aviso na tela quando um pedido entra.</p></div>
+    <div><p class="rt">Quadro por etapa</p><p style="font-size:9pt;margin-top:1.4mm">Cada pedido mostra onde está. Um toque avança a etapa.</p></div>
+    <div><p class="rt">Equipe com acesso</p><p style="font-size:9pt;margin-top:1.4mm">Cada pessoa entra com o próprio login.</p></div>
+    <p class="mini" style="grid-column:1/-1;margin-top:-2mm">Capturas com dados demonstrativos. A configuração final considera a operação e os módulos do plano contratado.</p>
+  </div>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>06 / 11</b></div>
+</section>
+
+<!-- ============ 7. PAINEL: GESTÃO ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><div class="trilha"><span class="ok"><i>01</i>Site</span><span class="ok"><i>02</i>Cardápio</span><span class="ok"><i>03</i>Pedidos</span><span class="at"><i>04</i>Painel</span><span><i>05</i>Rastreio</span></div></div>
+  <p class="kick">04 · Painel administrativo · gestão</p>
+  <h2>O caixa do dia, sem planilha.<em>E o cardápio, sem depender de ninguém.</em></h2>
+  <p class="lead">Veja quanto vendeu, quanto já recebeu e quanto falta receber. Mude um preço ou pause um prato no mesmo lugar onde chegam os pedidos.</p>
+  <div class="sec-titulo" style="margin-top:6mm"><p class="rt">Financeiro</p><span>Vendido • recebido • a receber</span></div>
+  <div class="tela"><img src="img/painel-financeiro.jpeg" style="height:72mm;object-fit:cover;object-position:top"></div>
+  <div class="sec-titulo" style="margin-top:5mm"><p class="rt">Atendimento no WhatsApp · módulo opcional</p><span>Ativado após aprovação da Meta</span></div>
+  <div class="tela"><img src="img/painel-atendimento.jpeg" style="height:68mm;object-fit:cover;object-position:top"></div>
+  <p class="mini" style="position:absolute;left:12mm;right:12mm;bottom:19mm">O financeiro é gerencial e não substitui a contabilidade. Os valores recebidos dependem das marcações feitas no painel; não há conciliação automática com banco ou maquininha. O atendimento por WhatsApp dentro do painel é ativado depois que a Meta aprova a conta do seu negócio.</p>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>07 / 11</b></div>
+</section>
+
+<!-- ============ 8. RASTREIO ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><div class="trilha"><span class="ok"><i>01</i>Site</span><span class="ok"><i>02</i>Cardápio</span><span class="ok"><i>03</i>Pedidos</span><span class="ok"><i>04</i>Painel</span><span class="at"><i>05</i>Rastreio</span></div></div>
+  <p class="kick">05 · Rastreio do pedido</p>
+  <h2>“Já saiu?”<em>Seu cliente vê sem precisar perguntar.</em></h2>
+  <p class="lead">Depois de enviar o pedido, ele recebe um link e acompanha cada etapa. Sua equipe avança a etapa no painel com um toque e continua cozinhando.</p>
+  <div style="display:grid;grid-template-columns:1fr 78mm;gap:10mm;margin-top:8mm;align-items:center">
+    <div>
+      <div style="display:grid;gap:5.5mm">
+        <div style="display:flex;gap:4mm;align-items:flex-start"><span class="num" style="font-size:18pt;width:10mm">01</span><div><p class="rt">Pedido recebido</p><p style="font-size:9.6pt;margin-top:1.2mm">O pedido chega à sua equipe.</p></div></div>
+        <div style="display:flex;gap:4mm;align-items:flex-start"><span class="num" style="font-size:18pt;width:10mm">02</span><div><p class="rt">Confirmado</p><p style="font-size:9.6pt;margin-top:1.2mm">A equipe confirma e o cliente fica tranquilo.</p></div></div>
+        <div style="display:flex;gap:4mm;align-items:flex-start"><span class="num" style="font-size:18pt;width:10mm">03</span><div><p class="rt">Em preparo</p><p style="font-size:9.6pt;margin-top:1.2mm">A cozinha está trabalhando no pedido.</p></div></div>
+        <div style="display:flex;gap:4mm;align-items:flex-start"><span class="num" style="font-size:18pt;width:10mm">04</span><div><p class="rt">Saiu para entrega</p><p style="font-size:9.6pt;margin-top:1.2mm">O pedido segue até o cliente.</p></div></div>
+        <div style="display:flex;gap:4mm;align-items:flex-start"><span class="num" style="font-size:18pt;width:10mm">05</span><div><p class="rt">Entregue</p><p style="font-size:9.6pt;margin-top:1.2mm">A etapa final fica registrada.</p></div></div>
+      </div>
+    </div>
+    <div><div class="cel" style="border-radius:5mm"><img src="img/cel-rastreio.png" style="border-radius:3.8mm"></div><div class="leg"><b>Tela real de rastreio</b></div></div>
+  </div>
+  <div class="card dest" style="position:absolute;left:12mm;right:12mm;bottom:19mm;padding:4mm 5.5mm">
+    <p class="rt">Menos mensagens de “cadê meu pedido”. Mais tempo para a cozinha.</p>
+    <p style="font-size:8.8pt;margin-top:1.6mm">O rastreio faz parte do Digital Experience. As cinco etapas são atualizadas pela sua equipe no painel.</p>
+  </div>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>08 / 11</b></div>
+</section>
+
+<!-- ============ 9. A CONTA ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><span class="rot">06 · A conta</span></div>
+  <p class="kick">Antes de falar de preço</p>
+  <h2>Quanto custa cada pedido<em>que passa pelo aplicativo?</em></h2>
+  <p class="lead">A comissão sai de todo pedido, inclusive do cliente que já conhece você e voltaria de qualquer jeito. <b>Esse é o cliente que o canal próprio traz de volta para a sua marca.</b></p>
+  <div class="card" style="margin-top:7mm;padding:6mm 7mm">
+    <div style="display:flex;justify-content:space-between;align-items:baseline"><p class="rt">Simulação</p><p class="mini">Troque pelos números do seu negócio</p></div>
+    <table style="width:100%;border-collapse:collapse;margin-top:4mm;font-size:10.5pt">
+      <tr style="border-bottom:1px solid rgba(217,174,92,.2)"><td style="padding:2.6mm 0">Vendas pelo aplicativo no mês</td><td style="text-align:right;color:var(--txt)">R$ 10.000</td></tr>
+      <tr style="border-bottom:1px solid rgba(217,174,92,.2)"><td style="padding:2.6mm 0">Comissão de exemplo, 12%</td><td style="text-align:right;color:var(--txt)">R$ 1.200 saem todo mês</td></tr>
+      <tr style="border-bottom:1px solid rgba(217,174,92,.2)"><td style="padding:2.6mm 0">Se 3 em cada 10 desses pedidos vierem direto</td><td style="text-align:right;color:var(--ouro2)">+ R$ 360 ficam com você</td></tr>
+      <tr style="border-bottom:1px solid rgba(217,174,92,.2)"><td style="padding:2.6mm 0">Mensalidade do Digital Experience</td><td style="text-align:right;color:var(--txt)">− R$ 199</td></tr>
+      <tr><td style="padding:3.4mm 0 0;font:600 12pt Poppins;color:var(--txt)">Sobra no mês</td><td style="text-align:right;padding-top:3.4mm"><span style="font:400 24pt/1 Fraunces,serif;color:var(--ouro2)">R$ 161</span><span class="mini" style="display:block;margin-top:1mm">R$ 1.932 por ano</span></td></tr>
+    </table>
+  </div>
+  <p class="rt" style="margin:8mm 0 3.5mm">Como o cliente do app vira cliente seu</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4mm">
+    <div class="card" style="padding:4mm 4.5mm"><div class="num">01</div><p class="rt" style="margin-top:2mm">Cartão de volta</p><p style="font-size:9pt;margin-top:1.2mm">Vai na sacola, com QR Code e um cupom da sua marca para o próximo pedido direto.</p></div>
+    <div class="card" style="padding:4mm 4.5mm"><div class="num">02</div><p class="rt" style="margin-top:2mm">Sempre à mão</p><p style="font-size:9pt;margin-top:1.2mm">Link na bio, QR Code no balcão e nas mesas e perfil no Google apontando para o seu canal.</p></div>
+    <div class="card" style="padding:4mm 4.5mm"><div class="num">03</div><p class="rt" style="margin-top:2mm">Motivo para voltar</p><p style="font-size:9pt;margin-top:1.2mm">Pedido fácil, rastreio claro e atendimento da sua equipe, não de um intermediário.</p></div>
+  </div>
+  <p class="mini" style="position:absolute;left:12mm;right:12mm;bottom:19mm">Simulação ilustrativa, não é promessa de resultado. Use o seu faturamento e a comissão do seu contrato com o aplicativo. Taxas de pagamento online, entrega e custos de terceiros não entram na conta. Com o Site Gastronômico (R$ 149/mês), a mesma conta deixa R$ 211 por mês.</p>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>09 / 11</b></div>
+</section>
+
+<!-- ============ 10. PLANOS ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><span class="rot">07 · Planos</span></div>
+  <p class="kick">A estrutura certa para o momento do seu negócio</p>
+  <h2>Você viu o caminho inteiro.<em>Escolha até onde sua marca quer ir.</em></h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1.18fr;gap:4mm;margin-top:8mm;align-items:stretch">
+    <div class="card" style="padding:5mm 4.5mm">
+      <p class="rt">Entrada digital</p>
+      <h3 style="font:600 12.5pt/1.2 Poppins;color:var(--txt);margin-top:2mm;white-space:nowrap">Cardápio Digital</h3>
+      <p style="margin-top:2.4mm"><span style="font:400 22pt/1 Fraunces,serif;color:var(--ouro2)">R$ 997</span></p><p class="mini">+ R$ 149/mês</p>
+      <ul class="lst" style="margin-top:4mm"><li>Cardápio com fotos, opcionais e pedido no WhatsApp</li><li>Link próprio e QR Code</li><li>Cadastro pela nossa equipe</li><li>Suporte pelo WhatsApp</li></ul>
+    </div>
+    <div class="card" style="padding:5mm 4.5mm">
+      <p class="rt">Presença com pedido</p>
+      <h3 style="font:600 12.5pt/1.2 Poppins;color:var(--txt);margin-top:2mm;white-space:nowrap">Site Gastronômico</h3>
+      <p style="margin-top:2.4mm"><span style="font:400 22pt/1 Fraunces,serif;color:var(--ouro2)">R$ 1.497</span></p><p class="mini">+ R$ 149/mês</p>
+      <ul class="lst" style="margin-top:4mm"><li>Site com a identidade da sua marca</li><li>Domínio, HTTPS, hospedagem e sistema</li><li>Cardápio e pedido no WhatsApp</li><li>QR Code e link para redes sociais</li><li>Suporte e ajustes de conteúdo</li></ul>
+    </div>
+    <div class="card dest" style="padding:5mm 5mm;position:relative">
+      <p class="rt" style="display:inline-block;background:var(--ouro);color:#21170f;padding:1.4mm 2.4mm;border-radius:10mm;letter-spacing:.16em">Recomendado</p>
+      <h3 style="font:600 15pt/1.2 Poppins;color:var(--txt);margin-top:2.4mm">Digital Experience</h3>
+      <p style="margin-top:2.4mm"><span style="font:400 26pt/1 Fraunces,serif;color:var(--ouro2)">R$ 2.997</span></p><p class="mini">+ R$ 199/mês</p>
+      <ul class="lst" style="margin-top:4mm"><li><b>Tudo do Site Gastronômico</b></li><li>Painel de pedidos e rastreio</li><li>Perfil no Google otimizado</li><li>500 cartões de volta e display de balcão</li><li>Peças de lançamento</li><li>30 dias de acompanhamento</li></ul>
+    </div>
+  </div>
+  <div class="card" style="margin-top:4mm;padding:4mm 5mm;display:flex;justify-content:space-between;align-items:center">
+    <div><p class="rt">Projeto exclusivo</p><h3 style="font:600 13pt/1.2 Poppins;color:var(--txt);margin-top:1.4mm">Site Signature</h3></div>
+    <p style="font-size:9.2pt;max-width:92mm">Para marcas que pedem construção visual e funcional sob medida. <span style="font-family:Fraunces;font-style:italic;color:var(--ouro2)">Orçamento após diagnóstico.</span></p>
+  </div>
+  <div class="card dest" style="margin-top:7mm;padding:5mm 6mm">
+    <p class="rt">Por que o Digital Experience</p>
+    <p style="font:600 15pt/1.3 Poppins;color:var(--txt);margin-top:2mm">R$ 50 a mais por mês. <span style="font-family:Fraunces;font-style:italic;font-weight:400;color:var(--ouro2)">O caminho inteiro.</span></p>
+    <p style="font-size:9.4pt;margin-top:1.8mm">Em relação ao Site Gastronômico, são R$ 50 por mês e R$ 1.500 na implantação. Entram painel, rastreio, Google otimizado, 500 cartões de volta, display de balcão, peças de lançamento e 30 dias de acompanhamento.</p>
+  </div>
+  <p class="mini" style="position:absolute;left:12mm;right:12mm;bottom:19mm">Valores de implantação + mensalidade. Mensalidade a partir da publicação. Contrato mínimo de 6 meses; depois, cancelamento quando quiser. Taxas de pagamento online, entrega e custos de terceiros ou da operação, quando aplicáveis, não estão incluídos. A otimização do perfil no Google depende do acesso liberado pelo seu negócio.</p>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>10 / 11</b></div>
+</section>
+
+<!-- ============ 11. A OFERTA ============ -->
+<section class="pg">
+  <svg class="curva" viewBox="0 0 200 260"><path d="M200 0 C 120 40, 40 110, 120 260" fill="none" stroke="#D9AE5C" stroke-width=".8"/></svg>
+  <div class="topo"><img src="img/logo.png" alt="BistrôConnect"><span class="rot">08 · A oferta</span></div>
+  <p class="kick">Digital Experience</p>
+  <h2>Não contrate apenas uma página.<em>Contrate o caminho inteiro do pedido.</em></h2>
+  <div style="display:grid;grid-template-columns:1fr 66mm;gap:4.5mm;margin-top:7mm">
+    <div class="card" style="padding:5mm 5.5mm">
+      <p class="rt">O que você leva na implantação</p>
+      <div style="display:grid;gap:3.4mm;margin-top:4mm">
+        <div style="display:flex;gap:3.5mm"><span class="num" style="font-size:14pt;width:7mm">01</span><div><b style="color:var(--txt);font-weight:500">Site premium com a sua identidade</b><p class="mini" style="font-size:8.6pt">Domínio, HTTPS, hospedagem e sistema.</p></div></div>
+        <div style="display:flex;gap:3.5mm"><span class="num" style="font-size:14pt;width:7mm">02</span><div><b style="color:var(--txt);font-weight:500">Cardápio digital</b><p class="mini" style="font-size:8.6pt">Fotos, opcionais, QR Code e cadastro pela nossa equipe.</p></div></div>
+        <div style="display:flex;gap:3.5mm"><span class="num" style="font-size:14pt;width:7mm">03</span><div><b style="color:var(--txt);font-weight:500">Pedidos pelo WhatsApp</b><p class="mini" style="font-size:8.6pt">O resumo chega pronto à sua equipe.</p></div></div>
+        <div style="display:flex;gap:3.5mm"><span class="num" style="font-size:14pt;width:7mm">04</span><div><b style="color:var(--txt);font-weight:500">Painel e rastreio</b><p class="mini" style="font-size:8.6pt">A equipe acompanha; o cliente vê as etapas.</p></div></div>
+        <div style="display:flex;gap:3.5mm"><span class="num" style="font-size:14pt;width:7mm">05</span><div><b style="color:var(--txt);font-weight:500">Perfil no Google</b><p class="mini" style="font-size:8.6pt">Ajuste do perfil da empresa, com o seu acesso.</p></div></div>
+        <div style="display:flex;gap:3.5mm"><span class="num" style="font-size:14pt;width:7mm">06</span><div><b style="color:var(--txt);font-weight:500">Materiais e lançamento</b><p class="mini" style="font-size:8.6pt">500 cartões de volta, display de balcão, peças de lançamento e 30 dias de acompanhamento.</p></div></div>
+      </div>
+    </div>
+    <div class="card dest" style="padding:5mm 5mm">
+      <p class="rt">Implantação</p>
+      <p style="font:400 30pt/1 Fraunces,serif;color:var(--ouro2);margin-top:2.6mm">R$ 2.997</p>
+      <p style="font-size:9pt;margin-top:2mm">+ R$ 199/mês após a publicação.</p>
+      <p style="font-size:9pt;color:var(--txt);font-weight:700">Menos de R$ 7 por dia.</p>
+      <div style="border-top:1px solid var(--linha);margin:4mm 0 3mm"></div>
+      <p class="rt">Prazos</p><p style="font-size:8.8pt;margin-top:1.4mm">Prévia da página inicial em até 2 dias úteis. Publicação em até 7 dias úteis após materiais e aprovações.</p>
+      <div style="border-top:1px solid var(--linha);margin:4mm 0 3mm"></div>
+      <p class="rt">Pagamento</p><p style="font-size:8.8pt;margin-top:1.4mm">50% no aceite e 50% na entrega via Pix, ou parcelado no cartão. Mínimo de 6 meses; depois, cancele quando quiser.</p>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:4.5mm;margin-top:4.5mm">
+    <div class="card" style="padding:4mm 5mm"><p class="rt">Garantia de entrega</p><p style="font-size:9pt;margin-top:1.4mm">Se o que for publicado não corresponder a esta proposta, ajustamos sem custo até a sua aprovação.</p></div>
+    <div class="card" style="padding:4mm 5mm"><p class="rt">Exclusividade na sua cidade</p><p style="font-size:9pt;margin-top:1.4mm">Cada modelo atende uma só marca do mesmo ramo por cidade. Quem fecha primeiro garante o seu.</p></div>
+  </div>
+  <div class="card dest" style="margin-top:4.5mm;padding:5mm 6mm">
+    <p class="rt">O próximo passo</p>
+    <p style="font:600 15pt/1.3 Poppins;color:var(--txt);margin-top:2mm">Sua prévia em até 2 dias úteis. <span style="font-family:Fraunces;font-style:italic;font-weight:400;color:var(--ouro2)">Para começar, 50% no aceite.</span></p>
+    <p style="font-size:9.2pt;margin-top:1.6mm">Responda “quero começar” no WhatsApp. Enviamos a lista de materiais e o link de pagamento da primeira parcela.</p>
+    <a href="https://wa.me/5542999006578?text=Ol%C3%A1!%20Li%20a%20proposta%20e%20quero%20come%C3%A7ar%20o%20Digital%20Experience." style="display:block;margin-top:4mm;text-align:center;background:linear-gradient(180deg,#E8CD95,#C99A48);color:#21170f;border-radius:2.6mm;padding:3.6mm;font:700 9pt/1 Poppins,sans-serif;letter-spacing:.2em;text-transform:uppercase">Quero começar</a>
+    <div style="display:flex;justify-content:space-between;margin-top:3mm;font-size:8.4pt">
+      <a href="https://wa.me/5542999006578?text=Ol%C3%A1!%20Li%20a%20proposta%20e%20quero%20ver%20o%20Digital%20Experience%20funcionando%20antes%20de%20decidir." style="color:var(--ouro2)">Prefere ver funcionando antes? Agende uma demonstração ao vivo →</a>
+      <span><a href="https://wa.me/5542999006578">(42) 99900-6578</a> · <a href="https://bistroconnect.com.br/">bistroconnect.com.br</a></span>
+    </div>
+  </div>
+  <p class="mini" style="position:absolute;left:12mm;right:12mm;bottom:19mm">Sem comissão por pedido cobrada pela BistrôConnect. Taxas de terceiros, pagamento online, entrega e custos da operação não estão incluídos.</p>
+  <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>11 / 11</b></div>
+</section>
+</body>
+</html>
