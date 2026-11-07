@@ -1263,7 +1263,7 @@
      "preco": 62,
      "unid": "",
      "foto": "/assets/img/exemplo/bruto/barbecue.jpg",
-     "destaque": true,
+     "destaque": false,
      "selo": "Mais pedido",
      "opcoes": [
       {
