@@ -349,6 +349,20 @@
         if (itens.length) box.appendChild(el("h2", "m-section", "Especiais da casa"));
       }
     }
+    if (layout === "burger" && primeira) {
+      /* faixa "Os mais pedidos": destaques de todas as categorias, em cartões grandes de foto que deslizam */
+      var top = prods.filter(function (p) { return p.featured && urlSegura(p.image_url); }).slice(0, 6);
+      if (top.length >= 2) {
+        box.appendChild(el("h2", "m-dest-tit", "Os mais pedidos"));
+        var fx = el("div", "m-dest");
+        top.forEach(function (p) {
+          var it = el("article", "m-dest-it revela"); it.appendChild(fotoCartao(p));
+          var tx = el("div", "m-dest-tx"); tx.appendChild(el("h3", "m-name", p.name)); tx.appendChild(el("p", "m-price", brl(p.price)));
+          it.appendChild(tx); it.appendChild(controle(p, false)); fx.appendChild(it);
+        });
+        box.appendChild(fx);
+      }
+    }
     var cls = layout === "grid" ? "m-grid" : layout === "plates" ? "m-plates" : "m-rows";
     var l = el("div", cls); itens.forEach(function (p) { l.appendChild(cartao(p)); });
     box.appendChild(l);
@@ -960,6 +974,8 @@
   function opcDesenha(zeraRolagem) {
     var corpo = $("opcCorpo"), rolou = corpo.scrollTop; corpo.textContent = "";
     var p = opc.p;
+    var fu = urlSegura(p.image_url);
+    if (fu) { var fb = el("div", "opc-foto"), fi = el("img"); fi.alt = ""; fi.src = fu; fi.decoding = "async"; fi.addEventListener("error", function () { fb.remove(); }); fb.appendChild(fi); if (p.badge) fb.appendChild(el("span", "opc-selo", p.badge)); corpo.appendChild(fb); }
     if (p.description) corpo.appendChild(el("p", "opc-desc", p.description));
     p.opcoes.forEach(function (g) {
       var sec = el("section", "opc-grupo"); sec.dataset.g = g.id;

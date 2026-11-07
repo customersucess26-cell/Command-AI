@@ -296,3 +296,8 @@ h1,h2,h3{font-family:var(--f-titulo);font-weight:var(--titulo-peso);letter-spaci
 .sug-txt b{font-size:13px;line-height:1.2;display:block}.sug-txt small{color:var(--suave);font-size:12px}
 .sug .ctrl{margin-top:auto}
 #campoBairro select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--linha);font:inherit;background:transparent;color:inherit}
+
+/* janela do item: foto grande do prato no topo */
+.opc-foto{position:relative;margin:14px 0 4px;border-radius:18px;overflow:hidden;aspect-ratio:16/10;background:#000}
+.opc-foto img{display:block;width:100%;height:100%;object-fit:cover}
+.opc-selo{position:absolute;left:12px;top:12px;background:rgba(255,255,255,.94);color:#141414;font:800 11px/1 var(--f-corpo);letter-spacing:.12em;text-transform:uppercase;padding:7px 10px;border-radius:999px}

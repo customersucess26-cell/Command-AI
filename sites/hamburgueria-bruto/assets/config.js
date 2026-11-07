@@ -3,17 +3,17 @@
 
 /* Motor Bistrô Connect (banco da plataforma). Vazio = modo demonstração: cardápio do próprio site e pedido só pelo WhatsApp. */
 window.BC = {
-  supabaseUrl: "",
-  supabaseKey: "",
+  supabaseUrl: "https://wiykwrnviqyrywelpawf.supabase.co",
+  supabaseKey: "",  // cole aqui a chave anon (a mesma do plataforma/assets/config.js do servidor). Vazia = modo demonstração
   site: "",         // endereço do site do cliente, sem barra no fim (ex.: "https://brutoburger.com.br"). Vazio = o endereço atual
-  plataforma: ""    // endereço da plataforma (ex.: "https://app.bistroconnect.com.br"), para fotos cadastradas com caminho dela
+  plataforma: "https://bistroconnect.com.br"    // endereço da plataforma (ex.: "https://app.bistroconnect.com.br"), para fotos cadastradas com caminho dela
 };
 
 window.LOJA = {
-  slug: "",         // identificador da loja na plataforma (o mesmo usado no painel)
+  slug: "hamburgueria",  // identificador da loja na plataforma (o mesmo usado no painel)
   nome: "Bruto Burger Co.",
   whatsapp: "",     // WhatsApp que recebe os pedidos (55 + DDD + número). O painel pode trocar depois.
-  cor: "#FF6A1A",   // cor da marca no painel e no rastreio
+  cor: "#E0301E",   // cor da marca no painel e no rastreio
   recursos: { pedidos: true },
 
   marca: {
