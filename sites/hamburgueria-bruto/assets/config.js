@@ -3,7 +3,7 @@
 
 /* Motor Bistrô Connect (banco da plataforma). Vazio = modo demonstração: cardápio do próprio site e pedido só pelo WhatsApp. */
 window.BC = {
-  supabaseUrl: "https://wiykwrnviqyrywelpawf.supabase.co",
+  supabaseUrl: "https://lcqfaigxkaekmohcjgwl.supabase.co",
   supabaseKey: "",  // cole aqui a chave anon (a mesma do plataforma/assets/config.js do servidor). Vazia = modo demonstração
   site: "",         // endereço do site do cliente, sem barra no fim (ex.: "https://brutoburger.com.br"). Vazio = o endereço atual
   plataforma: "https://bistroconnect.com.br"    // endereço da plataforma (ex.: "https://app.bistroconnect.com.br"), para fotos cadastradas com caminho dela
