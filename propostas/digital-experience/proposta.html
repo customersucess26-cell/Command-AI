@@ -2,6 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0e0a08">
 <title>BistrôConnect | Proposta Comercial Digital Experience</title>
 <!-- Proposta Digital Experience (V14). Gerar o PDF: node ferramentas/gerar-proposta-pdf.js
      Ordem: capa > site premium > cardápio > pedidos > painel > rastreio > a conta > planos > oferta.
@@ -67,6 +69,16 @@ h1 em,h2 em{display:block;font-family:Fraunces,Georgia,serif;font-style:italic;f
 .num{font:400 22pt/1 Fraunces,Georgia,serif;color:var(--ouro2)}
 .sec-titulo{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 2.4mm}
 .sec-titulo span{font-size:8.4pt;color:var(--txt3)}
+
+/* versão de tela (não afeta o PDF, que usa a mídia de impressão) */
+@media screen{
+  html,body{background:#0e0a08}
+  body{padding:28px 0 90px}
+  .pg{margin:0 auto 28px;border-radius:6px;box-shadow:0 24px 70px rgba(0,0,0,.65)}
+  .web-cta{position:fixed;right:18px;bottom:18px;z-index:50;display:flex;align-items:center;gap:10px;background:linear-gradient(180deg,#E8CD95,#C99A48);color:#21170f;border-radius:40px;padding:14px 22px;font:700 13px/1 Poppins,sans-serif;letter-spacing:.12em;text-transform:uppercase;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  .web-pdf{position:fixed;left:18px;bottom:18px;z-index:50;color:#E8CD95;border:1px solid rgba(232,205,149,.5);background:rgba(20,15,11,.85);border-radius:40px;padding:12px 18px;font:600 12px/1 Poppins,sans-serif;letter-spacing:.1em;text-transform:uppercase}
+}
+@media print{.web-cta,.web-pdf{display:none}}
 </style>
 </head>
 <body>
@@ -351,5 +363,13 @@ h1 em,h2 em{display:block;font-family:Fraunces,Georgia,serif;font-style:italic;f
   <p class="mini" style="position:absolute;left:12mm;right:12mm;bottom:19mm">Sem comissão por pedido cobrada pela BistrôConnect. Taxas de terceiros, pagamento online, entrega e custos da operação não estão incluídos.</p>
   <div class="rodape"><span>BistrôConnect · A evolução digital da sua gastronomia</span><b>11 / 11</b></div>
 </section>
+<a class="web-pdf" href="proposta-digital-experience-v14.pdf" download>Baixar PDF</a>
+<a class="web-cta" href="https://wa.me/5542999006578?text=Ol%C3%A1!%20Li%20a%20proposta%20e%20quero%20come%C3%A7ar%20o%20Digital%20Experience.">Quero começar</a>
+<script>
+/* no celular, as páginas A4 encolhem para caber na tela */
+(function(){function aj(){var w=document.documentElement.clientWidth,z=Math.min(1,(w-16)/794);document.querySelectorAll('.pg').forEach(function(p){p.style.zoom=z})}
+if(!matchMedia('print').matches){aj();addEventListener('resize',aj)}
+addEventListener('beforeprint',function(){document.querySelectorAll('.pg').forEach(function(p){p.style.zoom=''})})})();
+</script>
 </body>
 </html>
