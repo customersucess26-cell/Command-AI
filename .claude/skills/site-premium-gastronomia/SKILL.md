@@ -12,6 +12,7 @@ Este guia reúne o que foi aprendido ao montar a página `sites-personalizados/i
 - **Uma página, um arquivo.** O HTML é único (CSS e JS inline). As imagens ficam em `img/` como WebP e são carregadas sob demanda.
 - **Premium é contenção.** Grafite `#120d0a`/`#111`, champagne `#D9AE5C`/`#E3C68E`, off-white `#F3EFE6`/`#F5F2EC`. Pouco brilho, muito espaço, tipografia firme (Poppins para títulos, DM Sans para textos, Fraunces para detalhes em itálico).
 - **Só prometer o que está construído.** Nada de "grátis", resultados garantidos ou depoimentos inventados (ver `manual/manual-de-operacao.md`, seção 3).
+- **Nunca chamar o cliente de "casa".** Em toda copy (site, proposta, CRM, scripts, PDFs), o negócio do cliente é "sua marca", "seu negócio" ou "seu empreendimento" ("WhatsApp do seu negócio", "identidade da sua marca", "tipo de negócio"). Ficam como estão só os nomes de pratos ("molho da casa", "Suprema da Casa") e o nome da oferta antiga "Casa Cheia".
 - **Respeitar `prefers-reduced-motion`.** Todo efeito tem uma versão parada. Quem desligou animações no sistema deve ver a página completa, sem movimento.
 
 ## 2. Estrutura da página (ordem das seções e IDs)

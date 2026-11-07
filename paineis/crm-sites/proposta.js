@@ -26,19 +26,19 @@ window.MC_PROPOSTA = {
     'Cardápio Digital': {
       titulo: 'Cardápio digital com pedido direto',
       intro: 'Um cardápio com a cara da {est}, que o cliente abre pelo celular, monta o pedido e envia pronto para o seu WhatsApp. Sem comissão por pedido.',
-      incluido: 'O cardápio: Fotos, categorias, preços e opcionais; Link próprio para a bio e o WhatsApp; QR Code para mesas e balcão\nPedidos: Pedido chega pronto no WhatsApp da casa; Total calculado pelo sistema; Entrega ou retirada e forma de pagamento\nEntrega: Cadastro do cardápio pela nossa equipe; Treinamento da equipe; Suporte pelo WhatsApp',
+      incluido: 'O cardápio: Fotos, categorias, preços e opcionais; Link próprio para a bio e o WhatsApp; QR Code para mesas e balcão\nPedidos: Pedido chega pronto no WhatsApp do seu negócio; Total calculado pelo sistema; Entrega ou retirada e forma de pagamento\nEntrega: Cadastro do cardápio pela nossa equipe; Treinamento da equipe; Suporte pelo WhatsApp',
       etapas: 'Dia 1 | Aceite | Assinatura e primeira parcela\nDia 2 a 4 | Montagem | Cadastramos o cardápio com os seus materiais\nDia 5 | Revisão | Você testa e pede ajustes\nAté o dia 7 | No ar | QR Codes, link e treinamento da equipe'
     },
     'Site Gastronômico': {
       titulo: 'Site gastronômico com pedido direto',
-      intro: 'Um site com a identidade da {est}, que apresenta a casa com autoridade e leva o cliente direto ao pedido, com tudo organizado no WhatsApp e sem comissão.',
-      incluido: 'O site: Design com a identidade visual da casa; Fotos, história, horários e mapa; Versão para celular desenhada à parte\nPedidos: Cardápio com pedido no WhatsApp; Opcionais e taxa de entrega por bairro; QR Code e links para as redes\nEntrega: Publicação no seu domínio com HTTPS; Treinamento da equipe; Ajustes até a sua aprovação',
+      intro: 'Um site com a identidade da {est}, que apresenta a sua marca com autoridade e leva o cliente direto ao pedido, com tudo organizado no WhatsApp e sem comissão.',
+      incluido: 'O site: Design com a identidade visual da sua marca; Fotos, história, horários e mapa; Versão para celular desenhada à parte\nPedidos: Cardápio com pedido no WhatsApp; Opcionais e taxa de entrega por bairro; QR Code e links para as redes\nEntrega: Publicação no seu domínio com HTTPS; Treinamento da equipe; Ajustes até a sua aprovação',
       etapas: 'Dia 1 | Aceite | Assinatura e primeira parcela\nDia 2 a 4 | Montagem | Site e cardápio com os seus materiais\nDia 5 a 6 | Revisão | Você testa e pede ajustes\nAté o dia 7 | Publicação | No ar no seu domínio e equipe treinada'
     },
     'Digital Experience': {
       titulo: 'Canal próprio de pedidos completo',
       intro: 'Site, painel de pedidos e lançamento para que quem já conhece a {est} passe a pedir direto, com a operação organizada do pedido à entrega.',
-      incluido: 'O site: Design com a identidade visual da casa; Cardápio com pedido no WhatsApp; Publicação no seu domínio com HTTPS\nPedidos e painel: Painel com alerta e quadro por etapa; Rastreio do pedido para o cliente; 500 cartões de volta e display de balcão\nLançamento: Perfil da empresa no Google ajustado, com o seu acesso; Peças de lançamento para redes e WhatsApp; 30 dias de acompanhamento',
+      incluido: 'O site: Design com a identidade visual da sua marca; Cardápio com pedido no WhatsApp; Publicação no seu domínio com HTTPS\nPedidos e painel: Painel com alerta e quadro por etapa; Rastreio do pedido para o cliente; 500 cartões de volta e display de balcão\nLançamento: Perfil da empresa no Google ajustado, com o seu acesso; Peças de lançamento para redes e WhatsApp; 30 dias de acompanhamento',
       etapas: 'Dia 1 | Aceite | Assinatura e primeira parcela\nDia 2 a 4 | Montagem | Site, cardápio e painel prontos\nDia 5 a 6 | Revisão | Você testa e pede ajustes\nAté o dia 7 | Lançamento | No ar, equipe treinada e peças de lançamento'
     },
     'Signature': {
