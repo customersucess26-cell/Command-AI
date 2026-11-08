@@ -1369,7 +1369,17 @@
         },
         {
          "id": "r3",
-         "nome": "Guaraná Antarctica",
+         "nome": "Guaraná",
+         "preco": 0
+        },
+        {
+         "id": "r4",
+         "nome": "Fanta Laranja",
+         "preco": 0
+        },
+        {
+         "id": "r5",
+         "nome": "Sprite",
          "preco": 0
         }
        ]
@@ -1403,7 +1413,17 @@
         },
         {
          "id": "r3",
-         "nome": "Guaraná Antarctica",
+         "nome": "Guaraná",
+         "preco": 0
+        },
+        {
+         "id": "r4",
+         "nome": "Fanta Laranja",
+         "preco": 0
+        },
+        {
+         "id": "r5",
+         "nome": "Sprite",
          "preco": 0
         }
        ]
@@ -1523,6 +1543,117 @@
    "nome": "Bebidas",
    "itens": [
     {
+     "nome": "Refrigerante lata 350 ml",
+     "desc": "Bem gelado. Escolha o sabor.",
+     "preco": 7,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bruto/lata-coca-cola.webp",
+     "destaque": false,
+     "selo": "Mais pedido",
+     "opcoes": [
+      {
+       "id": "refri",
+       "nome": "Sabor",
+       "min": 1,
+       "max": 1,
+       "itens": [
+        {
+         "id": "r1",
+         "nome": "Coca-Cola",
+         "preco": 0
+        },
+        {
+         "id": "r2",
+         "nome": "Coca-Cola Zero",
+         "preco": 0
+        },
+        {
+         "id": "r3",
+         "nome": "Guaraná",
+         "preco": 0
+        },
+        {
+         "id": "r4",
+         "nome": "Fanta Laranja",
+         "preco": 0
+        },
+        {
+         "id": "r5",
+         "nome": "Sprite",
+         "preco": 0
+        }
+       ]
+      },
+      {
+       "id": "gelo",
+       "nome": "Copo com gelo e limão?",
+       "min": 0,
+       "max": 1,
+       "itens": [
+        {
+         "id": "g1",
+         "nome": "Sim, com gelo e limão",
+         "preco": 0
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "nome": "Coca-Cola Zero lata 350 ml",
+     "desc": "Sem açúcar, bem gelada.",
+     "preco": 7,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bruto/lata-coca-zero.webp",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Guaraná lata 350 ml",
+     "desc": "O clássico que combina com burger.",
+     "preco": 6.5,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bruto/lata-guarana-jesus.webp",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Refrigerante 2 litros",
+     "desc": "Para dividir com a galera.",
+     "preco": 15,
+     "unid": "",
+     "foto": "",
+     "destaque": false,
+     "selo": "Para dividir",
+     "opcoes": [
+      {
+       "id": "r2l",
+       "nome": "Sabor",
+       "min": 1,
+       "max": 1,
+       "itens": [
+        {
+         "id": "a",
+         "nome": "Coca-Cola",
+         "preco": 0
+        },
+        {
+         "id": "b",
+         "nome": "Coca-Cola Zero",
+         "preco": 0
+        },
+        {
+         "id": "c",
+         "nome": "Guaraná",
+         "preco": 0
+        }
+       ]
+      }
+     ]
+    },
+    {
      "nome": "Milkshake 400 ml",
      "desc": "Batido na hora com sorvete cremoso.",
      "preco": 21,
@@ -1558,37 +1689,83 @@
          "preco": 3
         }
        ]
+      },
+      {
+       "id": "calda",
+       "nome": "Finalize",
+       "min": 0,
+       "max": 2,
+       "itens": [
+        {
+         "id": "c1",
+         "nome": "Chantilly",
+         "preco": 3
+        },
+        {
+         "id": "c2",
+         "nome": "Calda de chocolate",
+         "preco": 2
+        },
+        {
+         "id": "c3",
+         "nome": "Paçoca",
+         "preco": 3
+        }
+       ]
       }
      ]
     },
     {
-     "nome": "Refrigerante lata",
-     "desc": "350 ml, bem gelado.",
-     "preco": 7,
+     "nome": "Suco natural 500 ml",
+     "desc": "Feito na hora, com a fruta.",
+     "preco": 12,
      "unid": "",
      "foto": "",
      "destaque": false,
      "selo": "",
      "opcoes": [
       {
-       "id": "refri",
-       "nome": "Sabor do refrigerante",
+       "id": "fruta",
+       "nome": "Fruta",
        "min": 1,
        "max": 1,
        "itens": [
         {
-         "id": "r1",
-         "nome": "Coca-Cola",
+         "id": "f1",
+         "nome": "Laranja",
          "preco": 0
         },
         {
-         "id": "r2",
-         "nome": "Coca-Cola Zero",
+         "id": "f2",
+         "nome": "Limão",
          "preco": 0
         },
         {
-         "id": "r3",
-         "nome": "Guaraná Antarctica",
+         "id": "f3",
+         "nome": "Maracujá",
+         "preco": 0
+        },
+        {
+         "id": "f4",
+         "nome": "Abacaxi com hortelã",
+         "preco": 1
+        }
+       ]
+      },
+      {
+       "id": "acucar",
+       "nome": "Açúcar",
+       "min": 1,
+       "max": 1,
+       "itens": [
+        {
+         "id": "a1",
+         "nome": "Sem açúcar",
+         "preco": 0
+        },
+        {
+         "id": "a2",
+         "nome": "Com açúcar",
          "preco": 0
         }
        ]
@@ -1596,8 +1773,52 @@
      ]
     },
     {
-     "nome": "Água com ou sem gás",
-     "desc": "500 ml.",
+     "nome": "Limonada suíça 500 ml",
+     "desc": "Limão batido com leite condensado e gelo.",
+     "preco": 14,
+     "unid": "",
+     "foto": "",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Cerveja long neck",
+     "desc": "355 ml, trincando. Venda para maiores de 18 anos.",
+     "preco": 12,
+     "unid": "",
+     "foto": "",
+     "destaque": false,
+     "selo": "",
+     "opcoes": [
+      {
+       "id": "cerv",
+       "nome": "Cerveja",
+       "min": 1,
+       "max": 1,
+       "itens": [
+        {
+         "id": "c1",
+         "nome": "Heineken",
+         "preco": 0
+        },
+        {
+         "id": "c2",
+         "nome": "Stella Artois",
+         "preco": 0
+        },
+        {
+         "id": "c3",
+         "nome": "Budweiser",
+         "preco": 0
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "nome": "Água mineral 500 ml",
+     "desc": "Com ou sem gás.",
      "preco": 5,
      "unid": "",
      "foto": "",
@@ -1618,7 +1839,7 @@
         {
          "id": "g2",
          "nome": "Com gás",
-         "preco": 0
+         "preco": 0.5
         }
        ]
       }
