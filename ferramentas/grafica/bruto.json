@@ -1,0 +1,9 @@
+{
+ "nome": "Bruto Burger",
+ "link": "https://bistroconnect.com.br/l/hamburgueria",
+ "logo": "bruto-logo.png",
+ "foto": "bruto-foto.jpg",
+ "cupom": {"codigo": "VOLTEI10", "pct": 10, "minimo": 30},
+ "cores": {"fundo": "#0d0c0b", "destaque": "#e0301e", "amarelo": "#f4b63a", "texto": "#f3e9d8", "suave": "#c9bfb0", "claro": "#f3e9d8"},
+ "textos": {}
+}
