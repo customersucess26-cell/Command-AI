@@ -363,7 +363,7 @@
      "desc": "Molho de tomate, muita mussarela, tomate e orégano.",
      "preco": 37,
      "unid": "A partir de",
-     "foto": "/assets/img/exemplo/fornalha/quatro-queijos.webp",
+     "foto": "/assets/img/exemplo/fornalha/pz-mussarela.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -1469,7 +1469,7 @@
      "desc": "Milho verde, catupiry e mussarela.",
      "preco": 38,
      "unid": "A partir de",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/pz-milho-catupiry.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -2264,7 +2264,7 @@
      "desc": "Strogonoff cremoso, batata palha e mussarela.",
      "preco": 49,
      "unid": "A partir de",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/pz-strogonoff.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -2738,7 +2738,7 @@
      "desc": "Atum sólido, cebola, azeitona e mussarela.",
      "preco": 48,
      "unid": "A partir de",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/pz-atum.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -3992,7 +3992,7 @@
      "desc": "Chocolate ao leite e morangos frescos.",
      "preco": 42,
      "unid": "A partir de",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/pz-chocolate-morango.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -4031,7 +4031,7 @@
      "desc": "Chocolate, granulado e leite condensado.",
      "preco": 40,
      "unid": "A partir de",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/pz-brigadeiro.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -4070,7 +4070,7 @@
      "desc": "Goiabada cascão e mussarela.",
      "preco": 40,
      "unid": "A partir de",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/pz-romeu-julieta.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -4109,7 +4109,7 @@
      "desc": "Banana, açúcar, canela e leite condensado.",
      "preco": 38,
      "unid": "A partir de",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/pz-banana-canela.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -4153,7 +4153,7 @@
      "desc": "O par perfeito da pizza.",
      "preco": 15,
      "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/lata-coca-cola.webp",
+     "foto": "/assets/img/exemplo/fornalha/beb-refri-2l.jpg",
      "destaque": true,
      "selo": "Mais pedido",
      "opcoes": [
@@ -4241,7 +4241,7 @@
      "desc": "Feito na hora. Laranja, limão ou maracujá.",
      "preco": 18,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/beb-suco-jarra.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -4275,7 +4275,7 @@
      "desc": "Com ou sem gás.",
      "preco": 5,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/beb-agua.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -4304,7 +4304,7 @@
      "desc": "Trincando. Venda para maiores de 18 anos.",
      "preco": 12,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/beb-cerveja.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -4338,7 +4338,7 @@
      "desc": "Para dividir. Venda para maiores de 18 anos.",
      "preco": 18,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/fornalha/beb-cerveja.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [

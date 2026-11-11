@@ -1508,7 +1508,7 @@
      "desc": "Anéis de cebola empanados, com barbecue defumado.",
      "preco": 24,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/bruto/acomp-onion-rings.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -1624,7 +1624,7 @@
      "desc": "Para dividir com a galera.",
      "preco": 15,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/bruto/beb-refri-2l.jpg",
      "destaque": false,
      "selo": "Para dividir",
      "opcoes": [
@@ -1720,7 +1720,7 @@
      "desc": "Feito na hora, com a fruta.",
      "preco": 12,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/bruto/beb-suco-maracuja.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -1777,7 +1777,7 @@
      "desc": "Limão batido com leite condensado e gelo.",
      "preco": 14,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/bruto/beb-limonada-suica.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": []
@@ -1787,7 +1787,7 @@
      "desc": "355 ml, trincando. Venda para maiores de 18 anos.",
      "preco": 12,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/bruto/beb-cerveja.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
@@ -1821,7 +1821,7 @@
      "desc": "Com ou sem gás.",
      "preco": 5,
      "unid": "",
-     "foto": "",
+     "foto": "/assets/img/exemplo/bruto/beb-agua.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
