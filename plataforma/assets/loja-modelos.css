@@ -194,3 +194,14 @@ body.lm-burger .opc-topo h2,body.lm-burger .folha-topo h2{font-family:Oswald,san
 .lm-burger .m-dest-tx .m-name{margin:0 0 4px}
 .lm-burger .m-dest-tx .m-price{margin:0}
 .lm-burger .m-dest-it .ctrl{position:absolute;right:12px;bottom:12px}
+
+/* modelo burger com capa: topo-vitrine com a marca em destaque */
+.topo-burger.com-capa{max-width:1040px;margin:12px auto 0;border-radius:26px;overflow:hidden;min-height:420px;display:flex;align-items:flex-end;background:#000 center 40%/cover no-repeat}
+.topo-burger.com-capa::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,.35) 35%,rgba(10,10,10,.82) 70%,#121212 100%)}
+.topo-burger.com-capa .t-head{position:relative;z-index:1;width:100%;padding:150px 20px 28px;gap:8px}
+.topo-burger.com-capa .t-logo{width:108px;height:108px;border-radius:24px;background:#0b0b0b;box-shadow:0 0 0 3px var(--cor,#D83A2E),0 18px 40px rgba(0,0,0,.6);margin-bottom:6px}
+.topo-burger.com-capa .t-nome{font-size:clamp(34px,9vw,54px);text-shadow:0 4px 24px rgba(0,0,0,.6)}
+.topo-burger.com-capa .t-desc{color:#E8E2D8;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.topo-burger.com-capa .t-etiqueta{color:#F4B63A;letter-spacing:.3em}
+.topo-burger.com-capa .selo{background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+@media (max-width:640px){.topo-burger.com-capa{margin:0;border-radius:0 0 26px 26px;min-height:470px}.topo-burger.com-capa .t-head{padding-top:calc(var(--topo,0px) + 130px)}}

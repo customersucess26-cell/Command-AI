@@ -179,6 +179,10 @@
     /* capa enviada pela loja: faixa de foto logo abaixo do topo */
     var fx = $("capaFaixa"); fx.textContent = ""; var capa = urlSegura(loja.capa_url); fx.hidden = !capa;
     if (capa) { var ic = el("img"); ic.alt = ""; ic.src = capa; ic.decoding = "async"; ic.addEventListener("error", function () { fx.hidden = true; }); fx.appendChild(ic); }
+    /* hamburgueria e pizzaria: a capa vira o fundo do topo, com a marca em destaque sobre ela */
+    topo.classList.toggle("com-capa", !!capa && layout === "burger");
+    topo.style.backgroundImage = capa && layout === "burger" ? 'url("' + capa + '")' : "";
+    if (capa && layout === "burger") fx.hidden = true;
 
     var inf = $("infos"); inf.textContent = "";
     function chip(icone, txt, href) {
