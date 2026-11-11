@@ -215,3 +215,8 @@ body.lm-burger .opc-topo h2,body.lm-burger .folha-topo h2{font-family:Oswald,san
   .topo-burger.com-capa .t-desc{font-size:13.5px;line-height:1.4;max-width:34ch;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .topo-burger.com-capa .selo{margin-top:4px;padding:4px 11px;font-size:11.5px}
 }
+
+/* modelo burger: galeria com fotos cheias (sem faixas laterais) */
+.lm-burger .gfoto{aspect-ratio:1}
+.lm-burger .gfoto img{object-fit:cover}
+.lm-burger .gfoto::before{display:none}

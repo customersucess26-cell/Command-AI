@@ -1,12 +1,36 @@
--- Fotos novas dos cardápios (pizzaria e hamburgueria). Só troca a foto dos itens; não apaga nada. Pode rodar mais de uma vez.
-update public.products set image_url = '/assets/img/exemplo/fornalha/pz-chocolate-morango.jpg' where name = 'Chocolate com morango' and loja_id = (select id from public.lojas where slug = 'pizzaria');
-update public.products set image_url = '/assets/img/exemplo/fornalha/pz-brigadeiro.jpg' where name = 'Brigadeiro' and loja_id = (select id from public.lojas where slug = 'pizzaria');
-update public.products set image_url = '/assets/img/exemplo/fornalha/pz-romeu-julieta.jpg' where name = 'Romeu e Julieta' and loja_id = (select id from public.lojas where slug = 'pizzaria');
-update public.products set image_url = '/assets/img/exemplo/fornalha/pz-banana-canela.jpg' where name = 'Banana com canela' and loja_id = (select id from public.lojas where slug = 'pizzaria');
-update public.products set image_url = '/assets/img/exemplo/fornalha/pz-milho-catupiry.jpg' where name = 'Milho com catupiry' and loja_id = (select id from public.lojas where slug = 'pizzaria');
-update public.products set image_url = '/assets/img/exemplo/fornalha/pz-strogonoff.jpg' where name = 'Strogonoff de frango' and loja_id = (select id from public.lojas where slug = 'pizzaria');
-update public.products set image_url = '/assets/img/exemplo/fornalha/pz-atum.jpg' where name = 'Atum' and loja_id = (select id from public.lojas where slug = 'pizzaria');
-update public.products set image_url = '/assets/img/exemplo/fornalha/pz-mussarela.jpg' where name = 'Mussarela' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+-- Fotos dos cardápios de demonstração: todas as pizzas no mesmo padrão (vista de cima, fundo de ardósia) e as bebidas novas.
+-- Só troca as fotos; não apaga nada. Pode rodar mais de uma vez.
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/calabresa.jpg' where name = 'Calabresa' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/frango-catupiry.jpg' where name = 'Frango com catupiry' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/mussarela.jpg' where name = 'Mussarela' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/marguerita.jpg' where name = 'Marguerita' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/portuguesa.jpg' where name = 'Portuguesa' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/presunto-queijo.jpg' where name = 'Presunto e queijo' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/quatro-queijos.jpg' where name = 'Quatro queijos' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/napolitana.jpg' where name = 'Napolitana' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/bacon.jpg' where name = 'Bacon' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/milho-catupiry.jpg' where name = 'Milho com catupiry' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/frango-catupiry.jpg' where name = 'Frango com bacon' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/calabresa.jpg' where name = 'Calabresa acebolada com catupiry' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/pepperoni.jpg' where name = 'Pepperoni' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/presunto-queijo.jpg' where name = 'Lombo canadense' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/strogonoff.jpg' where name = 'Strogonoff de frango' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/bacon.jpg' where name = 'Toscana' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/brocolis-bacon.jpg' where name = 'Brócolis com bacon' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/atum.jpg' where name = 'Atum' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/portuguesa.jpg' where name = 'Moda da casa' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/havaiana.jpg' where name = 'Havaiana' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/bufala.jpg' where name = 'Margherita di bufala' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/burrata.jpg' where name = 'Burrata' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/diavola.jpg' where name = 'Diavola' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/capricciosa.jpg' where name = 'Capricciosa' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/parma.jpg' where name = 'Parma e rúcula' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/aliche.jpg' where name = 'Aliche' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/bianca.jpg' where name = 'Bianca de alecrim' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/chocolate-morango.jpg' where name = 'Chocolate com morango' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/brigadeiro.jpg' where name = 'Brigadeiro' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/romeu-julieta.jpg' where name = 'Romeu e Julieta' and loja_id = (select id from public.lojas where slug = 'pizzaria');
+update public.products set image_url = '/assets/img/exemplo/fornalha/std/banana-canela.jpg' where name = 'Banana com canela' and loja_id = (select id from public.lojas where slug = 'pizzaria');
 update public.products set image_url = '/assets/img/exemplo/fornalha/beb-suco-jarra.jpg' where name = 'Suco natural 1 litro' and loja_id = (select id from public.lojas where slug = 'pizzaria');
 update public.products set image_url = '/assets/img/exemplo/fornalha/beb-agua.jpg' where name = 'Água mineral 500 ml' and loja_id = (select id from public.lojas where slug = 'pizzaria');
 update public.products set image_url = '/assets/img/exemplo/fornalha/beb-cerveja.jpg' where name = 'Cerveja long neck 355 ml' and loja_id = (select id from public.lojas where slug = 'pizzaria');
@@ -18,3 +42,5 @@ update public.products set image_url = '/assets/img/exemplo/bruto/beb-limonada-s
 update public.products set image_url = '/assets/img/exemplo/bruto/beb-cerveja.jpg' where name = 'Cerveja long neck' and loja_id = (select id from public.lojas where slug = 'hamburgueria');
 update public.products set image_url = '/assets/img/exemplo/bruto/beb-agua.jpg' where name = 'Água mineral 500 ml' and loja_id = (select id from public.lojas where slug = 'hamburgueria');
 update public.products set image_url = '/assets/img/exemplo/bruto/acomp-onion-rings.jpg' where name = 'Onion rings' and loja_id = (select id from public.lojas where slug = 'hamburgueria');
+update public.lojas set extra = jsonb_set(extra, '{secoes,galeria}', jsonb_build_object('fotos', '["/assets/img/exemplo/fornalha/std/calabresa.jpg", "/assets/img/exemplo/fornalha/std/marguerita.jpg", "/assets/img/exemplo/fornalha/std/quatro-queijos.jpg", "/assets/img/exemplo/fornalha/std/diavola.jpg", "/assets/img/exemplo/fornalha/std/bufala.jpg", "/assets/img/exemplo/fornalha/std/frango-catupiry.jpg"]'::jsonb), true) where slug = 'pizzaria';
+update public.lojas set logo_url = '/assets/img/exemplo/fornalha/sua-logo.png' where slug = 'pizzaria';
