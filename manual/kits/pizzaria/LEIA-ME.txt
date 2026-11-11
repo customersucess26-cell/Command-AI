@@ -1,0 +1,26 @@
+KIT PIZZARIA · BistrôConnect
+
+Para mandar ao cliente
+- kit-pizzaria.pdf ............ proposta A4 (12 páginas), para e-mail e impressão
+- kit-pizzaria-celular.pdf .... mesma proposta para ler no celular (WhatsApp)
+- kit-pizzaria.html ........... versão para navegador (publicar em public_html/gastronomia/kit-pizzaria/ junto do PDF)
+- video-pizzaria-30s.mp4 ...... vídeo 9:16 para Status e Reels (grave a locução do arquivo de mensagens)
+
+Demonstração ao vivo
+- Cardápio: https://bistroconnect.com.br/l/pizzaria   (precisa rodar o 16-pizzaria.sql no Supabase)
+- Site: https://bistroconnect.com.br/pizzaria/
+
+Peças de gráfica de exemplo (pasta grafica/)
+- cartao-para-grafica.pdf ..... cartão de volta 9 × 5 cm, frente e verso, 3 mm de sangria
+- display-para-grafica.pdf .... display de balcão A5, 3 mm de sangria
+- previa-impressos.png ........ foto-montagem para mostrar ao cliente
+
+Vender
+- mensagens-e-locucao.txt ..... primeira mensagem, retorno, pós-demonstração, objeções, locução e legenda
+
+Para fazer o kit de um cliente de verdade
+- Peças: copie ferramentas/grafica/fornalha.json, troque logo, foto, cores e cupom e rode
+  python3 ferramentas/grafica/gerar.py <arquivo>.json <pasta>
+- Proposta: edite propostas/kit-pizzaria/proposta.html e rode
+  node ferramentas/gerar-proposta-pdf.js propostas/kit-pizzaria/proposta.html manual/kits/pizzaria/kit-pizzaria.pdf
+- Vídeo: NICHO=pizzaria PALCO=palco-pizzaria.html TOTAL=72 ITEM="Pizza grande" node ferramentas/video/gravar.js <saida>.mp4

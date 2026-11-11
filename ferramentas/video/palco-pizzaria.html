@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Vídeo de vendas · palco</title>
+<!-- Palco do vídeo de vendas (1080 × 1920). As telas são as reais (site, cardápio, painel e rastreio) dentro do celular.
+     Gravado por ferramentas/video/gravar.js, que serve a plataforma e simula o banco. Não publicar. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#120d0a}
+body{font-family:'DM Sans',sans-serif;color:#F4EFE6;position:relative}
+.fundo{position:absolute;inset:0;background:radial-gradient(70% 45% at 50% 58%,#3a2a1c 0%,rgba(58,42,28,0) 70%),radial-gradient(60% 30% at 85% 5%,#2e2117 0%,rgba(46,33,23,0) 70%),#120d0a}
+.aura{position:absolute;left:50%;top:1110px;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;background:radial-gradient(circle,rgba(217,174,92,.28),rgba(217,174,92,0) 62%);filter:blur(10px);transition:background 1s}
+.topo{position:absolute;left:0;right:0;top:70px;display:flex;justify-content:center}
+.topo img{height:64px}
+.leg{position:absolute;left:70px;right:70px;top:190px;height:250px;text-align:center}
+.leg .k{font:700 22px/1 'DM Sans';letter-spacing:.3em;text-transform:uppercase;color:#D9AE5C;opacity:0;transform:translateY(14px);transition:.6s}
+.leg h1{margin-top:22px;font:600 62px/1.08 Poppins;letter-spacing:-.02em;opacity:0;transform:translateY(18px);transition:.7s .08s}
+.leg h1 em{display:block;font:italic 400 66px/1.1 Fraunces;color:#E8CD95}
+.leg.on .k,.leg.on h1{opacity:1;transform:none}
+.cel{position:absolute;left:50%;top:470px;width:656px;height:1290px;margin-left:-328px;border-radius:92px;padding:16px;background:#0b0806;border:2px solid rgba(232,205,149,.65);box-shadow:0 60px 120px rgba(0,0,0,.65),inset 0 0 0 6px #1b1410;transition:transform .8s cubic-bezier(.2,.8,.2,1),opacity .5s}
+.tela{position:relative;width:624px;height:1258px;border-radius:78px;overflow:hidden;background:#000}
+.tela iframe{position:absolute;left:0;top:0;width:390px;height:786px;border:0;transform:scale(1.6);transform-origin:0 0;opacity:0;transition:opacity .45s;background:#000}
+.tela iframe.on{opacity:1}
+.ilha{position:absolute;left:50%;top:22px;width:170px;height:44px;margin-left:-85px;border-radius:30px;background:#000;z-index:5}
+.mao{position:absolute;left:540px;top:1500px;width:96px;height:96px;z-index:20;pointer-events:none;opacity:0;transition:left .9s cubic-bezier(.4,0,.2,1),top .9s cubic-bezier(.4,0,.2,1),opacity .35s;filter:drop-shadow(0 14px 22px rgba(0,0,0,.55))}
+.mao.on{opacity:1}
+.mao svg{width:96px;height:96px;transition:transform .15s}
+.mao.tap svg{transform:scale(.84)}
+.mao::after{content:"";position:absolute;left:8px;top:-8px;width:64px;height:64px;border-radius:50%;border:5px solid #F0D08A;opacity:0;transform:scale(.3)}
+.mao.tap::after{animation:anel .6s ease-out}
+@keyframes anel{0%{opacity:.95;transform:scale(.3)}100%{opacity:0;transform:scale(1.6)}}
+.pe{position:absolute;left:0;right:0;bottom:62px;text-align:center;font:600 22px/1 Poppins;letter-spacing:.2em;text-transform:uppercase;color:#a8987f}
+.pe b{color:#D9AE5C;font-weight:600}
+.final{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transition:opacity .7s;background:radial-gradient(70% 45% at 50% 50%,#3a2a1c,#120d0a 75%);z-index:30;padding:0 90px}
+.final.on{opacity:1}
+.final img{height:96px;margin-bottom:70px}
+.final h2{font:600 74px/1.08 Poppins;letter-spacing:-.02em}
+.final h2 em{display:block;font:italic 400 78px/1.12 Fraunces;color:#E8CD95}
+.final p{margin-top:46px;font:500 34px/1.4 'DM Sans';color:#DCD3C4}
+.final .zap{margin-top:70px;display:inline-flex;align-items:center;gap:18px;background:linear-gradient(180deg,#E8CD95,#C99A48);color:#21170f;border-radius:80px;padding:30px 56px;font:700 34px/1 Poppins;letter-spacing:.04em}
+.final .url{margin-top:34px;font:600 26px/1 Poppins;letter-spacing:.2em;text-transform:uppercase;color:#D9AE5C}
+</style>
+</head>
+<body>
+<div class="fundo"></div><div class="aura" id="aura"></div>
+<div class="topo"><img src="/assets/img/logo-bistro-connect-clara.png" alt=""></div>
+<div class="leg" id="leg"><p class="k" id="legK"></p><h1 id="legH"></h1></div>
+<div class="cel" id="cel"><div class="tela" id="tela"><div class="ilha"></div></div></div>
+<div class="mao" id="mao"><svg viewBox="0 0 32 32"><path d="M10 4.5a2.5 2.5 0 0 1 5 0V12.3a2.3 2.3 0 0 1 4.6.2v1.2a2.3 2.3 0 0 1 4.6.3v1.3a2.2 2.2 0 0 1 4.4.2V22c0 4.4-3.4 7.5-7.8 7.5h-2.8c-2.4 0-4.6-1.2-6-3.2L4.6 19.6a2.3 2.3 0 0 1 3.7-2.7L10 19z" fill="#fff" stroke="#0F0F11" stroke-width="1.6" stroke-linejoin="round"/><path d="M15 12.6v4.6M19.6 13.8v3.6M24.2 15.2v2.8" stroke="#0F0F11" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+<p class="pe">Sem comissão por pedido · <b>BistrôConnect</b></p>
+<div class="final" id="final">
+  <img src="/assets/img/logo-bistro-connect-clara.png" alt="">
+  <h2>Seu cardápio, seu pedido,<em>seu cliente.</em></h2>
+  <p>Site, cardápio digital, pedido no WhatsApp, painel e rastreio.</p>
+  <span class="zap">(42) 99900-6578</span>
+  <span class="url">bistroconnect.com.br</span>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const V = 0.6; /* ritmo: menor = mais rápido */
+const espera = (ms, fixo) => new Promise(r => setTimeout(r, fixo ? ms : ms * V));
+const ESC = 1.6, TELA_X = () => $('tela').getBoundingClientRect().left, TELA_Y = () => $('tela').getBoundingClientRect().top;
+let atual = null;
+function legenda(k, h) {
+  const l = $('leg'); l.classList.remove('on');
+  setTimeout(() => { $('legK').textContent = k; $('legH').innerHTML = h; l.classList.add('on'); }, 260);
+}
+function abre(src) {
+  return new Promise(res => {
+    const f = document.createElement('iframe'); f.src = src;
+    f.addEventListener('load', () => setTimeout(() => { f.classList.add('on'); if (atual && atual !== f) { const v = atual; v.classList.remove('on'); setTimeout(() => v.remove(), 600); } atual = f; res(f); }, 650), { once: true });
+    $('tela').appendChild(f);
+  });
+}
+const doc = () => atual.contentDocument, win = () => atual.contentWindow;
+function acha(sel, txt) {
+  const els = [...doc().querySelectorAll(sel)].filter(e => e.getClientRects().length && (!txt || e.textContent.trim().toLowerCase().includes(txt.toLowerCase())));
+  const vis = els.find(e => { const r = e.getBoundingClientRect(); return r.top > 40 && r.bottom < 760; });
+  return vis || els[0];
+}
+function ponto(el, dx = .5, dy = .5) {
+  const r = el.getBoundingClientRect();
+  return { x: TELA_X() + (r.left + r.width * dx) * ESC, y: TELA_Y() + (r.top + r.height * dy) * ESC };
+}
+async function mao(x, y, ms = 900) {
+  ms = ms * V;
+  const m = $('mao'); m.style.transitionDuration = ms + 'ms,' + ms + 'ms,.35s';
+  m.classList.add('on'); m.style.left = (x - 30) + 'px'; m.style.top = (y - 8) + 'px'; await espera(ms + 60, true);
+}
+async function toca(sel, txt, opt = {}) {
+  let el = acha(sel, txt); if (!el) { console.log('sem alvo', sel, txt); return; }
+  const r = el.getBoundingClientRect();
+  if (r.top < 60 || r.bottom > 740) { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); await espera(650); }
+  const p = ponto(el, opt.dx, opt.dy); await mao(p.x, p.y, opt.ms || 800);
+  $('mao').classList.add('tap'); await espera(160, true); el.click(); await espera(200, true); $('mao').classList.remove('tap');
+  await espera(opt.depois || 350);
+}
+async function rola(px, ms = 1100, alvo) {
+  const w = alvo ? alvo : win(); const m = $('mao');
+  await mao(TELA_X() + 470, TELA_Y() + 980, 500);
+  m.style.transitionDuration = ms + 'ms,' + ms + 'ms,.35s'; m.style.top = (parseFloat(m.style.top) - 420) + 'px';
+  if (w.scrollBy) w.scrollBy({ top: px, behavior: 'smooth' }); else w.scrollTop += px;
+  await espera(ms + 100);
+}
+async function digita(el, texto) {
+  el.focus(); el.value = '';
+  for (const ch of texto) { el.value += ch; el.dispatchEvent(new Event('input', { bubbles: true })); await espera(26, true); }
+  el.dispatchEvent(new Event('change', { bubbles: true }));
+}
+async function rode() {
+  await espera(400);
+  /* 1 · site (0 a 5 s) */
+  legenda('Site premium', 'A primeira prova da sua cozinha<em>acontece no celular.</em>');
+  if (!atual) await abre('/pizzaria/index.html');
+  await espera(900); await rola(520, 1200); await espera(250);
+  win().scrollTo({ top: 0, behavior: 'smooth' }); await espera(500);
+  await toca('a', 'Ver o cardápio', { depois: 500 });
+  /* 2 · cardápio (5 a 12 s) */
+  legenda('Cardápio digital', 'Tamanho, meio a meio e borda.<em>Ele monta sem ligar.</em>');
+  $('aura').style.background = 'radial-gradient(circle,rgba(184,57,43,.28),rgba(184,57,43,0) 62%)';
+  await abre('/loja.html?l=pizzaria');
+  await espera(500);
+  const strip = acha('.m-dest');
+  if (strip) { const p = ponto(strip, .8, .45); await mao(p.x, p.y, 600); const m = $('mao'); m.style.transitionDuration = '900ms,900ms,.35s'; m.style.left = (p.x - 330) + 'px'; strip.scrollBy({ left: 270, behavior: 'smooth' }); await espera(950); strip.scrollBy({ left: -270, behavior: 'smooth' }); await espera(500); }
+  await toca('.m-dest-it .ctrl button', '', { depois: 800 });
+  /* 3 · pedido (12 a 19 s) */
+  legenda('Pedido direto', 'Ele monta a pizza.<em>Você recebe pronto.</em>');
+  await toca('.opc-item', 'Grande', { ms: 650 });
+  { const c0 = doc().getElementById('opcCorpo'); if (c0) { c0.scrollBy({ top: 420, behavior: 'smooth' }); await espera(500); } }
+  await toca('.opc-item', 'Metade Frango com catupiry', { ms: 550 });
+  const corpo = doc().getElementById('opcCorpo'); if (corpo) { corpo.scrollBy({ top: 700, behavior: 'smooth' }); await espera(600); }
+  await toca('.opc-item', 'Catupiry+', { ms: 600 });
+  await toca('#opcAdd', '', { ms: 600, depois: 600 });
+  await toca('#barra', '', { ms: 650, depois: 700 });
+  await toca('#btnAvancar', '', { ms: 600, depois: 600 });
+  const nome = doc().getElementById('fNome'), fone = doc().getElementById('fFone');
+  if (nome) { const p = ponto(nome); await mao(p.x, p.y, 500); await digita(nome, 'Lucas Ramos'); }
+  if (fone) { const p = ponto(fone); await mao(p.x, p.y, 400); await digita(fone, '42999990000'); }
+  const ret = acha('.opcao', 'Retirar'); if (ret) await toca('.opcao', 'Retirar', { ms: 450, depois: 200 });
+  await toca('#btnAvancar', 'Enviar', { ms: 550, depois: 1100 });
+  /* 4 · painel (19 a 24 s) */
+  legenda('Painel administrativo', 'Pedido novo chega com alerta.<em>Tudo organizado.</em>');
+  $('aura').style.background = 'radial-gradient(circle,rgba(217,174,92,.28),rgba(217,174,92,0) 62%)';
+  $('mao').classList.remove('on');
+  await abre('/painel/index.html?demo=1&embed=1&aba=pedidos&nome=Fornalha%20Pizzaria');
+  await espera(1200);
+  const bt = acha('button', 'Confirmar') || acha('button', 'Aceitar');
+  if (bt) await toca('button', bt.textContent.trim().slice(0, 9), { ms: 700, depois: 700 });
+  await rola(380, 1000); await espera(300);
+  /* 5 · rastreio (24 a 28 s) */
+  legenda('Rastreio do pedido', '“Já saiu?”<em>Ele vê sem perguntar.</em>');
+  $('mao').classList.remove('on');
+  const d = encodeURIComponent(JSON.stringify({ l: 'Fornalha Pizzaria', m: 'pizzaria', c: 'Lucas', n: 24, t: 'r', i: [['Pizza grande calabresa e frango', 1, 72, '/assets/img/exemplo/fornalha/calabresa.jpg']] }));
+  await abre('/pedido.html?c=demo&d=' + d);
+  for (let s = 1; s <= 4; s++) { await espera(700); win().postMessage({ bcDemo: s }, location.origin); }
+  await espera(900);
+  /* 6 · fechamento (28 a 31 s) */
+  $('final').classList.add('on'); $('mao').classList.remove('on');
+  await espera(3600, true);
+  window.__fim = true;
+}
+window.__prepara = () => abre('/pizzaria/index.html');
+window.__comeca = () => rode().catch(e => { console.log('Error palco: ' + e.message); window.__fim = true; });
+</script>
+</body>
+</html>

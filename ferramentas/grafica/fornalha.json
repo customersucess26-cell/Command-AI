@@ -1,0 +1,9 @@
+{
+ "nome": "Fornalha Pizzaria",
+ "link": "https://bistroconnect.com.br/l/pizzaria",
+ "logo": "fornalha-logo.png",
+ "foto": "fornalha-foto.jpg",
+ "cupom": {"codigo": "VOLTEI10", "pct": 10, "minimo": 40},
+ "cores": {"fundo": "#0c0c0d", "destaque": "#b8392b", "amarelo": "#c9a45c", "texto": "#f2ece1", "suave": "#c9bfb0", "claro": "#f2ece1"},
+ "textos": {"cartao_k": "Obrigado pela pizza", "cartao_sub": "Pelo nosso cardápio online. Vire o cartão.", "display_k": "Saiu do forno, chegou no celular", "display_sub": "Escolha o tamanho, faça meio a meio e a borda do seu jeito. A gente já acende o forno."}
+}
