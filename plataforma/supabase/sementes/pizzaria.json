@@ -4150,120 +4150,131 @@
    "itens": [
     {
      "nome": "Refrigerante 2 litros",
-     "desc": "O par perfeito da pizza.",
+     "desc": "O par perfeito da pizza. Escolha o sabor.",
      "preco": 15,
      "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/beb-refri-2l.jpg",
-     "destaque": true,
+     "foto": "/assets/img/exemplo/bebidas/sua-foto-2l.jpg",
+     "destaque": false,
      "selo": "Mais pedido",
      "opcoes": [
       {
-       "id": "r2l",
+       "id": "s2",
        "nome": "Sabor",
        "min": 1,
        "max": 1,
        "itens": [
         {
-         "id": "a",
+         "id": "coca",
          "nome": "Coca-Cola",
          "preco": 0
         },
         {
-         "id": "b",
+         "id": "zero",
          "nome": "Coca-Cola Zero",
          "preco": 0
         },
         {
-         "id": "c",
-         "nome": "Guaraná",
+         "id": "guar",
+         "nome": "Guaraná Antarctica",
          "preco": 0
         },
         {
-         "id": "d",
-         "nome": "Fanta Laranja",
-         "preco": 0
-        }
-       ]
-      }
-     ]
-    },
-    {
-     "nome": "Refrigerante lata 350 ml",
-     "desc": "Bem gelado.",
-     "preco": 7,
-     "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/lata-guarana-jesus.webp",
-     "destaque": false,
-     "selo": "",
-     "opcoes": [
-      {
-       "id": "rl",
-       "nome": "Sabor",
-       "min": 1,
-       "max": 1,
-       "itens": [
-        {
-         "id": "a",
-         "nome": "Coca-Cola",
-         "preco": 0
-        },
-        {
-         "id": "b",
-         "nome": "Coca-Cola Zero",
-         "preco": 0
-        },
-        {
-         "id": "c",
-         "nome": "Guaraná",
-         "preco": 0
-        },
-        {
-         "id": "d",
+         "id": "fl",
          "nome": "Fanta Laranja",
          "preco": 0
         },
         {
-         "id": "e",
+         "id": "sp",
          "nome": "Sprite",
          "preco": 0
-        },
-        {
-         "id": "f",
-         "nome": "Schweppes Citrus",
-         "preco": 0
         }
        ]
       }
      ]
     },
     {
-     "nome": "Suco natural 1 litro",
-     "desc": "Feito na hora. Laranja, limão ou maracujá.",
-     "preco": 18,
+     "nome": "Coca-Cola 1 litro",
+     "desc": "Garrafa de 1 litro, bem gelada.",
+     "preco": 10,
      "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/beb-suco-jarra.jpg",
+     "foto": "/assets/img/exemplo/bebidas/sua-foto-1l.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Coca-Cola KS 290 ml",
+     "desc": "A clássica garrafinha de vidro.",
+     "preco": 7,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/sua-foto-ks.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Coca-Cola lata 350 ml",
+     "desc": "Bem gelada.",
+     "preco": 7,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/coca-cola-lata.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Coca-Cola Zero lata 350 ml",
+     "desc": "Sem açúcar, bem gelada.",
+     "preco": 7,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/coca-zero-lata.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Guaraná Jesus lata 350 ml",
+     "desc": "O guaraná cor-de-rosa do Maranhão.",
+     "preco": 7,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/guarana-jesus-lata.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Fanta lata 350 ml",
+     "desc": "Laranja, uva, guaraná ou Icy Lemon.",
+     "preco": 7,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/fanta-laranja-lata.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
       {
-       "id": "fruta",
-       "nome": "Fruta",
+       "id": "fan",
+       "nome": "Sabor",
        "min": 1,
        "max": 1,
        "itens": [
         {
-         "id": "f1",
+         "id": "l",
          "nome": "Laranja",
          "preco": 0
         },
         {
-         "id": "f2",
-         "nome": "Limão",
+         "id": "u",
+         "nome": "Uva",
          "preco": 0
         },
         {
-         "id": "f3",
-         "nome": "Maracujá",
+         "id": "g",
+         "nome": "Guaraná",
+         "preco": 0
+        },
+        {
+         "id": "i",
+         "nome": "Icy Lemon",
          "preco": 0
         }
        ]
@@ -4271,61 +4282,159 @@
      ]
     },
     {
-     "nome": "Água mineral 500 ml",
-     "desc": "Com ou sem gás.",
-     "preco": 5,
+     "nome": "Sprite lata 350 ml",
+     "desc": "Limão, refrescante.",
+     "preco": 7,
      "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/beb-agua.jpg",
+     "foto": "/assets/img/exemplo/bebidas/sprite-lata.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Pepsi lata 350 ml",
+     "desc": "Pepsi ou Pepsi Black, sem açúcar.",
+     "preco": 6.5,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/pepsi-lata.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
       {
-       "id": "agua",
+       "id": "pep",
        "nome": "Escolha",
        "min": 1,
        "max": 1,
        "itens": [
         {
-         "id": "g1",
-         "nome": "Sem gás",
+         "id": "p",
+         "nome": "Pepsi",
          "preco": 0
         },
         {
-         "id": "g2",
-         "nome": "Com gás",
-         "preco": 0.5
+         "id": "b",
+         "nome": "Pepsi Black",
+         "preco": 0
         }
        ]
       }
      ]
     },
     {
-     "nome": "Cerveja long neck 355 ml",
-     "desc": "Trincando. Venda para maiores de 18 anos.",
-     "preco": 12,
+     "nome": "Schweppes Citrus lata 350 ml",
+     "desc": "Cítrico e levemente amargo.",
+     "preco": 7,
      "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/beb-cerveja.jpg",
+     "foto": "/assets/img/exemplo/bebidas/schweppes-lata.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Energético lata 473 ml",
+     "desc": "Bem gelado.",
+     "preco": 14,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/sua-foto-energetico.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": [
       {
-       "id": "cerv",
+       "id": "en",
+       "nome": "Marca",
+       "min": 1,
+       "max": 1,
+       "itens": [
+        {
+         "id": "rb",
+         "nome": "Red Bull 250 ml",
+         "preco": 0
+        },
+        {
+         "id": "mo",
+         "nome": "Monster 473 ml",
+         "preco": 0
+        },
+        {
+         "id": "fu",
+         "nome": "Fusion 473 ml",
+         "preco": -2
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "nome": "Cerveja lata 350 ml",
+     "desc": "Trincando. Venda para maiores de 18 anos.",
+     "preco": 8,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/sua-foto-cerveja-lata.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": [
+      {
+       "id": "cl",
        "nome": "Cerveja",
        "min": 1,
        "max": 1,
        "itens": [
         {
-         "id": "c1",
+         "id": "br",
+         "nome": "Brahma",
+         "preco": 0
+        },
+        {
+         "id": "sk",
+         "nome": "Skol",
+         "preco": 0
+        },
+        {
+         "id": "am",
+         "nome": "Amstel",
+         "preco": 1
+        },
+        {
+         "id": "hk",
+         "nome": "Heineken",
+         "preco": 2
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "nome": "Cerveja long neck 330 ml",
+     "desc": "Trincando. Venda para maiores de 18 anos.",
+     "preco": 12,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/sua-foto-long-neck.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": [
+      {
+       "id": "ln",
+       "nome": "Cerveja",
+       "min": 1,
+       "max": 1,
+       "itens": [
+        {
+         "id": "hk",
          "nome": "Heineken",
          "preco": 0
         },
         {
-         "id": "c2",
+         "id": "st",
          "nome": "Stella Artois",
          "preco": 0
         },
         {
-         "id": "c3",
+         "id": "bu",
+         "nome": "Budweiser",
+         "preco": 0
+        },
+        {
+         "id": "co",
          "nome": "Corona",
          "preco": 2
         }
@@ -4334,60 +4443,51 @@
      ]
     },
     {
-     "nome": "Cerveja 600 ml",
-     "desc": "Para dividir. Venda para maiores de 18 anos.",
-     "preco": 18,
-     "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/beb-cerveja.jpg",
-     "destaque": false,
-     "selo": "",
-     "opcoes": [
-      {
-       "id": "c6",
-       "nome": "Cerveja",
-       "min": 1,
-       "max": 1,
-       "itens": [
-        {
-         "id": "a",
-         "nome": "Original",
-         "preco": 0
-        },
-        {
-         "id": "b",
-         "nome": "Heineken",
-         "preco": 3
-        }
-       ]
-      }
-     ]
-    },
-    {
      "nome": "Vinho tinto Casillero del Diablo",
-     "desc": "Cabernet Sauvignon, 750 ml. Ótimo com as napoletanas.",
+     "desc": "Cabernet Sauvignon chileno, 750 ml.",
      "preco": 79,
      "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/beb-casillero.jpg",
+     "foto": "/assets/img/exemplo/bebidas/vinho-casillero.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": []
     },
     {
-     "nome": "Vinho tinto Catena Malbec",
+     "nome": "Vinho tinto Malbec",
      "desc": "Malbec argentino, 750 ml.",
-     "preco": 139,
+     "preco": 89,
      "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/beb-catena-malbec.jpg",
+     "foto": "/assets/img/exemplo/bebidas/vinho-malbec.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Vinho tinto Chianti",
+     "desc": "Italiano, 750 ml. Ótimo com as napoletanas.",
+     "preco": 119,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/vinho-chianti.jpg",
      "destaque": false,
      "selo": "Premium",
      "opcoes": []
     },
     {
      "nome": "Espumante Salton Brut",
-     "desc": "750 ml, para celebrar.",
+     "desc": "Nacional, 750 ml.",
      "preco": 65,
      "unid": "",
-     "foto": "/assets/img/exemplo/fornalha/beb-salton-brut.jpg",
+     "foto": "/assets/img/exemplo/bebidas/espumante-salton.jpg",
+     "destaque": false,
+     "selo": "",
+     "opcoes": []
+    },
+    {
+     "nome": "Espumante Chandon Brut",
+     "desc": "750 ml, para celebrar.",
+     "preco": 129,
+     "unid": "",
+     "foto": "/assets/img/exemplo/bebidas/espumante-chandon.jpg",
      "destaque": false,
      "selo": "",
      "opcoes": []
