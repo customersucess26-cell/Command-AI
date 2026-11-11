@@ -25,7 +25,7 @@ begin
     store_name = 'Fornalha Pizzaria', modelo = 'pizzaria', descricao = 'Pizza no forno a lenha. Massa de fermentação longa, molho de tomate pelado e ingredientes selecionados.',
     whatsapp = '5542999006578', address = 'Rua Exemplo, 456 · Centro', hours = 'Ter a dom · 18h às 23h30',
     instagram = '@fornalhapizzaria', cor = '#B8392B',
-    logo_url = '/assets/img/exemplo/fornalha/logo.png', capa_url = '/assets/img/exemplo/fornalha/forno-hero.jpg',
+    logo_url = '/assets/img/exemplo/fornalha/sua-logo.png', capa_url = '/assets/img/exemplo/fornalha/forno-hero.jpg',
     delivery_fee = 8.0, min_order = 0.0,
     accept_orders = true, faz_entrega = true, faz_retirada = true, pagamentos = array['Pix','Cartão','Dinheiro'], status = 'ativa',
     extra = coalesce(extra, '{}'::jsonb) || '{"secoes": {"sobre": {"titulo": "Fogo, tempo e massa", "texto": "Nossa massa descansa 48 horas antes de ir ao forno a lenha.\nO molho é de tomate pelado, a mussarela é fresca e cada pizza sai na hora, com a borda leve e alveolada.", "foto": "/assets/img/exemplo/fornalha/forno-visite.jpg"}, "galeria": {"fotos": ["/assets/img/exemplo/fornalha/calabresa.jpg", "/assets/img/exemplo/fornalha/margherita.webp", "/assets/img/exemplo/fornalha/quatro-queijos.webp", "/assets/img/exemplo/fornalha/diavola.webp", "/assets/img/exemplo/fornalha/bufala.webp", "/assets/img/exemplo/fornalha/sig-frango-grelhado.webp"]}}}'::jsonb
