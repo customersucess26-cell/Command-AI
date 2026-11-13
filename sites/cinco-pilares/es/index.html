@@ -2,13 +2,13 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-L2EbaD763wTyVZB6njCef1GQOcdUDDvaKZ2mzX8z7Bw=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; media-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'sha256-5dgmyVTjp1unLPYQYQSt5YHR6cTedb/tkSh6BsO5nVM=' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; connect-src https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com; media-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Los 5 Pilares de la Prosperidad: encuentra tu Pilar Ancla en 2 minutos</title>
 <meta name="description" content="Encuentra en 2 minutos tu Pilar Ancla, el área que arrastra a las otras cuatro, y levántalo con 90 misiones de 10 a 30 minutos: 5 libros, 46 capítulos, 151 ejercicios, 46 checklists y 4 bonos. Pago único de US$ 19,90.">
 <meta name="robots" content="index,follow">
-<meta name="theme-color" content="#0b0a09">
+<meta name="theme-color" content="#0b0b0a">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_LA">
@@ -19,9 +19,9 @@
 <link rel="icon" href="assets/img/icon.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter+Tight:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=17">
-<script>(function(){if(self!==top){try{if(top.location.hostname!==location.hostname)throw 0}catch(e){try{top.location=self.location.href}catch(x){document.documentElement.style.display='none'}}}var d=document.documentElement;d.className+=' js';try{if(/[?&]fx=0/.test(location.search)||matchMedia('(prefers-reduced-motion: reduce)').matches&&!/[?&]fx=1/.test(location.search))d.className+=' rm'}catch(e){}setTimeout(function(){if(!window.__app)d.className+=' ok'},3000)})()</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=18">
+<script>(function(){if(self!==top){try{if(top.location.hostname!==location.hostname)throw 0}catch(e){try{top.location=self.location.href}catch(x){document.documentElement.style.display='none'}}}var d=document.documentElement;d.className+=' js';try{if(/[?&]fx=0/.test(location.search)||matchMedia('(prefers-reduced-motion: reduce)').matches)d.className+=' rm'}catch(e){}setTimeout(function(){if(!window.__app)d.className+=' ok'},3000)})()</script>
 <!-- Configuração da página: preencha aqui. Campos vazios são ignorados. -->
 <script type="application/json" id="cfg">
 {
@@ -40,355 +40,314 @@
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
-
 <div class="launch" id="launch" hidden>Precio de lanzamiento: <b data-price>US$ 19,90</b> hasta el <span id="launch-date"></span>. Después sube a <span data-price-after></span>. Faltan <b id="cd">--</b></div>
 
-<!-- indicador: os cinco pilares se acendem conforme a leitura -->
-<div class="meter" id="meter" aria-hidden="true">
- <i style="--c:var(--p1)"></i><i style="--c:var(--p2)"></i><i style="--c:var(--p3)"></i><i style="--c:var(--p4)"></i><i style="--c:var(--p5)"></i>
-</div>
-
 <header class="top" id="top">
- <a class="brand" href="#main" aria-label="Los 5 Pilares de la Prosperidad, inicio"><img src="assets/img/logo.webp" alt="Los 5 Pilares de la Prosperidad" width="480" height="307"></a>
- <nav class="top-nav" aria-label="Secciones">
-  <a href="#ancla">El método</a><a href="#prueba-rapida">La prueba</a><a href="#sistema">El sistema</a><a href="#oferta">Precio</a>
- </nav>
- <a class="btn btn-ghost sm" data-co href="#oferta"><span class="buy-l">Comprar · </span><span data-price>US$ 19,90</span></a>
+ <a class="brand" href="#main" aria-label="Los 5 Pilares, inicio"><img src="assets/img/logo.webp" alt="Los 5 Pilares de la Prosperidad" width="480" height="307"></a>
+ <a class="pill-cta" data-co href="#oferta"><span class="buy-l">Acceso · </span><span data-price>US$ 19,90</span></a>
 </header>
 
 <main id="main">
 
-<!-- 1 · HERO: as colunas no escuro -->
-<section class="hero" id="hero" data-amb="#e8b878" aria-labelledby="h1">
- <div class="hero-sky" aria-hidden="true"><i></i></div>
- <figure class="hero-art" id="hero-art">
-  <img src="assets/img/torre.webp" srcset="assets/img/torre-720.webp 720w, assets/img/torre.webp 1199w" sizes="(max-width:760px) 92vw, 46vw" alt="Torre de cinco pisos iluminada: Salud, Relaciones, Carrera, Finanzas y Espiritualidad, cada piso con su propia escena" width="1199" height="1312" fetchpriority="high" decoding="async">
- </figure>
- <div class="hero-in wrap">
-  <p class="eyebrow" data-in>Para quienes cuidan de todo, menos de su propia vida</p>
-  <h1 id="h1" class="display" data-split>Hay un área de tu vida que está frenando a las otras cuatro.</h1>
-  <p class="hero-sub" data-in><em>Descúbrela en 2 minutos.</em></p>
-  <p class="lede" data-in>Lo llamamos tu <b>Pilar Ancla</b>: tu salud, tus relaciones, tu trabajo, tu dinero o tu fe. Cuando cae, arrastra a los demás. Una prueba gratis de 5 preguntas te muestra cuál es, y una misión de 10 a 30 minutos por día te ayuda a levantarlo.</p>
-  <div class="cta-row" data-in>
-   <a class="btn btn-gold magnetic" href="#prueba-rapida" data-quiz>Descubrir mi Pilar Ancla <small>gratis</small></a>
-   <a class="btn btn-ghost" data-co href="#oferta">Acceso completo · <span data-price>US$ 19,90</span></a>
+<!-- 0 · SEQUÊNCIA CINEMATOGRÁFICA: a câmera sobe a torre andar por andar -->
+<section class="cine" id="cine" aria-label="Los 5 pilares de tu vida">
+ <div class="cine-stage">
+  <div class="cine-cam" id="cam">
+   <img src="assets/img/torre.webp" alt="" width="1199" height="1312" fetchpriority="high" decoding="async">
+   <i class="anchor-shade" aria-hidden="true"></i>
   </div>
-  <p class="micro" data-in>Pago único en Hotmart · Acceso inmediato · <span data-gd>7</span> días de garantía</p>
+  <div class="cine-fx" aria-hidden="true"></div>
+  <div class="cine-txt">
+   <p class="ct" data-k="0"><small>Los 5 Pilares de la Prosperidad</small>Tu vida se sostiene en cinco pilares.</p>
+   <p class="ct" data-k="1"><small>Pilar 05 · Espiritualidad</small>Una fe que orienta tus decisiones.</p>
+   <p class="ct" data-k="2"><small>Pilar 04 · Finanzas</small>Dinero en orden. Mente en paz.</p>
+   <p class="ct" data-k="3"><small>Pilar 03 · Carrera</small>Un trabajo con rumbo.</p>
+   <p class="ct" data-k="4"><small>Pilar 02 · Relaciones</small>Cerca de quienes amas.</p>
+   <p class="ct" data-k="5"><small>Pilar 01 · Salud</small>Energía para vivir tu día.</p>
+   <div class="ct last" data-k="6"><small>Pero hay un detalle</small><p>Uno de ellos está frenando a los otros cuatro.</p>
+    <div class="ct-cta"><a class="cta" href="#prueba" data-quiz>Descubrir mi Pilar Ancla <span aria-hidden="true">→</span></a><a class="cta ghost" data-co href="#oferta">Acceso · <span data-price>US$ 19,90</span></a></div></div>
+  </div>
+  <div class="cine-hud" aria-hidden="true"><span id="hud-n">00</span><i><b id="hud-bar"></b></i><span>05</span></div>
+  <p class="cine-cue" aria-hidden="true">Desliza para subir la torre</p>
  </div>
- <ul class="hero-facts wrap" data-in aria-label="Qué incluye">
-  <li><b>5</b><span>libros principales</span></li>
-  <li><b>151</b><span>ejercicios prácticos</span></li>
-  <li><b>46</b><span>checklists</span></li>
-  <li><b>90</b><span>misiones de 10 a 30 min</span></li>
- </ul>
- <a class="scroll-cue" href="#dolor" aria-label="Seguir leyendo"><span></span></a>
 </section>
 
-<!-- 2 · A DOR -->
-<section class="sec dolor" id="dolor" data-amb="#c9bba4" aria-labelledby="h-dolor">
- <div class="wrap dolor-grid">
-  <div class="note" aria-label="Lista de pendientes: Cuando tenga tiempo, 0 de 5 completadas">
-   <div class="note-h"><b>Cuando tenga tiempo</b><span>0 de 5</span></div>
-   <ul>
-    <li>Hacerme un chequeo</li><li>Llamar a mamá</li><li>Ordenar las cuentas</li><li>Retomar ese curso</li><li>Descansar de verdad</li>
-   </ul>
-   <p class="note-f">Creada en enero. Ninguna completada.</p>
-   <p class="stamp" aria-hidden="true">Diciembre</p>
-  </div>
-  <div>
-   <p class="kicker">I · El problema</p>
-   <h2 id="h-dolor" class="display">Cuidas de todo. <em>Menos de tu propia vida.</em></h2>
-   <p class="body-l">Cumples en el trabajo, resuelves lo de los demás y llegas a casa sin energía. Lo tuyo se queda en una lista, esperando. ¿Te suena alguna de estas?</p>
-   <ul class="symptoms">
+<!-- 1 · TOPO -->
+<section class="hero" aria-labelledby="h1">
+ <div class="wrap center">
+  <p class="pill" data-rv><span aria-hidden="true">▶</span> Diagnóstico gratis + sistema de 90 días</p>
+  <h1 id="h1" data-rv><span class="hl">Hay un área de tu vida que está frenando a las otras cuatro.</span> Descúbrela en 2 minutos.</h1>
+  <p class="sub" data-rv>Tu salud, tus relaciones, tu trabajo, tu dinero o tu fe. Cuando una cae, arrastra a las demás. Una prueba gratis de 5 preguntas te muestra cuál es, y una misión de 10 a 30 minutos por día te ayuda a levantarla.</p>
+  <figure class="hero-card" data-rv>
+   <div class="browser" aria-hidden="true"><i></i><i></i><i></i><span>Los 5 Pilares · Hoy</span></div>
+   <img src="assets/img/tela-hoy-desktop.webp" alt="Pantalla real del sistema: el panel Hoy muestra el próximo paso del día y la jornada de 90 días" width="1440" height="900" loading="lazy">
+   <a class="chip" href="#sistema">Ver el sistema por dentro</a>
+  </figure>
+  <p class="from-l">Empieza hoy por apenas</p>
+  <p class="price-big"><span data-cur>US$</span><b data-num>19,90</b></p>
+  <a class="cta" data-co href="#oferta">Quiero mi acceso completo <span aria-hidden="true">→</span></a>
+  <ul class="ticks-row"><li>Pago único</li><li>Acceso inmediato</li><li><span data-gd>7</span> días de garantía</li></ul>
+  <a class="link-quiz" href="#prueba" data-quiz>¿Todavía no sabes por dónde empezar? <b>Haz la prueba gratis</b></a>
+ </div>
+</section>
+
+<!-- 2 · O QUE MUDA -->
+<section class="sec" aria-labelledby="h-cambia">
+ <div class="wrap narrow center">
+  <h2 id="h-cambia" data-rv>Lo que cambia en tu día</h2>
+  <p class="lead" data-rv>Basta de arreglar la vida por partes. Empiezas por el pilar que más pesa.</p>
+  <ul class="benefits">
+   <li data-rv><span class="ico" aria-hidden="true">🧭</span>Sabes por dónde empezar: el diagnóstico te muestra qué pilar atender primero.</li>
+   <li data-rv><span class="ico" aria-hidden="true">⏱️</span>Sabes qué hacer cada día: misiones cortas de 10 a 30 minutos.</li>
+   <li data-rv><span class="ico" aria-hidden="true">💪</span>Energía para tu día, en vez de un cuerpo que cobra la factura.</li>
+   <li data-rv><span class="ico" aria-hidden="true">❤️</span>Conexiones más conscientes con quienes te importan.</li>
+   <li data-rv><span class="ico" aria-hidden="true">💰</span>Una relación más ordenada con el dinero.</li>
+   <li data-rv><span class="ico" aria-hidden="true">🙏</span>Principios de fe que orientan tus decisiones.</li>
+  </ul>
+  <a class="cta" data-co href="#oferta">Quiero empezar hoy <span aria-hidden="true">→</span></a>
+ </div>
+</section>
+
+<!-- 3 · A DOR -->
+<section class="sec soft" aria-labelledby="h-dolor">
+ <div class="wrap dolor">
+  <div class="dolor-txt">
+   <p class="eyebrow">Para quienes cuidan de todo</p>
+   <h2 id="h-dolor" data-rv>Cuidas de todo. <span class="hl">Menos de tu propia vida.</span></h2>
+   <p>Cumples en el trabajo, resuelves lo de los demás y llegas a casa sin energía. Lo tuyo se queda en una lista, esperando.</p>
+   <ul class="x-list">
     <li>Ordenas el dinero y se resiente tu familia.</li>
     <li>Cuidas a tu familia y se resiente tu salud.</li>
     <li>Trabajas más y avanzas menos.</li>
     <li>Cada lunes prometes empezar.</li>
-    <li>Tienes libros y cursos a medias.</li>
     <li>Dejas lo que importa para «cuando tenga tiempo».</li>
    </ul>
+   <p class="quote">Lo que duele no es el cansancio. Es mirar atrás en diciembre y ver que otro año pasó igual. Y no es por falta de esfuerzo: es que nadie te dijo por dónde empezar.</p>
+  </div>
+  <div class="note" data-rv aria-label="Lista de pendientes: Cuando tenga tiempo, 0 de 5 completadas">
+   <div class="note-h"><b>Cuando tenga tiempo</b><span>0 de 5</span></div>
+   <ul><li>Hacerme un chequeo</li><li>Llamar a mamá</li><li>Ordenar las cuentas</li><li>Retomar ese curso</li><li>Descansar de verdad</li></ul>
+   <p class="note-f">Creada en enero. Ninguna completada.</p>
   </div>
  </div>
- <blockquote class="wrap pull" data-rv>
-  <p>Lo que duele no es el cansancio. Es mirar atrás en diciembre y ver que otro año pasó igual.</p>
-  <footer>Y no es por falta de esfuerzo: es que nadie te dijo por dónde empezar.</footer>
- </blockquote>
 </section>
 
-<!-- 3 · A VIRADA (seção fixa: cada especialista ilumina só um pilar) -->
-<section class="giro" id="giro" data-amb="#b48cf0" aria-labelledby="h-giro">
- <div class="giro-pin">
-  <div class="wrap giro-grid">
-   <div class="giro-text">
-    <p class="kicker">II · No es culpa tuya</p>
-    <h2 id="h-giro" class="display">Te enseñaron a arreglar tu vida <em>por partes.</em></h2>
-    <ol class="giro-steps">
-     <li data-step="3">El experto en finanzas te dice que ahorres.</li>
-     <li data-step="2">El de productividad, que rindas más.</li>
-     <li data-step="0">El de salud, que entrenes a las cinco de la mañana.</li>
-     <li data-step="-1">Cada uno arregla su pilar y te deja solo con los otros cuatro.</li>
-    </ol>
+<!-- 4 · OS 5 PILARES (vitrine) -->
+<section class="sec" id="pilares" aria-labelledby="h-pilares">
+ <div class="wrap">
+  <div class="center">
+   <p class="eyebrow">El método</p>
+   <h2 id="h-pilares" data-rv>Tu vida tiene 5 pilares. <span class="hl">Uno de ellos es tu ancla.</span></h2>
+   <p class="lead" data-rv>Tu Pilar Ancla es el área que, cuando cae, arrastra a las otras cuatro. Con el dinero en rojo, duermes mal, discutes en casa y rindes menos. Ordenar el dinero alivia todo lo demás. En otra persona, el ancla es la salud o el rumbo.</p>
+  </div>
+  <div class="showcase">
+   <figure class="show-main" data-rv>
+    <div class="browser" aria-hidden="true"><i></i><i></i><i></i></div>
+    <img src="assets/img/torre.webp" alt="Torre de cinco pisos iluminada: Salud, Relaciones, Carrera, Finanzas y Espiritualidad" width="1199" height="1312" loading="lazy">
+    <figcaption><b>Los 5 Pilares de la Prosperidad</b><span>Un libro principal para cada pilar, con capítulos cortos, ejercicios y checklists.</span></figcaption>
+   </figure>
+   <div class="show-grid">
+    <article class="show" style="--c:var(--p1)" data-rv><img src="assets/img/piso-salud.webp" alt="Una mujer medita en un gimnasio luminoso" width="800" height="146" loading="lazy"><div><h3>Salud física y mental</h3><p>Sueño, nutrición, movimiento y estrés.</p></div></article>
+    <article class="show" style="--c:var(--p2)" data-rv><img src="assets/img/piso-relaciones.webp" alt="Una familia ríe junta en el sofá" width="820" height="160" loading="lazy"><div><h3>Relaciones y capital social</h3><p>Comunicación, límites, familia y vínculos.</p></div></article>
+    <article class="show" style="--c:var(--p3)" data-rv><img src="assets/img/piso-carrera.webp" alt="Un profesional trabaja frente a la ciudad" width="840" height="124" loading="lazy"><div><h3>Carrera y emprendimiento</h3><p>Rumbo, productividad, marca personal y negocio.</p></div></article>
+    <article class="show" style="--c:var(--p4)" data-rv><img src="assets/img/piso-finanzas.webp" alt="Monedas que crecen y una alcancía dorada" width="860" height="117" loading="lazy"><div><h3>Finanzas y libertad</h3><p>Orden, deudas, inversión y largo plazo.</p></div></article>
+    <article class="show" style="--c:var(--p5)" data-rv><img src="assets/img/piso-espiritualidad.webp" alt="Una persona medita frente al atardecer" width="880" height="135" loading="lazy"><div><h3>Desarrollo personal y espiritualidad</h3><p>Propósito, Palabra de Dios, fe y servicio. Con orientación cristiana.</p></div></article>
    </div>
-   <div class="giro-tower" id="giro-tower" aria-hidden="true"></div>
-  </div>
- </div>
- <div class="wrap giro-after">
-  <p class="body-l">Pero tu vida no viene en compartimentos: tu energía sostiene tus relaciones, tus relaciones sostienen tu trabajo y tu trabajo sostiene tu dinero. Por eso intentas cambiar todo a la vez, te agotas y vuelves al punto de partida.</p>
-  <p class="thesis">No necesitas otro experto en un solo pilar. Necesitas saber <em>cuál de los cinco está anclando a los demás.</em></p>
-  <div class="myths">
-   <div data-rv><p class="m-q">«Primero el trabajo, lo demás después.»</p><p>El «después» no llega. Llega el cansancio.</p></div>
-   <div data-rv><p class="m-q">«Solo necesito motivación.»</p><p>La motivación dura días. Un plan dura 90.</p></div>
-   <div data-rv><p class="m-q">«Cuando tenga tiempo, lo arreglo.»</p><p>El tiempo no aparece. Se empieza por lo que más pesa.</p></div>
-   <div data-rv><p class="m-q">«Una cosa a la vez.»</p><p>Sí. Pero la correcta primero.</p></div>
-  </div>
- </div>
-</section>
-
-<!-- 4 · O MECANISMO: o Pilar Ancla -->
-<section class="sec ancla" id="ancla" data-amb="#e8b878" aria-labelledby="h-ancla">
- <div class="wrap ancla-grid">
-  <div class="fall" id="fall" aria-hidden="true">
-   <div class="fall-tower" id="fall-tower"></div>
-   <p class="fall-cap" id="fall-cap" data-a="Con el ancla débil, toda la torre se inclina." data-b="Levantas el ancla y la torre vuelve a quedar de pie.">Con el ancla débil, toda la torre se inclina.</p>
-  </div>
-  <div>
-   <p class="kicker">III · El mecanismo</p>
-   <h2 id="h-ancla" class="display">Conoce tu <em>Pilar Ancla.</em></h2>
-   <p class="body-l">Es el área que, cuando cae, arrastra a las otras cuatro.</p>
-   <p>Un ejemplo: con el dinero en rojo, duermes mal, discutes en casa y rindes menos en el trabajo. Ordenar el dinero alivia todo lo demás. En otra persona, el ancla es la salud o el rumbo.</p>
-   <p>Por eso no sirve la misma receta para todos: primero encuentras tu ancla y después la levantas, un paso por día. Encontrarla toma 2 minutos.</p>
-   <button type="button" class="btn btn-ghost" id="fall-btn" data-a="Levantar el ancla" data-b="Ver de nuevo" aria-controls="fall">Levantar el ancla</button>
   </div>
  </div>
 </section>
 
 <!-- 5 · O TESTE -->
-<section class="sec prueba" id="prueba-rapida" data-amb="#57c79a" aria-labelledby="h-prueba">
- <div class="wrap prueba-grid">
-  <div class="prueba-head">
-   <p class="kicker">IV · La prueba</p>
-   <h2 id="h-prueba" class="display">Encuentra tu Pilar Ancla <em>ahora.</em></h2>
-   <p>5 preguntas, una por pilar. Gratis, sin pedir tu correo, y tus respuestas no salen de tu pantalla. Al final ves tus cinco pilares lado a lado y cuál está frenando a los demás.</p>
-   <p class="dim">Es la versión corta: dentro del sistema, el diagnóstico completo tiene 15 afirmaciones y abre tu plan de 90 días.</p>
-  </div>
-  <div class="quiz" id="quiz" aria-live="polite">
-   <noscript><p>La prueba necesita JavaScript activado. <a href="#oferta">Ver el acceso completo</a>.</p></noscript>
-  </div>
+<section class="sec soft" id="prueba" aria-labelledby="h-prueba">
+ <div class="wrap narrow center">
+  <p class="eyebrow">Gratis · 2 minutos</p>
+  <h2 id="h-prueba" data-rv>Haz la prueba: <span class="hl">encuentra tu Pilar Ancla ahora.</span></h2>
+  <p class="lead" data-rv>5 preguntas, una por pilar. Sin pedir tu correo, y tus respuestas no salen de tu pantalla. Dentro del sistema, el diagnóstico completo tiene 15 afirmaciones y abre tu plan de 90 días.</p>
+  <div class="quiz" id="quiz" aria-live="polite"><noscript><p>La prueba necesita JavaScript activado. <a href="#oferta">Ver el acceso completo</a>.</p></noscript></div>
  </div>
 </section>
 
-<!-- 6 · O SISTEMA: telas reais em rolagem horizontal -->
-<section class="sistema" id="sistema" data-amb="#f0a54a" aria-labelledby="h-sistema">
- <div class="sis-pin">
-  <div class="sis-track" id="sis-track">
-   <div class="sis-intro">
-    <p class="kicker">V · El sistema</p>
-    <h2 id="h-sistema" class="display">Ya sabes por dónde empezar. <em>Ahora, qué hacer cada día.</em></h2>
-    <p>No es otro libro para la pila. Al entrar, el panel te muestra el próximo paso del día: una misión corta, el capítulo que la explica y el ejercicio para aplicarla. Estas son pantallas reales.</p>
-    <ul class="ticks">
-     <li>Un paso por día: misiones de 10 a 30 minutos</li>
-     <li>Avance guardado en tu navegador, con copia de seguridad</li>
-     <li>Español y portugués: lo cambias dentro del sistema</li>
-    </ul>
-    <p class="sis-hint" aria-hidden="true">Desliza <span>→</span></p>
-   </div>
-   <figure class="shot desk"><div class="bar" aria-hidden="true"><i></i><i></i><i></i></div><img src="assets/img/tela-hoy-desktop.webp" alt="Panel Hoy del sistema en la computadora: saludo del día, próximo paso y jornada de 90 días" width="1440" height="900" loading="lazy" decoding="async"><figcaption><b>Hoy</b> El próximo paso, siempre a la vista.</figcaption></figure>
-   <figure class="shot phone"><img src="assets/img/tela-hoy.webp" alt="Pantalla Hoy en el celular" width="600" height="1298" loading="lazy" decoding="async"><figcaption><b>En el celular</b> El mismo panel, en tu bolsillo.</figcaption></figure>
-   <figure class="shot phone"><img src="assets/img/tela-jornada.webp" alt="Pantalla Jornada de 90 días" width="600" height="1298" loading="lazy" decoding="async"><figcaption><b>Jornada</b> 90 misiones, una por día.</figcaption></figure>
-   <figure class="shot phone"><img src="assets/img/tela-practicar.webp" alt="Pantalla Practicar con el cronograma de aplicación" width="600" height="1298" loading="lazy" decoding="async"><figcaption><b>Practicar</b> Ejercicios y checklists por capítulo.</figcaption></figure>
-   <figure class="shot phone"><img src="assets/img/tela-libros.webp" alt="Pantalla de los libros de los pilares" width="600" height="1298" loading="lazy" decoding="async"><figcaption><b>Biblioteca</b> Los 5 pilares en un solo lugar.</figcaption></figure>
-   <figure class="shot phone"><img src="assets/img/tela-bonos.webp" alt="Pantalla de los bonos" width="600" height="1298" loading="lazy" decoding="async"><figcaption><b>Bonos</b> 4 libros extra, en el mismo acceso.</figcaption></figure>
-  </div>
+<!-- 6 · O SISTEMA (carrossel) -->
+<section class="sec" id="sistema" aria-labelledby="h-sistema">
+ <div class="wrap center">
+  <h2 id="h-sistema" data-rv>Un sistema que te dice <span class="hl">qué hacer cada día</span></h2>
+  <p class="lead" data-rv>No es otro libro para la pila. Al entrar, el panel te muestra el próximo paso: una misión corta, el capítulo que la explica y el ejercicio para aplicarla. Estas son pantallas reales.</p>
  </div>
- <div class="wrap ruta">
-  <h3 class="ruta-h">La Ruta 5P, desde el primer día</h3>
-  <ol class="ruta-steps">
-   <li><b>Diagnosticar</b><span>Respondes 15 afirmaciones y encuentras tu Pilar Ancla.</span></li>
-   <li><b>Priorizar</b><span>Empiezas por él, sin soltar los demás. Una prioridad, no diez.</span></li>
-   <li><b>Planificar</b><span>Conviertes esa prioridad en objetivos y en una dirección práctica.</span></li>
-   <li><b>Actuar</b><span>Sigues misiones, ejercicios y prácticas de 10 a 30 minutos.</span></li>
-   <li><b>Acompañar</b><span>Registras tareas, lecturas y notas, y ajustas lo que haga falta.</span></li>
+ <div class="carousel" data-rv>
+  <div class="track" id="track" tabindex="0" aria-label="Pantallas del sistema">
+   <figure class="slide"><div class="phone"><img src="assets/img/tela-hoy.webp" alt="Pantalla Hoy en el celular" width="600" height="1298" loading="lazy"></div><figcaption><b>Hoy</b>El próximo paso del día, siempre a la vista.</figcaption></figure>
+   <figure class="slide"><div class="phone"><img src="assets/img/tela-jornada.webp" alt="Pantalla Jornada de 90 días" width="600" height="1298" loading="lazy"></div><figcaption><b>Jornada de 90 días</b>Una misión por día, de 10 a 30 minutos.</figcaption></figure>
+   <figure class="slide"><div class="phone"><img src="assets/img/tela-practicar.webp" alt="Pantalla Practicar con el cronograma de aplicación" width="600" height="1298" loading="lazy"></div><figcaption><b>Practicar</b>151 ejercicios y 46 checklists por capítulo.</figcaption></figure>
+   <figure class="slide"><div class="phone"><img src="assets/img/tela-libros.webp" alt="Pantalla de los libros de los pilares" width="600" height="1298" loading="lazy"></div><figcaption><b>Biblioteca</b>5 libros y 46 capítulos en un solo lugar.</figcaption></figure>
+   <figure class="slide"><div class="phone"><img src="assets/img/tela-bonos.webp" alt="Pantalla de los bonos" width="600" height="1298" loading="lazy"></div><figcaption><b>Bonos</b>4 libros extra en el mismo acceso.</figcaption></figure>
+  </div>
+  <div class="car-nav"><button type="button" class="arr" id="prev" aria-label="Anterior">←</button><div class="dots" id="dots" aria-hidden="true"></div><button type="button" class="arr" id="next" aria-label="Siguiente">→</button></div>
+ </div>
+ <ul class="facts wrap">
+  <li><b>5</b>libros principales</li><li><b>46</b>capítulos</li><li><b>151</b>ejercicios prácticos</li><li><b>46</b>checklists</li><li><b>90</b>misiones</li>
+ </ul>
+</section>
+
+<!-- 7 · FAIXA ESCURA: A RUTA 5P -->
+<section class="band" aria-labelledby="h-ruta">
+ <div class="wrap">
+  <h2 id="h-ruta" data-rv>Tu primer paso está más cerca de lo que parece</h2>
+  <ol class="steps">
+   <li data-rv><b>01</b><span>Haces el diagnóstico y encuentras tu Pilar Ancla.</span></li>
+   <li data-rv><b>02</b><span>Priorizas ese pilar, sin soltar los demás.</span></li>
+   <li data-rv><b>03</b><span>Conviertes la prioridad en un plan práctico.</span></li>
+   <li data-rv><b>04</b><span>Cumples una misión de 10 a 30 minutos por día.</span></li>
+   <li data-rv><b>05</b><span>Registras tu avance y ajustas cada semana.</span></li>
   </ol>
-  <div class="vs">
-   <div class="vs-a"><h3>Un ebook, un curso o un video suelto</h3><ul><li>Te motiva una semana y vuelve a la pila</li><li>No sabe en qué punto estás</li><li>Información suelta, sin orden ni plan</li></ul></div>
-   <div class="vs-b"><h3>Los 5 Pilares</h3><ul><li>El diagnóstico te dice por dónde empezar</li><li>Cada día sabes qué hacer, en 10 a 30 minutos</li><li>Cada capítulo termina en un ejercicio y un checklist</li></ul></div>
-  </div>
+  <a class="cta lime" data-co href="#oferta">Quiero dar el primer paso <span aria-hidden="true">→</span></a>
  </div>
 </section>
 
-<!-- 7 · OS 5 LIVROS E OS 4 BÔNUS -->
-<section class="sec libros" id="libros" data-amb="#4fc2dd" aria-labelledby="h-libros">
- <div class="wrap">
-  <div class="head">
-   <p class="kicker">VI · La biblioteca</p>
-   <h2 id="h-libros" class="display">5 pilares. <em>Un libro para cada uno.</em></h2>
-   <p>Empiezas por el pilar que marcó tu diagnóstico y avanzas a los demás a tu ritmo. Cada libro trae capítulos cortos, ejercicios y checklists para pasar de leer a hacer.</p>
+<!-- 8 · TRAVOU AQUI? -->
+<section class="sec" aria-labelledby="h-trabado">
+ <div class="wrap narrow">
+  <div class="center">
+   <h2 id="h-trabado" data-rv>¿Ya intentaste cambiar <span class="hl">y te trabaste aquí?</span></h2>
+   <p class="lead" data-rv>Cada parte del sistema resuelve un tropiezo concreto.</p>
   </div>
-  <div class="pillars" id="pillars">
-   <article class="pillar" style="--c:var(--p1)" data-m="0">
-    <img src="assets/img/piso-salud.webp" alt="Piso de Salud: una mujer medita en un gimnasio luminoso" loading="lazy" decoding="async" width="800" height="146">
-    <button type="button" class="pillar-h" aria-expanded="false"><span class="n">01</span><span class="t">Salud</span></button>
-    <div class="pillar-b"><div class="pb-in">
-     <h3>Salud física y mental</h3>
-     <p class="chg">Lo que cambia: energía para tu día, en vez de un cuerpo que cobra la factura.</p>
-     <ul><li>Calidad del sueño y recuperación</li><li>Nutrición y hábitos alimentarios</li><li>Movimiento, fuerza y movilidad</li><li>Estrés, agotamiento y equilibrio</li></ul>
-    </div></div>
-   </article>
-   <article class="pillar" style="--c:var(--p2)" data-m="1">
-    <img src="assets/img/piso-relaciones.webp" alt="Piso de Relaciones: una familia ríe junta en el sofá" loading="lazy" decoding="async" width="820" height="160">
-    <button type="button" class="pillar-h" aria-expanded="false"><span class="n">02</span><span class="t">Relaciones</span></button>
-    <div class="pillar-b"><div class="pb-in">
-     <h3>Relaciones y capital social</h3>
-     <p class="chg">Lo que cambia: conexiones más conscientes con quienes te importan.</p>
-     <ul><li>Comunicación consciente</li><li>Relaciones sanas y límites</li><li>Familia y vínculos afectivos</li><li>Networking, reputación y reciprocidad</li></ul>
-    </div></div>
-   </article>
-   <article class="pillar" style="--c:var(--p3)" data-m="2">
-    <img src="assets/img/piso-carrera.webp" alt="Piso de Carrera: un profesional trabaja frente a la ciudad" loading="lazy" decoding="async" width="840" height="124">
-    <button type="button" class="pillar-h" aria-expanded="false"><span class="n">03</span><span class="t">Carrera</span></button>
-    <div class="pillar-b"><div class="pb-in">
-     <h3>Carrera y emprendimiento</h3>
-     <p class="chg">Lo que cambia: saber hacia dónde te lleva tu trabajo.</p>
-     <ul><li>Planificación de carrera</li><li>Productividad y posicionamiento</li><li>Marca personal y visibilidad</li><li>Emprendimiento y monetización del conocimiento</li></ul>
-    </div></div>
-   </article>
-   <article class="pillar" style="--c:var(--p4)" data-m="3">
-    <img src="assets/img/piso-finanzas.webp" alt="Piso de Finanzas: monedas que crecen y una alcancía dorada" loading="lazy" decoding="async" width="860" height="117">
-    <button type="button" class="pillar-h" aria-expanded="false"><span class="n">04</span><span class="t">Finanzas</span></button>
-    <div class="pillar-b"><div class="pb-in">
-     <h3>Finanzas y libertad</h3>
-     <p class="chg">Lo que cambia: una relación más ordenada con el dinero.</p>
-     <ul><li>Organización financiera personal</li><li>Consumo consciente y control de deudas</li><li>Fundamentos de inversión</li><li>Ingresos, patrimonio y planificación a largo plazo</li></ul>
-    </div></div>
-   </article>
-   <article class="pillar" style="--c:var(--p5)" data-m="4">
-    <img src="assets/img/piso-espiritualidad.webp" alt="Piso de Espiritualidad: una persona medita frente al atardecer" loading="lazy" decoding="async" width="880" height="135">
-    <button type="button" class="pillar-h" aria-expanded="false"><span class="n">05</span><span class="t">Espiritualidad</span></button>
-    <div class="pillar-b"><div class="pb-in">
-     <h3>Desarrollo personal y espiritualidad</h3>
-     <p class="chg">Con orientación cristiana. Lo que cambia: principios que orientan tus decisiones.</p>
-     <ul><li>Propósito y dirección personal</li><li>Meditación y reflexión en la Palabra de Dios</li><li>Fe aplicada a las decisiones</li><li>Disciplina, comunidad y servicio</li></ul>
-    </div></div>
-   </article>
-  </div>
+  <ul class="arrows">
+   <li data-rv>¿Pones primero el trabajo y lo demás «después»? El diagnóstico te muestra qué pilar está frenando a los otros.</li>
+   <li data-rv>¿Te motivas una semana y vuelves a la pila? La jornada te da una misión corta por día durante 90 días.</li>
+   <li data-rv>¿Esperas a tener tiempo? Las misiones duran de 10 a 30 minutos, pensadas para quien no tiene tiempo.</li>
+   <li data-rv>¿Quieres cambiar todo a la vez y te agotas? Empiezas por un solo pilar, el correcto.</li>
+   <li data-rv>¿Lees y no aplicas? Cada capítulo termina en un ejercicio y un checklist.</li>
+   <li data-rv>¿Pausas unos días y abandonas? El sistema guarda dónde quedaste y retomas sin empezar de cero.</li>
+  </ul>
+ </div>
+</section>
 
+<!-- 9 · BÔNUS -->
+<section class="sec soft" aria-labelledby="h-bonos">
+ <div class="wrap">
+  <div class="center">
+   <h2 id="h-bonos" data-rv>Y llevas también <span class="hl">4 bonos</span></h2>
+   <p class="lead" data-rv>Para las excusas que más frenan el cambio. Cuatro libros digitales dentro del mismo sistema, incluidos en el mismo pago.</p>
+  </div>
   <div class="bonos">
-   <div class="head">
-    <p class="kicker">Y 4 bonos</p>
-    <h2 class="display sm">Para las excusas que <em>más frenan el cambio.</em></h2>
-    <p>Cada uno responde a una frase que seguramente ya dijiste. Son cuatro libros digitales dentro del mismo sistema, incluidos en el mismo pago.</p>
-   </div>
-   <div class="bono-grid">
-    <article data-rv><p class="excusa">«No tengo tiempo»</p><h3>Gestión del tiempo</h3><p>Prioridades, productividad, foco y organización del tiempo.</p><span class="tag">Bono 1</span></article>
-    <article data-rv><p class="excusa">«Me desbordo»</p><h3>Inteligencia emocional</h3><p>Gatillos emocionales, reacciones, autocontrol y resiliencia.</p><span class="tag">Bono 2</span></article>
-    <article data-rv><p class="excusa">«No sé cómo decirlo»</p><h3>Comunicación</h3><p>Construir mensajes, argumentar, responder objeciones y persuadir.</p><span class="tag">Bono 3</span></article>
-    <article data-rv><p class="excusa">«No sé cómo ganar un extra»</p><h3>El Mapa: 21 oportunidades de negocio 2026</h3><p>Ideas de negocio, incluidas opciones digitales y con inteligencia artificial. Son referencias para investigar y validar, no promesa de ingresos.</p><span class="tag">Bono 4</span></article>
-   </div>
+   <article data-rv><span class="b-ico" aria-hidden="true">⏳</span><div><p class="b-k">Bono 01 · «No tengo tiempo»</p><h3>Gestión del tiempo</h3><p>Prioridades, productividad, foco y organización del tiempo.</p></div></article>
+   <article data-rv><span class="b-ico" aria-hidden="true">🧠</span><div><p class="b-k">Bono 02 · «Me desbordo»</p><h3>Inteligencia emocional</h3><p>Gatillos emocionales, reacciones, autocontrol y resiliencia.</p></div></article>
+   <article data-rv><span class="b-ico" aria-hidden="true">💬</span><div><p class="b-k">Bono 03 · «No sé cómo decirlo»</p><h3>Comunicación</h3><p>Construir mensajes, argumentar, responder objeciones y persuadir.</p></div></article>
+   <article data-rv><span class="b-ico" aria-hidden="true">🗺️</span><div><p class="b-k">Bono 04 · «No sé cómo ganar un extra»</p><h3>El Mapa: 21 oportunidades de negocio 2026</h3><p>Ideas de negocio, incluidas opciones digitales y con IA. Son referencias para investigar y validar, no promesa de ingresos.</p></div></article>
   </div>
  </div>
 </section>
 
-<!-- 8 · OFERTA, GARANTIA, PARA QUEM, FAQ -->
-<section class="sec oferta" id="oferta" data-amb="#8b90f5" aria-labelledby="h-oferta">
- <div class="wrap">
-  <div class="head center">
-   <p class="kicker">VII · El acceso</p>
-   <h2 id="h-oferta" class="display">Todo lo que necesitas para <em>levantar tu Pilar Ancla.</em></h2>
-   <p>Diagnóstico, plan, biblioteca y bonos. Todo de una vez, en un solo pago, sin suscripción.</p>
-  </div>
-  <div class="offer">
-   <ul class="inv">
-    <li><b>Sistema Los 5 Pilares de la Prosperidad</b><span>Plataforma online en el celular o la computadora, en español y portugués.</span></li>
-    <li><b>5 libros principales</b><span>46 capítulos sobre los 5 pilares.</span></li>
-    <li><b>151 ejercicios prácticos</b><span>Para evaluar tu realidad y pasar del conocimiento a la acción.</span></li>
-    <li><b>46 checklists</b><span>Para acompañar tus prácticas capítulo a capítulo.</span></li>
-    <li><b>Diagnóstico de los 5 pilares</b><span>15 afirmaciones y tu mapa de equilibrio.</span></li>
-    <li><b>Jornada de 90 días</b><span>90 misiones de 10 a 30 minutos, con revisiones semanales.</span></li>
-    <li><b>Panel de progreso</b><span>Tus tareas, lecturas, notas y avance en un solo lugar.</span></li>
-    <li><b>4 bonos complementarios</b><span>Gestión del tiempo, Inteligencia emocional, Comunicación y El Mapa: 21 oportunidades de negocio 2026.</span></li>
+<!-- 10 · OFERTA -->
+<section class="sec" id="oferta" aria-labelledby="h-oferta">
+ <div class="wrap center">
+  <h2 id="h-oferta" data-rv>Todo lo que necesitas, <span class="hl">en un solo pago</span></h2>
+  <p class="lead" data-rv>Diagnóstico, plan, biblioteca y bonos. Sin mensualidad.</p>
+  <div class="plan" data-rv>
+   <p class="plan-tag">Acceso completo + 4 bonos</p>
+   <h3>Los 5 Pilares de la Prosperidad</h3>
+   <p class="plan-sub">Plataforma online en el celular o la computadora, en español y portugués.</p>
+   <ul class="plan-list">
+    <li>5 libros principales con 46 capítulos</li>
+    <li>151 ejercicios prácticos</li>
+    <li>46 checklists</li>
+    <li>Diagnóstico de los 5 pilares (15 afirmaciones)</li>
+    <li>Jornada de 90 días con revisiones semanales</li>
+    <li>Panel de progreso: tareas, lecturas y notas</li>
+    <li class="bonus">Bono: Gestión del tiempo</li>
+    <li class="bonus">Bono: Inteligencia emocional</li>
+    <li class="bonus">Bono: Comunicación</li>
+    <li class="bonus">Bono: El Mapa, 21 oportunidades de negocio 2026</li>
    </ul>
-   <div class="price-card" id="price-card">
-    <p class="pc-k">Acceso completo</p>
-    <div class="cdbox" id="cdbox" hidden>
-     <p>El precio de lanzamiento termina en</p>
-     <div class="cd"><span><b id="cd-d">00</b>días</span><span><b id="cd-h">00</b>horas</span><span><b id="cd-m">00</b>min</span><span><b id="cd-s">00</b>seg</span></div>
-    </div>
-    <p class="from" id="from" hidden>De <s data-price-from></s></p>
-    <p class="price"><span class="cur" data-cur>US$</span><span class="num" data-num>19,90</span></p>
-    <p class="save" id="save" hidden>Ahorras <span data-save></span></p>
-    <p class="pc-sub">Pago único, sin suscripción. Son <span data-perday>unos 22 centavos de dólar</span> por día durante la jornada.</p>
-    <p class="pc-sub" id="after" hidden>Precio de lanzamiento. Después: <span data-price-after></span>.</p>
-    <a class="btn btn-gold wide magnetic" data-co href="#oferta">Quiero mi acceso completo</a>
-    <p class="micro">Pago único en Hotmart. Acceso inmediato en tu correo.<br>Precio en dólares: el checkout lo convierte a tu moneda.</p>
-    <a class="pc-g" href="#garantia"><span><b data-gd>7</b></span> días de garantía. Mira cómo funciona</a>
-   </div>
+   <div class="cdbox" id="cdbox" hidden><p>El precio de lanzamiento termina en</p><div class="cd"><span><b id="cd-d">00</b>días</span><span><b id="cd-h">00</b>horas</span><span><b id="cd-m">00</b>min</span><span><b id="cd-s">00</b>seg</span></div></div>
+   <p class="from" id="from" hidden>De <s data-price-from></s></p>
+   <p class="price-big light"><span data-cur>US$</span><b data-num>19,90</b></p>
+   <p class="plan-pay">pago único · <span data-perday>unos 22 centavos de dólar</span> por día de jornada</p>
+   <p class="save" id="save" hidden>Ahorras <span data-save></span></p>
+   <p class="plan-pay" id="after" hidden>Precio de lanzamiento. Después: <span data-price-after></span>.</p>
+   <a class="cta lime wide" data-co href="#oferta">Quiero mi acceso completo <span aria-hidden="true">↗</span></a>
+   <p class="plan-note">Pago en Hotmart. Acceso inmediato en tu correo. Precio en dólares: el checkout lo convierte a tu moneda.</p>
   </div>
+  <ul class="ticks-row"><li>Pago único</li><li>Sin mensualidad</li><li>Acceso en el celular y la computadora</li></ul>
+ </div>
+</section>
 
-  <div class="garantia" id="garantia">
-   <div class="seal" aria-hidden="true">
-    <svg viewBox="0 0 200 200"><defs><path id="ring" d="M100 100m-78 0a78 78 0 1 1 156 0a78 78 0 1 1-156 0"/></defs><text><textPath href="#ring"><tspan data-gd>7</tspan> días de garantía • 100% de vuelta • sin preguntas •</textPath></text></svg>
-    <b data-gd>7</b><span>días</span>
-   </div>
-   <div>
-    <h2 class="display sm">Garantía de <span data-gd>7</span> días: <em>el riesgo es nuestro.</em></h2>
-    <p>Entra, haz el diagnóstico completo y las primeras misiones. Si dentro de los <span data-gd>7</span> días sientes que no es para ti, pides el reembolso en Hotmart y recibes el 100% de vuelta, sin preguntas. Lo peor que puede pasar es que descubras tu Pilar Ancla sin pagar nada.</p>
-   </div>
+<!-- 11 · GARANTIA -->
+<section class="sec soft" id="garantia" aria-labelledby="h-garantia">
+ <div class="wrap narrow guarantee">
+  <div class="seal" aria-hidden="true"><b data-gd>7</b><span>días de<br>garantía</span></div>
+  <div>
+   <p class="eyebrow"><span data-gd>7</span> días para conocer por dentro</p>
+   <h2 id="h-garantia" data-rv>¿No te gustó? <span class="hl">Te devolvemos el dinero.</span></h2>
+   <p>Entra, haz el diagnóstico completo y las primeras misiones. Si dentro de los <span data-gd>7</span> días sientes que no es para ti, pides el reembolso en Hotmart y recibes el 100% de vuelta, sin preguntas.</p>
+   <a class="cta" data-co href="#oferta">Quiero empezar con garantía <span aria-hidden="true">→</span></a>
   </div>
+ </div>
+</section>
 
-  <section class="prueba-social" id="prueba-social" hidden aria-labelledby="h-ps">
-   <h2 id="h-ps" class="display sm">Lo que dicen quienes ya empezaron</h2>
-   <div class="ps-grid" id="ps-grid"></div>
-  </section>
+<section class="sec" id="prueba-social" hidden aria-labelledby="h-ps">
+ <div class="wrap center"><h2 id="h-ps">Lo que dicen quienes ya empezaron</h2><div class="ps-grid" id="ps-grid"></div></div>
+</section>
 
+<!-- 12 · COMO CHEGA O ACESSO -->
+<section class="sec" aria-labelledby="h-acceso">
+ <div class="wrap center">
+  <h2 id="h-acceso" data-rv>Cómo llega tu acceso</h2>
+  <p class="lead" data-rv>De la compra a tu primera misión, en tres pasos.</p>
+  <ol class="how">
+   <li data-rv><b>1</b><h3>Pagas en Hotmart</h3><p>Pago único y seguro. Hotmart convierte el precio a tu moneda.</p></li>
+   <li data-rv><b>2</b><h3>El enlace llega a tu correo</h3><p>Al confirmarse el pago, recibes el acceso. Se abre en el celular, la tableta o la computadora.</p></li>
+   <li data-rv><b>3</b><h3>Haces tu diagnóstico</h3><p>Encuentras tu Pilar Ancla y empiezas la primera misión del día.</p></li>
+  </ol>
+ </div>
+</section>
+
+<!-- 13 · PARA QUEM É -->
+<section class="sec soft" aria-labelledby="h-fit">
+ <div class="wrap">
+  <h2 id="h-fit" class="center" data-rv>Para quién es y para quién no</h2>
   <div class="fit">
-   <div class="fit-y"><h3>Es para ti si</h3><ul><li>Sientes que trabajas mucho y avanzas poco.</li><li>Quieres cuidar mejor varias áreas de tu vida.</li><li>Necesitas más claridad y dirección.</li><li>Quieres crear hábitos y disciplina.</li><li>Valoras la espiritualidad cristiana.</li><li>Prefieres un camino ordenado a la motivación pasajera.</li></ul></div>
-   <div class="fit-n"><h3>No es para ti si</h3><ul><li>Buscas enriquecerte rápido.</li><li>Esperas resultados garantizados o una solución mágica.</li><li>Solo quieres leer, sin practicar.</li></ul></div>
+   <div class="fit-y" data-rv><h3>Es para ti si</h3><ul><li>Sientes que trabajas mucho y avanzas poco.</li><li>Quieres cuidar mejor varias áreas de tu vida.</li><li>Necesitas más claridad y dirección.</li><li>Quieres crear hábitos y disciplina.</li><li>Valoras la espiritualidad cristiana.</li><li>Prefieres un camino ordenado a la motivación pasajera.</li></ul></div>
+   <div class="fit-n" data-rv><h3>No es para ti si</h3><ul><li>Buscas enriquecerte rápido.</li><li>Esperas resultados garantizados o una solución mágica.</li><li>Solo quieres leer, sin practicar.</li></ul></div>
   </div>
+ </div>
+</section>
 
+<!-- 14 · FAQ -->
+<section class="sec" aria-labelledby="h-faq">
+ <div class="wrap narrow">
+  <h2 id="h-faq" class="center" data-rv>Dudas frecuentes</h2>
   <div class="faq">
-   <h2 class="display sm">Lo que suelen preguntar <em>antes de entrar.</em></h2>
    <details><summary>Ya empecé muchas cosas y no las terminé. ¿Por qué esto sería diferente?</summary><p>Porque no te pide cambiar todo de una vez. Empiezas por un solo pilar, con una misión de 10 a 30 minutos por día, y el sistema guarda dónde quedaste. Si pausas unos días, retomas sin empezar de cero.</p></details>
-   <details><summary>¿Por qué cuesta solo <span data-price>US$ 19,90</span>?</summary><p>Porque es un sistema digital, sin clases en vivo ni acompañamiento individual. Así el precio no es una razón más para seguir posponiendo tu vida. Y tienes <span data-gd>7</span> días de garantía para probarlo.</p></details>
+   <details><summary><span>¿Por qué cuesta solo <span data-price>US$ 19,90</span>?</span></summary><p>Porque es un sistema digital, sin clases en vivo ni acompañamiento individual. Así el precio no es una razón más para seguir posponiendo tu vida. Y tienes <span data-gd>7</span> días de garantía para probarlo.</p></details>
    <details><summary>¿Es solo un e-book?</summary><p>No. Es un sistema digital interactivo con la biblioteca de los 5 pilares, 4 bonos, diagnóstico, ejercicios, checklists y una jornada de 90 días. Funciona en el navegador.</p></details>
-   <details><summary>¿Cómo funciona el diagnóstico?</summary><p>Respondes 15 afirmaciones sobre las cinco áreas de tu vida. El sistema te muestra un mapa de equilibrio e indica qué pilar merece más atención ahora. En esta página puedes hacer una prueba rápida de 5 preguntas.</p></details>
    <details><summary>¿Cuánto tiempo necesito por día?</summary><p>Entre 10 y 30 minutos por día, con revisiones semanales. Está pensado justamente para quien siente que no tiene tiempo.</p></details>
-   <details><summary>¿La jornada de 90 días y mi propio ritmo funcionan juntos?</summary><p>Sí. La jornada sugiere una misión por día en un orden pensado, y la biblioteca la lees cuando quieras, empezando por tu pilar prioritario. Si pausas unos días, retomas desde donde quedaste: el sistema guarda lo que ya hiciste.</p></details>
    <details><summary>¿Tengo que trabajar los cinco pilares a la vez?</summary><p>No. La idea es identificar tu prioridad y empezar por el pilar que más lo necesita.</p></details>
    <details><summary>¿Dónde queda guardado mi progreso?</summary><p>En el navegador del dispositivo que usas. No hay sincronización automática en la nube. Para pasar tus registros a otro dispositivo, exportas un archivo de copia de seguridad y lo importas allí.</p></details>
    <details><summary>¿Está en español?</summary><p>Sí. Los libros tienen contenido en español y portugués, y la interfaz también ofrece opciones de idioma.</p></details>
-   <details><summary>¿Cómo recibo el acceso?</summary><p>Al confirmarse el pago, te llega el enlace al correo. Se abre en el celular, la tableta o la computadora.</p></details>
    <details><summary>¿Cómo pago desde mi país?</summary><p>Por Hotmart, que convierte el precio en dólares a tu moneda. Pago único, sin suscripción.</p></details>
    <details><summary>¿El contenido es religioso?</summary><p>El pilar Desarrollo personal y espiritualidad tiene orientación cristiana, basada en la Biblia. Los otros cuatro pilares y los bonos son prácticos.</p></details>
    <details><summary>¿Garantiza que voy a ganar dinero?</summary><p>No. Son contenidos educativos, ejercicios y herramientas de planificación. Los resultados dependen de tus decisiones y de tu constancia. No hay promesa de ingresos.</p></details>
    <details><summary>¿Reemplaza a un médico, psicólogo o asesor financiero?</summary><p>No. No sustituye la atención profesional.</p></details>
-   <details><summary>¿Y si me arrepiento?</summary><p>Tienes la garantía de <span data-gd>7</span> días de Hotmart. <a href="#garantia">Mira cómo funciona</a>.</p></details>
+   <details><summary>¿Y si me arrepiento?</summary><p>Tienes la garantía de <span data-gd>7</span> días de Hotmart. Pides el reembolso y recibes el 100% de vuelta.</p></details>
   </div>
  </div>
 </section>
 
-<!-- 9 · FECHAMENTO: o amanhecer -->
-<section class="final" id="final" data-amb="#e8b878" aria-labelledby="h-final">
- <div class="final-sky" aria-hidden="true"></div>
- <div class="final-grid wrap">
- <div class="final-tower" id="final-tower" aria-hidden="true"></div>
- <div class="final-in">
-  <h2 id="h-final" class="display">En diciembre vas a mirar atrás. <em>Decide hoy qué vas a ver.</em></h2>
-  <p>Puedes cerrar esta página y dejar la lista para «cuando tenga tiempo». O puedes descubrir hoy tu Pilar Ancla y dar el primer paso en los próximos 3 minutos. Todo empieza con una decisión de <span data-price>US$ 19,90</span>, protegida por <span data-gd>7</span> días de garantía.</p>
-  <a class="btn btn-gold magnetic" data-co href="#oferta">Quiero empezar hoy por <span data-price>US$ 19,90</span></a>
-  <p class="micro">Pago único en Hotmart · Acceso inmediato · <span data-gd>7</span> días de garantía</p>
-  <div class="pd">
-   <p><b>P.D.</b> ¿Todavía dudas? <a href="#prueba-rapida">Encuentra tu Pilar Ancla gratis</a>. No pide tu correo. Si el resultado describe tu vida de hoy, ya sabes por dónde empezar.</p>
-   <p><b>P.D. 2</b> El resumen: 5 libros principales, 46 capítulos, 151 ejercicios, 46 checklists, diagnóstico, jornada de 90 días, panel de progreso y 4 bonos por <span data-price>US$ 19,90</span>, pago único.</p>
-  </div>
-  </div>
+<!-- 15 · FECHAMENTO -->
+<section class="final" aria-labelledby="h-final">
+ <div class="wrap narrow center">
+  <p class="eyebrow">En diciembre vas a mirar atrás</p>
+  <h2 id="h-final" data-rv>Decide hoy <span class="hl">qué vas a ver.</span></h2>
+  <p class="lead">Puedes dejar la lista para «cuando tenga tiempo». O descubrir hoy tu Pilar Ancla y dar el primer paso en los próximos 3 minutos.</p>
+  <a class="cta" data-co href="#oferta">Quiero empezar hoy <span aria-hidden="true">↗</span></a>
+  <p class="small">Pago único · Acceso inmediato · <span data-gd>7</span> días de garantía</p>
  </div>
 </section>
 </main>
 
 <footer class="foot">
  <div class="wrap">
-  <img src="assets/img/logo.webp" alt="Los 5 Pilares de la Prosperidad" width="160" height="102" loading="lazy">
-  <p>Los 5 Pilares de la Prosperidad. Plataforma online de desarrollo personal en 5 áreas de la vida.</p>
+  <img src="assets/img/logo.webp" alt="Los 5 Pilares de la Prosperidad" width="120" height="77" loading="lazy">
   <p>Este producto no sustituye el acompañamiento médico, psicológico ni financiero profesional. Los resultados dependen de la aplicación de cada persona; no hay promesa de ganancias ni de resultados específicos.</p>
   <p>La compra se procesa en Hotmart. Este sitio no forma parte de Facebook, Instagram ni Google, ni está respaldado por ellos.</p>
  </div>
@@ -396,13 +355,12 @@
 
 <div class="dock" id="dock" aria-hidden="true">
  <span><b>Los 5 Pilares</b> <span data-price>US$ 19,90</span></span>
- <a class="btn btn-gold sm" data-co href="#oferta" tabindex="-1">Empezar</a>
+ <a class="cta sm" data-co href="#oferta" tabindex="-1">Empezar <span aria-hidden="true">→</span></a>
 </div>
 
 <script src="assets/vendor/gsap.min.js" defer></script>
 <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
 <script src="assets/vendor/lenis.min.js" defer></script>
-<script src="assets/tower.js?v=17" defer></script>
-<script src="assets/app.js?v=17" defer></script>
+<script src="assets/app.js?v=18" defer></script>
 </body>
 </html>

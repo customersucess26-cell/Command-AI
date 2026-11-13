@@ -1,6 +1,6 @@
 # Los 5 Pilares · página de vendas v17 (espanhol)
 
-Conceito: **"La torre de los 5 pilares"**. No topo, a foto da torre de cinco andares (`assets/img/torre.webp`, com Salud no alto e Espiritualidad na base). A mesma torre, desenhada em SVG preto e dourado (`assets/tower.js`), aparece na virada, no mecanismo, no resultado do teste e no fechamento. Nela, o Pilar Ancla fica apagado, rachado e inclinando a torre.
+Modelo: **sequência cinematográfica controlada pela rolagem** (no estilo das vitrines "scroll cinematic"). A página abre com a foto da torre em tela cheia, e a câmera sobe andar por andar (Espiritualidad, Finanzas, Carrera, Relaciones e Salud) com uma frase grande para cada pilar. No fim, a câmera recua, o andar de Finanzas apaga e racha (o Pilar Ancla) e os botões levam ao teste ou ao checkout. Depois vem a página de vendas, escura e dourada. A câmera fica em `assets/app.js` (função `cinema`, pontos `FL`). Para trocar a foto por um vídeo de IA, gere-o a partir de `assets/img/torre.webp`.
 
 ## Arquivos
 
@@ -8,7 +8,6 @@ Conceito: **"La torre de los 5 pilares"**. No topo, a foto da torre de cinco and
 index.html            a página (texto, estrutura e configuração)
 assets/site.css       visual
 assets/app.js         preço, checkout com UTM, píxel, teste, contagem, animações
-assets/tower.js       torre dos 5 pilares em SVG (topo, virada, mecanismo, resultado do teste e fechamento)
 assets/vendor/        GSAP 3.12.5, ScrollTrigger e Lenis 1.1.13 (locais, sem CDN)
 assets/img/           logo, telas reais do sistema, fotos dos pilares, og.jpg, icon.png
 ```
