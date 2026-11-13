@@ -1,6 +1,6 @@
 # Los 5 Pilares · página de vendas v17 (espanhol)
 
-Conceito: **"Amanecer en cinco columnas"**. A página é uma caminhada da noite ao amanhecer dentro de um templo de cinco colunas. No topo, uma coluna está rachada (o Pilar Ancla). No fechamento, as cinco estão de pé, na luz da manhã.
+Conceito: **"La torre de los 5 pilares"**. Cinco anéis empilhados (de baixo para cima: Salud, Finanzas, Carrera, Relaciones e Fe), com um cômodo de vidro iluminado entre eles e uma árvore no topo. No topo da página, os anéis acendem um a um e o do Pilar Ancla fica apagado, rachado e inclinando a torre. No resultado do teste, a torre mostra o pilar âncora da pessoa. No fechamento, ela aparece inteira acesa no amanhecer.
 
 ## Arquivos
 
@@ -8,7 +8,7 @@ Conceito: **"Amanecer en cinco columnas"**. A página é uma caminhada da noite 
 index.html            a página (texto, estrutura e configuração)
 assets/site.css       visual
 assets/app.js         preço, checkout com UTM, píxel, teste, contagem, animações
-assets/scene.js       cena das colunas em canvas (topo e fechamento), desenhada ao vivo
+assets/tower.js       torre dos 5 pilares em SVG (topo, virada, mecanismo, resultado do teste e fechamento)
 assets/vendor/        GSAP 3.12.5, ScrollTrigger e Lenis 1.1.13 (locais, sem CDN)
 assets/img/           logo, telas reais do sistema, fotos dos pilares, og.jpg, icon.png
 ```
@@ -35,12 +35,12 @@ Para usar a colagem nova (mulher no amanhecer, família abraçada, executivo dia
 
 ## Prompts das imagens (para quando houver créditos de geração)
 
-Na produção desta versão, os geradores conectados (Higgsfield, OpenArt, Morphix e Kairogen) estavam no plano grátis ou sem saldo. Por isso o templo foi feito em código. Se quiser fotos no lugar da cena, gere estas:
+Na produção desta versão, os geradores conectados (Higgsfield, OpenArt, Morphix e Kairogen) estavam no plano grátis ou sem saldo. Por isso a torre foi feita em código (SVG). Prompts para versões fotográficas:
 
-1. **Topo, 16:9 e 9:16:** Five monumental travertine stone columns in a row inside a vast dark ancient hall before dawn, one column with a deep visible crack, a single shaft of warm volumetric light from a high opening on the left, floating dust, columns in the right two thirds, empty dark negative space on the left, cinematic lighting, 35mm, low angle, Kodak Vision3 film grade, warm honey highlights, deep blacks, photorealistic stone, high-end editorial architectural photography, no people, no text.
-2. **Rachadura, 4:5:** Extreme close-up of a cracked pale marble column, golden light leaking through the fissure from inside the stone, dust in the air, 85mm macro, shallow depth of field, chiaroscuro, photorealistic marble, luxury editorial still life.
-3. **Fechamento, 16:9 e 9:16:** Five restored travertine columns in an ancient hall at sunrise, golden volumetric god rays between them, warm haze, hopeful and majestic, cinematic wide shot, 35mm, Kodak Vision3, photorealistic, no people, no text.
-4. **Pilares, 3:4 (um por cor: verde-esmeralda, violeta, âmbar, azul-ciano, índigo):** A single monumental travertine column in a pitch dark hall lit by one beam of soft [cor] volumetric light from above, dust in the beam, chiaroscuro, 50mm, photorealistic stone, film grain, fine art photography.
+1. **Topo, 9:16 e 4:5:** A cylindrical tower of five stacked glass rooms separated by glossy colored rings (emerald green at the base, then cyan blue, amber, violet, indigo at the top), each room softly lit from inside with warm light and plants on the edges, a lush green tree growing on the top floor, standing on a hilltop at golden hour, low sun on the right, volumetric light, cinematic, photorealistic architectural visualization, Kodak Vision3 grade, no text, no labels.
+2. **Versão Pilar Ancla:** the same tower at dusk, the cyan blue ring (second from the bottom) dull and cracked with golden light leaking through the crack, the rooms above it slightly tilted and dim, the base room lit, dramatic chiaroscuro, photorealistic, no text.
+3. **Fechamento, 16:9:** the same tower fully restored at sunrise, all five rings glowing, every room lit with warm interior light, golden god rays, misty valley behind, hopeful and majestic, cinematic wide shot, photorealistic, no text.
+4. **Cômodos (um por pilar, 3:4):** interior of a round glass room at golden hour seen from outside: [Salud: a person stretching beside fresh fruit] [Finanzas: a tidy desk with a notebook and coins] [Carrera: a person working at a laptop by the window] [Relaciones: a family sharing a meal] [Fe: a person reading a Bible in quiet light], warm practical lights, plants, cinematic, photorealistic, no text.
 
 ## Acessibilidade e movimento
 
@@ -50,7 +50,7 @@ Na produção desta versão, os geradores conectados (Higgsfield, OpenArt, Morph
 
 ## O que mudou em relação à v16
 
-- A primeira dobra agora é uma cena (o templo com o Pilar Ancla rachado), não a captura do painel.
+- A primeira dobra agora é a torre dos 5 pilares, com o Pilar Ancla rachado, e não a captura do painel.
 - O teste grátis virou o botão principal do topo e o centro da página. O resultado desenha os cinco pilares e abre o livro do pilar âncora.
 - A faixa de compra que se repetia cerca de 8 vezes foi substituída por CTAs nos pontos de decisão e uma barra fixa no celular depois do teste.
 - As telas reais do sistema passam em rolagem horizontal fixa no desktop.

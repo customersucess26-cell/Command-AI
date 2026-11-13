@@ -41,31 +41,6 @@
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
 
-<!-- símbolos: a coluna, usada no teste, na virada e no indicador -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
- <defs>
-  <linearGradient id="stone" x1="0" x2="1">
-   <stop offset="0" stop-color="#1a1612"/><stop offset=".25" stop-color="#8d7f6b"/><stop offset=".5" stop-color="#6b604f"/><stop offset=".85" stop-color="#211c17"/><stop offset="1" stop-color="#110e0b"/>
-  </linearGradient>
-  <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
-   <stop offset="0" stop-color="#fff" stop-opacity=".95"/><stop offset=".7" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
-  </linearGradient>
-  <mask id="glowmask"><rect x="0" y="0" width="60" height="240" fill="url(#glow)"/></mask>
- </defs>
- <symbol id="col" viewBox="0 0 60 240">
-  <g fill="url(#stone)">
-   <rect x="3" y="0" width="54" height="10" rx="1"/><rect x="9" y="10" width="42" height="10"/>
-   <rect x="12" y="20" width="36" height="192"/>
-   <rect x="9" y="212" width="42" height="10"/><rect x="3" y="222" width="54" height="18" rx="1"/>
-  </g>
-  <g stroke="#000" stroke-opacity=".35" stroke-width="1"><path d="M17 20v192M22 20v192M27 20v192M32 20v192M37 20v192M42 20v192"/></g>
-  <g class="lit" mask="url(#glowmask)"><rect x="3" y="0" width="54" height="240"/></g>
- </symbol>
- <symbol id="crack" viewBox="0 0 60 240">
-  <path d="M33 20 31 32 34 46 28 62 32 76 26 92 31 106 28 122 34 136 29 152 33 168 27 184 31 200 29 212M26 92 20 101 17 113M34 136 40 141 43 152" fill="none" stroke-width="1.6" stroke-linejoin="round"/>
- </symbol>
-</svg>
-
 <div class="launch" id="launch" hidden>Precio de lanzamiento: <b data-price>US$ 19,90</b> hasta el <span id="launch-date"></span>. Después sube a <span data-price-after></span>. Faltan <b id="cd">--</b></div>
 
 <!-- indicador: os cinco pilares se acendem conforme a leitura -->
@@ -85,7 +60,8 @@
 
 <!-- 1 · HERO: as colunas no escuro -->
 <section class="hero" id="hero" data-amb="#e8b878" aria-labelledby="h1">
- <canvas class="stage" id="stage-hero" aria-hidden="true"></canvas>
+ <div class="hero-sky" aria-hidden="true"><i></i></div>
+ <div class="hero-tower" id="hero-tower" aria-hidden="true"></div>
  <div class="hero-in wrap">
   <p class="eyebrow" data-in>Para quienes cuidan de todo, menos de su propia vida</p>
   <h1 id="h1" class="display" data-split>Hay un área de tu vida que está frenando a las otras cuatro.</h1>
@@ -151,14 +127,7 @@
      <li data-step="-1">Cada uno arregla su pilar y te deja solo con los otros cuatro.</li>
     </ol>
    </div>
-   <div class="giro-cols" aria-hidden="true">
-    <figure style="--c:var(--p1)"><svg viewBox="0 0 60 240"><use href="#col"/></svg><figcaption>Salud</figcaption></figure>
-    <figure style="--c:var(--p2)"><svg viewBox="0 0 60 240"><use href="#col"/></svg><figcaption>Relaciones</figcaption></figure>
-    <figure style="--c:var(--p3)"><svg viewBox="0 0 60 240"><use href="#col"/></svg><figcaption>Carrera</figcaption></figure>
-    <figure style="--c:var(--p4)"><svg viewBox="0 0 60 240"><use href="#col"/></svg><figcaption>Finanzas</figcaption></figure>
-    <figure style="--c:var(--p5)"><svg viewBox="0 0 60 240"><use href="#col"/></svg><figcaption>Fe</figcaption></figure>
-    <svg class="giro-links" viewBox="0 0 500 40" preserveAspectRatio="none"><path d="M50 20H450"/></svg>
-   </div>
+   <div class="giro-tower" id="giro-tower" aria-hidden="true"></div>
   </div>
  </div>
  <div class="wrap giro-after">
@@ -177,14 +146,8 @@
 <section class="sec ancla" id="ancla" data-amb="#e8b878" aria-labelledby="h-ancla">
  <div class="wrap ancla-grid">
   <div class="fall" id="fall" aria-hidden="true">
-   <div class="fall-cols">
-    <svg viewBox="0 0 60 240" style="--c:var(--p1)" class="f f0"><use href="#col"/></svg>
-    <svg viewBox="0 0 60 240" style="--c:var(--p2)" class="f f1"><use href="#col"/></svg>
-    <svg viewBox="0 0 60 240" style="--c:var(--p3)" class="f f2"><use href="#col"/></svg>
-    <svg viewBox="0 0 60 240" style="--c:var(--p4)" class="f f3 anchor"><use href="#col"/><use href="#crack" class="crk"/></svg>
-    <svg viewBox="0 0 60 240" style="--c:var(--p5)" class="f f4"><use href="#col"/></svg>
-   </div>
-   <p class="fall-cap" id="fall-cap" data-a="Con el ancla en el suelo, los demás se inclinan." data-b="Levantas el ancla y los demás vuelven a su lugar.">Con el ancla en el suelo, los demás se inclinan.</p>
+   <div class="fall-tower" id="fall-tower"></div>
+   <p class="fall-cap" id="fall-cap" data-a="Con el ancla débil, toda la torre se inclina." data-b="Levantas el ancla y la torre vuelve a quedar de pie.">Con el ancla débil, toda la torre se inclina.</p>
   </div>
   <div>
    <p class="kicker">III · El mecanismo</p>
@@ -403,8 +366,10 @@
 
 <!-- 9 · FECHAMENTO: o amanhecer -->
 <section class="final" id="final" data-amb="#e8b878" aria-labelledby="h-final">
- <canvas class="stage" id="stage-final" aria-hidden="true"></canvas>
- <div class="final-in wrap">
+ <div class="final-sky" aria-hidden="true"></div>
+ <div class="final-grid wrap">
+ <div class="final-tower" id="final-tower" aria-hidden="true"></div>
+ <div class="final-in">
   <h2 id="h-final" class="display">En diciembre vas a mirar atrás. <em>Decide hoy qué vas a ver.</em></h2>
   <p>Puedes cerrar esta página y dejar la lista para «cuando tenga tiempo». O puedes descubrir hoy tu Pilar Ancla y dar el primer paso en los próximos 3 minutos. Todo empieza con una decisión de <span data-price>US$ 19,90</span>, protegida por <span data-gd>7</span> días de garantía.</p>
   <a class="btn btn-gold magnetic" data-co href="#oferta">Quiero empezar hoy por <span data-price>US$ 19,90</span></a>
@@ -412,6 +377,7 @@
   <div class="pd">
    <p><b>P.D.</b> ¿Todavía dudas? <a href="#prueba-rapida">Encuentra tu Pilar Ancla gratis</a>. No pide tu correo. Si el resultado describe tu vida de hoy, ya sabes por dónde empezar.</p>
    <p><b>P.D. 2</b> El resumen: 5 libros principales, 46 capítulos, 151 ejercicios, 46 checklists, diagnóstico, jornada de 90 días, panel de progreso y 4 bonos por <span data-price>US$ 19,90</span>, pago único.</p>
+  </div>
   </div>
  </div>
 </section>
@@ -434,7 +400,7 @@
 <script src="assets/vendor/gsap.min.js" defer></script>
 <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
 <script src="assets/vendor/lenis.min.js" defer></script>
-<script src="assets/scene.js?v=17" defer></script>
+<script src="assets/tower.js?v=17" defer></script>
 <script src="assets/app.js?v=17" defer></script>
 </body>
 </html>

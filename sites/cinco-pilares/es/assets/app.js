@@ -131,9 +131,12 @@
     var html = '<div class="res">' + prog(5) +
       '<p class="q-n">Tu resultado</p><h3 id="res-h" tabindex="-1">' + (firm ? 'Tus pilares están firmes.' : 'Tu Pilar Ancla hoy: ' + name) + '</h3>' +
       '<p>' + (firm ? 'Buen punto de partida. El sistema te ayuda a sostenerlos y a subir cada uno.' : REC[name]) + '</p>' +
-      '<div class="rcols" role="img" aria-label="Tus cinco pilares: ' + Q.map(function (q, i) { return q[0] + ' ' + sc[i] + ' de 3'; }).join(', ') + '">' +
-      Q.map(function (q, i) { return '<div class="' + (i === m && !firm ? 'low' : '') + '" style="--c:' + COL[i] + '"><svg viewBox="0 0 60 240" preserveAspectRatio="none" style="--h:' + Math.round(34 + sc[i] / 3 * 66) + '%"><use href="#col"/></svg></div>'; }).join('') + '</div>' +
-      '<div class="rcols-l" aria-hidden="true">' + Q.map(function (q, i) { return '<span><b>' + q[0] + '</b>' + sc[i] + '/3</span>'; }).join('') + '</div>' +
+      (function () {
+        var cmp = box.clientWidth < 460;
+        return '<div class="res-tower' + (cmp ? ' compact-w' : '') + '">' + window.Tower({ id: 'r', compact: cmp, anchor: firm ? -1 : m, scores: sc, callouts: cmp ? 'none' : 'score',
+          lit: sc.map(function (v) { return 0.12 + v / 3 * 0.8; }), label: 'Tus cinco pilares: ' + Q.map(function (q, i) { return q[0] + ' ' + sc[i] + ' de 3'; }).join(', ') }) + '</div>';
+      })() +
+      (box.clientWidth < 460 ? '<div class="rcols-l" aria-hidden="true">' + Q.map(function (q, i) { return '<span><b>' + q[0] + '</b>' + sc[i] + '/3</span>'; }).join('') + '</div>' : '') +
       '<a class="btn btn-gold wide" data-co href="' + link + '"' + (ok ? ' rel="noopener"' : '') + '>' + (firm ? 'Comprar acceso completo' : 'Empezar por ' + name + ' · ' + esc(cur + ' ' + P.txt)) + '</a>' +
       '<p class="micro">Pago único. <a href="#oferta">Ver qué incluye</a></p>' +
       '<button type="button" class="redo">Repetir la prueba</button></div>';
@@ -230,20 +233,15 @@
     });
   })();
 
-  /* ---------- cenas em canvas ---------- */
-  var hero = null, fin2 = null;
-  if (window.Temple) {
-    var hc = $1('#stage-hero'), fc = $1('#stage-final');
-    hero = new window.Temple(hc, { anchor: 3, static: RM, amb: RM ? 0.5 : 0, crack: RM ? 1 : 0 });
-    fin2 = new window.Temple(fc, { anchor: 3, static: RM, dawn: RM ? 1 : 0, amb: 0.4 });
-    fin2.centered = true; fin2.layout();
-    if (RM) { fin2.s.lit = [0.6, 0.6, 0.6, 0.6, 0.6]; fin2.s.dawn = 1; fin2.draw(); hero.draw(); }
-    if (FINE && !RM) {
-      $1('#hero').addEventListener('pointermove', function (e) {
-        hero.s.mx = (e.clientX / innerWidth - 0.5); hero.s.my = (e.clientY / innerHeight - 0.5);
-      });
-    }
+  /* ---------- torres dos 5 pilares ---------- */
+  var T = window.Tower, htw = $1('#hero-tower'), gtw = $1('#giro-tower'), ftw = $1('#fall-tower'), fin = $1('#final-tower');
+  if (T) {
+    if (htw) htw.innerHTML = T({ id: 'h', compact: true, anchor: 3, lit: RM ? [0.7, 0.7, 0.7, 0.15, 0.7] : [0, 0, 0, 0, 0] });
+    if (gtw) gtw.innerHTML = T({ id: 'g', anchor: -1, lit: [0.06, 0.06, 0.06, 0.06, 0.06], callouts: innerWidth < 600 ? 'none' : 'name', compact: innerWidth < 600 });
+    if (ftw) ftw.innerHTML = T({ id: 'a', anchor: 3, lit: [0.25, 0.25, 0.25, 0.12, 0.25], callouts: innerWidth < 600 ? 'none' : 'name', compact: innerWidth < 600 });
+    if (fin) fin.innerHTML = T({ id: 'f', compact: true, anchor: -1, lit: [0.85, 0.85, 0.85, 0.85, 0.85] });
   }
+  function setL(el, q, v) { var t = el && el.querySelector('.tier[data-q="' + q + '"]'); if (t) t.style.setProperty('--l', v); }
 
   /* ---------- animações (GSAP) ---------- */
   function splitWords(h) {
@@ -257,7 +255,7 @@
   }
 
   function motion() {
-    if (RM || !window.gsap || !window.ScrollTrigger) { if (hero) { hero.s.amb = 0.5; hero.s.crack = 1; hero.draw(); } return; }
+    if (RM || !window.gsap || !window.ScrollTrigger) { if (htw) [0, 1, 2, 4].forEach(function (q) { setL(htw, q, 0.75); }); return; }
     gsap.registerPlugin(ScrollTrigger);
 
     /* rolagem suave só no desktop com mouse */
@@ -280,12 +278,16 @@
     var tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
     tl.from(words, { yPercent: 115, duration: 1.3, stagger: 0.045 }, 0.25)
       .from('[data-in]', { opacity: 0, y: 24, duration: 1.1, stagger: 0.1 }, 0.7);
-    if (hero) {
-      tl.to(hero.s, { amb: 0.55, duration: 3.2, ease: 'power2.inOut' }, 0)
-        .to(hero.s, { crack: 1, duration: 2.2, ease: 'power2.inOut' }, 1.2);
-      /* ao rolar, o templo escurece e afunda */
-      gsap.to('#stage-hero', { yPercent: 18, opacity: 0.35, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
+    if (htw) {
+      /* os anéis acendem de baixo para cima; o ancla (Finanzas) fica apagado e rachado */
+      var seq = [0, 3, 2, 1, 4];
+      seq.forEach(function (q, k) {
+        var o = { v: 0 };
+        tl.to(o, { v: q === 3 ? 0.15 : 0.75, duration: 1.1, ease: 'power2.out', onUpdate: function () { setL(htw, q, o.v.toFixed(3)); } }, 0.9 + k * 0.28);
+      });
+      tl.from('#hero-tower', { opacity: 0, y: 40, duration: 1.6, ease: 'expo.out' }, 0.2);
       gsap.to('.hero-in', { yPercent: -12, opacity: 0, ease: 'none', scrollTrigger: { trigger: '#hero', start: '35% top', end: 'bottom top', scrub: true } });
+      if (innerWidth > 760) gsap.to('#hero-tower', { yPercent: -60, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
     }
 
     /* a dor: a lista aparece e o carimbo bate */
@@ -298,15 +300,11 @@
     });
 
     /* a virada: seção fixa no desktop, cada especialista acende um pilar */
-    var figs = $('.giro-cols figure'), steps = $('.giro-steps li');
+    var steps = $('.giro-steps li');
     function giroSet(k) {
       steps.forEach(function (s, i) { s.classList.toggle('on', i === k); });
       var st = k >= 0 ? +steps[k].dataset.step : -2;
-      figs.forEach(function (f, i) {
-        var l = st === -1 ? 0.05 : (st === i ? 0.75 : 0.04);
-        if (k === -1) l = 0.04;
-        f.style.setProperty('--l', l); f.classList.toggle('on', st === i);
-      });
+      for (var q = 0; q < 5; q++) setL(gtw, q, st === -1 ? 0.35 : (st === q ? 0.85 : 0.05));
     }
     giroSet(-1);
     var mm = gsap.matchMedia();
@@ -315,7 +313,6 @@
         trigger: '#giro', start: 'top top', end: '+=180%', pin: '.giro-pin', scrub: true,
         onUpdate: function (s) { giroSet(Math.min(steps.length - 1, Math.floor(s.progress * steps.length * 0.999))); }
       });
-      gsap.to('.giro-links path', { strokeDashoffset: 0, ease: 'none', scrollTrigger: { trigger: '#giro', start: 'top+=140% top', end: '+=40%', scrub: true } });
 
       /* o sistema: rolagem horizontal pelas telas reais */
       var track = $1('#sis-track');
@@ -339,19 +336,9 @@
     gsap.from('.inv li', { opacity: 0, x: -20, duration: 0.7, stagger: 0.06, ease: 'power3.out', scrollTrigger: { trigger: '.inv', start: 'top 80%' } });
     gsap.from('.pillar', { opacity: 0, y: 60, duration: 1.1, stagger: 0.08, ease: 'expo.out', scrollTrigger: { trigger: '#pillars', start: 'top 80%' } });
 
-    /* fechamento: o amanhecer acontece com a rolagem */
-    if (fin2) {
-      var fs = fin2.s, px = { a: 0, b: 0, c: 0, d: 0, e: 0 };
-      var sync = function () { fs.lit[0] = px.a; fs.lit[1] = px.b; fs.lit[2] = px.c; fs.lit[3] = px.d; fs.lit[4] = px.e; };
-      /* um pilar acende de cada vez, e o amanhecer vem por cima */
-      gsap.timeline({ scrollTrigger: { trigger: '#final', start: 'top 90%', end: 'center center', scrub: 0.8 }, onUpdate: sync })
-        .to(px, { a: 0.7, duration: 0.3, ease: 'none' }, 0)
-        .to(px, { b: 0.7, duration: 0.3, ease: 'none' }, 0.12)
-        .to(px, { c: 0.7, duration: 0.3, ease: 'none' }, 0.24)
-        .to(px, { d: 0.7, duration: 0.3, ease: 'none' }, 0.36)
-        .to(px, { e: 0.7, duration: 0.3, ease: 'none' }, 0.48)
-        .to(fs, { dawn: 1, duration: 0.6, ease: 'power1.in' }, 0.45);
-    }
+    /* fechamento: a torre sobe na luz do amanhecer */
+    gsap.from('#final-tower', { y: 80, opacity: 0, duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: '#final', start: 'top 70%' } });
+    gsap.from('.final-sky', { opacity: 0, ease: 'none', scrollTrigger: { trigger: '#final', start: 'top bottom', end: 'top 30%', scrub: true } });
 
     /* botões magnéticos */
     if (FINE) $('.magnetic').forEach(function (b) {
@@ -367,6 +354,4 @@
   }
   motion();
 
-  /* a cena do fechamento acende os pilares mesmo sem GSAP */
-  if (fin2 && (!window.gsap || RM)) { fin2.s.dawn = 1; fin2.s.lit = [0.6, 0.6, 0.6, 0.6, 0.6]; fin2.draw(); }
 })();
