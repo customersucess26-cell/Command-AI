@@ -180,10 +180,9 @@
     if (focus) { var b = $1('.pillar-b', pillars[i]); if (b) b.setAttribute('tabindex', '-1'); }
   }
   pillars.forEach(function (p, i) {
-    $1('.pillar-h', p).addEventListener('click', function () { openPillar(p.classList.contains('on') && innerWidth < 900 ? -1 : i); });
-    if (FINE) p.addEventListener('mouseenter', function () { if (innerWidth >= 900) openPillar(i); });
+    $1('.pillar-h', p).addEventListener('click', function () { openPillar(p.classList.contains('on') ? -1 : i); });
   });
-  if (pillars.length && innerWidth >= 900) openPillar(0);
+  if (pillars.length) openPillar(0);
 
   /* ---------- perguntas frequentes: uma aberta por vez ---------- */
   $('.faq details').forEach(function (d) {
@@ -234,9 +233,8 @@
   })();
 
   /* ---------- torres dos 5 pilares ---------- */
-  var T = window.Tower, htw = $1('#hero-tower'), gtw = $1('#giro-tower'), ftw = $1('#fall-tower'), fin = $1('#final-tower');
+  var T = window.Tower, gtw = $1('#giro-tower'), ftw = $1('#fall-tower'), fin = $1('#final-tower');
   if (T) {
-    if (htw) htw.innerHTML = T({ id: 'h', compact: true, anchor: 3, lit: RM ? [0.7, 0.7, 0.7, 0.15, 0.7] : [0, 0, 0, 0, 0] });
     if (gtw) gtw.innerHTML = T({ id: 'g', anchor: -1, lit: [0.06, 0.06, 0.06, 0.06, 0.06], callouts: innerWidth < 600 ? 'none' : 'name', compact: innerWidth < 600 });
     if (ftw) ftw.innerHTML = T({ id: 'a', anchor: 3, lit: [0.25, 0.25, 0.25, 0.12, 0.25], callouts: innerWidth < 600 ? 'none' : 'name', compact: innerWidth < 600 });
     if (fin) fin.innerHTML = T({ id: 'f', compact: true, anchor: -1, lit: [0.85, 0.85, 0.85, 0.85, 0.85] });
@@ -255,7 +253,7 @@
   }
 
   function motion() {
-    if (RM || !window.gsap || !window.ScrollTrigger) { if (htw) [0, 1, 2, 4].forEach(function (q) { setL(htw, q, 0.75); }); return; }
+    if (RM || !window.gsap || !window.ScrollTrigger) { return; }
     gsap.registerPlugin(ScrollTrigger);
 
     /* rolagem suave só no desktop com mouse */
@@ -278,17 +276,10 @@
     var tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
     tl.from(words, { yPercent: 115, duration: 1.3, stagger: 0.045 }, 0.25)
       .from('[data-in]', { opacity: 0, y: 24, duration: 1.1, stagger: 0.1 }, 0.7);
-    if (htw) {
-      /* os anéis acendem de baixo para cima; o ancla (Finanzas) fica apagado e rachado */
-      var seq = [0, 3, 2, 1, 4];
-      seq.forEach(function (q, k) {
-        var o = { v: 0 };
-        tl.to(o, { v: q === 3 ? 0.15 : 0.75, duration: 1.1, ease: 'power2.out', onUpdate: function () { setL(htw, q, o.v.toFixed(3)); } }, 0.9 + k * 0.28);
-      });
-      tl.from('#hero-tower', { opacity: 0, y: 40, duration: 1.6, ease: 'expo.out' }, 0.2);
-      gsap.to('.hero-in', { yPercent: -12, opacity: 0, ease: 'none', scrollTrigger: { trigger: '#hero', start: '35% top', end: 'bottom top', scrub: true } });
-      if (innerWidth > 760) gsap.to('#hero-tower', { yPercent: -60, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
-    }
+    /* a torre entra na luz */
+    tl.from('#hero-art', { opacity: 0, scale: 1.06, duration: 2.2, ease: 'power2.out' }, 0);
+    gsap.to('.hero-in', { yPercent: -12, opacity: 0, ease: 'none', scrollTrigger: { trigger: '#hero', start: '35% top', end: 'bottom top', scrub: true } });
+    if (innerWidth > 760) gsap.to('#hero-art', { y: -120, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } });
 
     /* a dor: a lista aparece e o carimbo bate */
     gsap.from('.note li', { opacity: 0, x: -16, duration: 0.6, stagger: 0.12, ease: 'power3.out', scrollTrigger: { trigger: '.note', start: 'top 75%' } });

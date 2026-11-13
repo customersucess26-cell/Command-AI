@@ -1,15 +1,15 @@
 /* Los 5 Pilares · "La torre de los 5 pilares"
-   Cinco anéis empilhados (de baixo para cima: Salud, Finanzas, Carrera, Relaciones, Fe),
-   um cômodo de vidro iluminado entre eles e uma árvore no topo.
+   Cinco anéis empilhados (de baixo para cima: Espiritualidad, Finanzas, Carrera, Relaciones, Salud),
+   um cômodo de vidro iluminado entre eles e um jardim no topo.
    Tower(opts) devolve o SVG como texto. Cada anel nasce dentro do anel de baixo,
    então inclinar um anel inclina tudo o que está acima dele. */
 (function () {
   'use strict';
   /* índices do teste: 0 Salud, 1 Relaciones, 2 Carrera, 3 Finanzas, 4 Espiritualidad */
-  var ORDER = [0, 3, 2, 1, 4];
+  var ORDER = [4, 3, 2, 1, 0];
   var COL = ['#57c79a', '#b48cf0', '#f0a54a', '#4fc2dd', '#8b90f5'];
   var NAME = ['Salud', 'Relaciones', 'Carrera', 'Finanzas', 'Espiritualidad'];
-  var BAND = ['SALUD', 'RELACIONES', 'CARRERA', 'FINANZAS', 'FE'];
+  var BAND = ['SALUD', 'RELACIONES', 'CARRERA', 'FINANZAS', 'ESPIRITUALIDAD'];
   var DESC = ['Energía, sueño y cuerpo', 'Familia y vínculos', 'Rumbo y trabajo', 'Dinero en orden', 'Propósito y fe'];
   var ICON = [
     'M12 20s-7-4.4-7-9.6A3.9 3.9 0 0 1 12 8a3.9 3.9 0 0 1 7 2.4C19 15.6 12 20 12 20zM6.5 12.5h3l1.5-2.5 2.5 5 1.5-2.5h3',
@@ -24,7 +24,7 @@
     var id = o.id || ('t' + Math.random().toString(36).slice(2, 7));
     var compact = !!o.compact;
     var W = compact ? 340 : 540, cx = W / 2;
-    var bandH = 30, wallH = 58, rx0 = compact ? 152 : 156, step = 13;
+    var bandH = 30, wallH = 64, rx0 = compact ? 152 : 156, step = 7;
     var floorBase = 566, H = floorBase + 40;
     var lit = o.lit || [0.5, 0.5, 0.5, 0.5, 0.5];
     var anchor = o.anchor == null ? -1 : o.anchor;
@@ -39,10 +39,9 @@
     ORDER.forEach(function (q) {
       var c = COL[q];
       defs += '<linearGradient id="' + id + 'b' + q + '" x1="0" x2="1">' +
-        '<stop offset="0" stop-color="' + c + '" stop-opacity=".35"/><stop offset=".08" stop-color="' + c + '" stop-opacity=".75"/>' +
-        '<stop offset=".32" stop-color="#fff" stop-opacity=".55"/><stop offset=".4" stop-color="' + c + '"/>' +
-        '<stop offset=".8" stop-color="' + c + '" stop-opacity=".7"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient>' +
-        '<radialGradient id="' + id + 'g' + q + '" cx="50%" cy="85%" r="65%"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".95"/><stop offset=".45" stop-color="' + c + '" stop-opacity=".55"/><stop offset="1" stop-color="' + c + '" stop-opacity="0"/></radialGradient>';
+        '<stop offset="0" stop-color="#050404"/><stop offset=".14" stop-color="#1c1813"/><stop offset=".34" stop-color="#5a4a34"/>' +
+        '<stop offset=".42" stop-color="#2a231a"/><stop offset=".75" stop-color="#14110d"/><stop offset="1" stop-color="#030303"/></linearGradient>' +
+        '<radialGradient id="' + id + 'g' + q + '" cx="50%" cy="85%" r="65%"><stop offset="0" stop-color="#ffd9a0" stop-opacity=".95"/><stop offset=".5" stop-color="#e8a24e" stop-opacity=".5"/><stop offset="1" stop-color="' + c + '" stop-opacity="0"/></radialGradient>';
     });
     defs += '</defs>';
 
@@ -50,7 +49,8 @@
       var L = x - rx, R = x + rx, b = y + hh;
       var front = 'M' + L + ' ' + y + 'A' + rx + ' ' + ry + ' 0 0 0 ' + R + ' ' + y + 'L' + R + ' ' + b + 'A' + rx + ' ' + ry + ' 0 0 1 ' + L + ' ' + b + 'Z';
       return '<path class="band" d="' + front + '" fill="url(#' + id + 'b' + q + ')"/>' +
-        '<path d="M' + L + ' ' + (y + 1.5) + 'A' + rx + ' ' + ry + ' 0 0 0 ' + R + ' ' + (y + 1.5) + '" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1.2"/>';
+        '<path class="rim" d="M' + L + ' ' + (y + 1.2) + 'A' + rx + ' ' + ry + ' 0 0 0 ' + R + ' ' + (y + 1.2) + '" fill="none" stroke="#f2c57c" stroke-width="2.2"/>' +
+        '<path class="rim" d="M' + L + ' ' + (b - 1.2) + 'A' + rx + ' ' + ry + ' 0 0 0 ' + R + ' ' + (b - 1.2) + '" fill="none" stroke="#c9923f" stroke-width="2"/>';
     }
 
     var out = '';
@@ -67,8 +67,8 @@
       if (k === 0) out += '<ellipse cx="' + cx + '" cy="' + (floorY + ry + 6) + '" rx="' + (rx * 1.1) + '" ry="' + (ry * 0.9) + '" fill="#000" opacity=".45" filter="url(#' + id + 'blur)"/>';
       out += ring(cx, top, rx, ry, bandH, q);
       /* piso do cômodo (elipse de cima do anel) */
-      out += '<ellipse cx="' + cx + '" cy="' + top + '" rx="' + rx + '" ry="' + ry + '" fill="#1b1712"/>' +
-        '<ellipse cx="' + cx + '" cy="' + top + '" rx="' + rx * 0.97 + '" ry="' + ry * 0.92 + '" fill="' + COL[q] + '" opacity=".14"/>';
+      out += '<ellipse cx="' + cx + '" cy="' + top + '" rx="' + rx + '" ry="' + ry + '" fill="#120f0b"/>' +
+        '<ellipse cx="' + cx + '" cy="' + top + '" rx="' + rx * 0.97 + '" ry="' + ry * 0.92 + '" fill="' + COL[q] + '" opacity=".1"/>';
       /* rachadura no anel do ancla */
       if (isA) {
         var x0 = cx - rx * 0.22;
@@ -79,8 +79,8 @@
       var label = BAND[q], fs = compact ? 13.5 : 14;
       var tw = label.length * fs * 0.78;
       var ix = cx - (tw + 26) / 2;
-      out += '<g class="lbl" transform="translate(' + ix + ' ' + (ly - 15) + ') scale(.8)"><path d="' + ICON[q] + '" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>' +
-        '<text x="' + (ix + 26) + '" y="' + ly + '" class="lbl" font-size="' + fs + '" letter-spacing="2" fill="#fff">' + label + '</text>';
+      out += '<g class="lbl" transform="translate(' + ix + ' ' + (ly - 15) + ') scale(.8)"><path d="' + ICON[q] + '" fill="none" stroke="#f2d08e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>' +
+        '<text x="' + (ix + 26) + '" y="' + ly + '" class="lbl" font-size="' + fs + '" letter-spacing="1.5" fill="#f2d08e">' + label + '</text>';
 
       if (k < 4) {
         /* cômodo de vidro iluminado até o anel de cima */
@@ -98,18 +98,15 @@
           '<g class="ico" transform="translate(' + (cx - 19) + ' ' + (top - wallH * 0.5 - 17) + ') scale(1.6)"><path d="' + ICON[q] + '" fill="none" stroke="' + COL[q] + '" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></g>' +
           '</g>';
       } else {
-        /* árvore no topo */
-        var ty = top - 4;
-        out += '<g class="tree">' +
-          '<ellipse cx="' + cx + '" cy="' + ty + '" rx="' + rx * 0.8 + '" ry="' + ry * 0.7 + '" fill="#4f8b3f"/>' +
-          '<path d="M' + (cx - 4) + ' ' + ty + 'c1-14 0-26-6-36M' + (cx + 4) + ' ' + ty + 'c-1-16 2-28 9-38M' + cx + ' ' + (ty - 22) + 'c-8-6-16-7-24-6" stroke="#5a3f28" stroke-width="5" fill="none" stroke-linecap="round"/>' +
-          (function () {
-            var t = '', blobs = [[-46, -40, 20], [44, -44, 21], [-30, -66, 26], [30, -70, 27], [0, -88, 30], [-8, -54, 26], [14, -50, 22], [-58, -58, 15], [58, -62, 15], [0, -112, 18], [-22, -96, 18], [24, -98, 19]];
-            blobs.forEach(function (b) { t += '<circle cx="' + (cx + b[0]) + '" cy="' + (ty + b[1] - 6) + '" r="' + b[2] + '" fill="#244a25"/>'; });
-            blobs.forEach(function (b) { t += '<circle cx="' + (cx + b[0] - 3) + '" cy="' + (ty + b[1] - 10) + '" r="' + (b[2] * 0.86) + '" fill="url(#' + id + 'leaf)"/>'; });
-            return t;
-          })() +
-          '</g>';
+        /* jardim no topo */
+        var ty = top - 2, g = '';
+        for (var pl = 0; pl < 15; pl++) {
+          var a = (pl / 14) * Math.PI, px = cx - Math.cos(a) * rx * 0.86, py = ty - Math.sin(a) * ry * 0.5;
+          var r = 9 + ((pl * 7) % 5) * 2.2;
+          g += '<circle cx="' + px.toFixed(1) + '" cy="' + (py - r * 0.6).toFixed(1) + '" r="' + r + '" fill="#244a25"/>' +
+            '<circle cx="' + (px - 2).toFixed(1) + '" cy="' + (py - r * 0.8).toFixed(1) + '" r="' + (r * 0.78).toFixed(1) + '" fill="url(#' + id + 'leaf)"/>';
+        }
+        out += '<g class="tree">' + g + '</g>';
       }
 
       /* chamadas laterais */

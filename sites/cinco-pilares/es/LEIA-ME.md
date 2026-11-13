@@ -1,6 +1,6 @@
 # Los 5 Pilares · página de vendas v17 (espanhol)
 
-Conceito: **"La torre de los 5 pilares"**. Cinco anéis empilhados (de baixo para cima: Salud, Finanzas, Carrera, Relaciones e Fe), com um cômodo de vidro iluminado entre eles e uma árvore no topo. No topo da página, os anéis acendem um a um e o do Pilar Ancla fica apagado, rachado e inclinando a torre. No resultado do teste, a torre mostra o pilar âncora da pessoa. No fechamento, ela aparece inteira acesa no amanhecer.
+Conceito: **"La torre de los 5 pilares"**. No topo, a foto da torre de cinco andares (`assets/img/torre.webp`, com Salud no alto e Espiritualidad na base). A mesma torre, desenhada em SVG preto e dourado (`assets/tower.js`), aparece na virada, no mecanismo, no resultado do teste e no fechamento. Nela, o Pilar Ancla fica apagado, rachado e inclinando a torre.
 
 ## Arquivos
 
@@ -27,11 +27,9 @@ Publicar: suba a pasta `es/` inteira. Não há etapa de build.
 | `depoimentos` | `[{"nome":"...","local":"...","texto":"..."}]`. A seção de prova social só aparece com dados reais |
 | `prints` | Lista de imagens (`assets/img/...` ou `https://...`) de mensagens reais |
 
-## Trocar as fotos dos 5 pilares
+## Fotos dos 5 pilares
 
-Os painéis da biblioteca usam `assets/img/pilar-salud.webp`, `pilar-relaciones.webp`, `pilar-carrera.webp`, `pilar-finanzas.webp` e `pilar-espiritualidad.webp`. Hoje são as fotos pequenas da v16 (520 px), com tratamento escuro para disfarçar a resolução.
-
-Para usar a colagem nova (mulher no amanhecer, família abraçada, executivo diante da cidade, moedas com a planta, alpinista no cume): salve cada foto separada em WebP, com pelo menos 900 px de largura e formato vertical (3:4 ou 2:3), usando os mesmos nomes. Os painéis cortam com `object-fit: cover`, então mantenha o rosto ou o assunto no centro.
+Os andares da biblioteca usam `assets/img/piso-salud.webp`, `piso-relaciones.webp`, `piso-carrera.webp`, `piso-finanzas.webp` e `piso-espiritualidad.webp`, recortados dos cômodos da foto da torre (cerca de 850 × 130 px cada). Para mais nitidez, gere cada cômodo separadamente em formato panorâmico (cerca de 2400 × 500 px) e salve com os mesmos nomes.
 
 ## Prompts das imagens (para quando houver créditos de geração)
 
