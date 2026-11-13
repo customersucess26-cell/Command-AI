@@ -53,3 +53,12 @@ Na produção desta versão, os geradores conectados (Higgsfield, OpenArt, Morph
 - As telas reais do sistema passam em rolagem horizontal fixa no desktop.
 - Cerca de 300 KB na primeira tela e uns 700 KB com todas as imagens, contra 2 MB da v16. As imagens ficam fora do HTML e carregam sob demanda.
 - Sem A/B de headline (`?v=c`): a v16 trazia um título alternativo que não estava no arquivo. Ainda dá para reativar.
+
+## Proteção contra clonagem em moldura
+
+A página não se esconde mais quando aberta dentro de outra página, porque isso deixava a prévia em branco. Para impedir que outro site a exiba em moldura, configure na hospedagem (Apache, no `.htaccess`):
+
+```
+Header always set Content-Security-Policy "frame-ancestors 'self'"
+Header always set X-Frame-Options "SAMEORIGIN"
+```
