@@ -83,6 +83,14 @@ def ico(k):
     return f'<svg viewBox="0 0 24 24" aria-hidden="true">{ICON[k]}</svg>'
 
 
+PICON = {
+ 'salud': '<path d="M60 100s-34-20-34-46a18 18 0 0 1 34-9 18 18 0 0 1 34 9c0 26-34 46-34 46z"/><path d="M30 62h16l7-12 10 22 7-13h20"/>',
+ 'espiritualidad': '<path d="M60 22v76M42 44h36"/><circle cx="60" cy="56" r="34" opacity=".35"/><path d="M60 8v6M60 104v6M14 56h6M100 56h6M27 23l4 4M89 85l4 4M93 23l-4 4M31 85l-4 4" opacity=".6"/>',
+ 'relaciones': '<circle cx="42" cy="40" r="12"/><circle cx="78" cy="40" r="12"/><path d="M20 92c0-14 10-24 22-24s22 10 22 24M56 92c0-14 10-24 22-24s22 10 22 24"/><circle cx="60" cy="62" r="8"/>',
+ 'carrera': '<rect x="22" y="40" width="76" height="54" rx="6"/><path d="M46 40v-9a6 6 0 0 1 6-6h16a6 6 0 0 1 6 6v9M22 62h76M54 62v8h12v-8"/><path d="M70 16l14 0 0 14" opacity=".6"/>',
+ 'finanzas': '<ellipse cx="48" cy="80" rx="22" ry="8"/><path d="M26 80v10c0 4 10 8 22 8s22-4 22-8V80M26 66c0 4 10 8 22 8s22-4 22-8M26 66v14M70 66v14"/><ellipse cx="48" cy="66" rx="22" ry="8"/><path d="M72 46l12-14 10 8 14-18M98 22h10v10"/>',
+}
+
 PILARES = [
     ('01', 'Salud física y mental', 'Tu energía es uno de los recursos más importantes de tu vida.',
      'Aprende sobre sueño, nutrición, movimiento, fuerza, recuperación, movilidad y prevención del agotamiento. Explora prácticas y estrategias para desarrollar una rutina más consciente de cuidado del cuerpo y de la mente.',
@@ -145,7 +153,7 @@ def lst(items):
 
 pilares_html = ''.join(f'''
    <article class="pillar rv{' rev' if i % 2 else ''}">
-    <figure class="pillar-img">{PISOS[k]}</figure>
+    <div class="pillar-img" aria-hidden="true"><span class="pi-n">{n}</span><svg viewBox="0 0 120 120">{PICON[k]}</svg></div>
     <div class="pillar-txt">
      <p class="pillar-n"><span>Pilar</span> {n}</p>
      <h3>{t}</h3>
@@ -224,7 +232,7 @@ p+p{margin-top:18px}
 /* 1 · hero */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:130px 0 90px;overflow:hidden;isolation:isolate}
 .hero-art{position:absolute;z-index:-1;right:max(-60px,calc((100% - 1180px)/2 - 120px));top:50%;width:min(860px,62vw);transform:translateY(-50%)}
-.hero-img{width:100%;animation:kb 26s ease-in-out infinite alternate;-webkit-mask-image:radial-gradient(70% 72% at 55% 50%,#000 45%,transparent 100%);mask-image:radial-gradient(70% 72% at 55% 50%,#000 45%,transparent 100%)}
+.hero-img{width:100%;animation:kb 26s ease-in-out infinite alternate;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%,#000 80%,transparent 100%),linear-gradient(180deg,transparent 0,#000 22%,#000 74%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 24%,#000 80%,transparent 100%),linear-gradient(180deg,transparent 0,#000 22%,#000 74%,transparent 100%);mask-composite:intersect}
 @keyframes kb{to{transform:scale(1.07) translate(-1.5%,-1%)}}
 .hero-glow{position:absolute;inset:10% 20% 10% 25%;border-radius:50%;background:radial-gradient(closest-side,rgba(255,180,80,.22),transparent 75%);filter:blur(20px);animation:pulse 5s ease-in-out infinite;z-index:-1}
 @keyframes pulse{50%{opacity:.55;transform:scale(1.08)}}
@@ -267,9 +275,10 @@ p+p{margin-top:18px}
 .belief .lead{max-width:62ch;margin-inline:auto}
 .belief .quote{margin-top:46px}
 /* 4 · solução */
-.sol{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(40px,6vw,90px);align-items:center}
+.sol{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,90px);align-items:center}
 .tower{position:relative}
-.tower-img{width:100%;-webkit-mask-image:radial-gradient(62% 60% at 50% 48%,#000 55%,transparent 100%);mask-image:radial-gradient(62% 60% at 50% 48%,#000 55%,transparent 100%)}
+.tower-img{width:100%;filter:saturate(.9) contrast(1.05);-webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 8%,#000 22%,#000 78%,transparent 92%,transparent 100%),linear-gradient(180deg,transparent 0,#000 10%,#000 86%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,transparent 8%,#000 22%,#000 78%,transparent 92%,transparent 100%),linear-gradient(180deg,transparent 0,#000 10%,#000 86%,transparent 100%);mask-composite:intersect}
+.tower::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(52% 62% at 50% 50%,transparent 62%,rgba(7,7,8,.6) 90%)}
 .tower::before{content:"";position:absolute;inset:15%;border-radius:50%;background:radial-gradient(closest-side,rgba(217,174,92,.25),transparent 70%);filter:blur(30px);z-index:-1}
 .struct{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:34px 0 30px;counter-reset:st}
 .struct li{counter-increment:st;position:relative;padding:20px 20px 20px 62px;border:1px solid var(--hair);border-radius:14px;background:var(--card);font-size:16.5px;line-height:1.45}
@@ -281,10 +290,13 @@ p+p{margin-top:18px}
 .pillars{margin-top:70px;display:grid;gap:clamp(60px,7vw,100px)}
 .pillar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,70px);align-items:center}
 .pillar.rev .pillar-img{order:2}
-.pillar-img{position:relative;margin:0;border-radius:18px;overflow:hidden;aspect-ratio:16/10;border:1px solid var(--hair2)}
-.pillar-img img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);transition:transform 1.4s var(--ease)}
-.pillar:hover .pillar-img img{transform:scale(1.12)}
-.pillar-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(7,7,8,.55)),radial-gradient(120% 120% at 50% 50%,transparent 60%,rgba(7,7,8,.6))}
+.pillar-img{position:relative;display:grid;place-items:center;aspect-ratio:16/10;border-radius:22px;overflow:hidden;isolation:isolate;border:1px solid rgba(217,174,92,.22);
+ background:radial-gradient(60% 75% at 50% 55%,rgba(217,174,92,.20),transparent 70%),repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,236,200,.035) 46px 47px),linear-gradient(180deg,#121015,#0a090c)}
+.pillar-img::before{content:"";position:absolute;width:62%;aspect-ratio:1;border-radius:50%;border:1px solid rgba(217,174,92,.25);box-shadow:0 0 0 22px rgba(217,174,92,.04),0 0 0 46px rgba(217,174,92,.025);z-index:-1}
+.pillar-img::after{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,transparent 0 70%,rgba(243,212,141,.16) 80%,transparent 90%);animation:rot 14s linear infinite;z-index:-1}
+.pillar-img svg{width:min(42%,190px);fill:none;stroke:url(#gg);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 18px rgba(217,174,92,.55));transition:transform .9s var(--ease)}
+.pillar:hover .pillar-img svg{transform:scale(1.06)}
+.pi-n{position:absolute;left:24px;bottom:-18px;font:400 150px/1 var(--h);color:transparent;-webkit-text-stroke:1px rgba(217,174,92,.28);z-index:-1}
 .pillar-n{font:700 12.5px var(--b);letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
 .pillar-n span{color:var(--dim)}
 .pillar h3{margin:12px 0 14px;font-size:clamp(38px,3.8vw,56px);line-height:.95}
@@ -490,6 +502,7 @@ HTML = f'''<!doctype html>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1c9"/><stop offset=".55" stop-color="#e3b867"/><stop offset="1" stop-color="#a87e2f"/></linearGradient></defs></svg>
 
 <header class="top">
  {LOGO}
