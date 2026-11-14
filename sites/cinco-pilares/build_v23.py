@@ -36,8 +36,10 @@ def tag(path, alt, cls='', w=None, crop=None, lazy=True, q=82):
 
 LOGO = tag(IMG / 'logo.webp', 'Los 5 Pilares de la Prosperidad', w=360, lazy=False, q=90)
 LOGO_F = tag(IMG / 'logo.webp', 'Los 5 Pilares de la Prosperidad', w=240, q=88)
-ESTATUA = tag(SRC / 'estatua.webp', 'Una estatua que se esculpe a sí misma con martillo y cincel, entre chispas doradas', 'hero-img', crop=(2, 2, 700, 503), lazy=False, q=86)
-TORRE = tag(IMG / 'torre.webp', 'Torre de cinco pisos iluminada: Salud, Relaciones, Carrera, Finanzas y Espiritualidad', 'tower-img', w=900, q=82)
+_m = Image.open(SRC / 'montana-amanecer.png').convert('RGB').transpose(Image.FLIP_LEFT_RIGHT)
+_b = io.BytesIO(); _m.save(_b, 'WEBP', quality=80, method=6)
+HERO_BG = 'data:image/webp;base64,' + base64.b64encode(_b.getvalue()).decode()
+TORRE = tag(SRC / 'desk-hoy.webp', 'Pantalla real de la plataforma: el panel con la prioridad del día y la jornada', '', w=1200, q=82)
 TRIO = tag(SRC / 'colagem-animais.webp', 'Águila, león y lobo: foco, ejecución y disciplina', 'fx-img', crop=(716, 520, 1536, 1024), q=84)
 POSTER = img(SRC / 'brujula-poster.png', w=560, q=78)[0]
 VIDEO = base64.b64encode((SRC / 'brujula.mp4').read_bytes()).decode()
@@ -239,7 +241,9 @@ p+p{margin-top:18px}
 .embers{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}
 .embers i{position:absolute;left:var(--x);bottom:-12px;width:var(--s);height:var(--s);border-radius:50%;background:#ffd27a;box-shadow:0 0 10px 2px rgba(255,170,60,.8);opacity:0;animation:ember var(--t) linear var(--d) infinite}
 @keyframes ember{0%{transform:translate(0,0);opacity:0}10%{opacity:.9}100%{transform:translate(var(--w),-90vh);opacity:0}}
-.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,var(--bg) 0%,rgba(7,7,8,.85) 30%,rgba(7,7,8,0) 62%),linear-gradient(0deg,var(--bg),transparent 30%)}
+.hero-bg{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:60% 40%;animation:kb 30s ease-in-out infinite alternate}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(7,7,8,.94) 0%,rgba(7,7,8,.78) 34%,rgba(7,7,8,.15) 66%,rgba(7,7,8,.05) 100%),linear-gradient(0deg,var(--bg) 0%,transparent 28%),linear-gradient(180deg,rgba(7,7,8,.6),transparent 22%)}
 .hero-in{max-width:640px}
 .hero h1 .it{font-size:.5em}
 .hero .lead{margin-top:30px;max-width:560px}
@@ -248,9 +252,8 @@ p+p{margin-top:18px}
 .hero-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:22px;font:600 13px var(--b);letter-spacing:.14em;text-transform:uppercase;color:var(--gold2)}
 .hero-meta span{display:inline-flex;align-items:center;gap:10px}
 .hero-meta span+span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--gold);margin-right:6px}
-@media(max-width:900px){.hero{flex-direction:column;align-items:stretch;padding:110px 0 70px;min-height:0}
- .hero-art{position:relative;right:auto;top:auto;transform:none;width:115%;margin:0 -7.5% -40px;order:-1}
- .hero::after{background:linear-gradient(0deg,var(--bg) 10%,transparent 60%)}}
+@media(max-width:900px){.hero{padding:120px 0 70px}.hero-bg img{object-position:78% 40%}
+ .hero::after{background:linear-gradient(0deg,var(--bg) 0%,rgba(7,7,8,.82) 45%,rgba(7,7,8,.45) 100%)}}
 /* faixa dos pilares */
 .marquee{position:relative;overflow:hidden;border-block:1px solid var(--hair);background:#0b0a0d;padding:18px 0}
 .marquee-in{display:flex;gap:42px;width:max-content;animation:mq 40s linear infinite;font:400 28px/1 var(--h);letter-spacing:.06em;color:var(--mut);white-space:nowrap}
@@ -275,7 +278,12 @@ p+p{margin-top:18px}
 .belief .lead{max-width:62ch;margin-inline:auto}
 .belief .quote{margin-top:46px}
 /* 4 · solução */
-.sol{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,90px);align-items:center}
+.sol{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(40px,6vw,90px);align-items:center}
+.sol-shot{position:relative;margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--hair2);background:#05070f;box-shadow:0 60px 120px -50px rgba(0,0,0,.95),0 0 90px -30px rgba(217,174,92,.4);transform:perspective(1400px) rotateY(6deg);transition:transform .9s var(--ease)}
+.sol-shot:hover{transform:none}
+.sol-shot .chrome{display:flex;gap:6px;padding:11px 14px;background:#121016;border-bottom:1px solid var(--hair)}
+.sol-shot .chrome i{width:10px;height:10px;border-radius:50%;background:#3a3530}
+.sol-shot figcaption{position:absolute;right:14px;bottom:12px;padding:5px 12px;border-radius:999px;background:rgba(7,7,8,.8);border:1px solid var(--hair2);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold2)}
 .tower{position:relative}
 .tower-img{width:100%;filter:saturate(.9) contrast(1.05);-webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 8%,#000 22%,#000 78%,transparent 92%,transparent 100%),linear-gradient(180deg,transparent 0,#000 10%,#000 86%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,transparent 8%,#000 22%,#000 78%,transparent 92%,transparent 100%),linear-gradient(180deg,transparent 0,#000 10%,#000 86%,transparent 100%);mask-composite:intersect}
 .tower::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(52% 62% at 50% 50%,transparent 62%,rgba(7,7,8,.6) 90%)}
@@ -284,7 +292,7 @@ p+p{margin-top:18px}
 .struct li{counter-increment:st;position:relative;padding:20px 20px 20px 62px;border:1px solid var(--hair);border-radius:14px;background:var(--card);font-size:16.5px;line-height:1.45}
 .struct li::before{content:"0" counter(st);position:absolute;left:18px;top:16px;font:400 28px/1 var(--h);color:var(--gold)}
 .sol .quote{font-size:clamp(24px,2.2vw,30px)}
-@media(max-width:900px){.sol{grid-template-columns:1fr}.tower{max-width:420px;margin:0 auto}}
+@media(max-width:900px){.sol{grid-template-columns:1fr}.sol-shot{transform:none}}
 @media(max-width:560px){.struct{grid-template-columns:1fr}}
 /* 5 · pilares */
 .pillars{margin-top:70px;display:grid;gap:clamp(60px,7vw,100px)}
@@ -513,7 +521,7 @@ HTML = f'''<!doctype html>
 
 <!-- BLOQUE 1 · HERO -->
 <section class="hero" aria-labelledby="h1">
- <figure class="hero-art" aria-hidden="true"><i class="hero-glow"></i>{ESTATUA}</figure>
+ <div class="hero-bg" aria-hidden="true"><img src="{HERO_BG}" alt="" width="1920" height="1088" fetchpriority="high"></div>
  <div class="embers" aria-hidden="true">{EMBERS}</div>
  <div class="wrap">
   <div class="hero-in">
@@ -573,7 +581,7 @@ HTML = f'''<!doctype html>
 <!-- BLOQUE 4 · LA SOLUCIÓN -->
 <section class="sec" aria-labelledby="h4b">
  <div class="wrap sol">
-  <figure class="tower rv">{TORRE}</figure>
+  <figure class="sol-shot rv"><div class="chrome" aria-hidden="true"><i></i><i></i><i></i></div>{TORRE}<figcaption>Pantalla real de la plataforma</figcaption></figure>
   <div>
    <p class="kick rv">La solución</p>
    <h2 id="h4b" class="rv">Para reunir esos fundamentos en un solo lugar<span class="it">nació Los 5 Pilares de la Prosperidad.</span></h2>
