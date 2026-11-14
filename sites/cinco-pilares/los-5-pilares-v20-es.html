@@ -877,6 +877,23 @@ h2 .scr,.gt{font-family:'Great Vibes','Brush Script MT',cursive!important;font-w
 @media(max-width:860px){.trio{grid-template-columns:minmax(0,1fr)}.fz img{aspect-ratio:5/4}}
 .emblem{display:block;width:min(420px,80%);height:auto;margin:0 auto 26px;border-radius:24px;-webkit-mask-image:radial-gradient(closest-side,#000 62%,transparent 100%);mask-image:radial-gradient(closest-side,#000 62%,transparent 100%)}
 .rm .forge-img::after{animation:none}
+
+/* v20b: bordas das imagens em degradê, fundidas com o fundo */
+.forge{background:radial-gradient(50% 70% at 26% 50%,rgba(217,174,92,.13),transparent 72%)}
+.forge-img{margin:0 -4%}
+.forge-img img{border-radius:0;
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%,#000 78%,transparent 100%),linear-gradient(180deg,transparent 0,#000 20%,#000 76%,transparent 100%);-webkit-mask-composite:source-in;
+ mask-image:linear-gradient(90deg,transparent 0,#000 22%,#000 78%,transparent 100%),linear-gradient(180deg,transparent 0,#000 20%,#000 76%,transparent 100%);mask-composite:intersect}
+.fz{border:0;background:none;border-radius:0;overflow:visible}
+.fz img{
+ -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%),linear-gradient(180deg,transparent 0,#000 16%,#000 62%,transparent 96%);-webkit-mask-composite:source-in;
+ mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%),linear-gradient(180deg,transparent 0,#000 16%,#000 62%,transparent 96%);mask-composite:intersect}
+.fz:hover img{transform:scale(1.04)}
+.fz div{position:relative;margin-top:-34px;background:none;padding:0 18px 6px;text-align:center}
+.fz p{color:var(--mut)}
+@media(max-width:860px){.forge-img{margin:0 -20px}.fz img{aspect-ratio:1/1}}
+.emblem{border-radius:0;width:min(520px,92%);
+ -webkit-mask-image:radial-gradient(closest-side,#000 45%,transparent 100%);mask-image:radial-gradient(closest-side,#000 45%,transparent 100%)}
 </style>
 <!-- ============ CONFIGURAÇÃO: edite só os valores entre aspas do bloco abaixo ============
   preco: igual ao preço no Hotmart (em dólares), ex.: "19,90"
