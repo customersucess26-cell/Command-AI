@@ -1,6 +1,6 @@
 # Los 5 Pilares · página de vendas v17 (espanhol)
 
-Modelo: **página de vendas direta, clara** (v19), no molde das páginas de resposta direta: título em duas cores, demonstração com telas reais em rodízio, preço grande, botão verde, benefícios, carrossel do sistema, teste grátis, vitrine dos 5 pilares, faixa escura dos passos, objeções, bônus, plano, garantia, para quem é, como chega o acesso, perguntas e fechamento. Edite `index.html`, `assets/site.css` e `assets/app.js`, e rode `python3 build.py` para gerar o arquivo único `../los-5-pilares-v19-es.html` (tudo embutido, pronto para subir).
+Modelo: **sequência cinematográfica controlada pela rolagem** (no estilo das vitrines "scroll cinematic"). A página abre com a foto da torre em tela cheia, e a câmera sobe andar por andar (Espiritualidad, Finanzas, Carrera, Relaciones e Salud) com uma frase grande para cada pilar. No fim, a câmera recua, o andar de Finanzas apaga e racha (o Pilar Ancla) e os botões levam ao teste ou ao checkout. Depois vem a página de vendas, escura e dourada. A câmera fica em `assets/app.js` (função `cinema`, pontos `FL`). Para trocar a foto por um vídeo de IA, gere-o a partir de `assets/img/torre.webp`.
 
 ## Arquivos
 

@@ -55,7 +55,7 @@
   }
   var track = function (ev, data, custom) { try { if (window.fbq) fbq(custom ? 'trackCustom' : 'track', ev, data || {}); } catch (e) {} };
   var PROD = 'Los 5 Pilares de la Prosperidad';
-  track('ViewContent', { content_name: PROD, content_type: 'product', value: P.num, currency: CUR, variant: 'v19' });
+  track('ViewContent', { content_name: PROD, content_type: 'product', value: P.num, currency: CUR, variant: 'v18' });
   var ok = !!https(C.checkout);
   function ckUrl(extra) {
     if (!ok) return '#oferta';
@@ -63,7 +63,7 @@
       var u = new URL(C.checkout), q = new URLSearchParams(location.search);
       ['fbclid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src', 'sck'].forEach(function (k) { if (q.get(k)) u.searchParams.set(k, q.get(k)); });
       if (!u.searchParams.get('src') && q.get('utm_source')) u.searchParams.set('src', q.get('utm_source').slice(0, 60));
-      var sck = [q.get('utm_campaign'), q.get('utm_content'), 'v19', extra].filter(Boolean).join('|');
+      var sck = [q.get('utm_campaign'), q.get('utm_content'), 'v18', extra].filter(Boolean).join('|');
       if (!u.searchParams.get('sck') && sck) u.searchParams.set('sck', sck.slice(0, 120));
       return u.toString();
     } catch (e) { return C.checkout; }
@@ -122,7 +122,7 @@
     requestAnimationFrame(function () { requestAnimationFrame(function () { $('.bar b', box).forEach(function (b) { b.style.setProperty('--w', b.dataset.w); }); }); });
     box.querySelector('.redo').onclick = function () { qi = 0; sc = []; ask(); };
     var h = $1('#res-h'); if (h) h.focus({ preventScroll: true });
-    track('Lead', { content_name: 'Diagnostico 5 Pilares', value: 0, currency: CUR, variant: 'v19' });
+    track('Lead', { content_name: 'Diagnostico 5 Pilares', value: 0, currency: CUR, variant: 'v18' });
   }
   if (box) ask(true);
 
@@ -163,12 +163,12 @@
   });
 
   /* ---------- topo e barra fixa ---------- */
-  var top = $1('#top'), dock = $1('#dock'), plan = $1('.plan'), fin = $1('.final');
+  var top = $1('#top'), dock = $1('#dock'), cine = $1('#cine'), plan = $1('.plan'), fin = $1('.final');
   var ticking = false;
   function onScroll() {
     ticking = false;
-    var cineEnd = innerHeight * 0.4;
-    top.classList.toggle('solid', scrollY > 20);
+    var cineEnd = cine ? cine.offsetTop + cine.offsetHeight - innerHeight : 0;
+    top.classList.toggle('solid', scrollY > cineEnd - 10);
     if (dock) {
       var pr = plan.getBoundingClientRect(), fr = fin.getBoundingClientRect();
       var show = scrollY > cineEnd + innerHeight * 0.6 && !(pr.top < innerHeight && pr.bottom > 0) && fr.top > innerHeight * 0.5;
@@ -184,20 +184,76 @@
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }) : null;
   $('[data-rv]').forEach(function (e, i) { e.style.setProperty('--d', ((i % 3) * 0.08) + 's'); if (io && !RM) io.observe(e); else e.classList.add('in'); });
 
-  /* ---------- demonstração do topo: telas reais em rodízio ---------- */
-  (function () {
-    var d = $1('#demo'), tb = $('#demo-tabs button'), lab = $1('#demo-l'); if (!d) return;
-    var im = $('img', d), cur = 0, t, N = ['Hoy', 'Jornada de 90 días', 'Diagnóstico', 'Biblioteca', 'Bonos'];
-    function go(i, user) {
-      cur = (i + im.length) % im.length;
-      im.forEach(function (e, k) { e.classList.toggle('on', k === cur); });
-      tb.forEach(function (b, k) { b.setAttribute('aria-selected', k === cur); });
-      lab.textContent = 'Los 5 Pilares · ' + N[cur];
-      if (user) { clearInterval(t); }
-    }
-    tb.forEach(function (b, k) { b.addEventListener('click', function () { go(k, true); }); });
-    if (!RM) t = setInterval(function () { go(cur + 1); }, 3200);
-  })();
+  /* ---------- sequência da torre ---------- */
+  function cinema() {
+    if (RM || !window.gsap || !window.ScrollTrigger || !cine) { root.classList.add('no-cine'); return; }
+    gsap.registerPlugin(ScrollTrigger);
 
+    if (FINE && window.Lenis && innerWidth >= 900) {
+      var lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
+      root.classList.add('lenis');
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+      gsap.ticker.lagSmoothing(0);
+      $('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var id = a.getAttribute('href'); if (id.length < 2) return;
+          var el = $1(id); if (!el) return; e.preventDefault(); lenis.scrollTo(el, { offset: -70, duration: 1.4 });
+        });
+      });
+    }
+
+    var cam = $1('#cam'), shade = $1('.anchor-shade'), texts = $('.ct'), hudN = $1('#hud-n'), hudB = $1('#hud-bar');
+    /* pontos da imagem (1199 × 1312): centro da torre e de cada andar */
+    var FL = { full: [600, 660], esp: [600, 1100], fin: [600, 915], car: [600, 690], rel: [600, 455], sal: [600, 245] };
+    var V = { s: 0, x: 0, y: 0, ax: 0, ay: 0 };
+    function sizes() {
+      var w = innerWidth, h = innerHeight, mob = w < 761;
+      return {
+        full: mob ? Math.min(h * 0.62 / 1312, w * 1.05 / 1199) : Math.min(h * 0.94 / 1312, w * 0.6 / 1199),
+        floor: mob ? w * 1.3 / 820 : Math.max(w * 0.66 / 820, h * 0.36 / 165),
+        axFull: mob ? 0.5 : 0.68, axFloor: mob ? 0.5 : 0.64,
+        ay: mob ? 0.36 : 0.5,
+        axLast: mob ? 0.5 : 0.74, ayLast: mob ? 0.3 : 0.5, lastK: mob ? 0.85 : 1
+      };
+    }
+    function apply() {
+      var w = innerWidth, h = innerHeight;
+      cam.style.transform = 'translate3d(' + (w * V.ax - V.x * V.s).toFixed(1) + 'px,' + (h * V.ay - V.y * V.s).toFixed(1) + 'px,0) scale(' + V.s.toFixed(4) + ')';
+    }
+    function shot(p, zoom, S, last) { return { x: FL[p][0], y: FL[p][1], s: zoom ? S.floor : S.full * (last ? S.lastK : 1), ax: zoom ? S.axFloor : (last ? S.axLast : S.axFull), ay: last ? S.ayLast : S.ay }; }
+
+    var tl;
+    function build() {
+      if (tl) { tl.scrollTrigger.kill(); tl.kill(); }
+      var S = sizes();
+      var start = shot('full', false, S);
+      start.s *= 0.86;
+      gsap.set(V, start); apply();
+      gsap.set(texts, { autoAlpha: 0, y: 40, filter: 'blur(10px)' });
+      gsap.set(texts[0], { autoAlpha: 1, y: 0, filter: 'blur(0px)' });
+      gsap.set(shade, { opacity: 0 });
+      tl = gsap.timeline({ defaults: { ease: 'none' }, onUpdate: apply,
+        scrollTrigger: { trigger: cine, start: 'top top', end: 'bottom bottom', scrub: 0.9, invalidateOnRefresh: true,
+          onUpdate: function (st) {
+            var n = Math.max(0, Math.min(5, Math.floor(st.progress * 6.2)));
+            hudN.textContent = '0' + n; hudB.style.transform = 'scaleX(' + st.progress.toFixed(3) + ')';
+          } } });
+      var seq = [['full', false], ['esp', true], ['fin', true], ['car', true], ['rel', true], ['sal', true], ['full', false]];
+      seq.forEach(function (sh, k) {
+        var at = k * 2;
+        tl.to(V, Object.assign(shot(sh[0], sh[1], S, k === seq.length - 1), { duration: k === 0 ? 0.6 : 1.2, ease: 'power2.inOut' }), k === 0 ? 0 : at - 1.1);
+        if (k > 0) tl.to(texts[k], { autoAlpha: 1, y: 0, filter: 'blur(0px)', duration: 0.45, ease: 'power2.out' }, at + 0.05);
+        if (k < seq.length - 1) tl.to(texts[k], { autoAlpha: 0, y: -40, filter: 'blur(8px)', duration: 0.4, ease: 'power2.in' }, at + 1.25);
+      });
+      tl.to(shade, { opacity: 1, duration: 0.6 }, 12.3);
+      tl.to('.cine-cue', { autoAlpha: 0, duration: 0.4 }, 0.5);
+      tl.to({}, { duration: 1.2 });
+    }
+    build();
+    var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { build(); ScrollTrigger.refresh(); }, 200); });
+    addEventListener('load', function () { ScrollTrigger.refresh(); });
+  }
+  cinema();
   onScroll();
 })();
