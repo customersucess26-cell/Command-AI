@@ -27,6 +27,14 @@ def img(path, w=None, crop=None, q=82):
     return 'data:image/webp;base64,' + base64.b64encode(b.getvalue()).decode(), im.width, im.height
 
 
+def raw(path, alt, cls='', lazy=True):
+    im = Image.open(path)
+    src = 'data:image/webp;base64,' + base64.b64encode(pathlib.Path(path).read_bytes()).decode()
+    ld = ' loading="lazy" decoding="async"' if lazy else ''
+    c = f' class="{cls}"' if cls else ''
+    return f'<img{c} src="{src}" alt="{alt}" width="{im.width}" height="{im.height}"{ld}>'
+
+
 def tag(path, alt, cls='', w=None, crop=None, lazy=True, q=82):
     src, W, H = img(path, w, crop, q)
     ld = ' loading="lazy" decoding="async"' if lazy else ' fetchpriority="high"'
@@ -39,7 +47,7 @@ LOGO_F = tag(IMG / 'logo.webp', 'Los 5 Pilares de la Prosperidad', w=240, q=88)
 _m = Image.open(SRC / 'montana-amanecer.png').convert('RGB').transpose(Image.FLIP_LEFT_RIGHT)
 _b = io.BytesIO(); _m.save(_b, 'WEBP', quality=80, method=6)
 HERO_BG = 'data:image/webp;base64,' + base64.b64encode(_b.getvalue()).decode()
-TORRE = tag(SRC / 'desk-hoy.webp', 'Pantalla real de la plataforma: el panel con la prioridad del día y la jornada', '', w=1200, q=82)
+TORRE = raw(SRC / 'desk-hoy.webp', 'Pantalla real de la plataforma: el panel Hoy con la prioridad del día, la jornada y los cinco pilares')
 TRIO = tag(SRC / 'colagem-animais.webp', 'Águila, león y lobo: foco, ejecución y disciplina', 'fx-img', crop=(716, 520, 1536, 1024), q=84)
 POSTER = img(SRC / 'brujula-poster.png', w=560, q=78)[0]
 VIDEO = base64.b64encode((SRC / 'brujula.mp4').read_bytes()).decode()
@@ -53,8 +61,8 @@ SHOTS = [
 ]
 SHOT_TAGS = []
 for i, (n, alt) in enumerate(SHOTS):
-    SHOT_TAGS.append(tag(SRC / f'{n}.webp', alt, 'on' if i == 0 else '', w=1200, lazy=i > 0, q=80))
-BONO_SHOT = tag(SRC / 'desk-bono.webp', 'Pantalla real: un material bonus dentro de la plataforma', 'bono-shot', w=1200, q=80)
+    SHOT_TAGS.append(raw(SRC / f'{n}.webp', alt, 'on' if i == 0 else '', lazy=i > 0))
+BONO_SHOT = raw(SRC / 'desk-bono.webp', 'Pantalla real: un material bonus dentro de la plataforma', 'bono-shot')
 PHONES = [tag(IMG / f'tela-{n}.webp', alt, w=420, q=80) for n, alt in
           [('jornada', 'Pantalla real en el celular: jornada'), ('hoy', 'Pantalla real en el celular: panel Hoy'), ('practicar', 'Pantalla real en el celular: cronograma de aplicación')]]
 PISOS = {k: tag(IMG / f'piso-{k}.webp', alt, q=86) for k, alt in [
@@ -86,11 +94,11 @@ def ico(k):
 
 
 PICON = {
- 'salud': '<path d="M60 100s-34-20-34-46a18 18 0 0 1 34-9 18 18 0 0 1 34 9c0 26-34 46-34 46z"/><path d="M30 62h16l7-12 10 22 7-13h20"/>',
- 'espiritualidad': '<path d="M60 22v76M42 44h36"/><circle cx="60" cy="56" r="34" opacity=".35"/><path d="M60 8v6M60 104v6M14 56h6M100 56h6M27 23l4 4M89 85l4 4M93 23l-4 4M31 85l-4 4" opacity=".6"/>',
- 'relaciones': '<circle cx="42" cy="40" r="12"/><circle cx="78" cy="40" r="12"/><path d="M20 92c0-14 10-24 22-24s22 10 22 24M56 92c0-14 10-24 22-24s22 10 22 24"/><circle cx="60" cy="62" r="8"/>',
- 'carrera': '<rect x="22" y="40" width="76" height="54" rx="6"/><path d="M46 40v-9a6 6 0 0 1 6-6h16a6 6 0 0 1 6 6v9M22 62h76M54 62v8h12v-8"/><path d="M70 16l14 0 0 14" opacity=".6"/>',
- 'finanzas': '<ellipse cx="48" cy="80" rx="22" ry="8"/><path d="M26 80v10c0 4 10 8 22 8s22-4 22-8V80M26 66c0 4 10 8 22 8s22-4 22-8M26 66v14M70 66v14"/><ellipse cx="48" cy="66" rx="22" ry="8"/><path d="M72 46l12-14 10 8 14-18M98 22h10v10"/>',
+ 'salud': '<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.5 12h5l1.5-2.5 2.5 5 1.5-2.5h6.5"/>',
+ 'espiritualidad': '<path d="M12 3v18M6.5 8.5h11"/>',
+ 'relaciones': '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+ 'carrera': '<rect x="2" y="7" width="20" height="14" rx="2.5"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M2 13h20M10.5 13v2h3v-2"/>',
+ 'finanzas': '<circle cx="8.5" cy="8.5" r="5.5"/><path d="M18.1 10.4a5.5 5.5 0 1 1-7.7 7.7M7.5 6.5h1.2v4M16.8 13.9l.7.7-2.8 2.8"/>',
 }
 
 PILARES = [
@@ -154,8 +162,8 @@ def lst(items):
 
 
 pilares_html = ''.join(f'''
-   <article class="pillar rv{' rev' if i % 2 else ''}">
-    <div class="pillar-img" aria-hidden="true"><span class="pi-n">{n}</span><svg viewBox="0 0 120 120">{PICON[k]}</svg></div>
+   <article class="pillar rv">
+    <div class="medal" aria-hidden="true"><div class="medal-in"><svg viewBox="0 0 24 24">{PICON[k]}</svg></div><span class="medal-n">{n}</span></div>
     <div class="pillar-txt">
      <p class="pillar-n"><span>Pilar</span> {n}</p>
      <h3>{t}</h3>
@@ -272,48 +280,49 @@ p+p{margin-top:18px}
 .bigq .kick{margin-bottom:16px}
 @media(max-width:900px){.ident{grid-template-columns:1fr}.brj{max-width:380px;margin:0 auto;order:-1}}
 /* 3 · quebra de crença */
-.why{margin:44px 0 40px;border-top:1px solid var(--hair)}
-.why li{padding:26px 0;border-bottom:1px solid var(--hair);font:400 clamp(30px,3.4vw,50px)/1.02 var(--h);letter-spacing:.01em;color:var(--text)}
-.why li b{font-weight:400;color:var(--gold2)}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:54px auto 50px;max-width:1180px;counter-reset:w}
+.why li{counter-increment:w;position:relative;padding:34px 28px 30px;border-radius:20px;border:1px solid var(--hair);background:linear-gradient(180deg,rgba(255,240,210,.045),rgba(255,240,210,.01));text-align:left;font:400 clamp(28px,2.4vw,36px)/1.04 var(--h);letter-spacing:.01em;color:var(--text);overflow:hidden}
+.why li::before{content:"0" counter(w);display:block;margin-bottom:18px;font:400 64px/.8 var(--h);color:transparent;-webkit-text-stroke:1px rgba(217,174,92,.6)}
+.why li b{display:block;margin-top:6px;font-weight:400;color:var(--gold2)}
+.why li::after{content:"";position:absolute;left:28px;right:28px;bottom:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
+@media(max-width:900px){.why{grid-template-columns:1fr}}
 .belief .lead{max-width:62ch;margin-inline:auto}
+.belief .quote{max-width:30ch;margin-inline:auto}
 .belief .quote{margin-top:46px}
 /* 4 · solução */
-.sol{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(40px,6vw,90px);align-items:center}
-.sol-shot{position:relative;margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--hair2);background:#05070f;box-shadow:0 60px 120px -50px rgba(0,0,0,.95),0 0 90px -30px rgba(217,174,92,.4);transform:perspective(1400px) rotateY(6deg);transition:transform .9s var(--ease)}
-.sol-shot:hover{transform:none}
-.sol-shot .chrome{display:flex;gap:6px;padding:11px 14px;background:#121016;border-bottom:1px solid var(--hair)}
-.sol-shot .chrome i{width:10px;height:10px;border-radius:50%;background:#3a3530}
-.sol-shot figcaption{position:absolute;right:14px;bottom:12px;padding:5px 12px;border-radius:999px;background:rgba(7,7,8,.8);border:1px solid var(--hair2);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold2)}
-.tower{position:relative}
-.tower-img{width:100%;filter:saturate(.9) contrast(1.05);-webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 8%,#000 22%,#000 78%,transparent 92%,transparent 100%),linear-gradient(180deg,transparent 0,#000 10%,#000 86%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,transparent 8%,#000 22%,#000 78%,transparent 92%,transparent 100%),linear-gradient(180deg,transparent 0,#000 10%,#000 86%,transparent 100%);mask-composite:intersect}
-.tower::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(52% 62% at 50% 50%,transparent 62%,rgba(7,7,8,.6) 90%)}
-.tower::before{content:"";position:absolute;inset:15%;border-radius:50%;background:radial-gradient(closest-side,rgba(217,174,92,.25),transparent 70%);filter:blur(30px);z-index:-1}
-.struct{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:34px 0 30px;counter-reset:st}
-.struct li{counter-increment:st;position:relative;padding:20px 20px 20px 62px;border:1px solid var(--hair);border-radius:14px;background:var(--card);font-size:16.5px;line-height:1.45}
-.struct li::before{content:"0" counter(st);position:absolute;left:18px;top:16px;font:400 28px/1 var(--h);color:var(--gold)}
-.sol .quote{font-size:clamp(24px,2.2vw,30px)}
-@media(max-width:900px){.sol{grid-template-columns:1fr}.sol-shot{transform:none}}
+.sol-head .lead{max-width:56ch;margin:24px auto 0}
+.showcase{position:relative;margin:56px auto 0;max-width:1180px;border-radius:16px;overflow:hidden;border:1px solid rgba(217,174,92,.35);background:#05070f;
+ box-shadow:0 80px 160px -60px rgba(0,0,0,1),0 0 140px -40px rgba(217,174,92,.45);transform-origin:50% 100%}
+.showcase::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 1px 0 rgba(255,255,255,.08)}
+.showcase .chrome,.screen .chrome{display:flex;align-items:center;gap:7px;padding:12px 16px;background:#141218;border-bottom:1px solid var(--hair)}
+.showcase .chrome i,.screen .chrome i{width:11px;height:11px;border-radius:50%;background:#3a3530}
+.showcase .chrome span{margin-left:12px;font-size:13px;color:var(--dim)}
+.showcase img{width:100%;height:auto}
+.js .showcase.rv{opacity:0;transform:perspective(1800px) rotateX(16deg) translateY(60px) scale(.96);transition:opacity 1.1s var(--ease),transform 1.5s var(--ease)}
+.js .showcase.rv.in{opacity:1;transform:none}
+.real{margin-top:14px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.struct{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:28px 0 0;counter-reset:st}
+.struct li{counter-increment:st;position:relative;padding:22px 22px 22px 66px;border:1px solid var(--hair);border-radius:14px;background:var(--card);font-size:17px;line-height:1.45}
+.struct li::before{content:"0" counter(st);position:absolute;left:20px;top:18px;font:400 30px/1 var(--h);color:var(--gold)}
+@media(max-width:900px){.struct{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.struct{grid-template-columns:1fr}}
 /* 5 · pilares */
-.pillars{margin-top:70px;display:grid;gap:clamp(60px,7vw,100px)}
-.pillar{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,5vw,70px);align-items:center}
-.pillar.rev .pillar-img{order:2}
-.pillar-img{position:relative;display:grid;place-items:center;aspect-ratio:16/10;border-radius:22px;overflow:hidden;isolation:isolate;border:1px solid rgba(217,174,92,.22);
- background:radial-gradient(60% 75% at 50% 55%,rgba(217,174,92,.20),transparent 70%),repeating-linear-gradient(90deg,transparent 0 46px,rgba(255,236,200,.035) 46px 47px),linear-gradient(180deg,#121015,#0a090c)}
-.pillar-img::before{content:"";position:absolute;width:62%;aspect-ratio:1;border-radius:50%;border:1px solid rgba(217,174,92,.25);box-shadow:0 0 0 22px rgba(217,174,92,.04),0 0 0 46px rgba(217,174,92,.025);z-index:-1}
-.pillar-img::after{content:"";position:absolute;inset:-40%;background:conic-gradient(from 0deg,transparent 0 70%,rgba(243,212,141,.16) 80%,transparent 90%);animation:rot 14s linear infinite;z-index:-1}
-.pillar-img svg{width:min(42%,190px);fill:none;stroke:url(#gg);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 18px rgba(217,174,92,.55));transition:transform .9s var(--ease)}
-.pillar:hover .pillar-img svg{transform:scale(1.06)}
-.pi-n{position:absolute;left:24px;bottom:-18px;font:400 150px/1 var(--h);color:transparent;-webkit-text-stroke:1px rgba(217,174,92,.28);z-index:-1}
+.pillars{margin:64px auto 0;max-width:1000px;border-top:1px solid var(--hair)}
+.pillar{display:grid;grid-template-columns:150px minmax(0,1fr);gap:clamp(28px,4vw,56px);align-items:start;padding:clamp(40px,4.5vw,56px) 0;border-bottom:1px solid var(--hair)}
+.medal{position:relative;width:132px;height:132px;border-radius:50%;padding:2px;background:conic-gradient(from 210deg,#7a5a22,#f3d48d,#d9ae5c,#fff1c9,#a87e2f,#7a5a22);box-shadow:0 24px 60px -24px rgba(217,174,92,.6),0 0 0 10px rgba(217,174,92,.05)}
+.medal-in{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:radial-gradient(70% 70% at 50% 35%,#24201a,#0c0b0e 75%)}
+.medal svg{width:54px;height:54px;fill:none;stroke:url(#gg);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 10px rgba(217,174,92,.45));transition:transform .8s var(--ease)}
+.pillar:hover .medal svg{transform:scale(1.08)}
+.medal-n{position:absolute;right:-6px;bottom:2px;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:linear-gradient(180deg,#f7dcaa,#c4964a);color:#190f02;font:400 20px/1 var(--h);box-shadow:0 6px 16px -4px rgba(0,0,0,.8)}
 .pillar-n{font:700 12.5px var(--b);letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
 .pillar-n span{color:var(--dim)}
-.pillar h3{margin:12px 0 14px;font-size:clamp(38px,3.8vw,56px);line-height:.95}
+.pillar h3{margin:8px 0 12px;font-size:clamp(36px,3.4vw,50px);line-height:.95}
 .pillar-lead{font:500 italic clamp(22px,1.8vw,26px)/1.3 var(--s);color:var(--gold2)}
 .pillar-txt>p:not(.pillar-n):not(.pillar-lead){margin-top:16px;color:var(--mut)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
 .chips li{padding:7px 14px;border:1px solid var(--hair2);border-radius:999px;font-size:13.5px;color:var(--mut)}
 .chips.sm li{padding:5px 11px;font-size:12.5px}
-@media(max-width:900px){.pillar{grid-template-columns:1fr}.pillar.rev .pillar-img{order:0}}
+@media(max-width:700px){.pillar{grid-template-columns:84px minmax(0,1fr);gap:20px}.medal{width:80px;height:80px}.medal svg{width:34px;height:34px}.medal-n{width:28px;height:28px;font-size:15px;right:-6px;bottom:-2px}.pillar h3{font-size:34px}}
 /* áudio */
 .audio-in{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,6vw,90px);align-items:center}
 .audio-card{position:relative;padding:clamp(28px,4vw,46px);border-radius:24px;border:1px solid rgba(217,174,92,.35);background:radial-gradient(90% 80% at 50% 0,rgba(217,174,92,.16),transparent 70%),var(--card);box-shadow:0 50px 100px -50px rgba(217,174,92,.45)}
@@ -329,24 +338,22 @@ p+p{margin-top:18px}
 .ctx li{padding:9px 16px;border:1px solid rgba(217,174,92,.35);border-radius:999px;font:600 13px var(--b);letter-spacing:.14em;text-transform:uppercase;color:var(--gold2)}
 @media(max-width:900px){.audio-in{grid-template-columns:1fr}.audio-card{order:2}.wave{height:110px}}
 /* 6 · diferencial */
-.app{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(30px,4vw,60px);align-items:center;margin-top:60px}
-.tabs{display:grid;gap:8px}
-.tabs button{position:relative;width:100%;display:block;padding:20px 22px;border:1px solid var(--hair);border-radius:14px;background:transparent;color:var(--mut);font:inherit;text-align:left;cursor:pointer;overflow:hidden;transition:border-color .4s,background-color .4s,color .4s}
-.tabs b{display:block;font:400 26px/1 var(--h);letter-spacing:.02em;color:var(--text);margin-bottom:6px}
-.tabs span{display:block;font-size:15.5px;line-height:1.45}
+.app{margin-top:56px}
+.tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:22px}
+.tabs button{position:relative;width:100%;height:100%;display:block;padding:18px 18px 20px;border:1px solid var(--hair);border-radius:14px;background:transparent;color:var(--mut);font:inherit;text-align:left;cursor:pointer;overflow:hidden;transition:border-color .4s,background-color .4s,color .4s}
+.tabs b{display:block;font:400 24px/1 var(--h);letter-spacing:.02em;color:var(--text);margin-bottom:6px}
+.tabs span{display:block;font-size:14px;line-height:1.4}
 .tabs .bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:left}
-.tabs button[aria-selected=true]{border-color:rgba(217,174,92,.45);background:linear-gradient(100deg,rgba(217,174,92,.12),rgba(217,174,92,.02));color:var(--text)}
+.tabs button[aria-selected=true]{border-color:rgba(217,174,92,.5);background:linear-gradient(180deg,rgba(217,174,92,.14),rgba(217,174,92,.02));color:var(--text)}
 .tabs button[aria-selected=true] b{color:var(--gold2)}
 .tabs button[aria-selected=true] .bar{animation:fill var(--dur,5.5s) linear forwards}
 @keyframes fill{to{transform:scaleX(1)}}
-.screen{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--hair2);background:#05070f;box-shadow:0 60px 120px -50px rgba(0,0,0,.95),0 0 90px -30px rgba(217,174,92,.35)}
-.screen .chrome{display:flex;gap:6px;padding:11px 14px;background:#121016;border-bottom:1px solid var(--hair)}
-.screen .chrome i{width:10px;height:10px;border-radius:50%;background:#3a3530}
+.screen{position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(217,174,92,.35);background:#05070f;box-shadow:0 80px 160px -60px rgba(0,0,0,1),0 0 140px -40px rgba(217,174,92,.4)}
 .screen .view{position:relative;aspect-ratio:1440/900}
 .screen .view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.02);transition:opacity .8s var(--ease),transform 1.2s var(--ease)}
 .screen .view img.on{opacity:1;transform:none}
-.real{margin-top:12px;font-size:13px;color:var(--dim);text-align:right}
-@media(max-width:900px){.app{grid-template-columns:1fr}.screen{order:-1}.tabs span{display:none}.tabs button{padding:16px 18px}.real{text-align:center}}
+
+@media(max-width:900px){.tabs{display:flex;overflow-x:auto;scrollbar-width:none;margin-inline:-18px;padding-inline:18px}.tabs::-webkit-scrollbar{display:none}.tabs li{flex:none}.tabs span{display:none}.tabs button{padding:14px 18px;white-space:nowrap}.tabs b{font-size:21px;margin:0}}
 /* teste */
 .quizbox{margin-top:clamp(70px,8vw,110px);display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(30px,4vw,60px);align-items:start;padding:clamp(28px,4vw,52px);border-radius:24px;border:1px solid var(--hair2);background:radial-gradient(70% 90% at 0 0,rgba(217,174,92,.10),transparent 70%),var(--card)}
 .quizbox h3{font-size:clamp(34px,3.2vw,46px)}
@@ -564,7 +571,7 @@ HTML = f'''<!doctype html>
 
 <!-- BLOQUE 3 · QUIEBRE DE CREENCIA -->
 <section class="sec belief" aria-labelledby="h3b">
- <div class="narrow center">
+ <div class="wrap center">
   <p class="kick rv">Quiebre de creencia</p>
   <h2 id="h3b" class="rv">La prosperidad que buscas<span class="it">tal vez sea más grande de lo que imaginas.</span></h2>
   <p class="lead rv" style="margin-top:28px">Durante mucho tiempo nos acostumbraron a asociar la prosperidad sobre todo con dinero, patrimonio y logros profesionales. Pero piensa por un instante.</p>
@@ -579,23 +586,25 @@ HTML = f'''<!doctype html>
 </section>
 
 <!-- BLOQUE 4 · LA SOLUCIÓN -->
-<section class="sec" aria-labelledby="h4b">
- <div class="wrap sol">
-  <figure class="sol-shot rv"><div class="chrome" aria-hidden="true"><i></i><i></i><i></i></div>{TORRE}<figcaption>Pantalla real de la plataforma</figcaption></figure>
-  <div>
+<section class="sec sol" aria-labelledby="h4b">
+ <div class="wrap">
+  <div class="center sol-head">
    <p class="kick rv">La solución</p>
    <h2 id="h4b" class="rv">Para reunir esos fundamentos en un solo lugar<span class="it">nació Los 5 Pilares de la Prosperidad.</span></h2>
-   <p class="lead rv" style="margin-top:26px">Una experiencia digital que organiza cinco grandes áreas del desarrollo humano y convierte el aprendizaje en un camino de aplicación. En vez de información dispersa, tienes una estructura para:</p>
-   <ol class="struct">
-    <li class="rv">Entender tu punto de partida.</li>
-    <li class="rv">Identificar qué áreas merecen más atención.</li>
-    <li class="rv">Estudiar los fundamentos de cada pilar.</li>
-    <li class="rv">Hacer ejercicios y acciones prácticas.</li>
-    <li class="rv">Registrar tus reflexiones.</li>
-    <li class="rv">Acompañar tu propio progreso.</li>
-   </ol>
-   <p class="quote rv">No se trata de consumir más contenido. Se trata de tener una referencia para organizar lo que aprendes y ponerlo en práctica, un paso a la vez.</p>
+   <p class="lead rv">Una experiencia digital que organiza cinco grandes áreas del desarrollo humano y convierte el aprendizaje en un camino de aplicación.</p>
   </div>
+  <figure class="showcase rv"><div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span>Los 5 Pilares · Hoy</span></div>{TORRE}</figure>
+  <p class="real center">Pantalla real de la plataforma</p>
+  <p class="lead center rv" style="margin-top:56px">En vez de información dispersa, tienes una estructura para:</p>
+  <ol class="struct">
+   <li class="rv">Entender tu punto de partida.</li>
+   <li class="rv">Identificar qué áreas merecen más atención.</li>
+   <li class="rv">Estudiar los fundamentos de cada pilar.</li>
+   <li class="rv">Hacer ejercicios y acciones prácticas.</li>
+   <li class="rv">Registrar tus reflexiones.</li>
+   <li class="rv">Acompañar tu propio progreso.</li>
+  </ol>
+  <p class="quote center rv" style="max-width:34ch;margin:46px auto 0">No se trata de consumir más contenido. Se trata de tener una referencia para organizar lo que aprendes y ponerlo en práctica, un paso a la vez.</p>
  </div>
 </section>
 
@@ -637,10 +646,8 @@ HTML = f'''<!doctype html>
   </div>
   <div class="app">
    <ul class="tabs" role="tablist" aria-label="Lo que encuentras en la plataforma">{steps_html}</ul>
-   <div>
-    <div class="screen rv"><div class="chrome" aria-hidden="true"><i></i><i></i><i></i></div><div class="view" id="view">{''.join(SHOT_TAGS)}</div></div>
-    <p class="real">Pantallas reales del sistema</p>
-   </div>
+   <div class="screen rv"><div class="chrome" aria-hidden="true"><i></i><i></i><i></i></div><div class="view" id="view">{''.join(SHOT_TAGS)}</div></div>
+   <p class="real center">Pantallas reales del sistema</p>
   </div>
   <div class="quizbox rv" id="diagnostico">
    <div>
