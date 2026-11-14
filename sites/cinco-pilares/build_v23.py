@@ -48,6 +48,10 @@ _m = Image.open(SRC / 'montana-amanecer.png').convert('RGB').transpose(Image.FLI
 _b = io.BytesIO(); _m.save(_b, 'WEBP', quality=80, method=6)
 HERO_BG = 'data:image/webp;base64,' + base64.b64encode(_b.getvalue()).decode()
 TORRE = raw(SRC / 'desk-hoy.webp', 'Pantalla real de la plataforma: el panel Hoy con la prioridad del día, la jornada y los cinco pilares')
+ESTATUA = tag(SRC / 'estatua.webp', 'Una estatua que se esculpe a sí misma con martillo y cincel, entre chispas doradas', 'forge-img', crop=(2, 2, 700, 503), q=88)
+AGUILA = tag(SRC / 'aguila.webp', 'Un águila vuela sobre las montañas al amanecer', q=86)
+LEON = tag(SRC / 'leon.webp', 'Un león avanza de frente sobre las rocas', q=86)
+LOBO = tag(SRC / 'lobo.webp', 'Un lobo camina de frente bajo la luna llena', q=86)
 TRIO = tag(SRC / 'colagem-animais.webp', 'Águila, león y lobo: foco, ejecución y disciplina', 'fx-img', crop=(716, 520, 1536, 1024), q=84)
 POSTER = img(SRC / 'brujula-poster.png', w=560, q=78)[0]
 VIDEO = base64.b64encode((SRC / 'brujula.mp4').read_bytes()).decode()
@@ -289,6 +293,23 @@ p+p{margin-top:18px}
 .belief .lead{max-width:62ch;margin-inline:auto}
 .belief .quote{max-width:30ch;margin-inline:auto}
 .belief .quote{margin-top:46px}
+/* pontes: estátua e três forças */
+.forge{position:relative;padding:clamp(70px,8vw,120px) 0;background:linear-gradient(180deg,var(--bg),#030304 18%,#030304 82%,var(--bg))}
+.forge-in{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(30px,5vw,80px);align-items:center}
+.forge-art{position:relative;margin:0}
+.forge-img{width:100%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%),linear-gradient(180deg,transparent 0,#000 16%,#000 80%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 18%,#000 82%,transparent 100%),linear-gradient(180deg,transparent 0,#000 16%,#000 80%,transparent 100%);mask-composite:intersect}
+.forge-glow{position:absolute;left:52%;top:58%;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(255,220,150,.6),transparent 65%);mix-blend-mode:screen;animation:spark 2.6s ease-in-out infinite;z-index:1;pointer-events:none}
+@keyframes spark{0%,100%{opacity:.25;transform:scale(.8)}45%{opacity:1;transform:scale(1.15)}55%{opacity:.5;transform:scale(1)}}
+.forge-k{margin-top:22px;font:400 30px/1 var(--h);letter-spacing:.03em;color:var(--text)}
+@media(max-width:900px){.forge-in{grid-template-columns:1fr}.forge-art{margin:0 -18px}}
+.trio3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,3vw,40px);margin-top:56px;text-align:center}
+.fz figure{margin:0 0 -30px}
+.fz img{width:100%;aspect-ratio:1/1;object-fit:cover;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%),linear-gradient(180deg,transparent 0,#000 14%,#000 62%,transparent 96%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%),linear-gradient(180deg,transparent 0,#000 14%,#000 62%,transparent 96%);mask-composite:intersect;transition:transform 1.2s var(--ease)}
+.fz:hover img{transform:scale(1.04)}
+.fz span{position:relative;font:700 12px var(--b);letter-spacing:.26em;text-transform:uppercase;color:var(--gold)}
+.fz h3{position:relative;margin:8px 0 10px;font-size:clamp(38px,3.4vw,48px)}
+.fz p{position:relative;color:var(--mut);font-size:16.5px;max-width:34ch;margin-inline:auto}
+@media(max-width:900px){.trio3{grid-template-columns:1fr;gap:30px}.fz img{max-width:380px;margin:0 auto}}
 /* 4 · solução */
 .sol-head .lead{max-width:56ch;margin:24px auto 0}
 .showcase{position:relative;margin:56px auto 0;max-width:1180px;border-radius:16px;overflow:hidden;border:1px solid rgba(217,174,92,.35);background:#05070f;
@@ -585,6 +606,19 @@ HTML = f'''<!doctype html>
  </div>
 </section>
 
+<!-- PUENTE · LA ESTATUA -->
+<section class="forge" aria-labelledby="hfg">
+ <div class="wrap forge-in">
+  <figure class="forge-art rv"><i class="forge-glow" aria-hidden="true"></i>{ESTATUA}</figure>
+  <div>
+   <p class="kick rv">90 días · 90 golpes de cincel</p>
+   <h2 id="hfg" class="rv">Tu vida no se arregla de un día para otro.<span class="it">Se esculpe, un golpe por día.</span></h2>
+   <p class="lead rv" style="margin-top:24px">Nadie va a esculpirla por ti, y tampoco hace falta hacerlo todo hoy. Cada misión de 10 a 30 minutos es un golpe de cincel sobre el pilar que más lo necesita.</p>
+   <p class="forge-k rv">En 90 días, la forma aparece.</p>
+  </div>
+ </div>
+</section>
+
 <!-- BLOQUE 4 · LA SOLUCIÓN -->
 <section class="sec sol" aria-labelledby="h4b">
  <div class="wrap">
@@ -684,6 +718,21 @@ HTML = f'''<!doctype html>
    <p class="lead rv" style="margin-top:24px">La plataforma reúne herramientas para que tu jornada sea más organizada:</p>
    <ul class="feats">{feats_html}</ul>
    <p class="mut rv">No necesitas intentar cambiar todo al mismo tiempo. <b>Puedes empezar identificando una prioridad y avanzar de forma gradual y consciente.</b></p>
+  </div>
+ </div>
+</section>
+
+<!-- PUENTE · LAS TRES FUERZAS -->
+<section class="sec" id="fuerzas" aria-labelledby="hfz">
+ <div class="wrap">
+  <div class="center">
+   <p class="kick rv">Lo que la jornada entrena en ti</p>
+   <h2 id="hfz" class="rv">Foco, ejecución y disciplina.<span class="it">Las tres fuerzas que sostienen el cambio.</span></h2>
+  </div>
+  <div class="trio3">
+   <article class="fz rv"><figure>{AGUILA}</figure><span>El águila</span><h3>Foco</h3><p>Ves tu vida desde arriba y eliges una prioridad, no diez. El diagnóstico te muestra por dónde empezar.</p></article>
+   <article class="fz rv"><figure>{LEON}</figure><span>El león</span><h3>Ejecución</h3><p>Pasas de leer a hacer. Cada capítulo termina en ejercicios, misiones y checklists para actuar.</p></article>
+   <article class="fz rv"><figure>{LOBO}</figure><span>El lobo</span><h3>Disciplina</h3><p>Vuelves cada día, también cuando no hay ganas. Una misión corta por día, y la plataforma guarda tu progreso.</p></article>
   </div>
  </div>
 </section>
