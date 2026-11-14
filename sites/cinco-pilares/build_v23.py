@@ -75,6 +75,7 @@ ICON = {
     'check': '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 12.5l3 3 6-7"/>',
     'note': '<path d="M5 3h10l4 4v14H5z"/><path d="M15 3v4h4M8 12h8M8 16h5"/>',
     'trend': '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+    'audio': '<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/>',
 }
 
 
@@ -110,7 +111,7 @@ BONOS = [
 STEPS6 = [
     ('Tu diagnóstico', 'Responde 15 afirmaciones y visualiza tu mapa inicial de los cinco pilares.'),
     ('Tu prioridad', 'Identifica el punto que merece más atención en este momento.'),
-    ('Tu contenido', 'Accede a los libros interactivos y desarrolla tu conocimiento por área.'),
+    ('Tu contenido', 'Lee los libros interactivos o escucha el audio de cada capítulo, y desarrolla tu conocimiento por área.'),
     ('Tu práctica', 'Sigue ejercicios, misiones y checklists organizados en una trilla de aplicación.'),
     ('Tu progreso', 'Registra anotaciones y acompaña los pasos que ya diste.'),
 ]
@@ -119,6 +120,7 @@ FEATS = [
     ('panel', 'Panel con visión general de los cinco pilares'),
     ('radar', 'Diagnóstico y visualización del equilibrio entre las áreas'),
     ('book', 'Biblioteca de contenidos interactivos'),
+    ('audio', 'Audio en cada capítulo, para escuchar donde estés'),
     ('cal', 'Cronograma de aplicación'),
     ('check', 'Ejercicios y checklists'),
     ('note', 'Registro de anotaciones'),
@@ -126,7 +128,7 @@ FEATS = [
 ]
 
 OBJ = [
-    ('«Mi rutina ya es muy acelerada. ¿Voy a poder seguirlo?»', 'La experiencia está organizada en capítulos, ejercicios y trillas de aplicación. Puedes empezar por una prioridad y avanzar de forma gradual, sin intentar transformar todas las áreas al mismo tiempo.'),
+    ('«Mi rutina ya es muy acelerada. ¿Voy a poder seguirlo?»', 'La experiencia está organizada en capítulos, ejercicios y trillas de aplicación, y cada capítulo tiene audio: puedes escucharlo en el auto o en casa mientras haces tus rutinas. Empiezas por una prioridad y avanzas de forma gradual, sin intentar transformar todas las áreas al mismo tiempo.'),
     ('«Ya compré otros cursos y nunca puse nada en práctica.»', 'Aquí el contenido viene acompañado de herramientas de aplicación, checklists, misiones y seguimiento del progreso. El objetivo es facilitar el paso de la lectura a la acción.'),
     ('«¿Esto es solo para ganar dinero?»', 'No. Las finanzas son solo uno de los cinco pilares. La propuesta también abarca salud, desarrollo personal y espiritualidad, relaciones y carrera.'),
     ('«¿Necesito saber de estas áreas?»', 'No. El contenido está organizado para presentar fundamentos, conceptos y prácticas que te ayudan a desarrollar tu comprensión poco a poco.'),
@@ -292,6 +294,20 @@ p+p{margin-top:18px}
 .chips li{padding:7px 14px;border:1px solid var(--hair2);border-radius:999px;font-size:13.5px;color:var(--mut)}
 .chips.sm li{padding:5px 11px;font-size:12.5px}
 @media(max-width:900px){.pillar{grid-template-columns:1fr}.pillar.rev .pillar-img{order:0}}
+/* áudio */
+.audio-in{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,6vw,90px);align-items:center}
+.audio-card{position:relative;padding:clamp(28px,4vw,46px);border-radius:24px;border:1px solid rgba(217,174,92,.35);background:radial-gradient(90% 80% at 50% 0,rgba(217,174,92,.16),transparent 70%),var(--card);box-shadow:0 50px 100px -50px rgba(217,174,92,.45)}
+.wave{display:flex;align-items:center;gap:5px;height:150px}
+.wave i{flex:1;height:var(--h);border-radius:999px;background:linear-gradient(180deg,var(--gold2),var(--gold3));transform-origin:center;animation:wv 1.6s ease-in-out var(--d) infinite}
+@keyframes wv{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+.player{display:flex;align-items:center;gap:16px;margin-top:28px;padding-top:24px;border-top:1px solid var(--hair)}
+.play{position:relative;flex:none;width:58px;height:58px;border-radius:50%;background:linear-gradient(180deg,#f7dcaa,#d9ae5c);box-shadow:0 0 0 8px rgba(217,174,92,.12),0 14px 30px -10px rgba(217,174,92,.7)}
+.play::after{content:"";position:absolute;left:23px;top:18px;border-left:16px solid #190f02;border-top:11px solid transparent;border-bottom:11px solid transparent}
+.player b{display:block;font:400 24px/1 var(--h);letter-spacing:.02em}
+.player small{display:block;margin-top:4px;font-size:14px;color:var(--mut)}
+.ctx{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.ctx li{padding:9px 16px;border:1px solid rgba(217,174,92,.35);border-radius:999px;font:600 13px var(--b);letter-spacing:.14em;text-transform:uppercase;color:var(--gold2)}
+@media(max-width:900px){.audio-in{grid-template-columns:1fr}.audio-card{order:2}.wave{height:110px}}
 /* 6 · diferencial */
 .app{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(30px,4vw,60px);align-items:center;margin-top:60px}
 .tabs{display:grid;gap:8px}
@@ -493,7 +509,7 @@ HTML = f'''<!doctype html>
    <p class="lead rv">Puedes estar creciendo en tu profesión, trabajando por tu libertad financiera y persiguiendo tus objetivos. Pero <b>¿tu salud, tus relaciones, tu vida espiritual y tu desarrollo están creciendo al mismo ritmo?</b></p>
    <p class="lead rv">Conoce <b>Los 5 Pilares de la Prosperidad</b>: un sistema interactivo de desarrollo integral que reúne cinco áreas fundamentales de la vida, un diagnóstico, contenidos profundos y herramientas prácticas para descubrir dónde estás y por dónde empezar.</p>
    <div class="hero-cta rv"><a class="cta" data-co href="#inversion">Quiero empezar a construir mis 5 pilares <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-   <p class="hero-meta rv"><span>5 pilares principales</span><span>5 ebooks interactivos</span><span>4 materiales bonus</span></p>
+   <p class="hero-meta rv"><span>5 pilares principales</span><span>5 ebooks interactivos</span><span>Audio en cada capítulo</span><span>4 materiales bonus</span></p>
   </div>
  </div>
 </section>
@@ -570,6 +586,22 @@ HTML = f'''<!doctype html>
    <h2 id="h5b" class="rv">Cinco fundamentos.<span class="it">Una vida que merece ser construida por completo.</span></h2>
   </div>
   <div class="pillars">{pilares_html}
+  </div>
+ </div>
+</section>
+
+<!-- ÁUDIO EN CADA CAPÍTULO -->
+<section class="sec audio" aria-labelledby="hau">
+ <div class="wrap audio-in">
+  <div class="audio-card rv">
+   <div class="wave" aria-hidden="true"><i style="--h:30%;--d:0.00s"></i><i style="--h:62%;--d:0.10s"></i><i style="--h:45%;--d:0.20s"></i><i style="--h:80%;--d:0.30s"></i><i style="--h:55%;--d:0.40s"></i><i style="--h:92%;--d:0.50s"></i><i style="--h:40%;--d:0.60s"></i><i style="--h:70%;--d:0.70s"></i><i style="--h:35%;--d:0.80s"></i><i style="--h:85%;--d:0.90s"></i><i style="--h:50%;--d:1.00s"></i><i style="--h:66%;--d:1.10s"></i><i style="--h:28%;--d:1.20s"></i><i style="--h:74%;--d:1.30s"></i><i style="--h:48%;--d:1.40s"></i><i style="--h:88%;--d:1.50s"></i><i style="--h:38%;--d:1.60s"></i><i style="--h:60%;--d:1.70s"></i><i style="--h:32%;--d:1.80s"></i><i style="--h:76%;--d:1.90s"></i></div>
+   <div class="player" aria-hidden="true"><span class="play"></span><div><b>Pilar 01 · Salud física y mental</b><small>Audio del capítulo · escucha donde estés</small></div></div>
+  </div>
+  <div>
+   <p class="kick rv">Lee o escucha</p>
+   <h2 id="hau" class="rv">Cada capítulo tiene audio.<span class="it">Aprende en el auto o en casa, mientras haces tus rutinas.</span></h2>
+   <p class="lead rv" style="margin-top:24px">No necesitas sentarte a leer para avanzar. Escucha el capítulo camino al trabajo, mientras cocinas, ordenas la casa o haces ejercicio, y después vuelve a la plataforma para hacer el ejercicio y marcar tu checklist.</p>
+   <ul class="ctx rv"><li>En el auto</li><li>En casa</li><li>Caminando</li><li>Entrenando</li></ul>
   </div>
  </div>
 </section>
@@ -660,7 +692,7 @@ HTML = f'''<!doctype html>
   <div class="offer-grid">
    <div class="offer-col main rv spot"><p class="k">5 libros principales</p><h3>Los cinco pilares</h3><ul>{lst(['Salud física y mental','Desarrollo personal y espiritualidad','Relaciones: capital social','Carrera y emprendimiento','Finanzas: la palanca de la libertad'])}</ul></div>
    <div class="offer-col rv spot"><p class="k">4 bonos</p><h3>Materiales complementarios</h3><ul>{lst(['Gestión del tiempo','Inteligencia emocional','Comunicación','El Mapa: 21 oportunidades de negocio'])}</ul></div>
-   <div class="offer-col rv spot"><p class="k">Plataforma</p><h3>Herramientas interactivas</h3><ul>{lst(['Diagnóstico de los cinco pilares','Panel de seguimiento','Cronograma de aplicación','Ejercicios y checklists','Anotaciones y registro de progreso'])}</ul></div>
+   <div class="offer-col rv spot"><p class="k">Plataforma</p><h3>Herramientas interactivas</h3><ul>{lst(['Diagnóstico de los cinco pilares','Audio en cada capítulo','Panel de seguimiento','Cronograma de aplicación','Ejercicios y checklists','Anotaciones y registro de progreso'])}</ul></div>
   </div>
   <p class="allin rv">Todo reunido en una única jornada de desarrollo.</p>
  </div>
